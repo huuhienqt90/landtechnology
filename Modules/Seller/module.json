@@ -1,0 +1,16 @@
+{
+    "name": "Seller",
+    "alias": "seller",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Seller\\Providers\\SellerServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

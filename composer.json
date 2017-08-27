@@ -12,7 +12,7 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
         "bosnadev/repositories": " 0.*",
-        "nwidart/laravel-modules": "^1.27"
+        "nwidart/laravel-modules": "^2.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
