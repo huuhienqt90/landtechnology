@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model
 {
+    use Sluggable;
+
     protected $table = 'products';
 
     public $timestamps = true;
@@ -35,4 +38,30 @@ class Product extends Model
         'created_by',
         'updated_by'
     ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
+    public function brand(){
+        return $this->hasOne('App\Models\Brand', 'id', 'product_brand');
+    }
+
+    public function sellType(){
+        return $this->hasOne('App\Models\SellType', 'id','sell_type_id');
+    }
+
+    public function seller(){
+        return $this->hasOne('App\Models\User', 'id', 'seller_id');
+    }
 }

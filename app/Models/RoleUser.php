@@ -14,4 +14,19 @@ class RoleUser extends Model
         'user_id',
         'role_id'
     ];
+
+    /**
+     * Get the role record associated with the user.
+     */
+    public function role()
+    {
+        return $this->hasOne('App\Models\Role');
+    }
+
+    /**
+     * Belong to Api Permission
+     */
+    public function user(){
+        return $this->hasOne('App\Models\User');
+    }
 }
