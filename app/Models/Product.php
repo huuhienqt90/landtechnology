@@ -64,4 +64,13 @@ class Product extends Model
     public function seller(){
         return $this->hasOne('App\Models\User', 'id', 'seller_id');
     }
+
+    /**
+     * Belong to categories
+     *
+     * @return [type] [description]
+     */
+    public function categories() {
+        return $this->belongsToMany('App\Models\Category', 'product_categories', 'product_id', 'category_id');
+    }
 }
