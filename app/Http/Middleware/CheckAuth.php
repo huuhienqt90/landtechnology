@@ -16,7 +16,8 @@ class CheckAuth
      */
     public function handle($request, Closure $next, $userType = 'Buyer')
     {
-        if (!Auth::check() || !auth()->user()->$userType) {
+        $check = strtolower($userType);
+        if (!Auth::check() || !auth()->user()->$check()->count()) {
             return redirect(route('login.'.$userType));
         }
 
