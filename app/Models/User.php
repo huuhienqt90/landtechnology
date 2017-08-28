@@ -169,4 +169,11 @@ class User extends Authenticatable
         }
         return $roles;
     }
+
+    /**
+     * Get user full name
+     */
+    public function getFullName(){
+        return $this->first_name. " " . $this->last_name;
+    }
 }
