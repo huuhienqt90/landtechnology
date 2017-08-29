@@ -1,0 +1,73 @@
+
+//font-family
+//$font-stack: ;
+
+//background - color
+$bg-color-black: #000 !default;
+$bg-color-white: #fff !default;
+$bg-color-red: #B20605 !default;
+
+$bg-color-tophead: #707070 !default;
+$bg-color-header: #303030 !default;
+$bg-color-main: #79B6C8 !default;
+$bg-color-hv-menu: #606060 !default;
+$bg-color-hv-menu-border: #F1F1F1 !default;
+$bg-color-hv-text-cart: #454545 !default;
+$bg-color-btn-cart: #303030 !default;
+$bg-color-border-btn-cart: #707070 !default;
+
+$bg-color-text-slide: #1F1F1F !default;
+$bg-color-btn-slide: #353535 !default;
+$bg-color-prev: #B1B1B1 !default;
+
+$bg-color-boder-dotted: #C9C9C9 !default;
+
+$bg-color-blue: #2485f1 !default;
+$bg-color-footer: #262626 !default;
+$bg-color-text-footer: #8E8E8E !default;
+$bg-color-end: #323232 !default;
+$bg-color-footer-end: #2D2D2D !default;
+$bg-color-author: #AA1116 !default;
+
+//bg-color-border
+$bg-color-border-img: #dcdcdc !default;
+$bg-color-border-about: #c7c7c7 !default;
+$bg-color-border-news-1: #DCDCDC !default;
+$bg-color-border-news-2: #AD1E23 !default;
+
+$bg-color-hover-support: #D9BF8F !default;
+
+// color lighten
+$gray-lighten: lighten($bg-color-black, 20%) !default;   // #333
+
+//colr darken
+$gray-darken: darken($bg-color-white, 50%) !default;
+$gray-darken-blue: darken($bg-color-blue, 15%) !default;
+
+//background color body
+$bg-body: #fff !default;
+
+// text color body
+$text-color:            $gray-lighten !default;
+$text-color-tophead: #393939 !default;
+
+// link color.
+$link-color:            $bg-color-red !default;
+// Link hover color 
+$link-hover-color:      darken($link-color, 15%) !default;
+// Link hover decoration.
+$link-hover-decoration: underline !default;
+
+//responsive
+
+$res_320 : "only screen and (min-width: 320px) and (max-width: 374px)";
+$res_375 : "only screen and (min-width: 375px) and (max-width: 424px)";
+$res_425 : "only screen and (min-width: 425px) and (max-width: 557px)";
+$res_568 : "only screen and (min-width: 568px) and (max-width: 599px)";
+$res_600 : "only screen and (min-width: 600px) and (max-width: 767px)";
+$res_768 : "only screen and (min-width: 768px) and (max-width: 991px)";
+$res_992 : "only screen and (min-width: 992px) and (max-width: 1023px)";
+$res_1024 : "only screen and (min-width: 1024px) and (max-width: 1199px)";
+$res_1200 : "only screen and (min-width: 1200px) and (max-width: 1299px)";
+$res_1300 : "only screen and (min-width: 1300px)";
+$res_1920 : "only screen and (min-width: 1920px)";

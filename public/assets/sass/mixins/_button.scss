@@ -1,0 +1,17 @@
+
+
+@mixin link-hover(){
+	color: $gray-darken-blue;
+	transition: all 0.4s ease;
+}
+@mixin btn(){
+	color: $bg-color-btn-slide;
+	border: 2px solid $bg-color-btn-slide;
+	padding: 1em;
+	&:hover{
+		background: $bg-color-btn-slide;
+		border: 1px solid $bg-color-white;
+		color: $bg-color-white;
+		transition: all 0.4s ease;
+	}
+}
