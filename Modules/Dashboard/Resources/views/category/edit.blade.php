@@ -1,0 +1,26 @@
+@extends('dashboard::layouts.master')
+
+@section('content')
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Edit category</h3>
+                    </div>
+                    {!! Form::model($category, ['route' => ['dashboard.category.update', $category->id], 'class' => 'form-horizontal']) !!}
+                    <div class="box-body">
+                        @include('dashboard::partials.input', ['field' => 'name', 'label' => 'Name', 'options' => ['class'=>'form-control']])
+                        @include('dashboard::partials.input', ['field'=>'slug', 'label' => 'Slug', 'options' => ['class'=>'form-control', 'readonly' => 'true']])
+                        @include('dashboard::partials.select', ['field' => 'parent_id', 'label' => 'Parent', 'options' => $cateArr])
+                        @include('dashboard::partials.select', ['field' => 'status', 'label' => 'Status', 'options' => ['active' => 'Active', 'pending' => 'Pending', 'need-confirm' => 'Need confirm']])
+                        @include('dashboard::partials.file', ['field' => 'status', 'label' => 'Status', 'options' => ['active' => 'Active', 'pending' => 'Pending', 'need-confirm' => 'Need confirm']])
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+@stop
