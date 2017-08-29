@@ -12,4 +12,8 @@ class CategoryResponsitory extends Repository {
     public function model() {
         return 'App\Models\Category';
     }
+
+    public function findAllNotWhere($column, $value){
+        return Category::where($column, '!=', $value)->get();
+    }
 }

@@ -54,9 +54,17 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('dashboard::index');
+        $category = $this->categoryResponsitory->find($id);
+        $categories = $this->categoryResponsitory->findAllNotWhere('id', $id);
+        $cateArr = [0 => 'Select an category'];
+        if( $categories && $categories->count() ){
+            foreach ($categories as $cat) {
+                $cateArr[$cat->id] = $cat->name;
+            }
+        }
+        return view('dashboard::category.edit', compact('category', 'cateArr'));
     }
 
     /**
