@@ -169,6 +169,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Nwidart\Modules\LaravelModulesServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
+        SetKyar\Social\SocialServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -231,6 +233,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Module' => Nwidart\Modules\Facades\Module::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 
