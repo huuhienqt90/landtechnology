@@ -7,9 +7,9 @@
             <div class="col-lg-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Edit category</h3>
+                        <h3 class="box-title">Create category</h3>
                     </div>
-                    {!! Form::model($category, ['route' => ['dashboard.category.update', $category->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    {!! Form::model($category, ['route' => ['dashboard.category.store'], 'class' => 'form-horizontal', 'files' => true]) !!}
                     <div class="box-body">
                         @include('dashboard::partials.input', ['field' => 'name', 'label' => 'Name', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field'=>'slug', 'label' => 'Slug', 'options' => ['class'=>'form-control', 'readonly' => 'true']])

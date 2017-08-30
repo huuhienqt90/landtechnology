@@ -8,6 +8,10 @@
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">List all categories</h3>
+                        <div class="pull-right box-tools">
+                            <a href="{{ route('dashboard.category.create') }}" class="btn btn-info btn-sm" data-toggle="tooltip" title="" data-original-title="Create">
+                              <i class="fa fa-plus"></i></a>
+                          </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
