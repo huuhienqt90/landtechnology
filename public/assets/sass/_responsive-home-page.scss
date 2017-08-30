@@ -1,0 +1,66 @@
+
+@include responsive_320 {
+	
+}
+ 
+@include responsive_480 {
+	
+}
+
+@include responsive_568 {
+    
+}
+
+@include responsive_600 {
+    
+}
+
+@include responsive_800 {
+
+}
+ 
+@include responsive_992 {
+    
+}
+ 
+@include responsive_1024 {
+    #product-list .second-effect .news-product{
+        top: 0.5em;
+    }
+    #out-blog .blog-face li {
+        padding-left: 0;
+    }
+    #new-arrivals .news-product-slider{
+        left: 11em;
+        top: 0;
+        width: 26%;
+    }
+    #new-arrivals .sale-product-slider{
+        top: 75px;
+        left: 154.5px;
+        width: 26%;
+    }
+    #new-arrivals .img-detail-content .news-product-detail{
+        width: 11.8%;
+    }
+    #new-arrivals .img-detail-content .sale-product-detail{
+        width: 11.8%;
+    }
+    #new-arrivals .detail-content-product .detail-content{
+        margin-left: 3em;
+    }
+}
+ 
+@include responsive_1200 {
+    
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1920 {
+    #product-list .second-effect .news-product:before {
+        left: 3.6em;
+    }
+}

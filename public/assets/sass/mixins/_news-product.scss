@@ -1,0 +1,24 @@
+
+@mixin news-product() {
+	position: absolute;
+    z-index: 1;
+    width: 20%;
+    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    &:before{
+	    content: '';
+	    border-bottom: 18px solid $bg-color-main;
+	    border-top: 18px solid $bg-color-main;
+	    border-left: 20px solid transparent;
+	    display: block;
+	    position: absolute;
+	    top: 0em;
+	    left: 4.17em;
+	    transform: rotate(-180deg);
+	    -moz-transform: rotate(-180deg);
+	    -webkit-transform: rotate(-180deg);
+	    -o-transform: rotate(-180deg);
+    }
+}
