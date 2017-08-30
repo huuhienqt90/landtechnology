@@ -4,13 +4,8 @@
         @content;
     }
 }
-@mixin responsive_375() {
-    @media #{$res_375} {
-        @content;
-    }
-}
-@mixin responsive_425() {
-    @media #{$res_425} {
+@mixin responsive_480() {
+    @media #{$res_480} {
         @content;
     }
 }
@@ -24,8 +19,8 @@
         @content;
     }
 }
-@mixin responsive_768() {
-    @media #{$res_768} {
+@mixin responsive_800() {
+    @media #{$res_800} {
         @content;
     }
 }

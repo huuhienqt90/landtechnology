@@ -19,8 +19,16 @@ $bg-color-border-btn-cart: #707070 !default;
 $bg-color-text-slide: #1F1F1F !default;
 $bg-color-btn-slide: #353535 !default;
 $bg-color-prev: #B1B1B1 !default;
+$bg-color-text-breadcrumb: #4E4E4E !default;
+
+$bg-color-text-blog: #7B7B7B !default;
+$bg-color-border-blog: #EBEBEB !default;
+$bg-color-border-btn-face: #CCCCCC !default;
+
+$bg-color-text-shipping: #5B5B5B !default;
 
 $bg-color-boder-dotted: #C9C9C9 !default;
+$bg-color-sale-product: #535353 !default;
 
 $bg-color-blue: #2485f1 !default;
 $bg-color-footer: #262626 !default;
@@ -60,14 +68,13 @@ $link-hover-decoration: underline !default;
 
 //responsive
 
-$res_320 : "only screen and (min-width: 320px) and (max-width: 374px)";
-$res_375 : "only screen and (min-width: 375px) and (max-width: 424px)";
-$res_425 : "only screen and (min-width: 425px) and (max-width: 557px)";
-$res_568 : "only screen and (min-width: 568px) and (max-width: 599px)";
-$res_600 : "only screen and (min-width: 600px) and (max-width: 767px)";
-$res_768 : "only screen and (min-width: 768px) and (max-width: 991px)";
-$res_992 : "only screen and (min-width: 992px) and (max-width: 1023px)";
-$res_1024 : "only screen and (min-width: 1024px) and (max-width: 1199px)";
-$res_1200 : "only screen and (min-width: 1200px) and (max-width: 1299px)";
-$res_1300 : "only screen and (min-width: 1300px)";
-$res_1920 : "only screen and (min-width: 1920px)";
+$res_320 : "only screen and (max-width: 320px)";
+$res_480 : "only screen and (max-width: 480px)";
+$res_568 : "only screen and (max-width: 568px)";
+$res_600 : "only screen and (max-width: 600px)";
+$res_800 : "only screen and (max-width: 768px)";
+$res_992 : "only screen and (max-width: 992px)";
+$res_1024 : "only screen and (max-width: 1024px)";
+$res_1200 : "only screen and (max-width: 1200px)";
+$res_1300 : "only screen and (max-width: 1300px)";
+$res_1920 : "only screen and (max-width: 1920px)";
