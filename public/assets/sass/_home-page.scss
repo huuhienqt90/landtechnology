@@ -347,6 +347,9 @@ body{
                 color: $bg-color-black;
                 font-size: 25px;
                 font-weight: bold;
+                &:hover {
+                    color: $bg-color-white;
+                }
             }
             p{
                 color: $bg-color-hv-menu;
@@ -459,7 +462,16 @@ body{
             margin-top: 1.5em;
             .text-detail{
                 float: left;
-                p{ color: $bg-color-hv-menu; /* font-style: italic; */ font-weight: 500;}
+                h4{
+                    margin-top: 0;
+                    a{
+                        color: $bg-color-hv-menu; /* font-style: italic; */ font-weight: 500;
+                        font-size: 14px;
+                        &:hover {
+                            color: $bg-color-main;
+                        }
+                    }
+                }
                 span{ color: $bg-color-main; }
             }
             .lock{
@@ -533,7 +545,7 @@ body{
                 font-size: 15px;
                 background: $bg-color-sale-product;
                 padding: 0.5em 0;
-                padding-left: 1.1em;
+                padding-left: 0.1em;
             }
         }
     }
@@ -578,7 +590,7 @@ body{
                 li{
                     font-size: 17px;
                     &:first-child {
-                        i{
+                        a{
                             &:hover {
                                 color: $bg-color-main;
                             }
