@@ -36,9 +36,15 @@
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->showParent() }}</td>
                                         <td style="text-align: center;">
-                                            <div class="btn-group">
-                                                <a class="btn btn-info btn-flat" href="{{ route('dashboard.category.edit', $category->id) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                                <a href="{{ route('dashboard.category.destroy', $category->id) }}" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></a>
+                                                <form method="post" action="{{ route('dashboard.category.destroy', $category->id) }}">
+                                                    {{ method_field('DELETE') }}
+                                                    <div class="form-group">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-info btn-flat" href="{{ route('dashboard.category.edit', $category->id) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                        <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

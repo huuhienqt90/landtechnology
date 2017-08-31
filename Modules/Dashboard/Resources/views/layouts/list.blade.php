@@ -103,23 +103,7 @@
             $('.btn-delete-item').click(function(){
                 var cf = confirm($(this).data('confirm'));
                 if(cf){
-                    $.ajax({
-                        type: "DELETE",
-                        url: $(this).attr('href'),
-                        dataType: 'json',
-                        success: function (data) {
-                            console.log(data);
-                            if(data.status){
-                                location.reload();
-                            }else{
-                                alert(data.message)
-                            }
-                        },
-                        error: function (data) {
-                            console.log('Error:', data);
-                        }
-                    });
-                    return false;
+                    return true;
                 }else{
                     return false;
                 }
