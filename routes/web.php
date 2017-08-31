@@ -27,9 +27,5 @@ Route::group(['namespace' => 'Front'], function() {
     // Login by social
     Route::get('/redirect/{driver}', 'SocialAuthController@redirect');
 	Route::get('/callback/{driver}', 'SocialAuthController@callback');
-
-    Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function(){
-        Route::get('/', 'SellerController@index')->name('dashboard');
-    });
 });
 
