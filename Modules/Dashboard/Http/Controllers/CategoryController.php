@@ -33,7 +33,7 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryResponsitory->all();
         $category = $this->categoryResponsitory;
-        $cateArr = [0 => 'Select an category'];
+        $cateArr = [0 => 'Select a category'];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
                 $cateArr[$cat->id] = $cat->name;
@@ -67,7 +67,7 @@ class CategoryController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return view('dashboard::index');
     }
 
     /**
@@ -94,21 +94,20 @@ class CategoryController extends Controller
      */
     public function update(CategoryUpdateRequest $request, $id = 0)
     {
-        $category = $this->categoryResponsitory->find($id);
+        $update = [
+            'name' => $request->name,
+            'status' => $request->status,
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id
+        ];
         if( $request->hasFile('image') ){
             $path = $request->file('image')->store('categories');
-            $category->image = $path;
+            $update['name'] = $path;
         }
         if( isset( $request->parent_id ) && $request->parent_id > 0 ){
-            $category->parent_id = $request->parent_id;
+            $update['parent_id'] = $request->parent_id;
         }
-
-        $category->name = $request->name;
-        $category->slug = str_slug($request->name);
-        $category->status = $request->status;
-        $category->created_by = auth()->user()->id;
-        $category->updated_by = auth()->user()->id;
-        $category->save();
+        $this->categoryResponsitory->update($update, $id);
         return redirect(route('dashboard.category.index'))->with('alert-success', 'Update category sucess!');
     }
 
@@ -119,6 +118,7 @@ class CategoryController extends Controller
     public function destroy(Request $request, $id)
     {
         $arItem = $this->categoryResponsitory->find($id);
+        $this->categoryResponsitory->deleteProductCategories($id);
         $arItem->delete();
         return redirect(route('dashboard.category.index'))->with('alert-success', 'Delete category success');
     }

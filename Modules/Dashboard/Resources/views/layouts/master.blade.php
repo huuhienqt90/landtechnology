@@ -112,5 +112,21 @@
     <script src="{{ asset('themes/dashboard/dist/js/pages/dashboard.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/dashboard/dist/js/demo.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $('input[name="name"]').keyup(function(e){
+                $('input[name="slug"]').val(convertToSlug($(this).val()));
+                return true;
+            });
+            function convertToSlug(Text)
+            {
+                return Text
+                    .toLowerCase()
+                    .replace(/[^\w ]+/g,'')
+                    .replace(/ +/g,'-')
+                    ;
+            }
+        });
+    </script>
 </body>
 </html>
