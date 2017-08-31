@@ -49,8 +49,13 @@ body{
     .navbar-default{
         background: $bg-color-header;
         border: none;
+        /* margin-bottom: 0; */
+        .container-fluid{
+            padding-left: 0;
+            padding-right: 0;
+        }
         .navbar-collapse {
-            padding-bottom: 1em;
+            /* padding-bottom: 2.2em; */
             .navbar-right{
                 padding-top: 0.5em;
             }
@@ -58,6 +63,8 @@ body{
                 li{
                     a{
                         color: $bg-color-white;
+                        font-family: 'Montserrat', sans-serif;
+                        font-weight: 500;
                         &:hover{
                             color: $bg-color-main;
                         }
@@ -87,7 +94,7 @@ body{
     }
     .hv-menu{
         position: absolute;
-        margin-top: 1em;
+        margin-top: 1.5em;
         padding: 0;
         left: -13em;
         background: $bg-color-white;
@@ -106,6 +113,7 @@ body{
                     color: $bg-color-black;
                     border-left: 1.5px solid $bg-color-main;
                     padding-left: 0.5em;
+                    font-weight: bold;
                 }
                 ul{
                     list-style: none;
@@ -130,7 +138,7 @@ body{
         position: absolute;
         border: none;
         background: #fff;
-        margin-top: 1em;
+        margin-top: 1.5em;
         left: -27.5em;
         width: 32.5em;
         box-shadow: 0px 1px 0px #dedede;
@@ -159,8 +167,9 @@ body{
         height: 25em;
         left: -17em;
         padding: 2em 0;
-        margin-top: 1em;
-        background: #fff;
+        margin-top: 1.5em;
+        background: $bg-color-white;
+        box-shadow: 0px 0px 4px $bg-color-hv-menu;
         .info-cart{
             padding: 0 1em;
             ul{
@@ -230,15 +239,15 @@ body{
     }
 }
 #banner{
-    margin-top: -1.46em;
+    margin-top: 0;
     .carousel-inner{
         .item{
             img{ width: 100%; }
             .carousel-caption{
                 text-align: left;
                 left: 0;
-                right: 30%;
-                top: 5em;
+                right: 0;
+                top: 0;
                 position: absolute;
                 overflow: hidden;
                 display: -webkit-box;
@@ -342,6 +351,7 @@ body{
             p{
                 color: $bg-color-hv-menu;
                 font-size: 14px;
+                font-weight: 700;
             }
             span{
                 color: $bg-color-main;
@@ -350,7 +360,7 @@ body{
             }
             .text {
                 @include cl-text();
-                left: 65%;
+                left: 70%;
                 top: 50%;
                 width: 50%;
                 text-align: left;
@@ -472,14 +482,14 @@ body{
         }
     }
     .img-detail-content{
-        margin-top: -4em;
+        margin-top: -8em;
         margin-left: 4em;
         z-index: 999;
         position: relative;
         .news-product-detail{
             @include news-product();
             top: 0.5em;
-            left: 25em;
+            left: 30em;
             padding: 0;
             width: 11.8%;
             &:before{
@@ -496,7 +506,7 @@ body{
         .sale-product-detail{
             @include news-product();
             top: 5.5em;
-            left: 25.4em;
+            left: 30.4em;
             padding: 0;
             width: 9.8%;
             &:before{
@@ -528,7 +538,7 @@ body{
         }
     }
     .detail-content-product{
-        margin-top: 8em;
+        margin-top: 15em;
         border-style: dotted;
         border-width: 1px;
         padding-bottom: 30em;
@@ -613,10 +623,11 @@ body{
     .list-featured-products{
         list-style: none;
         padding: 0;
-        display: -webkit-inline-box;
+        display: flex;
         li{
             position: relative;
             padding-right: 1em;
+            padding-left: 0;
             .news-featured-products{
                 @include news-product();
                 top: 0.4em;
@@ -624,7 +635,7 @@ body{
                 padding: 0;
                 width: 20.8%;
                 &:before{
-                    left: 4em;
+                    left: 4.3em;
                 }
                 p{
                     color: $bg-color-white;
@@ -641,7 +652,7 @@ body{
                 padding: 0;
                 width: 21%;
                 &:before{
-                    left: 4em;
+                    left: 4.3em;
                     border-bottom: 18px solid $bg-color-sale-product;
                     border-top: 18px solid $bg-color-sale-product;
                     border-left: 20px solid transparent;
@@ -753,11 +764,12 @@ body{
             padding-right: 2em;
         }
         .text-blog{
+            margin-top: 2em;
             .breadcrumb{
                 background: none;
                 li{
                     &:first-child {
-                        font-size: 35px;
+                        font-size: 40px;
                         font-weight: bold;
                     }
                     &:last-child {
@@ -801,20 +813,14 @@ body{
         }
     }
     .blog-face{
-        list-style: none;
-        padding: 0;
-        display: -webkit-inline-box;
         border-top-style: dotted;
         border-bottom-style: dotted;
         border-width: 1px;
         border-color: $bg-color-border-blog;
         padding: 2em 0;
         margin-top: 4em;
-        margin-left: 1em;
-        margin-right: 1em;
-        li{
-            padding-left: 4em;
-            padding-right: 6em;
+        .logo-face{
+            padding-left: 7em;
         }
     }
 }
@@ -1000,6 +1006,7 @@ body{
             border-left: 2px solid $bg-color-main;
             padding: 0 1em;
             margin-bottom: 2em;
+            font-family: 'Oswald', sans-serif;
         }
         p{
             color: $bg-color-text-footer;

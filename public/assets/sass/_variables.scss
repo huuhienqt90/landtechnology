@@ -5,7 +5,7 @@
 //background - color
 $bg-color-black: #000 !default;
 $bg-color-white: #fff !default;
-$bg-color-red: #B20605 !default;
+$bg-color-red: #FF1313 !default;
 
 $bg-color-tophead: #707070 !default;
 $bg-color-header: #303030 !default;
@@ -27,8 +27,14 @@ $bg-color-border-btn-face: #CCCCCC !default;
 
 $bg-color-text-shipping: #5B5B5B !default;
 
-$bg-color-boder-dotted: #C9C9C9 !default;
+
 $bg-color-sale-product: #535353 !default;
+$bg-color-grid-badge: #C2C2C2 !default;
+
+$bg-color-ui-slider-range: #90C1D0 !default;
+
+$bg-color-select-product: #888888 !default;
+$bg-color-text-tabs: #333333 !default;
 
 $bg-color-blue: #2485f1 !default;
 $bg-color-footer: #262626 !default;
@@ -38,10 +44,10 @@ $bg-color-footer-end: #2D2D2D !default;
 $bg-color-author: #AA1116 !default;
 
 //bg-color-border
-$bg-color-border-img: #dcdcdc !default;
-$bg-color-border-about: #c7c7c7 !default;
-$bg-color-border-news-1: #DCDCDC !default;
-$bg-color-border-news-2: #AD1E23 !default;
+$bg-color-boder-dotted: #C9C9C9 !default;
+$bg-color-border-breadcrumb-product: #EBEBEB !default;
+$bg-color-border-product-heart-setting: #C8C8C8 !default;
+$bg-color-border-categories: #D9D9D9 !default;
 
 $bg-color-hover-support: #D9BF8F !default;
 
@@ -78,3 +84,23 @@ $res_1024 : "only screen and (max-width: 1024px)";
 $res_1200 : "only screen and (max-width: 1200px)";
 $res_1300 : "only screen and (max-width: 1300px)";
 $res_1920 : "only screen and (max-width: 1920px)";
+
+// Spacing
+$base-spacing: 1em;
+
+// Colors
+$off-white: #F5F5F5;
+$base-accent-color: #34Bf49;
+
+// Thumb Opacity Settings
+$thumb-opacity-inactive: 0.75;
+$thumb-opacity-hover: 1;
+$thumb-opacity-active: 0.2;
+
+// Icon Opacity Settings
+$icon-opacity-norm: 0.5;
+$icon-opacity-hover: 1;
+
+// Transition Settings
+$base-transition-timing: cubic-bezier(0.455,  0.030, 0.515, 0.955);
+$base-transition-duration: .3s;
