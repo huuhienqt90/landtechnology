@@ -18,4 +18,8 @@ class SocialAccount extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
 }

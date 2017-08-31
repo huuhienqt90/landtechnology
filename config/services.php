@@ -35,4 +35,22 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID', '294241500910052'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET', '59fcd9ca65882a529e32e90d1f4eae5a'),
+        'redirect' => env('FACEBOOK_REDIRECT', 'http://louis-laravel.dev/callback/facebook'),
+    ],
+
+    'linkedin' => [
+        'client_id' => env('LINKEDIN_CLIENT_ID', '81o3eidvipw9wv'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET', 'N3Z05JV9IwDb1TZA'),
+        'redirect' => env('LINKEDIN_REDIRECT', 'http://louis-laravel.dev/callback/linkedin'),
+    ],
+
+    'twitter' => [
+        'client_id' => env('TWITTER_CLIENT_ID', 'scj0NPBRKSRXijRub6xM3Eoxn'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET', 'kds1aD4CLhhgpCxdMDSq4j6gidUbT1oFRcxr2fmWiK6t2YnkaI'),
+        'redirect' => env('TWITTER_REDIRECT', 'http://louis-laravel.dev/callback/twitter'),
+    ],
+
 ];

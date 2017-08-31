@@ -11,9 +11,11 @@
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.5.*",
+        "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
-        "nwidart/laravel-modules": "^2.0"
+        "nwidart/laravel-modules": "^2.0",
+        "setkyar/laravel-social-share-cards": "^1.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

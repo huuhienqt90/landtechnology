@@ -10,10 +10,26 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['namespace' => 'Front'], function() {
+	Route::get('/', 'IndexController@index')->name('index');
+
+	// Register Seller
+	Route::get('register', 'UserController@create')->name('user.create');
+    Route::post('register', 'UserController@store')->name('user.store');
+
+    Route::get('login', 'UserController@showLogin')->name('login');
+    Route::post('login', 'UserController@doLogin')->name('doLogin');
+
+    Route::get('logout', 'UserController@logout')->name('logout');
+
+    // Login by social
+    Route::get('/redirect/{driver}', 'SocialAuthController@redirect');
+	Route::get('/callback/{driver}', 'SocialAuthController@callback');
+
+    Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function(){
+        Route::get('/', 'SellerController@index')->name('dashboard');
+    });
 });
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
