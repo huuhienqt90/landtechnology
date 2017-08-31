@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Collective\Html\HtmlServiceProvider::class,
+        //Collective\Html\HtmlServiceProvider::class,
         Nwidart\Modules\LaravelModulesServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         SetKyar\Social\SocialServiceProvider::class,

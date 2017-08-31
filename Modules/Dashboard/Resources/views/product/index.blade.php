@@ -11,7 +11,7 @@
                         <div class="pull-right box-tools">
                             <a href="{{ route('dashboard.product.create') }}" class="btn btn-info btn-sm" data-toggle="tooltip" title="" data-original-title="Create">
                               <i class="fa fa-plus"></i></a>
-                          </div>
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -21,7 +21,7 @@
                                 <tr>
                                     <th width="80">Image</th>
                                     <th>Name</th>
-                                    <th>Parent</th>
+                                    <th>Slug</th>
                                     <th width="100">Actions</th>
                                 </tr>
                             </thead>
@@ -34,7 +34,7 @@
                                             <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('themes/dashboard/dist/img/boxed-bg.jpg') }}"/></td>
                                         @endif
                                         <td>{{ $product->name }}</td>
-                                        <td></td>
+                                        <td>{{ $product->slug }}</td>
                                         <td style="text-align: center;">
                                                 <form method="post" action="{{ route('dashboard.product.destroy', $product->id) }}">
                                                     {{ method_field('DELETE') }}

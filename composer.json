@@ -13,8 +13,8 @@
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.4.0",
-        "nwidart/laravel-modules": "^2.0",
+        "laravelcollective/html": "^5.5",
+        "nwidart/laravel-modules": "^1.13",
         "setkyar/laravel-social-share-cards": "^1.1"
     },
     "require-dev": {
@@ -59,7 +59,5 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
