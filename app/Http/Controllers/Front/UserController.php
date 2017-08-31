@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\UserResponsitory;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\UserController;
+use App\Http\Requests\RegisterRequest;
 use Auth;
 
 class UserController extends Controller
@@ -27,7 +27,7 @@ class UserController extends Controller
         if(Auth::check()){
             return redirect()->route('dashboard');
         }
-        return view('user.login');
+        return view('layouts.front.login');
     }
 
     /**

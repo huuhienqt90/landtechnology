@@ -10,8 +10,8 @@
         @yield('meta')
 
         <!-- Style -->
-        <link href="https://file.myfontastic.com/MxywPYeJeetJEud3nnLj53/icons.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/frameworks.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     </head>
     <body>
@@ -31,6 +31,9 @@
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/slick.min.js') }}"></script>
+        <!-- Detail product -->
+        <script src="{{ asset('assets/js/product-detail.js') }}""></script>
+        
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.slider-nav').slick({
@@ -66,6 +69,7 @@
                     ]
                 });
 
+                $('.single-item').slick();
                 $('#back-to-top').on('click', function (e) {
                     e.preventDefault();
                     $('html,body').animate({
