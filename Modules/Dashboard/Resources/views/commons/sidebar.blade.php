@@ -41,7 +41,6 @@
                     <li><a href="{{ route('dashboard.category.index') }}"><i class="fa fa-circle-o"></i> Categories</a></li>
                     <li><a href="{{ route('dashboard.sell-type.index') }}"><i class="fa fa-circle-o"></i> Sell Types</a></li>
                     <li><a href="{{ route('dashboard.seller-shipping.index') }}"><i class="fa fa-circle-o"></i> Seller Shippings</a></li>
-                    <li><a href="{{ route('dashboard.attribute.index') }}"><i class="fa fa-circle-o"></i> Attributes</a></li>
                 </ul>
             </li>
             <li class="treeview">
