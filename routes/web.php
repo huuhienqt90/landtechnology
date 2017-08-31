@@ -28,8 +28,8 @@ Route::group(['namespace' => 'Front'], function() {
     Route::get('/redirect/{driver}', 'SocialAuthController@redirect');
 	Route::get('/callback/{driver}', 'SocialAuthController@callback');
 
-    Route::group(['middleware' => 'auth', 'prefix' => 'user.dashboard'], function(){
-        Route::get('/', 'SellerController@index')->name('user.dashboard');
+    Route::group(['middleware' => 'auth', 'prefix' => 'user'], function(){
+        Route::get('/', 'SellerController@index')->name('dashboard');
     });
 });
 
