@@ -38,7 +38,7 @@
                                         <td style="text-align: center;">
                                             <div class="btn-group">
                                                 <a class="btn btn-info btn-flat" href="{{ route('dashboard.category.edit', $category->id) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                                <a class="btn btn-danger btn-flat"><i class="fa fa-times"></i></a>
+                                                <a href="{{ route('dashboard.category.destroy', $category->id) }}" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></a>
                                             </div>
                                         </td>
                                     </tr>

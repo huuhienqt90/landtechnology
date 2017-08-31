@@ -52,6 +52,14 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -90,9 +98,33 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/dashboard/dist/js/demo.js') }}"></script>
     <script>
-        $(function () {
-            $('#list').DataTable();
-        })
+        jQuery(document).ready(function($){
+            $("#list").DataTable();
+            $('.btn-delete-item').click(function(){
+                var cf = confirm($(this).data('confirm'));
+                if(cf){
+                    $.ajax({
+                        type: "DELETE",
+                        url: $(this).attr('href'),
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            if(data.status){
+                                location.reload();
+                            }else{
+                                alert(data.message)
+                            }
+                        },
+                        error: function (data) {
+                            console.log('Error:', data);
+                        }
+                    });
+                    return false;
+                }else{
+                    return false;
+                }
+            });
+        });
     </script>
 </body>
 </html>

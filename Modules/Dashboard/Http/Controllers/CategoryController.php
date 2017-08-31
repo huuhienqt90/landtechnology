@@ -116,7 +116,18 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy($id)
     {
+        die($id);
+        $response['status'] = 1;
+        return response()->json($response);
+        $response = [];
+        $arItem = $this->categoryResponsitory->find($id);
+        if($arItem->image != null) {
+            Storage::delete($arItem->image);
+        }
+        $arItem->delete();
+        $response['status'] = 1;
+        return response()->json($response);
     }
 }
