@@ -3,20 +3,16 @@
     <div class="container">
         <div class="row">
             <div class="cover-topheader">
-                <div class="select-language">
-                    <select class="text-uppercase">
-                        <option>English</option>
-                    </select>
-                    <select class="text-uppercase">
-                        <option>Usa</option>
-                    </select>
-                </div> <!-- .select-language -->
                 <div class="menu-topheader">
                     <ul class="text-uppercase">
                         <li><a href="#" title="menu topheader">My Account</a></li>
                         <li><a href="#" title="menu topheader">wishlish</a></li>
                         <li><a href="#" title="menu topheader">checkout</a></li>
-                        <li><a href="#" title="menu topheader">login</a></li>
+                        @if(Auth::check())
+                            <li><a href="{{ route('front.user.logout') }}" title="menu topheader">Logout</a></li>
+                        @else
+                            <li><a href="{{ route('front.user.login') }}" title="menu topheader">Login</a></li>
+                        @endif
                     </ul>
                 </div> <!-- .menu-topheader -->
             </div> <!-- .cover-topheader -->
@@ -35,14 +31,14 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#"><img src="{{ asset('assets/images/logo.png') }}" class="img-responsive" alt="images logo"></a>
+                            <a class="navbar-brand" href="{{ route('front.index') }}"><img src="{{ asset('assets/images/logo.png') }}" class="img-responsive" alt="images logo"></a>
                         </div>
 
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-right text-uppercase">
                                 <li class="menu-home">
-                                    <a href="#" title="menu home" class="active">Home</a>
+                                    <a href="{{ route('front.index') }}" title="menu home" class="active">Home</a>
                                     <div class="hv-menu">
                                         <ul class="hv-product">
                                             <li class="hv-list">

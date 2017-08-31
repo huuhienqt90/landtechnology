@@ -11,8 +11,12 @@
 
         <!-- Style -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/frameworks.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+
+        <!-- Style Dashboard -->
+        @yield('style-dashboard')
     </head>
     <body>
         <!-- Header -->
@@ -26,7 +30,7 @@
         <!-- Footer -->
         @include('layouts.front.commons.footer')
         <!-- End footer -->
-
+        
         <!-- Script -->
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
