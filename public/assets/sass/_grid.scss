@@ -185,20 +185,26 @@ body{
 	}
 	.grid-content-detail-list{
 		.show-click{
-			button{
+			a{
 				background: $bg-color-select-grid;
 				margin-right: 0.1em;
 				border: none;
 				border-radius: 0;
 				&:hover {
 					background: $bg-color-main;
-					span{
+					i{
 						color: $bg-color-white;
 					}
 				}
-				span{
+				i{
 					border: none;
 				}
+			}
+			.active{
+				background: $bg-color-main;
+					i{
+						color: $bg-color-white;
+					}
 			}
 			select{
 				color: $bg-color-text-tabs;

@@ -151,12 +151,15 @@ body{
             padding-left: 0;
             li{
                 &:first-child {
-                    a{
+                    i{
                         &:hover { color: $bg-color-main; }
                     }
                 }
                 a{
                     color: $bg-color-hv-menu;
+                    &:hover {
+                        color: $bg-color-main;
+                    }
                 }
             }
         }
