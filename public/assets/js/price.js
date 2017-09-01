@@ -16,7 +16,7 @@ function showProducts(minPrice, maxPrice) {
 	            var min = ui.values[0],
 	                max = ui.values[1];
 
-	            $("#amount").val("$" + min + " - $" + max);
+	            $("#amount").val("$" + min + " > $" + max);
 	            showProducts(min, max);
 	        }
 	    }, min, max;

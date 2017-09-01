@@ -1,0 +1,60 @@
+@import 'mixin';
+@import 'variables';
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+.list-show-content{
+	margin-top: 2em;
+	ul{
+		list-style: none;
+		padding: 0;		
+		li{
+			clear: both;
+			.img-list-show{
+				padding-left: 0;
+				padding-bottom: 2em;
+			}
+			.content-list-show{
+				padding-left: 2em;
+				h4{
+					font-weight: bold;
+				    font-size: 16px;
+				    color: #000;
+				    margin-top: 0;
+				}
+				p{
+				    color: #606060;
+    				font-size: 13px;
+				}
+				.breadcrumb {
+				    background: none;
+				    padding-left: 0;
+				    li a {
+					    color: #606060;
+					    &:hover {
+					    	color: $bg-color-main;
+					    }
+					}
+				}
+				.tx-sp-cl {
+				    color: #79B6C8;
+				    font-weight: bold;
+				    font-size: 30px;
+				}
+				.btn-add-to-cart{
+					@include btn-add-to-cart();
+					.cover-btn-glyph .glyph .fs1{
+						background: $bg-color-btn-cart-list-show;
+						&:hover {
+							background: $bg-color-main;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.navigation-page{
+	clear: both;
+}
