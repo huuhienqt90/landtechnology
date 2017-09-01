@@ -1,0 +1,33 @@
+@import 'mixin';
+@import 'variables';
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+#content-shopping{
+	.shopping-cart-table{
+		h1{
+			font-family: 'Oswald', sans-serif;
+			font-size: 20px;
+			font-weight: bold;
+			position: relative;
+			padding-bottom: 1em;
+			&:before {
+				content: '';
+				position: absolute;
+				border-bottom: 2px solid $bg-color-black;
+				width: 3%;
+				bottom: 0;
+				left: 0;
+			}
+		}
+		.title-table{
+			th{
+				font-family: 'Montserrat', sans-serif;
+				border-bottom: 1px solid $bg-color-border-th-shopping-cart;
+				padding-bottom: 1em;
+			}
+
+		}
+	}
+}

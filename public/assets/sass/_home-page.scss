@@ -443,6 +443,7 @@ body{
         }
         .overlay {
             @include cl-overlay();
+            background: none;
             .text {
                 @include cl-text();
                 padding: 5px 10px;
@@ -632,93 +633,10 @@ body{
 #featured-products{
     margin-top: 5em;
     @extend #new-arrivals;
-    .list-featured-products{
+    .slider{
         list-style: none;
         padding: 0;
         display: flex;
-        li{
-            position: relative;
-            padding-right: 1em;
-            padding-left: 0;
-            .news-featured-products{
-                @include news-product();
-                top: 0.4em;
-                left: 14em;
-                padding: 0;
-                width: 20.8%;
-                &:before{
-                    left: 4.3em;
-                }
-                p{
-                    color: $bg-color-white;
-                    font-size: 15px;
-                    background: $bg-color-main;
-                    padding: 0.5em 0;
-                    padding-left: 1.1em;
-                }
-            }
-            .sale-featured-products{
-                @include news-product();
-                top: 5.8em;
-                left: 14em;
-                padding: 0;
-                width: 21%;
-                &:before{
-                    left: 4.3em;
-                    border-bottom: 18px solid $bg-color-sale-product;
-                    border-top: 18px solid $bg-color-sale-product;
-                    border-left: 20px solid transparent;
-                }
-                &:after{
-                    content: '';
-                    position: absolute;
-                    top: 0.55em;
-                    left: -1.96em;
-                    border-left: 18px solid transparent;
-                    border-right: 18px solid transparent;
-                    border-bottom: 20px solid $bg-color-sale-product;
-                    transform: rotate(-90deg);
-                    -moz-transform: rotate(-90deg);
-                    -webkit-transform: rotate(-90deg);
-                    -o-transform: rotate(-90deg);
-                }
-                p{
-                    color: $bg-color-white;
-                    font-size: 15px;
-                    background: $bg-color-sale-product;
-                    padding: 0.5em 0;
-                    padding-left: 1.1em;
-                }
-            }
-            .tetx{
-                list-style: none;
-                padding: 0;
-                margin-top: 1.5em;
-                .text-detail{
-                    float: left;
-                    p{ color: $bg-color-hv-menu; /* font-style: italic; */ font-weight: 500;}
-                    span{ color: $bg-color-main; }
-                }
-                .lock{
-                    float: right;
-                    padding-right: 0;
-                    a{
-                        color: $bg-color-black;
-                        &:hover{
-                            color: $bg-color-main;
-                        }
-                        i{ font-size: 2em; }
-                    }
-                    .glyph {
-                        margin: 0;
-                        padding-right: 0;
-                        padding-top: 0;
-                        text-align: right;
-                        font-size: 11px;
-                    }
-                }
-            }
-        } 
     }
 }
 
@@ -875,8 +793,8 @@ body{
             background: url(../../assets/images/icon-submit-sign-up.png) no-repeat 10%;
             border: 2px solid $bg-color-border-btn-face;
             border-left: none;
-            padding-top: 2px;
-            padding-bottom: 12px;
+            padding-top: 3px;
+            padding-bottom: 11px;
             padding-left: 0;
             padding-right: 25px;
             margin-left: -5px;
@@ -961,6 +879,7 @@ body{
 #footer{
     position: relative;
     padding-bottom: 3em;
+    background: url(../../assets/images/bg-footer.png) $bg-color-footer;
     &:before{
         content: '';
         position: absolute;
@@ -976,7 +895,7 @@ body{
         text-align: center;
         margin-top: 1.5em;
         position: relative;
-        z-index: 9999;
+        z-index: 99;
         a{
             background: $bg-color-main;
             color: $bg-color-white;
@@ -1008,9 +927,10 @@ body{
             }
         }
     }
-    background: $bg-color-footer;
     .about-store{
         margin-top: 9.5em;
+        background: url(../../assets/images/bg-footer-maps.png) no-repeat 0 60%;
+        background-size: contain;
         h3{
             color: $bg-color-white;
             font-size: 20px;
@@ -1032,12 +952,18 @@ body{
             list-style: none;
             padding: 0;
             display: flex;
-            margin-top: 4.5em;
-            li{ padding-right: 1em; }
+            margin-top: 3.5em;
+            li{
+                padding-right: 1em;
+                img{
+                    max-height: 100%;
+                }
+            }
         }
     }
     .my-account{
         @extend .about-store;
+        background: none;
         ul{
             display: block;
             list-style: inherit;
@@ -1056,7 +982,6 @@ body{
     }
     .infomation, .customer-service{
         @extend .my-account;
-        
     }
 }
 #footer-end{
