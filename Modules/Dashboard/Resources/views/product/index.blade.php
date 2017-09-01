@@ -21,6 +21,8 @@
                                 <tr>
                                     <th width="80">Image</th>
                                     <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
                                     <th>Slug</th>
                                     <th width="100">Actions</th>
                                 </tr>
@@ -28,12 +30,14 @@
                             <tbody>
                                 @foreach($products as $product)
                                     <tr>
-                                        @if($product->image)
-                                            <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$product->image) }}"/></td>
+                                        @if($product->feature_image)
+                                            <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$product->feature_image) }}"/></td>
                                         @else
                                             <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('themes/dashboard/dist/img/boxed-bg.jpg') }}"/></td>
                                         @endif
                                         <td>{{ $product->name }}</td>
+                                        <td>{{ $product->original_price }}</td>
+                                        <td>{{ $product->stock }}</td>
                                         <td>{{ $product->slug }}</td>
                                         <td style="text-align: center;">
                                                 <form method="post" action="{{ route('dashboard.product.destroy', $product->id) }}">
@@ -52,10 +56,12 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Image</th>
+                                    <th width="80">Image</th>
                                     <th>Name</th>
-                                    <th>Parent</th>
-                                    <th>Actions</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Slug</th>
+                                    <th width="100">Actions</th>
                                 </tr>
                             </tfoot>
                         </table>

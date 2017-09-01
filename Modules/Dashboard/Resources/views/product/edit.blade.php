@@ -10,7 +10,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Update product</h3>
                     </div>
-                    {!! Form::model($product, ['route' => ['dashboard.product.update', $product->id], 'class' => 'form-horizontal', 'files' => true]) !!}
+                    {!! Form::model($product, ['route' => ['dashboard.product.update', $product->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'files' => true]) !!}
                     <div class="box-body">
                         @include('dashboard::partials.select', ['field' => 'status', 'label' => 'Status', 'options' => ['active' => 'Active', 'pending' => 'Pending', 'need-confirm' => 'Need confirm']])
                         @include('dashboard::partials.input', ['field' => 'name', 'label' => 'Name', 'options' => ['class'=>'form-control']])
@@ -21,6 +21,7 @@
                         @include('dashboard::partials.input', ['field' => 'sale_price', 'label' => 'Sale Price', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field' => 'display_price', 'label' => 'Display Price', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.file', ['field' => 'feature_image', 'label' => 'Feature Image'])
+                        @include('dashboard::partials.file-multiple', ['field' => 'product_images', 'label' => 'Product Images'])
                         @include('dashboard::partials.text-editor', ['field' => 'description', 'label' => 'Description', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.select', ['field' => 'product_brand', 'label' => 'Product Brand', 'options' => $brandArr])
                         @include('dashboard::partials.select-multiple', ['field' => 'category', 'placeholder' => 'Please select category', 'label' => 'Category', 'options' => $cateArr])
