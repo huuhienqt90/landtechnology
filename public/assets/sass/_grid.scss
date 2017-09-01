@@ -5,10 +5,16 @@ body{
     font-family: 'Lato', sans-serif;
 }
 #bg-title-grid{
-	background: url(../../assets/images/bg-grid.png) no-repeat;
+	.img-bg-title-grid{
+		position: relative;
+		img{
+			min-width: 100%;
+		}
+	}
 	.content-bg-title-grid{
+		position: relative;
 		text-align: center;
-		padding-top: 3em;
+		margin-top: -20em;
 		padding-bottom: 6em;
 		h1{
 			font-size: 35px;
@@ -34,7 +40,8 @@ body{
 	}
 }
 #content-grid{
-	margin-top: 4em;
+	@extend #new-arrivals;
+	margin: 4em 0;
 	.content-grid-title{
 		margin-bottom: 4em;
         .breadcrumb{
@@ -63,6 +70,7 @@ body{
 			    font-family: 'Oswald', sans-serif;
 			    position: relative;
     			padding-bottom: 0.7em;
+    			margin-top: 0;
     			&:before {
     				content: '';
 				    position: absolute;
@@ -82,7 +90,7 @@ body{
 			    border-bottom: 1px solid $bg-color-border-categories;
 			    text-align: left;
 			    color: $bg-color-black;
-			    font-size: 14px;
+			    font-size: 13px;
 			    font-weight: bold;
 			    font-family: 'Montserrat', sans-serif;
 				&:after {
@@ -173,6 +181,105 @@ body{
 					}
 				}
 			}
+		}
+	}
+	.grid-content-detail-list{
+		.show-click{
+			button{
+				background: $bg-color-select-grid;
+				margin-right: 0.1em;
+				border: none;
+				border-radius: 0;
+				&:hover {
+					background: $bg-color-main;
+					span{
+						color: $bg-color-white;
+					}
+				}
+				span{
+					border: none;
+				}
+			}
+			select{
+				color: $bg-color-text-tabs;
+				padding: 0.4em;
+				padding-bottom: 0.5em;
+				border: none;
+				background: $bg-color-select-grid;
+				margin-left: 1.5em;
+			}
+			span{
+				float: right;
+				font-weight: bold;
+				border-bottom: 1px solid $bg-color-prev;
+				padding-bottom: 0.5em;
+			}
+		}
+	}
+	.slider{
+		//display: flex;
+		padding: 0;
+		margin-top: 3em;
+		/* display: none; */
+		.item{
+			.overlay{
+				.text{
+					top: 67%;
+				}
+			}
+			.tetx{
+				.lock{
+					.glyph { width: 5em; padding-right: 0; }
+				}
+			}
+		}
+	}
+	.news-product-slider{
+		left: 13em;
+		top: 4px;
+    	width: 21.5%;
+		p{
+			padding-left: 0.8em;
+		}
+	}
+	.sale-product-slider {
+		top: 74px;
+    	left: 184px;
+    	&:before {
+    		left: 3.6em;
+    	}
+		p{
+			padding-left: 0.6em;
+		}
+	}
+	.navigation-page{
+		margin-top: 2em;
+		.pagination{
+			float: left;
+			margin-top: 2em;
+			li{
+				&:first-child, &:last-child {
+					a{
+						&:hover { background: $bg-color-text-tabs; }
+					}
+				}
+				a{
+					border-radius: 50%;
+					margin-right: 1em;
+					background: $bg-color-pagination;
+					color: $bg-color-white;
+					&:hover {
+						background: $bg-color-main;
+					}
+				}
+			}
+		}
+		.showing{
+			float: right;
+			padding-top: 2em;
+			font-weight: bold;
+		    border-bottom: 1px solid #B1B1B1;
+		    padding-bottom: 0.5em;
 		}
 	}
 }
