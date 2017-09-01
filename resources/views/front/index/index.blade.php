@@ -141,7 +141,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -163,7 +163,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -192,7 +192,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -214,7 +214,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -239,7 +239,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -261,7 +261,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -290,7 +290,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -312,7 +312,7 @@
                         </div> <!-- .overlay -->
                         <ul class="tetx">
                             <li class="text-detail">
-                                <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                 <span>$170.00</span>
                             </li> <!-- .text-detail -->
                             <li class="lock">
@@ -391,7 +391,7 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -413,7 +413,7 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -442,7 +442,7 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -464,7 +464,7 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
