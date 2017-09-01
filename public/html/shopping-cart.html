@@ -164,12 +164,13 @@
                         <tr class="title-table">
                             <th class="text-uppercase">Product photo</th>
                             <th class="text-uppercase">Product name</th>
-                            <th class="text-uppercase">Description</th>
+                            <th class="text-uppercase description">Description</th>
                             <th class="text-uppercase">Price</th>
                             <th class="text-uppercase">Quantity</th>
                             <th class="text-uppercase">Total Price</th>
+                            <th></th>
                         </tr> <!-- .title-table -->
-                        <tr>
+                        <tr class="content-table">
                             <th>
                                 <a href="#" title="images shooping cart"><img src="../assets/images/img-featured-product-2.png" class="img-responsive" alt="images shooping cart"></a>
                             </th>
@@ -183,7 +184,7 @@
                                 <span><i class="fa fa-gbp" aria-hidden="true"></i>170.00</span>
                             </th>
                             <th>
-                                <input type="number" name="">
+                                <input type="number" name="" placeholder="2">
                             </th>
                             <th>
                                 <span><i class="fa fa-gbp" aria-hidden="true"></i>170.00</span>
@@ -191,10 +192,11 @@
                             <th>
                                 <a href="#" title="close"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </th>
-                        </tr>
-                        <tr>
+                        </tr> <!-- .content-table -->
+
+                        <tr class="content-table">
                             <th>
-                                <a href="#" title="images shooping cart"><img src="../assets/images/img-featured-product-2.png" class="img-responsive" alt="images shooping cart"></a>
+                                <a href="#" title="images shooping cart"><img src="../assets/images/img-product-list-1.png" class="img-responsive" alt="images shooping cart"></a>
                             </th>
                             <th>
                                 <a href="#" title="title product shopping cart">Name product #01</a>
@@ -206,7 +208,7 @@
                                 <span><i class="fa fa-gbp" aria-hidden="true"></i>170.00</span>
                             </th>
                             <th>
-                                <input type="number" name="">
+                                <input type="number" name="" placeholder="2">
                             </th>
                             <th>
                                 <span><i class="fa fa-gbp" aria-hidden="true"></i>170.00</span>
@@ -214,12 +216,44 @@
                             <th>
                                 <a href="#" title="close"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </th>
-                        </tr>
+                        </tr> <!-- .content-table -->
                     </table>
+                    <div class="continue">
+                        <a href="#" title="btn continue shopping" class="text-uppercase">CONTINUE SHOPPING</a>
+                        <div class="button-continue">
+                            <button type="text" class="text-uppercase">UPDATE SHOPPING CART</button>
+                            <button type="text" class="text-uppercase">CLEAR SHOPPING CART</button>
+                        </div> <!-- .button-continue -->
+                    </div> <!-- .continue -->
                 </div> <!-- .shopping-cart-table -->
             </div> <!-- .row -->
         </div> <!-- .container -->
     </section> <!-- #content-shopping -->
+
+    <!-- START #cart-totals -->
+    <section id="cart-totals">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 calculate-shipping">
+                    <h3 class="text-uppercase">Calculate shipping</h3>
+                    <div class="select-your-counttry">
+                        <span>Select your Counttry</span>
+                        <input type="text" name="text calculate shipping" placeholder="United States (USA)">
+                    </div> <!-- .select-your-counttry -->
+                    <div class="select-your-state">
+                        <span>Select your State</span>
+                        <select>
+                            <option>State/City</option>
+                        </select>
+                    </div> <!-- .select-your-state -->
+                    <div class="zip-code">
+                        <span>Zip Code</span>
+                        <input type="text" name="text zip code" placeholder="Zip Code">
+                    </div> <!-- .zip-code -->
+                </div> <!-- .calculate-shipping -->
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+    </section> <!-- .cart-totals -->
 
     <!-- START #footer -->
     <footer id="footer">
