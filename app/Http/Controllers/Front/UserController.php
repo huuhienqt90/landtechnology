@@ -11,6 +11,8 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use Auth;
+use App\Mail\Register;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -103,8 +105,10 @@ class UserController extends Controller
         $param['confirm_code'] = rand(10000000, 99999999);
         $result = $this->userRepository->create($param);
         if($result){
-            Session::flash('msg', 'Please activate your account. Email has been sent to '. $param['email']. ' check your inbox in order to activate and login into your account');
-            return redirect('login')->with('success', 'Please check your inbox in order to activate and login into your account');
+            Mail::to($param['email'])->send(new Register($param));
+            Session::flash('msgOk', 'Please activate your account. Email has been sent to '. $param['email']. ' check your inbox in order to activate and login into your account');
+            return redirect()->route('front.index');
+            // with('msg', 'Please check your inbox in order to activate and login into your account');
         }
     }
 

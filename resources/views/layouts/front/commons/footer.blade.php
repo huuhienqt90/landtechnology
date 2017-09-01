@@ -1,5 +1,5 @@
 <!-- START #footer -->
-<footer id="footer">
+<footer id="footer" class="mg-top-50">
     <div class="container">
         <div class="back-to-top">
             <a href="#" id="back-to-top" title="Back to top"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
