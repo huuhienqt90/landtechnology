@@ -11,6 +11,8 @@ use App\Repositories\SellTypeResponsitory;
 use App\Repositories\BrandResponsitory;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\UserResponsitory;
+use App\Repositories\ProductCategoryResponsitory;
+use App\Repositories\ProductImageResponsitory;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
@@ -22,13 +24,17 @@ class ProductController extends Controller
     protected $sellTypeResponsitory;
     protected $productResponsitory;
     protected $userResponsitory;
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory){
+    protected $productCategoryResponsitory;
+    protected $productImageResponsitory;
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
         $this->sellTypeResponsitory         = $sellTypeResponsitory;
         $this->productResponsitory          = $productResponsitory;
         $this->userResponsitory             = $userResponsitory;
+        $this->productCategoryResponsitory  = $productCategoryResponsitory;
+        $this->productImageResponsitory     = $productImageResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -107,7 +113,16 @@ class ProductController extends Controller
             'sell_type_id' => $request->sell_type_id,
             'product_brand' => $request->product_brand,
         ];
-        $this->productResponsitory->create($create);
+        if( $request->hasFile('feature_image') ){
+            $path = $request->file('feature_image')->store('products');
+            $create['feature_image'] = $path;
+        }
+        $result = $this->productResponsitory->create($create);
+        if( isset( $request->category ) ){
+            foreach($request->category as $cat){
+                $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $cat]);
+            }
+        }
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Create product sucess!');
     }
 
@@ -158,6 +173,24 @@ class ProductController extends Controller
                 $sellTypeArr[$sellType->id] = $sellType->name;
             }
         }
+        $productCategories = $this->productCategoryResponsitory->findAllBy('product_id', $id);
+        $productCategoryArr = [];
+        if( $productCategories && $productCategories->count() ){
+            foreach ($productCategories as $productCategory) {
+                $productCategoryArr[$productCategory->category_id] = $productCategory->category_id;
+            }
+        }
+        $product->category = $productCategoryArr;
+
+        $productImages = $this->productImageResponsitory->findAllBy('product_id', $id);
+        $productImageArr = [];
+        if( $productImages && $productImages->count() ){
+            foreach ($productImages as $productImage) {
+                $productImageArr[$productImage->id] = $productImage->image_path;
+            }
+        }
+        $product->product_images = $productImageArr;
+
         return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr'));
     }
 
@@ -166,7 +199,7 @@ class ProductController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(ProductUpdateRequest $request)
+    public function update(ProductUpdateRequest $request, $id)
     {
         $update = [
             'status' => $request->status,
@@ -187,7 +220,37 @@ class ProductController extends Controller
             'sell_type_id' => $request->sell_type_id,
             'product_brand' => $request->product_brand,
         ];
+
+        // Update feature image
+        if( $request->hasFile('feature_image') ){
+            $path = $request->file('feature_image')->store('products/features');
+            $update['feature_image'] = $path;
+        }
         $this->productResponsitory->update($update, $id);
+
+        // Update product category
+        if( isset( $request->category ) ){
+            $this->productCategoryResponsitory->deleteProductCategory($id);
+            foreach($request->category as $cat){
+                $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $cat]);
+            }
+        }
+
+        // Update product images
+        if( $request->hasFile('product_images') ){
+            $productImages = $request->file('product_images');
+            foreach ($productImages as $file) {
+                $path = $file->store('products/galeries');
+                $this->productImageResponsitory->create(['product_id' => $id, 'image_path' => $path, 'image_name'=>$file->getClientOriginalName()]);
+            }
+        }
+
+        // Remove product images
+        if( isset( $request->remove_product_images ) && count($request->remove_product_images)){
+            foreach ($request->remove_product_images as $prID) {
+                $this->productImageResponsitory->delete($prID);
+            }
+        }
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product sucess!');
     }
 

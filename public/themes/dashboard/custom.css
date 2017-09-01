@@ -1,0 +1,27 @@
+.current-image-item {
+    display: inline-block;
+    position: relative;
+    width: 22%;
+    margin-right: 1%;
+    overflow: hidden;
+    height: 150px;
+    border-radius: 3px;
+    border: 1px solid #cdcdcd;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.current-image-item img{
+    height: 100%;
+    width: auto;
+}
+.current-image-item button.btn.btn-box-tool {
+    position: absolute;
+    top: 2px;
+    right: 13px;
+    z-index: 999;
+    font-size: 18px;
+    color: red;
+    padding: 5px;
+    outline: none;
+}
