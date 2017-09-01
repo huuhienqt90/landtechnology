@@ -31,6 +31,8 @@ Route::group(['namespace' => 'Front'], function() {
     Route::group(['prefix' => 'product'], function(){
         // Route::resource('products', 'ProductController');
         Route::get('detail', 'ProductController@edit')->name('front.product.detail');
+        Route::get('list', 'ProductController@showList')->name('front.product.list');
+        Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
     });
 
     Route::group(['middleware' => 'auth', 'prefix' => 'user'], function(){
@@ -41,8 +43,8 @@ Route::group(['namespace' => 'Front'], function() {
          Route::get('edit', 'UserController@edit')->name('front.user.edit');
          Route::post('edit', 'UserController@update')->name('front.user.update');
          // Password
-         Route::get('edit', 'UserController@editPass')->name('front.user.editPass');
-         Route::post('edit', 'UserController@updatePass')->name('front.user.updatePass');
+         Route::get('editpass', 'UserController@editPass')->name('front.user.editPass');
+         Route::post('editpass', 'UserController@updatePass')->name('front.user.updatePass');
 
     });
 });

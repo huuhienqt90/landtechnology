@@ -47,14 +47,14 @@
                                                 {{ Form::label(null, $errors->has('first_name')? $errors->first('first_name') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('last_name')? 'has-error' : '' }}">
                                             {{ Form::label('input-LastName', 'Last Name', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::text('last_name', old('last_name'), ['placeholder' => 'Last Name', 'class' => 'form-control', 'id' => 'input-lastname']) }}
                                                 {{ Form::label(null, $errors->has('last_name')? $errors->first('last_name') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('email')? 'has-error' : '' }}">
                                             {{ Form::label('input-email', 'E-Mail', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::text('email', old('email'), ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email']) }}
@@ -71,7 +71,7 @@
 
                                     <fieldset>
                                         <legend>Your Address</legend>
-                                        <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('address1')? 'has-error' : '' }}">
                                             {{ Form::label('input-address-1', 'Address 1', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::text('address1', old('address1'), ['placeholder' => 'Address 1', 'class' => 'form-control', 'id' => 'input-address-1']) }}
@@ -91,18 +91,18 @@
                                                 {{ Form::label(null, $errors->has('country')? $errors->first('country') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('region')? 'has-error' : '' }}">
+                                        <!-- <div class="form-group {{ $errors->has('region')? 'has-error' : '' }}">
                                             {{ Form::label('region', 'Region', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::select('region', ['L' => 'Large', 'S' => 'Small'], old('region'), ['placeholder' => 'Select Region', 'class' => 'form-control']) }}
                                                 {{ Form::label(null, $errors->has('region')? $errors->first('region') : '', ['class' => 'help-block']) }}
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group {{ $errors->has('postalcode')? 'has-error' : '' }}">
                                             {{ Form::label('input-postcode', 'Post Code', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
-                                                {{ Form::text('postalcode', old('postalcode'), ['placeholder' => 'Post Code', 'class' => 'form-control', 'id' => 'input-postalcode']) }}
-                                                {{ Form::label(null, $errors->has('postalcode')? $errors->first('postalcode') : '', ['class' => 'help-block']) }}
+                                                {{ Form::text('postal_code', old('postal_code'), ['placeholder' => 'Post Code', 'class' => 'form-control', 'id' => 'input-postalcode']) }}
+                                                {{ Form::label(null, $errors->has('postal_code')? $errors->first('postal_code') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
                                     </fieldset>

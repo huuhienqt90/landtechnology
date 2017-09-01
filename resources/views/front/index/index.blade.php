@@ -136,8 +136,7 @@
                             <p>NEW</p>
                         </div> <!-- .news-product -->
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -159,8 +158,7 @@
                     <div class="slider-item">
                         <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -189,8 +187,7 @@
                         </div> <!-- .news-product -->
 
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -212,8 +209,7 @@
                     <div class="slider-item">
                         <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -238,8 +234,7 @@
                             <p>NEW</p>
                         </div> <!-- .news-product -->
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -261,8 +256,7 @@
                     <div class="slider-item">
                         <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -291,8 +285,7 @@
                         </div> <!-- .news-product -->
 
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -314,8 +307,7 @@
                     <div class="slider-item">
                         <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
                         <div class="overlay">
-                            <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                             <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                         </div> <!-- .overlay -->
                         <ul class="tetx">
@@ -379,97 +371,116 @@
 </section> <!-- #new-arrivals -->
 
 <!-- START #featured-products -->
-<section id="featured-products">
-    <div class="container">
-        <div class="row">
-            <div class="title-new-arrivals">
-                <h3 class="text-uppercase">Freatured Products</h3>
-                <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
-            </div> <!-- .title-new-arrivals -->
-            <ul class="list-featured-products col-ms-12">
-                <li class="col-md-3 col-sm-3">
-                    <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-featured-product-1.png') }}" class="img-responsive" alt=""/></a>
-                    <div class="news-featured-products">
-                            <p>NEW</p>
-                        </div> <!-- .news-product -->
-                        <div class="sale-featured-products">
-                            <p>-15%</p>
-                        </div> <!-- .news-product -->
-                    <ul class="tetx">
-                        <li class="text-detail">
-                            <p>Sacrificial Chair Design</p>
-                            <span>$170.00</span>
-                        </li> <!-- .text-detail -->
-                        <li class="lock">
-                            <a href="#" title="lock">
-                                <div class="glyph">
-                                    <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                </div>
-                            </a>
-                        </li> <!-- .lock -->
-                    </ul> <!-- .tetx -->
-                </li>
+    <section id="featured-products">
+        <div class="container">
+            <div class="row">
+                <div class="title-new-arrivals">
+                    <h3 class="text-uppercase">Freatured Products</h3>
+                    <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
+                </div> <!-- .title-new-arrivals -->
+                <div class="col-md-12 slider">
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="sale-product-slider">
+                                <p>-15%</p>
+                            </div> <!-- .news-product -->
 
-                <li class="col-md-3 col-sm-3">
-                    <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-featured-product-2.png') }}" class="img-responsive" alt=""/></a>
-                    <ul class="tetx">
-                        <li class="text-detail">
-                            <p>Sacrificial Chair Design</p>
-                            <span>$170.00</span>
-                        </li> <!-- .text-detail -->
-                        <li class="lock">
-                            <a href="#" title="lock">
-                                <div class="glyph">
-                                    <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                </div>
-                            </a>
-                        </li> <!-- .lock -->
-                    </ul> <!-- .tetx -->
-                </li>
-
-                <li class="col-md-3 col-sm-3">
-                    <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-featured-product-3.png') }}" class="img-responsive" alt=""/></a>
-                    <ul class="tetx">
-                        <li class="text-detail">
-                            <p>Sacrificial Chair Design</p>
-                            <span>$170.00</span>
-                        </li> <!-- .text-detail -->
-                        <li class="lock">
-                            <a href="#" title="lock">
-                                <div class="glyph">
-                                    <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                </div>
-                            </a>
-                        </li> <!-- .lock -->
-                    </ul> <!-- .tetx -->
-                </li>
-
-                <li class="col-md-3 col-sm-3">
-                    <a href="{{ route('front.product.detail') }}"><img src="{{ asset('assets/images/img-featured-product-4.png') }}" class="img-responsive" alt=""/></a>
-                    <div class="news-featured-products">
-                            <p>NEW</p>
-                        </div> <!-- .news-product -->
-                        <div class="sale-featured-products">
-                            <p>-15%</p>
-                        </div> <!-- .news-product -->
-                    <ul class="tetx">
-                        <li class="text-detail">
-                            <p>Sacrificial Chair Design</p>
-                            <span>$170.00</span>
-                        </li> <!-- .text-detail -->
-                        <li class="lock">
-                            <a href="#" title="lock">
-                                <div class="glyph">
-                                    <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                </div>
-                            </a>
-                        </li> <!-- .lock -->
-                    </ul> <!-- .tetx -->
-                </li>
-            </ul> <!-- .list-featured-products -->
-        </div> <!-- .row -->
-    </div> <!-- .container -->
-</section> <!-- #featured-products -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                </div> <!-- .slider -->
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+    </section> <!-- #featured-products -->
 
 <!-- START #purchase -->
 <section id="purchase">
@@ -586,74 +597,71 @@
 </section> <!-- #sign-up -->
 
 <!-- START #testimonials -->
-<section id="testimonials">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2 col-md-offset-5 single-item">
-                <div class="item">
-                    <div class="slider-item">
-                       <img src="{{  asset('assets/images/img-testimonials.png')  }}" class="img-responsive" alt=""/>
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h6 class="text-uppercase">Michel Smith</h6>
-                            </li> <!-- .text-detail -->
-                            <li class="job">
-                                <p href="#" title="job" class="text-uppercase">developer</p>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                       <img src="{{  asset('assets/images/img-testimonials.png')  }}" class="img-responsive" alt=""/>
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h6 class="text-uppercase">Michel Smith</h6>
-                            </li> <!-- .text-detail -->
-                            <li class="job">
-                                <p href="#" title="job" class="text-uppercase">developer</p>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
+    <section id="testimonials">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    <div class="item slider-nav-one">
+                        <div class="slider-item">
+                            <img src="{{ asset('assets/images/img-testimonials.png') }}" class="img-responsive" alt=""/>
+                            <div class="tetx">
+                                <h6 class="text-uppercase text-detail">Michel Smith</h6>
+                                <a href="#" title="job" class="text-uppercase job">developer</a>
+                            </div>
+                        </div> <!-- .slider-item -->
+                        <div class="slider-item">
+                            <img src="{{ asset('assets/images/img-testimonials.png') }}" class="img-responsive" alt=""/>
+                            <div class="tetx">
+                                <h6 class="text-uppercase text-detail">Michel Smith</h6>
+                                <a href="#" title="job" class="text-uppercase job">developer</a>
+                            </div>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                </div>
+                <div class="col-md-12">
+                    <div class="item slider-for">
+                        <div class="text-testimonials">
+                            <p>1. Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica.</p>
+                        </div>
+                        <div class="text-testimonials">
+                            <p>2. Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica.</p>
+                        </div>
+                    </div>
+                </div> <!-- .text-testimonials -->
             </div>
-            <div class="col-md-12 text-testimonials">
-                <p>Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica.</p>
-            </div> <!-- .text-testimonials -->
-        </div>
-        <div class="row">
-            <div class="shipping">
-                <ul>
-                    <li>
-                        <div class="glyph">
-                            <div class="fs1" aria-hidden="true" data-icon=""></div>
-                        </div>
-                        <div class="text-shipping">
-                            <h5 class="text-uppercase">free shipping worldwide</h5>
-                            <p>Free shipping worldwide</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="glyph">
-                            <div class="fs1" aria-hidden="true" data-icon=""></div>
-                        </div>
-                        <div class="text-shipping">
-                            <h5 class="text-uppercase">free shipping worldwide</h5>
-                            <p>Free shipping worldwide</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="glyph">
-                            <div class="fs1" aria-hidden="true" data-icon=""></div>
-                        </div>
-                        <div class="text-shipping">
-                            <h5 class="text-uppercase">free shipping worldwide</h5>
-                            <p>Free shipping worldwide</p>
-                        </div>
-                    </li>
-                </ul>
-            </div> <!-- .shipping -->
-        </div>
-    </div> <!-- .container -->
-</section> <!-- #testimonials -->
+            <div class="row">
+                <div class="shipping">
+                    <ul>
+                        <li>
+                            <div class="glyph">
+                                <div class="fs1" aria-hidden="true" data-icon=""></div>
+                            </div>
+                            <div class="text-shipping">
+                                <h5 class="text-uppercase">free shipping worldwide</h5>
+                                <p>Free shipping worldwide</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="glyph">
+                                <div class="fs1" aria-hidden="true" data-icon=""></div>
+                            </div>
+                            <div class="text-shipping">
+                                <h5 class="text-uppercase">free shipping worldwide</h5>
+                                <p>Free shipping worldwide</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="glyph">
+                                <div class="fs1" aria-hidden="true" data-icon=""></div>
+                            </div>
+                            <div class="text-shipping">
+                                <h5 class="text-uppercase">free shipping worldwide</h5>
+                                <p>Free shipping worldwide</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div> <!-- .shipping -->
+            </div>
+        </div> <!-- .container -->
+    </section> <!-- #testimonials -->
 @stop

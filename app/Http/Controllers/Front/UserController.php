@@ -8,6 +8,8 @@ use App\Repositories\UserResponsitory;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use Auth;
 
 class UserController extends Controller
@@ -123,7 +125,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id = null)
     {
         return view('front.user.edit');
     }
@@ -135,9 +137,24 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request)
     {
-        //
+        $user = $this->userRepository->find( Auth::user()->id );
+        // $user = $request->only(['first_name', 'last_name', 'address1', 'address2', 'country', 'postal_code']);
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->address1 = $request->address1;
+        $user->address2 = $request->address2;
+        $user->country = $request->country;
+        $user->postal_code = $request->postal_code;
+        $result = $user->update();
+        if($result) {
+            Session::flash('msgOk','Update infomation complete.');
+            return redirect()->route('front.user.edit');
+        }else{
+            Session::flash('msgEr','Update infomation fail');
+            return redirect()->route('front.user.edit');
+        }
     }
 
     /**
@@ -149,5 +166,24 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function editPass(){
+        return view('front.user.password');
+    }
+
+    public function updatePass(UpdatePasswordRequest $request){
+        $user = $this->userRepository->find( Auth::user()->id );
+        if( $request->password_new != null) {
+            $user->password = trim( bcrypt($request->input('password_new')) );
+        }
+        $result = $user->update();
+        if($result) {
+            Session::flash('msgOk','Update password complete.');
+            return redirect()->route('front.user.editPass');
+        }else{
+            Session::flash('msgEr','Update password fail');
+            return redirect()->route('front.user.editPass');
+        }
     }
 }

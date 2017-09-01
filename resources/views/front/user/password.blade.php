@@ -12,6 +12,18 @@
 
 @section('content-dashboard')
 <h3 style="visibility: hidden;">Edit My Account</h3>
+@if(Session::has('msgOk'))
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Well done!</strong> {{ Session::get('msgOk') }}
+    </div>
+@endif
+@if(Session::has('msgEr'))
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Error!</strong> {{ Session::get('msgEr') }}
+    </div>
+@endif
 <!-- MAIN CONTENT -->
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -26,21 +38,20 @@
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-sm-9 center-column">
-                                        {!! Form::open(['route' => 'front.user.store', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
+                                        {!! Form::open(['route' => 'front.user.updatePass', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
                                             <fieldset>
-                                                <legend>Your Password</legend>
-                                                <div class="form-group {{ $errors->has('password')? 'has-error' : '' }}">
-                                                    {{ Form::label('input-password', 'Password', ['class' => 'col-sm-2 control-label']) }}
-                                                    <div class="col-sm-10">
-                                                        {{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-password']) }}
-                                                        {{ Form::label(null, $errors->has('password')? $errors->first('password') : '', ['class' => 'help-block']) }}
+                                                <div class="form-group {{ $errors->has('password_new')? 'has-error' : '' }}">
+                                                    {{ Form::label('input-password-new', 'Password New', ['class' => 'col-sm-3 control-label']) }}
+                                                    <div class="col-sm-9">
+                                                        {{ Form::password('password_new', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-password-new']) }}
+                                                        {{ Form::label(null, $errors->has('password_new')? $errors->first('password_new') : '', ['class' => 'help-block']) }}
                                                     </div>
                                                 </div>
-                                                <div class="form-group {{ $errors->has('confirm_password')? 'has-error' : '' }}">
-                                                    {{ Form::label('input-confirm-password', 'Confirm Password', ['class' => 'col-sm-2 control-label']) }}
-                                                    <div class="col-sm-10">
-                                                        {{ Form::password('confirm_password', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-confirm-password']) }}
-                                                        {{ Form::label(null, $errors->has('confirm_password')? $errors->first('confirm_password') : '', ['class' => 'help-block']) }}
+                                                <div class="form-group {{ $errors->has('confirm_password_new')? 'has-error' : '' }}">
+                                                    {{ Form::label('input-confirm-password-new', 'Confirm New Password ', ['class' => 'col-sm-3 control-label']) }}
+                                                    <div class="col-sm-9">
+                                                        {{ Form::password('confirm_password_new', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-confirm-password-new']) }}
+                                                        {{ Form::label(null, $errors->has('confirm_password_new')? $errors->first('confirm_password_new') : '', ['class' => 'help-block']) }}
                                                     </div>
                                                 </div>
                                             </fieldset>

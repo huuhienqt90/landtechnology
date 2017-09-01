@@ -1,7 +1,7 @@
 <div class="sidebar">
     <h3>Hi {{ Auth::user()->first_name }} !!</h3>
     <div class="panel-group" id="accordion">
-        <div class="panel panel-primary">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
                 <a href="#"><span class="glyphicon glyphicon-folder-close"></span>Member area</a>
@@ -18,10 +18,10 @@
             <div id="collapseOne" class="panel-collapse collapse">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ route('front.user.edit', Auth::user()->id) }}">Edit Infomation</a>
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ route('front.user.edit') }}">Edit Infomation</a>
                     </li>
                     <li class="list-group-item">
-                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="http://fb.com/moinakbarali">Change Password</a>
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ route('front.user.editPass') }}">Change Password</a>
                     </li>
                     <!-- <li class="list-group-item"> <span class="glyphicon glyphicon-comment text-success"></span><a href="http://fb.com/moinakbarali">Comments</a><span class="badge">42</span></li> -->
                 </ul>
@@ -30,29 +30,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
-                    </span>Reports</a>
+                <a href="#"><span class="glyphicon glyphicon-gift"></span>Sell an item</a>
                 </h4>
-            </div>
-            <div id="collapseFour" class="panel-collapse collapse">
-                <div class="list-group">
-                    <a href="#" class="list-group-item">
-                        Cras justo odio
-                    </a>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item">Morbi leo risus</a>
-                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item">Vestibulum at eros</a>
-                    </div>
-                    <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item">Morbi leo risus</a>
-                    <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item">Vestibulum at eros</a>
-                </div>
             </div>
         </div>
     </div>

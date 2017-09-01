@@ -5,7 +5,7 @@
             <div class="cover-topheader">
                 <div class="menu-topheader">
                     <ul class="text-uppercase">
-                        <li><a href="#" title="menu topheader">My Account</a></li>
+                        <li><a href="{{ route('front.dashboard.index') }}" title="menu topheader">My Account</a></li>
                         <li><a href="#" title="menu topheader">wishlish</a></li>
                         <li><a href="#" title="menu topheader">checkout</a></li>
                         @if(Auth::check())
@@ -71,7 +71,7 @@
                                         </ul> <!-- .hv-product -->
                                     </div> <!-- .hv-menu -->
                                 </li>
-                                <li><a href="#">Products</a></li>
+                                <li><a href="{{ route('front.product.list') }}">Products</a></li>
                                 <li><a href="#">collection</a></li>
                                 <li><a href="#">pagest</a></li>
                                 <li><a href="#">about us</a></li>
