@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-<!--  prashant kumar   --> 
+<!--  prashant kumar   -->
 <div class="breadcrumb full-width text-center">
     <div class="background">
         <div class="pattern">
@@ -40,13 +40,13 @@
                                     <h2>New Customer</h2>
                                     <p><strong>Register Account</strong></p>
                                     <a href="{{ route('front.social.login', 'facebook') }}" class="btn btn-block btn-social btn-facebook">
-                                        <span class="fa fa-facebook"></span> Sign in with Facebook
+                                        <span class="fa fa-facebook"></span> Sign up with Facebook
                                     </a>
-                                    <a class="btn btn-block btn-social btn-twitter">
-                                        <span class="fa fa-twitter"></span> Sign in with Twitter
+                                    <a href="{{ route('front.social.login', 'twitter') }}" class="btn btn-block btn-social btn-twitter">
+                                        <span class="fa fa-twitter"></span> Sign up with Twitter
                                     </a>
-                                    <a class="btn btn-block btn-social btn-linkedin">
-                                        <span class="fa fa-linkedin"></span> Sign in with Linkedin
+                                    <a href="{{ route('front.social.login', 'linkedin') }}" class="btn btn-block btn-social btn-linkedin">
+                                        <span class="fa fa-linkedin"></span> Sign up with Linkedin
                                     </a>
                                     <p style="padding-bottom: 10px">By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
                                     <a href="{{ route('front.user.create') }}" class="btn btn-primary">Continue</a>
@@ -56,13 +56,13 @@
                                 <div class="well">
                                     <h2>Returning Customer</h2>
                                     <p><strong>I am a returning customer</strong></p>
-                                    <a class="btn btn-block btn-social btn-facebook">
+                                    <a href="{{ route('front.social.login', 'facebook') }}" class="btn btn-block btn-social btn-facebook">
                                         <span class="fa fa-facebook"></span> Sign in with Facebook
                                     </a>
-                                    <a class="btn btn-block btn-social btn-twitter">
+                                    <a href="{{ route('front.social.login', 'twitter') }}" class="btn btn-block btn-social btn-twitter">
                                         <span class="fa fa-twitter"></span> Sign in with Twitter
                                     </a>
-                                    <a class="btn btn-block btn-social btn-linkedin">
+                                    <a href="{{ route('front.social.login', 'linkedin') }}" class="btn btn-block btn-social btn-linkedin">
                                         <span class="fa fa-linkedin"></span> Sign in with Linkedin
                                     </a>
                                     @if(Session::has('messageError'))
@@ -70,7 +70,7 @@
                                             <span>{{ Session::get('messageError') }}</span>
                                         </div>
                                     @endif
-                                    {!! Form::open(['route' => 'front.user.doLogin', 'files' => true, 'method' => 'POST']) !!}  
+                                    {!! Form::open(['route' => 'front.user.doLogin', 'files' => true, 'method' => 'POST']) !!}
                                         <div class="form-group {{ $errors->has('email')? 'has-error' : '' }}">
                                             {!! Form::label('email', 'E-Mail Address', ['class' => 'control-label']) !!}
                                             {!! Form::text('email', old('email'), ['class' => 'form-control','required' => 'required', 'id' => 'input-email','placeholder' => 'E-Mail Address']) !!}
