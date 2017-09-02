@@ -1,0 +1,140 @@
+@import 'mixin';
+@import 'variables';
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+
+#content-check-out{
+	margin-top: 5em;
+	.menu-content-check-out{
+		.breadcrumb{
+			@include breadcrumb();
+		}
+	}
+	.create{
+		h2{
+			position: relative;
+			font-size: 25px;
+			font-weight: bold;
+			font-family: 'Oswald', sans-serif;
+			color: $bg-color-header;
+			padding-bottom: 1.5em;
+
+			&:before {
+				content: '';
+				position: absolute;
+				border-bottom: 3px solid $bg-color-header;
+				width: 5%;
+				left: 0;
+				bottom: 0;
+
+			}
+		}
+		p{
+			font-style: italic;
+			color: $bg-color-hv-menu;
+			margin-top: 1.5em;
+			margin-bottom: 4em;
+		}
+		form{
+			label{
+				margin-top: 1em;
+			    margin-bottom: 1em;
+			}
+			.form-control{
+				border-radius: 0;
+    			padding: 1.5em;
+			}
+			.btn-register{
+				@include btn();
+				border: none;
+				font-weight: bold;
+				font-family: 'Montserrat', sans-serif;
+				background: $bg-color-text-tabs;
+				color: $bg-color-white;
+				border: 2px solid $bg-color-text-tabs;
+				width: 47%;
+				margin-top: 2em;
+				&:hover {
+					border: none;
+					color: $bg-color-text-tabs;
+					background: $bg-color-white;
+					border: 2px solid $bg-color-text-tabs;
+				}
+			}
+			.btn-checkout{
+				@extend .btn-register;
+				float: right;
+			}
+		}
+	}
+	.login{
+		@extend .create;
+		.checked-forgot{
+			a{
+				float: right;
+			}
+		}
+		.btn-login-account{
+			@include btn;
+			display: block;
+			border: none;
+			padding: 1em;
+			width: 47%;
+			font-weight: bold;
+			background: $bg-color-login-account;
+			color: $bg-color-white;
+			border: 2px solid $bg-color-login-account;
+			margin-top: 2em;
+			font-family: 'Montserrat', sans-serif;
+			&:hover {
+				border: none;
+				background: $bg-color-white;
+				color: $bg-color-login-account;
+				border: 2px solid $bg-color-login-account;
+			}
+		}
+		.btn-facebook{
+			@extend .btn-login-account;
+			display: -webkit-inline-box;
+			margin-top: 3em;
+			background: $bg-color-login-facebook;
+			border: 2px solid $bg-color-login-facebook;
+			i{ padding-right: 1em; }
+			&:hover {
+				color: $bg-color-login-facebook;
+				border: 2px solid $bg-color-login-facebook;
+			}
+		}
+		.btn-twitter{
+			@extend .btn-facebook;
+			background: $bg-color-login-twitter;
+			float: right;
+			border: 2px solid $bg-color-login-twitter;
+			&:hover {
+				color: $bg-color-login-twitter;
+				border: 2px solid $bg-color-login-twitter;
+			}
+		}
+	}
+}
+#show-list-infomation{
+	margin: 4em 0;
+	.panel-default{
+		border: none;
+		.panel-heading{
+			background: none;
+			border: none;
+			padding-left: 0;
+			.panel-title{
+				font-size: 13px;
+				font-weight: bold;
+				font-family: 'Montserrat', sans-serif;
+				a{
+					i{ padding-right: 1em; font-size: 15px; }
+				}
+			}
+		}
+	}
+}
