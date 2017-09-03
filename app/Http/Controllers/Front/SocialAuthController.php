@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Socialite;
 use Session;
-use App\SocialAccountService;
+use App\Models\SocialAccountService;
 use App\Models\SocialAccount;
 use App\Models\User;
 
@@ -33,10 +33,10 @@ class SocialAuthController extends Controller
             session(['usertype' => 'buyer', 'id' => $user_ids->id]);
         }
         if( !empty($provider->getEmail()) ){
-            return redirect('/buyerdashboard');
+            return redirect()->route('front.dashboard.index');
         }else{
             session(['usertype' => 'pending']);
-            return redirect('/update-profile');
+            return redirect()->route('front.user.edit');
         }
     }
 }
