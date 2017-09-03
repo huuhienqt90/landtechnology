@@ -50,7 +50,6 @@ class SocialAccountService
                 'provider' => $driver,
                 'email' => $email,
             ]);
-            
             $account->user()->associate($user);
             $account->save();
             return [$user, $providerUser];
