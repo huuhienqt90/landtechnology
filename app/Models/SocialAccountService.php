@@ -16,7 +16,7 @@ class SocialAccountService
         } else {
             $email = !empty($providerUser->getEmail()) ? $providerUser->getEmail() : $providerUser->getId().'@'.$driver.'com';
 
-            $null = User::whereemail($providerUser->getEmail())->first();
+            $user = User::whereemail($providerUser->getEmail())->first();
             if (!$user) {
                 if( !empty($providerUser->getEmail()) ){
                     $user = User::create([
