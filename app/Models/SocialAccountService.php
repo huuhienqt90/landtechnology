@@ -25,15 +25,21 @@ class SocialAccountService
                 if( !empty($providerUser->getEmail()) ){
                     $user = User::create([
                         'email' => $email,
+                        'last_name' => 'null',
                         'first_name' => $providerUser->getName(),
+                        'address1' => 'null',
                         'confirm_code' => 'null',
                         'confirmed' => 1,
+                        'is_notify' => 1,
                     ]);
                 }else{
                     $user = User::create([
                         'email' => $email,
+                        'last_name' => 'null',
                         'first_name' => $providerUser->getName(),
+                        'address1' => 'null',
                         'confirm_code' => rand(10000000, 99999999),
+                        'is_notify' => 1,
                         'confirmed' => 0,
                     ]);
                 }
