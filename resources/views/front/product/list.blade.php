@@ -132,12 +132,8 @@
             <div class="col-md-9 col-sm-9">
                 <div class="grid-content-detail-list">
                     <div class="show-click">
-                        <button type="button" class="btn btn-default grid-show" aria-label="Justify">
-                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-default list-show" aria-label="Justify">
-                            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                        </button>
+                        <a href="{{ route('front.product.grid') }}" class="btn btn-default grid-show"><i class="fa fa-th-large" aria-hidden="true"></i></a>
+                        <a href="{{ route('front.product.list') }}" class="btn btn-default list-show active"><i class="fa fa-align-justify" aria-hidden="true"></i></a>
                         <select>
                             <option>Defaul sorting</option>
                         </select>

@@ -131,12 +131,8 @@
             <div class="col-md-9 col-sm-9">
                 <div class="grid-content-detail-list">
                     <div class="show-click">
-                        <button type="button" class="btn btn-default grid-show" aria-label="Justify">
-                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-default list-show" aria-label="Justify">
-                            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                        </button>
+                        <a href="{{ route('front.product.grid') }}" class="btn btn-default grid-show active"><i class="fa fa-th-large" aria-hidden="true"></i></a>
+                        <a href="{{ route('front.product.list') }}" class="btn btn-default list-show"><i class="fa fa-align-justify" aria-hidden="true"></i></a>
                         <select>
                             <option>Defaul sorting</option>
                         </select>
@@ -146,7 +142,7 @@
                 <div class="slider col-md-12 col-sm-12">
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -171,7 +167,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -193,7 +189,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -222,7 +218,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -244,7 +240,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -269,7 +265,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -291,7 +287,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -316,7 +312,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -338,7 +334,7 @@
                     </div> <!-- .item -->
                     <div class="item col-md-4 col-sm-4">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->

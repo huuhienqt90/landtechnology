@@ -11,14 +11,16 @@ class Register extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $userRepositories;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($userRepositories)
     {
-        //
+        $this->userRepositories = $userRepositories;
     }
 
     /**
@@ -28,6 +30,6 @@ class Register extends Mailable
      */
     public function build()
     {
-        return $this->from('baloshopat@gmail.com')->markdown('emails.register.complete');
+        return $this->from('baloshopat@gmail.com')->markdown('emails.register.complete')->with(['confirm_code' => $this->userRepositories]);
     }
 }

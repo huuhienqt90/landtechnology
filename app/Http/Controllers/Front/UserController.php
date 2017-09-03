@@ -103,12 +103,14 @@ class UserController extends Controller
         $param['is_buyer'] = 1;
         $param['is_notify'] = 1;
         $param['confirm_code'] = rand(10000000, 99999999);
-        $result = $this->userRepository->create($param);
-        if($result){
-            Mail::to($param['email'])->send(new Register($param));
-            Session::flash('msgOk', 'Please activate your account. Email has been sent to '. $param['email']. ' check your inbox in order to activate and login into your account');
-            return redirect()->route('front.index');
+        $id = $this->userRepository->insertGetID($param);
+        if( $id != null ){
+            Mail::to($param['email'])->send(new Register($param['confirm_code']));
+            return redirect()->route('front.user.verify', compact('id'));
             // with('msg', 'Please check your inbox in order to activate and login into your account');
+        }else{
+            Session::flash('msgEr', 'Create user fail');
+            return redirect()->route('front.user.login');
         }
     }
 
@@ -188,6 +190,27 @@ class UserController extends Controller
         }else{
             Session::flash('msgEr','Update password fail');
             return redirect()->route('front.user.editPass');
+        }
+    }
+
+    // Show page verify account
+    public function showVerify($id){
+        return view('front.user.verify', ['id' => $id]);
+    }
+
+    public function verify(Request $request ,$id){
+        $confirm_code = $request->input('code');
+        $user = $this->userRepository->find(['id' => $id, 'confirm_code' => $confirm_code])->first();
+        if(count($user) == 0){
+            return redirect()->route('front.user.verify')->with('msgEr','Invalid code please try again');
+        }
+        else{
+            $this->userRepository->update(['confirm_code' => 'null', 'confirmed' => '1'], $id);
+            if(!Auth::loginUsingId($id)){
+                Session::flash('messageError', 'Login incorrect');
+                return redirect()->route('front.user.login');
+            }
+            return redirect()->route('front.dashboard.index');
         }
     }
 }

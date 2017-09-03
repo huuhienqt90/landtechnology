@@ -89,6 +89,11 @@
                         scrollTop: 0
                     }, 700);
                 });
+                $('.overlay').click(function(){
+                    var url = $(this).parent().find('.product-detail-url').attr('href');
+                    window.location = url;
+                    return false;
+                });
             });
         </script>
     </body>

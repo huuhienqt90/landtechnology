@@ -30,7 +30,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a href="#"><span class="glyphicon glyphicon-gift"></span>Sell an item</a>
+                <a href="{{ route('seller.index') }}"><span class="glyphicon glyphicon-gift"></span>Sell an item</a>
                 </h4>
             </div>
         </div>

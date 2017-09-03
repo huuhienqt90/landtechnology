@@ -46,5 +46,77 @@
         <!-- Script -->
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $('input[name="name"]').keyup(function(e){
+                $('input[name="slug"]').val(convertToSlug($(this).val()));
+                return true;
+            });
+            function convertToSlug(Text)
+            {
+                return Text
+                    .toLowerCase()
+                    .replace(/[^\w ]+/g,'')
+                    .replace(/ +/g,'-')
+                    ;
+            }
+
+            // Review image
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#feature_image-prev').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#feature_image").change(function(){
+                readURL(this);
+            });
+
+            // Review images
+            $(".delete-image").click(function(){
+                var id = $(this).data('id');
+                var boxId = $(this).data('box-id');
+                $('#input-remove-product_images').append('<input name="remove_product_images[]" type="hidden" value="'+id+'" />');
+                $('#image-item-'+id).remove();
+                return false;
+            });
+            $("#product_images").on('change', function () {
+
+                //Get count of selected files
+                var countFiles = $(this)[0].files.length;
+
+                var imgPath = $(this)[0].value;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                var image_holder = $("#product_images-list-image");
+                image_holder.empty();
+
+                if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    if (typeof (FileReader) != "undefined") {
+
+                        //loop for each file selected for uploaded.
+                        for (var i = 0; i < countFiles; i++) {
+
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                image_holder.append('<div class="current-image-item"><img src="'+e.target.result+'" /></div>');
+                            }
+
+                            image_holder.show();
+                            reader.readAsDataURL($(this)[0].files[i]);
+                        }
+
+                    } else {
+                        alert("This browser does not support FileReader.");
+                    }
+                } else {
+                    alert("Pls select only images");
+                }
+            });
+        });
+    </script>
     </body>
 </html>
