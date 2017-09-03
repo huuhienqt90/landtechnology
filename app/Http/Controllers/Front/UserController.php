@@ -26,7 +26,7 @@ class UserController extends Controller
      * Display login page
      * @return Response
     */
-    public function showLogin()
+    public function showLogin(Request $request)
     {
         if(Auth::check()){
             return redirect()->route('front.dashboard.index');
@@ -40,24 +40,16 @@ class UserController extends Controller
     */
     public function doLogin(LoginRequest $request)
     {
-        $email = trim( $request->input('email') );
-        $password = trim( $request->input('password') );
-        
-        // create our user data for the authentication
-        $userdata = array(
-            'email'     => $email,
-            'password'  => $password
-        );
 
-        // attempt to do the login
-        if (Auth::attempt($userdata)) {
-             return redirect()->route('front.dashboard.index');
-        } else {
-            // validation not successful, send back to form 
-            Session::flash('messageError', 'Email or password incorrect');
-            return redirect()->route('front.user.login');
-
+        $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $request->merge([$field => $request->input('email')]);
+        if (Auth::attempt($request->only($field, 'password')))
+        {
+            return redirect()->route('front.dashboard.index');
         }
+        // validation not successful, send back to form 
+        Session::flash('messageError', 'Email, userame or password incorrect');
+        return redirect()->route('front.user.login');
     }
     /**
      * Logout.
@@ -97,7 +89,7 @@ class UserController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        $param = $request->only(['email','first_name','last_name','address1','address2','country','postal_code','region']);
+        $param = $request->only(['username','email','first_name','last_name','address1','address2','country','postal_code','region']);
         $param['password'] = trim( bcrypt( $request->input('password') ) );
         $param['is_seller'] = 0;
         $param['is_buyer'] = 1;
@@ -149,6 +141,7 @@ class UserController extends Controller
         // $user = $request->only(['first_name', 'last_name', 'address1', 'address2', 'country', 'postal_code']);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
+        $user->email = $request->email;
         $user->address1 = $request->address1;
         $user->address2 = $request->address2;
         $user->country = $request->country;

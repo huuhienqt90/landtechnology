@@ -40,6 +40,13 @@
                                     <div class="col-sm-9 center-column">
                                         {!! Form::open(['route' => 'front.user.update', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
                                             <fieldset>
+                                                <div class="form-group {{ $errors->has('username')? 'has-error' : '' }}">
+                                                    {{ Form::label('input-firstname', 'Username', ['class' => 'col-sm-2 control-label']) }}
+                                                    <div class="col-sm-10">
+                                                        {{ Form::text('username', Auth::user()->username, ['placeholder' => 'Username', 'class' => 'form-control', 'id' => 'input-firstname']) }}
+                                                        {{ Form::label(null, $errors->has('username')? $errors->first('username') : '', ['class' => 'help-block']) }}
+                                                    </div>
+                                                </div>
                                                 <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
                                                     {{ Form::label('input-firstname', 'First Name', ['class' => 'col-sm-2 control-label']) }}
                                                     <div class="col-sm-10">
@@ -57,7 +64,7 @@
                                                 <div class="form-group {{ $errors->has('email')? 'has-error' : '' }}">
                                                     {{ Form::label('input-email', 'E-Mail', ['class' => 'col-sm-2 control-label']) }}
                                                     <div class="col-sm-10">
-                                                        {{ Form::text('email', Auth::user()->email, ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email', 'readonly' => true]) }}
+                                                        {{ Form::text('email', Auth::user()->email, ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email']) }}
                                                         {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                                     </div>
                                                 </div><!-- 

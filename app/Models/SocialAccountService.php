@@ -14,7 +14,7 @@ class SocialAccountService
         if ($account) {
             return [$account, $providerUser];
         } else {
-            $email = !empty($providerUser->getEmail()) ? $providerUser->getEmail() : $providerUser->getId().'@'.$driver.'com';
+            $email = !empty($providerUser->getEmail()) ? $providerUser->getEmail() : $providerUser->getId().'@'.$driver.'.com';
 
             $user = User::whereemail($providerUser->getEmail())->first();
             if (!$user) {
@@ -22,6 +22,7 @@ class SocialAccountService
                     $user = User::create([
                         'email' => $email,
                         'last_name' => 'null',
+                        'username' => 'null',
                         'first_name' => $providerUser->getName(),
                         'address1' => 'null',
                         'password' => 'null',
@@ -32,6 +33,7 @@ class SocialAccountService
                 }else{
                     $user = User::create([
                         'email' => $email,
+                        'username' => 'null',
                         'last_name' => 'null',
                         'first_name' => $providerUser->getName(),
                         'address1' => 'null',

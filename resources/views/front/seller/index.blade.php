@@ -115,8 +115,15 @@
                                                             <div id="input-remove-product_images"></div>
                                                             @endif
                                                             <div id="product_images-list-image"></div>
-                                                            {!! Form::file('product_images[]',['id'=>'product_images']) !!}
+                                                            {!! Form::file('product_images'.'[]',['id'=>'product_images', 'multiple' => true]) !!}
                                                             {{ Form::label(null, $errors->has('product_images')? $errors->first('product_images') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group {{ $errors->has('description')? 'has-error' : '' }}">
+                                                        {{ Form::label('description', 'Description', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            <textarea class="textarea" id="description" name="description" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ Form::getValueAttribute('description') }}</textarea>
+                                                            {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
                                                         </div>
                                                     </div>
                                                     <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}">

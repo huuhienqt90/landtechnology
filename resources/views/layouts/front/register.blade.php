@@ -40,6 +40,13 @@
                                 <p>If you already have an account with us, please login at the <a href="{{ route('front.user.login') }}">login page</a>.</p>
                                 {!! Form::open(['route' => 'front.user.store', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
                                     <fieldset>
+                                        <div class="form-group {{ $errors->has('username')? 'has-error' : '' }}">
+                                            {{ Form::label('input-username', 'Username', ['class' => 'col-sm-2 control-label']) }}
+                                            <div class="col-sm-10">
+                                                {{ Form::text('username', old('username'), ['placeholder' => 'Username', 'class' => 'form-control', 'id' => 'input-username']) }}
+                                                {{ Form::label(null, $errors->has('username')? $errors->first('username') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
                                         <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
                                             {{ Form::label('input-firstname', 'First Name', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
@@ -58,9 +65,11 @@
                                             {{ Form::label('input-email', 'E-Mail', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::text('email', old('email'), ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email']) }}
+                                                {{ Form::label(null, 'Please make sure you enter your email address', ['class' => 'help-block']) }}
                                                 {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                             </div>
-                                        </div><!-- 
+                                        </div>
+                                        <!-- 
                                         <div class="form-group">
                                             {{ Form::label('input-telephone', 'Mobile Number', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
