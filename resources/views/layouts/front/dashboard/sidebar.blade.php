@@ -4,7 +4,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a href="#"><span class="glyphicon glyphicon-folder-close"></span>Member area</a>
+                <a href="{{ route('front.dashboard.index') }}"><span class="glyphicon glyphicon-folder-close"></span>Member area</a>
                 </h4>
             </div>
         </div>
@@ -30,7 +30,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a href="{{ route('seller.index') }}"><span class="glyphicon glyphicon-gift"></span>Sell an item</a>
+                <a href="{{ route('seller.create') }}"><span class="glyphicon glyphicon-gift"></span>Sell an item</a>
                 </h4>
             </div>
         </div>

@@ -12,4 +12,15 @@ class SellTypeResponsitory extends Repository {
     public function model() {
         return 'App\Models\SellType';
     }
+
+    public function getArrayNameSellTypes(){
+    	$sellTypes = SellType::all();
+        $sellTypeArr = ['' => 'Select a seller'];
+        if( $sellTypes && $sellTypes->count() ){
+            foreach ($sellTypes as $sellType) {
+                $sellTypeArr[$sellType->id] = $sellType->name;
+            }
+        }
+        return $sellTypeArr;
+    }
 }

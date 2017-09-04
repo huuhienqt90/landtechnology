@@ -32,4 +32,15 @@ class CategoryResponsitory extends Repository {
             return false;
         }
     }
+
+    public function getArrayNameCategories(){
+        $categories = Category::all();
+        $cateArr = ['' => 'Select a category'];
+        if( $categories && $categories->count() ){
+            foreach ($categories as $cat) {
+                $cateArr[$cat->id] = $cat->name;
+            }
+        }
+        return $cateArr;
+    }
 }

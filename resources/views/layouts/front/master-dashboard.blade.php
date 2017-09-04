@@ -13,6 +13,11 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/frameworks.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
+        <!-- bootstrap wysihtml5 - text editor -->
+        <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+        <!-- Select 2 -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+        <!-- Style custom -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style-dashboard.css') }}">
 
@@ -25,16 +30,24 @@
         <!-- Content -->
         <div class="container">
             <div class="row">
-                <div class="col-md-3 col-sm-12">
-                    <div class="sidebar">
-                        @include('layouts.front.dashboard.sidebar')
+                @if(Auth::user()->confirmed)
+                    <div class="col-md-3 col-sm-12">
+                        <div class="sidebar">
+                            @include('layouts.front.dashboard.sidebar')
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="main-content">
-                        @yield('content-dashboard')
+                    <div class="col-md-9">
+                        <div class="main-content">
+                            @yield('content-dashboard')
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="col-md-12 mg-top-50">
+                        <div class="alert alert-warning" role="alert">
+                            <a href="{{ route('front.user.verify', Auth::user()->id) }}" class="alert-link">Your account is not active. Please activate your account from the link in the welcome email.</a>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
         <!-- End Content -->
@@ -46,6 +59,10 @@
         <!-- Script -->
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <!-- Bootstrap WYSIHTML5 -->
+        <script src="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+        <!-- Select 2 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
         <script type="text/javascript">
         jQuery(document).ready(function($){
             $('input[name="name"]').keyup(function(e){
@@ -116,6 +133,8 @@
                     alert("Pls select only images");
                 }
             });
+            $('#description').wysihtml5();
+            $('.select2').select2();
         });
     </script>
     </body>
