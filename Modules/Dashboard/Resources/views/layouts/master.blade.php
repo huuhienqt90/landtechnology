@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/custom.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -112,5 +113,21 @@
     <script src="{{ asset('themes/dashboard/dist/js/pages/dashboard.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/dashboard/dist/js/demo.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $('input[name="name"]').keyup(function(e){
+                $('input[name="slug"]').val(convertToSlug($(this).val()));
+                return true;
+            });
+            function convertToSlug(Text)
+            {
+                return Text
+                    .toLowerCase()
+                    .replace(/[^\w ]+/g,'')
+                    .replace(/ +/g,'-')
+                    ;
+            }
+        });
+    </script>
 </body>
 </html>

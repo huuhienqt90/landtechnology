@@ -10,9 +10,13 @@
         @yield('meta')
 
         <!-- Style -->
-        <link href="https://file.myfontastic.com/MxywPYeJeetJEud3nnLj53/icons.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/frameworks.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+
+        <!-- Style Dashboard -->
+        @yield('style-dashboard')
     </head>
     <body>
         <!-- Header -->
@@ -26,11 +30,17 @@
         <!-- Footer -->
         @include('layouts.front.commons.footer')
         <!-- End footer -->
-
+        
         <!-- Script -->
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/slick.min.js') }}"></script>
+        <script src="{{ asset('assets/js/price.js') }}"></script>
+        <script src="{{ asset('assets/js/grid-list-show.js') }}"></script>
+        <!-- Detail product -->
+        <script src="{{ asset('assets/js/product-detail.js') }}""></script>
+        
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.slider-nav').slick({
@@ -65,7 +75,14 @@
                         }
                     ]
                 });
-
+                $('.slider-for').slick({slidesToShow: 1,slidesToScroll: 1,arrows: false,fade: true,asNavFor: '.slider-nav-one'});
+                $('.slider-nav-one').slick({slidesToShow: 1,slidesToScroll: 1,asNavFor: '.slider-for',dots: false,centerMode: false,focusOnSelect: true,responsive: [
+                    { breakpoint: 1024,settings:{slidesToShow: 4,} },
+                    { breakpoint: 600,settings:{slidesToShow: 3,} },
+                    { breakpoint: 480,settings:{slidesToShow: 2,} }
+                    ]
+                });
+                $('.single-item').slick();
                 $('#back-to-top').on('click', function (e) {
                     e.preventDefault();
                     $('html,body').animate({

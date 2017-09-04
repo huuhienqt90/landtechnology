@@ -19,7 +19,7 @@
                         <table id="list" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
+                                    <th width="80">Image</th>
                                     <th>Name</th>
                                     <th>Parent</th>
                                     <th width="100">Actions</th>
@@ -29,9 +29,9 @@
                                 @foreach($categories as $category)
                                     <tr>
                                         @if($category->image)
-                                            <td>Image</td>
+                                            <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$category->image) }}"/></td>
                                         @else
-                                            <td>Image</td>
+                                            <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('themes/dashboard/dist/img/boxed-bg.jpg') }}"/></td>
                                         @endif
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->showParent() }}</td>
