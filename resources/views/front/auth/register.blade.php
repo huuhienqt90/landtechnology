@@ -69,7 +69,7 @@
                                                 {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <!-- 
+                                        <!--
                                         <div class="form-group">
                                             {{ Form::label('input-telephone', 'Mobile Number', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
