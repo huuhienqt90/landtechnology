@@ -5,6 +5,15 @@ body{
     font-family: 'Lato', sans-serif;
 }
 #content-shopping{
+	margin-top: 5em;
+	.menu-content-shopping{
+		padding-left: 0;
+		margin-bottom: 3em;
+		.breadcrumb{
+
+			@include breadcrumb();
+		}
+	}
 	.shopping-cart-table{
 		h1{
 			font-family: 'Oswald', sans-serif;
@@ -69,14 +78,15 @@ body{
 			}
 		}
 		.continue{
-			margin-top: 3em;
+			margin-top: 2em;
 			margin-bottom: 5em;
 			a{
 				font-family: 'Montserrat', sans-serif;
-				font-size: 13px;
+				font-size: 12px;
 				font-weight: bold;
 				color: $bg-color-white;
 				background: $bg-color-main;
+				border: 2px solid $bg-color-main;
 				padding: 1em;
 				float: left;
 				&:hover {
@@ -89,15 +99,15 @@ body{
 				float: right;
 				button{
 					font-family: 'Montserrat', sans-serif;
-					font-size: 13px;
+					font-size: 12px;
 					font-weight: bold;
 					color: $bg-color-white;
-					background: $bg-color-black;
+					background: $bg-color-header;
+					border: 2px solid $bg-color-header;
 					padding: 1em;
-					border: none;
 					margin-left: 3em;
 					&:hover {
-						color: $bg-color-black;
+						color: $bg-color-header;
 						background: $bg-color-white;
 						transition: all 0.4s;
 					}
@@ -107,6 +117,8 @@ body{
 	}
 }
 #cart-totals{
+	margin-top: 3em;
+    margin-bottom: 6em;
 	.calculate-shipping{
 		padding-left: 0;
 		h3{
@@ -115,10 +127,11 @@ body{
 			font-size: 18px;
 			position: relative;
 			padding-bottom: 1em;
+			margin-bottom: 2em;
 			&:before {
 				content: '';
 				position: absolute;
-				border-bottom: 3px solid $bg-color-black;
+				border-bottom: 3px solid $bg-color-header;
 				width: 7%;
 				bottom: 0;
 				left: 0;
@@ -138,13 +151,93 @@ body{
 				margin-top: 1em;
 				margin-bottom: 2em;
 				font-style: italic;
+				color: $bg-color-select-product;
 			}
 		}
 		.select-your-state{
 			@extend .select-your-counttry;
 			float: left;
+			width: 50%;
 			select{
 				display: block;
+				font-size: 12px;
+				padding: 1em;
+				width: 100%;
+				border: 1px solid $bg-color-border-input-shopping-cart;
+				margin-top: 1em;
+				margin-bottom: 2em;
+				font-style: italic;
+				color: $bg-color-select-product;
+			}
+		}
+		.zip-code{
+			@extend .select-your-counttry;
+			float: right;
+		}
+		button{
+			font-size: 13px;
+			color: $bg-color-white;
+			background: $bg-color-header;
+			padding: 1em;
+			border: 2px solid $bg-color-header;
+			font-weight: bold;
+			font-family: 'Montserrat', sans-serif;
+			&:hover {
+				color: $bg-color-header;
+				background: $bg-color-white;
+				transition: all 0.4s;
+			}
+		}
+	}
+	.coupon-code{
+		@extend .calculate-shipping;
+		padding-left: 1em;
+		p{
+			font-size: 13px;
+			font-style: italic;
+			color: $bg-color-hv-menu;
+			text-align: justify;
+		}
+		.coupon-code-input{
+			@extend .select-your-counttry;
+			margin-top: 4.45em;
+		}
+	}
+	.cart-totals{
+		@extend .calculate-shipping;
+		padding-left: 1em;
+		padding-right: 0;
+		ul{
+			list-style: none;
+			padding-left: 0;
+			li{
+				border-bottom: 1px solid $bg-color-border-input-shopping-cart;
+				padding: 2em 0;
+				clear: both;
+				&:first-child {
+					padding-top: 0;
+				}
+				p{
+					float: left;
+					font-weight: bold;
+					font-size: 13px;
+				}
+				span{
+					float: right;
+					color: $bg-color-main;
+					font-weight: bold;
+				}
+			}
+		}
+		button{
+			color: $bg-color-white;
+			background: $bg-color-main;
+			border: 2px solid $bg-color-main;
+			margin-top: 1em;
+			&:hover {
+				color: $bg-color-main;
+				background: $bg-color-white;
+				transition: all 0.4s;
 			}
 		}
 	}

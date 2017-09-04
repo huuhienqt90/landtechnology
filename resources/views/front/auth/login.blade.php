@@ -48,7 +48,7 @@
                                     <a href="{{ route('front.social.login', 'linkedin') }}" class="btn btn-block btn-social btn-linkedin">
                                         <span class="fa fa-linkedin"></span> Sign up with Linkedin
                                     </a>
-                                    <p style="padding-bottom: 10px">By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
+                                    <p style="padding-bottom: 10px; padding-top: 10px;">By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
                                     <a href="{{ route('front.user.create') }}" class="btn btn-primary">Continue</a>
                                 </div>
                             </div>
