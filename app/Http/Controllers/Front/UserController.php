@@ -40,15 +40,16 @@ class UserController extends Controller
     */
     public function doLogin(LoginRequest $request)
     {
-
         $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         $request->merge([$field => $request->input('email')]);
-        if (Auth::attempt($request->only($field, 'password')))
+        $loginDT = $request->only($field, 'password');
+        $loginDT['confirmed'] = 1;
+        if (Auth::attempt($loginDT))
         {
             return redirect()->route('front.dashboard.index');
         }
-        // validation not successful, send back to form 
-        Session::flash('messageError', 'Email, userame or password incorrect');
+        // validation not successful, send back to form
+        Session::flash('messageError', 'You can not login because your information incorrect or you didn\'t verify your accout via email');
         return redirect()->route('front.user.login');
     }
     /**
@@ -148,7 +149,6 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request)
     {
         $user = $this->userRepository->find( Auth::user()->id );
-        // $user = $request->only(['first_name', 'last_name', 'address1', 'address2', 'country', 'postal_code']);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
@@ -217,7 +217,7 @@ class UserController extends Controller
             return redirect()->route('front.user.verify')->with('msgEr','Invalid code please try again');
         }
         else{
-            $this->userRepository->update(['confirm_code' => 'null', 'confirmed' => '1'], $id);
+            $this->userRepository->update(['confirm_code' => null, 'confirmed' => 1], $id);
             if(!Auth::loginUsingId($id)){
                 Session::flash('messageError', 'Login incorrect');
                 return redirect()->route('front.user.login');
