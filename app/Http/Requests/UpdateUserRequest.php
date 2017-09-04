@@ -27,7 +27,8 @@ class UpdateUserRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'address1' => 'required',
-            // 'region' => 'required',
+            'username' => 'required',
+            'email'    => 'required|email|unique:users,email,'.auth()->user()->id,
             'country' => 'required',
             'postal_code' => 'numeric'
         ];

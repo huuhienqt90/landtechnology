@@ -72,16 +72,18 @@
                                     @endif
                                     {!! Form::open(['route' => 'front.user.doLogin', 'files' => true, 'method' => 'POST']) !!}
                                         <div class="form-group {{ $errors->has('email')? 'has-error' : '' }}">
-                                            {!! Form::label('email', 'E-Mail Address', ['class' => 'control-label']) !!}
-                                            {!! Form::text('email', old('email'), ['class' => 'form-control','required' => 'required', 'id' => 'input-email','placeholder' => 'E-Mail Address']) !!}
+                                            {!! Form::label('email', 'E-mail or Username', ['class' => 'control-label']) !!}
+                                            {!! Form::text('email', old('email'), ['class' => 'form-control','required' => 'required', 'id' => 'input-email','placeholder' => 'E-mail or Username']) !!}
                                             {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                         </div>
                                         <div class="form-group {{ $errors->has('password')? 'has-error' : '' }}" style="padding-bottom: 10px">
                                             {!! Form::label('Password', 'Password', ['class' => 'control-label']) !!}
                                             {!! Form::password('password', ['class' => 'form-control','required' => 'required', 'id' => 'input-password','placeholder' => 'Password']) !!}
                                             {{ Form::label(null, $errors->has('password')? $errors->first('password') : '', ['class' => 'help-block']) }}
+                                            {{ Form::hidden('confirmed', 1) }}
                                             <a href="#">Forgotten Password</a>
                                         </div>
+
                                         {!! Form::submit('Login!',['class' => 'btn btn-primary']) !!}
                                     {!! Form::close() !!}
                                 </div>

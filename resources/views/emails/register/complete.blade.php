@@ -1,11 +1,11 @@
 @component('mail::message')
 # Introduction
 
-The body of your message.
+Hi!!<br><br>
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
+Code your verification is {{ $confirm_code }}
+
+Please enter the code to activate and login into your account....
 
 Thanks,<br>
 {{ config('app.name') }}

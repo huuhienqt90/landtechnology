@@ -145,7 +145,7 @@
             <div class="col-md-12 slider">
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -170,7 +170,7 @@
                     </div> <!-- .item -->
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -192,7 +192,7 @@
                     </div> <!-- .item -->
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -221,7 +221,7 @@
                     </div> <!-- .item -->
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
