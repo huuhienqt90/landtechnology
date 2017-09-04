@@ -18,6 +18,7 @@ body{
 
 	.content-blog-post{
 		padding-left: 0;
+		margin-bottom: 6em;
 		.how-to{
 			margin: 2em 0;
 			h1{
@@ -120,10 +121,30 @@ body{
 				font-family: 'Oswald', sans-serif;
 				font-weight: bold;
 				font-size: 20px;
+				padding-bottom: 1em;
+				position: relative;
+				&:before {
+					content: '';
+					position: absolute;
+					border-bottom: 2.5px solid $bg-color-black;
+					bottom: 0;
+					left: 0;
+					width: 5%;
+				}
 			}
 			span{
 				font-family: 'Montserrat', sans-serif;
 				font-weight: bold;
+				font-size: 13px;
+			}
+			.form-group{
+				label {
+					font-weight: 100;
+				}
+			}
+			button{
+				margin-top: 1em;
+				padding: 1em 3em;
 			}
 		}
 	}
