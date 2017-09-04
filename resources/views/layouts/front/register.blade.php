@@ -37,7 +37,7 @@
                         <div class="row">
                             <div class="col-sm-9 col-sm-offset-2 center-column">
 
-                                <p>If you already have an account with us, please login at the <a href="{{ route('front.user.login') }}">login page</a>.</p>
+                                <p>If you already have an account with us, please login at the <a href="{{ route('front.user.login') }}">Login page</a>.</p>
                                 {!! Form::open(['route' => 'front.user.store', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
                                     <fieldset>
                                         <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
@@ -139,7 +139,7 @@
                                         </div>
                                     </fieldset> -->
                                     <div class="text-center mg-top-20">
-                                        I have read and agree to the <a href="index11ee.html?route=information/information/agree&amp;information_id=3" class="agree"><b>Privacy Policy</b></a>
+                                        I have read and agree to the<a href="index11ee.html?route=information/information/agree&amp;information_id=3" class="agree"><b> Privacy Policy</b></a>
                                         {{ Form::checkbox('agree', '1', false,['required' => 'required']) }}&nbsp;
                                         {{ Form::submit('Continue', ['class' => 'btn btn-primary']) }}
                                     </div>
