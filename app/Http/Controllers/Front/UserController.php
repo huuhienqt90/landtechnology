@@ -31,7 +31,7 @@ class UserController extends Controller
         if(Auth::check()){
             return redirect()->route('front.dashboard.index');
         }
-        return view('layouts.front.login');
+        return view('front.auth.login');
     }
 
     /**
@@ -79,7 +79,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('layouts.front.register');
+        return view('front.auth.register');
     }
 
     /**
@@ -98,12 +98,22 @@ class UserController extends Controller
         $param['confirm_code'] = rand(10000000, 99999999);
         $id = $this->userRepository->insertGetID($param);
         if( $id != null ){
-            Mail::to($param['email'])->send(new Register($param['confirm_code']));
+            $this->sendCode($param['email'], $param['confirm_code']);
             return redirect()->route('front.user.verify', compact('id'));
-            // with('msg', 'Please check your inbox in order to activate and login into your account');
         }else{
             Session::flash('msgEr', 'Create user fail');
             return redirect()->route('front.user.login');
+        }
+    }
+
+    /**
+     * [sendCode description]
+     * @param  [string] $email [description]
+     * @param  [number] $code  [description]
+     */
+    public function sendCode($email, $code){
+        if( !empty($email) && !empty($code) ){
+            Mail::to($email)->send(new Register($code));
         }
     }
 
@@ -167,6 +177,9 @@ class UserController extends Controller
         //
     }
 
+    /**
+     * Show page change password of user
+     */
     public function editPass(){
         return view('front.user.password');
     }
@@ -191,6 +204,12 @@ class UserController extends Controller
         return view('front.user.verify', ['id' => $id]);
     }
 
+    /**
+     * Verify account
+     * @param  Request $request [description]
+     * @param  [int]  $id      [description]
+     * @return \Illuminate\Http\Response
+     */
     public function verify(Request $request ,$id){
         $confirm_code = $request->input('code');
         $user = $this->userRepository->find(['id' => $id, 'confirm_code' => $confirm_code])->first();

@@ -126,23 +126,65 @@
                                                             {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
                                                         </div>
                                                     </div>
+                                                    <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}">
+                                                        {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            {{ Form::select('product_brand', $brands, null, ['class' => 'form-control']) }}
+                                                            {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}">
                                                         {{ Form::label('category', 'Category', ['class' => 'col-sm-3 control-label']) }}
                                                         <div class="col-sm-9">
-                                                            {{ Form::select('category', ['L' => 'Large', 'S' => 'Small'], null, ['placeholder' => '-- Select a category --', 'class' => 'form-control', 'multiple' => true]) }}
+                                                            {!! Form::select('category'.'[]', $categories, Form::getValueAttribute('category'), ['class' => 'form-control select2', 'multiple' => true, 'data-placeholder' => 'Select category']) !!}
                                                             {{ Form::label(null, $errors->has('category')? $errors->first('category') : '', ['class' => 'help-block']) }}
                                                         </div>
                                                     </div>
-                                                    <div class="form-group {{ $errors->has('sell_type')? 'has-error' : '' }}">
-                                                        {{ Form::label('sell_type', 'Selling Type', ['class' => 'col-sm-3 control-label']) }}
+                                                    <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}">
+                                                        {{ Form::label('key_words', 'Key words', ['class' => 'col-sm-3 control-label']) }}
                                                         <div class="col-sm-9">
-                                                            {{ Form::select('sell_type', ['L' => 'Large', 'S' => 'Small'], null, ['placeholder' => '-- Select a sell_type --', 'class' => 'form-control']) }}
-                                                            {{ Form::label(null, $errors->has('sell_type')? $errors->first('sell_type') : '', ['class' => 'help-block']) }}
+                                                            {{ Form::text('key_words', old('key_words'), ['placeholder' => 'Key words', 'class' => 'form-control', 'id' => 'key_words']) }}
+                                                            {{ Form::label(null, $errors->has('key_words')? $errors->first('key_words') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group {{ $errors->has('sell_type_id')? 'has-error' : '' }}">
+                                                        {{ Form::label('sell_type_id', 'Sell Type', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            {{ Form::select('sell_type_id', $selltypes, null, ['class' => 'form-control']) }}
+                                                            {{ Form::label(null, $errors->has('sell_type_id')? $errors->first('sell_type_id') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group {{ $errors->has('weight')? 'has-error' : '' }}">
+                                                        {{ Form::label('weight', 'Weight', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            {{ Form::text('weight', old('weight'), ['placeholder' => 'Weight', 'class' => 'form-control', 'id' => 'weight']) }}
+                                                            {{ Form::label(null, $errors->has('weight')? $errors->first('weight') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group {{ $errors->has('Location')? 'has-error' : '' }}">
+                                                        {{ Form::label('location', 'location', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            {{ Form::text('location', old('location'), ['placeholder' => 'Location', 'class' => 'form-control', 'id' => 'location']) }}
+                                                            {{ Form::label(null, $errors->has('location')? $errors->first('location') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group {{ $errors->has('stock')? 'has-error' : '' }}">
+                                                        {{ Form::label('stock', 'Stock', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            {{ Form::text('stock', old('stock'), ['placeholder' => 'Stock', 'class' => 'form-control', 'id' => 'stock']) }}
+                                                            {{ Form::label(null, $errors->has('stock')? $errors->first('stock') : '', ['class' => 'help-block']) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group {{ $errors->has('sold_units')? 'has-error' : '' }}">
+                                                        {{ Form::label('sold_units', 'Sold units', ['class' => 'col-sm-3 control-label']) }}
+                                                        <div class="col-sm-9">
+                                                            {{ Form::text('sold_units', old('sold_units'), ['placeholder' => 'Sold units', 'class' => 'form-control', 'id' => 'sold_units']) }}
+                                                            {{ Form::label(null, $errors->has('sold_units')? $errors->first('sold_units') : '', ['class' => 'help-block']) }}
                                                         </div>
                                                     </div>
                                                 </fieldset>
                                                 <div class="text-center mg-top-20">
-                                                    {{ Form::submit('Update', ['class' => 'btn btn-primary']) }}
+                                                    {{ Form::submit('Sell', ['class' => 'btn btn-primary']) }}
                                                 </div>
                                             {!! Form::close() !!}
                                         </div>

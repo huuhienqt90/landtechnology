@@ -15,6 +15,20 @@ class BrandResponsitory extends Repository {
     }
 
     /**
+     * @return [array] [list name brands]
+     */
+    public function getArrayNameBrands(){
+        $brands = Brand::all();
+        $brandArr = ['' => 'Select a brand'];
+        if( $brands && $brands->count() ){
+            foreach ($brands as $brand) {
+                $brandArr[$brand->id] = $brand->name;
+            }
+        }
+        return $brandArr;
+    }
+
+    /**
      * Delete product by brand id
      */
     public function deleteProductsByBrandId($brandId = 0){
