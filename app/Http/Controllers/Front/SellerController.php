@@ -51,7 +51,8 @@ class SellerController extends Controller
      */
     public function index()
     {
-        // return view('front.seller.index');
+        $products = $this->productResponsitory->findWhere(['seller_id' => Auth::user()->id]);
+        return view('front.seller.index', compact('products'));
     }
 
     /**
@@ -95,7 +96,7 @@ class SellerController extends Controller
         if( $request->hasFile('product_images') ){
             $productImages = $request->file('product_images');
             foreach ($productImages as $file) {
-                $path = $file->store('sellproduct/galeries');
+                $path = $file->storeAs('sellproduct/galeries');
                 $this->productImageResponsitory->create(['product_id' => $result->id, 'image_path' => $path, 'image_name'=> $file->getClientOriginalName()]);
             }
         }
@@ -122,7 +123,11 @@ class SellerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->productResponsitory->find($id);
+        $brands = $this->brandResponsitory->getArrayNameBrands();
+        $categories = $this->categoryResponsitory->getArrayNameCategories();
+        $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
+        return view('front.seller.edit', compact('product','brands','categories','selltypes'));
     }
 
     /**
