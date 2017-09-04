@@ -1,0 +1,95 @@
+
+@import 'mixin';
+@import 'variables';
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+
+#content-blog{
+	margin-top: 5em;
+	.menu-content-blog{
+		padding-left: 0;
+		margin-bottom: 1em;
+		.breadcrumb{
+			@include breadcrumb();
+		}
+	}
+	.content-col-how-to{
+		margin-bottom: 3em;
+		padding-left: 0;
+		.img-col-how-to{
+			position: relative;
+			.breadcrumb{
+				background: none;
+				padding-left: 0;
+				margin: 0;
+				li{
+					font-size: 12px;
+					font-weight: 600;
+					a{
+						color: $bg-color-main;
+						padding-left: 0.5em;
+						text-transform: uppercase;
+					}
+				}
+			}
+		}
+		&:hover .chain-link{ display: block; }
+		.chain-link{
+			position: absolute;
+    		top: 28%;
+		    left: 45%;
+		    display: none;
+		    transition: .5s ease;
+		    i{
+		    	font-size: 20px;
+		    	color: $bg-color-white;
+		    	background: $bg-color-main;
+			    padding: 1.1em 1.2em;
+			    border-radius: 50%;
+			    &:hover {
+			    	color: $bg-color-main;
+			    	background: $bg-color-white;
+			    }
+		    }
+		}
+		.text-col-how-to{
+			h1{
+				a{
+					color: $bg-color-black;
+					font-size: 15px;
+					margin-top: 0.5em;
+					font-weight: bold;
+					font-family: 'Montserrat', sans-serif;
+				}
+			}
+			p{
+				margin-top: 1em;
+				font-style: italic;
+			}
+		}
+	}
+	.navigation-page{
+		margin-top: 2em;
+		nav{ text-align: center; }
+		.pagination{
+			li{
+				&:first-child, &:last-child {
+					a{
+						&:hover { background: $bg-color-text-tabs; }
+					}
+				}
+				a{
+					border-radius: 50%;
+					margin-right: 1em;
+					background: $bg-color-pagination;
+					color: $bg-color-white;
+					&:hover {
+						background: $bg-color-main;
+					}
+				}
+			}
+		}
+	}
+}

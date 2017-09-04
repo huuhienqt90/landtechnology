@@ -5,7 +5,11 @@
 body{
     font-family: 'Lato', sans-serif;
 }
-
+.date-time{
+	color: $bg-color-blog-post-span;
+	font-size: 12px;
+	font-weight: bold;
+}
 #content-blog-post{
 	margin-top: 5em;
 	.menu-content-blog-post{
@@ -25,11 +29,6 @@ body{
 				font-family: 'Montserrat', sans-serif;
 				font-weight: bold;
 				font-size: 15px;
-			}
-			.date-time{
-				color: $bg-color-blog-post-span;
-				font-size: 12px;
-				font-weight: bold;
 			}
 			p{
 				font-style: italic;
@@ -94,6 +93,12 @@ body{
 				float: left;
 				border: 2px solid $bg-color-main;
 				border-radius: 50%;
+				width: 7.5em;
+				img{
+					border-radius: 50%;
+					width: 7.5em;
+					height: 7.5em; 
+				}
 			}
 			.text-artice{
 				padding-top: 1.5em;
@@ -155,23 +160,69 @@ body{
 		@extend .content-blog-post;
 		.popular{
 			@extend .post-comment;
+			h3{
+				margin-top: 0;
+				margin-bottom: 1.5em;
+				&:before {
+					width: 15%;
+				}
+			}
 			ul{
 				list-style: none;
 				padding-left: 0;
 				li{
-					padding-bottom: 2em;
+					padding-bottom: 7em;
+					clear: both;
 					.img-popular{
 						float: left;
 						width: 50%;
+						padding-right: 1em;
+					}
+					.text-popular{
+						a{
+							color: $bg-color-black;
+							font-style: italic;
+							font-size: 13px;
+							&:hover {
+								color: $bg-color-main;
+							}
+						}
+						p{
+							color: $bg-color-blog-post-span;
+							font-style: italic;
+							font-size: 12px;
+							i{ padding-right: 0.5em; }
+						}
 					}
 				}
 			}
 		}
 		.blog{
 			@extend .post-comment;
-			a{
-				display: block;
-				font-style: italic;
+			h3{
+				margin-top: 2.5em;
+				&:before { width: 15%; }
+			}
+			.categories{
+				margin-top: 2em;
+				a{
+					display: block;
+					color: $bg-color-blog-post-span;
+					padding: 0.3em 0;
+					&:hover { color: $bg-color-main; }
+				}
+			}
+			.recent-post{
+				margin-top: 1.5em;
+				a{
+					display: block;
+					font-style: italic;
+					padding: 0.5em 0;
+					color: $bg-color-hv-menu;
+					&:hover {
+						color: $bg-color-main;
+					}
+				}
 			}
 		}
 	}
