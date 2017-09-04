@@ -129,7 +129,7 @@ body{
 					border-bottom: 2.5px solid $bg-color-black;
 					bottom: 0;
 					left: 0;
-					width: 5%;
+					width: 4%;
 				}
 			}
 			span{
@@ -140,17 +140,33 @@ body{
 			.form-group{
 				label {
 					font-weight: 100;
+					span{ font-weight: 100; color: red; }
 				}
 			}
 			button{
 				margin-top: 1em;
-				padding: 1em 3em;
+				padding: 1em 2em;
+				border-radius: 0.3em;
 			}
 		}
 	}
 
 	.sidebar-blog-post{
 		@extend .content-blog-post;
+		.popular{
+			@extend .post-comment;
+			ul{
+				list-style: none;
+				padding-left: 0;
+				li{
+					padding-bottom: 2em;
+					.img-popular{
+						float: left;
+						width: 50%;
+					}
+				}
+			}
+		}
 		.blog{
 			@extend .post-comment;
 			a{

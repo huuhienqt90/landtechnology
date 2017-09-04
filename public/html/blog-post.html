@@ -208,15 +208,15 @@
                         <span>Submit Comment</span>
                         <form>
                             <div class="form-group">
-                                <label for="exampleInputName1">Name</label>
+                                <label for="exampleInputName1">Name <span>*</span></label>
                                 <input type="text" class="form-control" id="exampleInputName1">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email</label>
+                                <label for="exampleInputEmail1">Email <span>*</span></label>
                                 <input type="email" class="form-control" id="exampleInputEmail1">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputComments1">Comments</label>
+                                <label for="exampleInputComments1">Comments <span>*</span></label>
                                 <input type="comments" class="form-control" id="exampleInputComments1">
                             </div>
                             <button type="submit" class="btn btn-primary text-uppercase">Post comment</button>
@@ -229,16 +229,13 @@
                         <h3 class="text-uppercase">Popular</h3>
                         <ul>
                             <li>
-                                <a href="#" title="images popular"><img src="../assets/images/img-popular-1.png" class="img-responsive" alt="images popular"></a>
-                            </li>
-                            <li>
-                                <a href="#" title="images popular"><img src="../assets/images/img-popular-2.png" class="img-responsive" alt="images popular"></a>
-                            </li>
-                            <li>
-                                <a href="#" title="images popular"><img src="../assets/images/img-popular-3.png" class="img-responsive" alt="images popular"></a>
-                            </li>
-                            <li>
-                                <a href="#" title="images popular"><img src="../assets/images/img-popular-3.png" class="img-responsive" alt="images popular"></a>
+                                <div class="img-popular">
+                                    <a href="#" title="images popular"><img src="../assets/images/img-popular-1.png" class="img-responsive" alt="images popular"></a>
+                                </div> <!-- .img-popular -->
+                                <div class="text-popular">
+                                    <a href="#" title="title text popular">A sample blog title #1</a>
+                                    <p><i class="fa fa-eye" aria-hidden="true"></i>210 view(s)</p>
+                                </div> <!-- .text-popular -->
                             </li>
                         </ul>
                     </div> <!-- .popular -->
