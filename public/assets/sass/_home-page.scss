@@ -14,6 +14,10 @@ body{
         margin-top: $i * 1px;
     }
 }
+.img-responsive {
+    min-width: 100%;
+}
+
 #header{
     .cover-topheader{
         margin-top: 1.3em;
@@ -922,9 +926,15 @@ body{
         a{
             background: $bg-color-main;
             color: $bg-color-white;
+            border: 3px solid $bg-color-main;
             padding: 1em 1.3em;
             border-radius: 5em;
             /* margin-left: 5.3em; */
+            &:hover {
+                color: $bg-color-main;
+                background: $bg-color-white;
+                transition: all 0.4s;
+            }
             position: relative;
             &:before{
                 content: '';
@@ -992,6 +1002,7 @@ body{
             list-style: inherit;
             margin-top: 2.5em;
             padding-left: 1em;
+            color: $bg-color-text-footer;
             li{
                 padding-bottom: 1.5em;
                 a{
