@@ -14,7 +14,7 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.5",
-        "nwidart/laravel-modules": "^1.13",
+        "nwidart/laravel-modules": "^2.0",
         "setkyar/laravel-social-share-cards": "^1.1"
     },
     "require-dev": {
