@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductAttributesTable extends Migration
+class CreateAttributeGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateProductAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_attributes', function (Blueprint $table) {
+        Schema::create('attribute_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id')->unsigned();
             $table->integer('seller_id')->unsigned();
-            $table->integer('attribute_id')->unsigned();
-            $table->string('value');
-            $table->foreign('product_id')
-                ->references('id')->on('products')
-                ->onDelete('cascade');
+            $table->string('name');
+            $table->integer('parent')->default(0);
+            $table->string('type')->default('text');
+            $table->text('value')->nullable();
             $table->foreign('seller_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
@@ -36,6 +34,6 @@ class CreateProductAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_attributes');
+        Schema::dropIfExists('attribute_groups');
     }
 }
