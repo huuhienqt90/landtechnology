@@ -9,11 +9,13 @@ body{
         }
     }
 }
+
 @for $i from 10 through 90 {
     .mg-top-#{$i} {
         margin-top: $i * 1px;
     }
 }
+
 .img-responsive {
     min-width: 100%;
 }
