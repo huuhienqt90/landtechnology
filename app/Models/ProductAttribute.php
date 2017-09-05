@@ -12,8 +12,15 @@ class ProductAttribute extends Model
 
     protected $fillable = [
         'product_id',
-        'seller_id',
         'attribute_id',
         'value'
     ];
+
+    public function product(){
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+    }
+
+    public function group(){
+        return $this->hasOne('App\Models\Attribute', 'id', 'attribute_id');
+    }
 }

@@ -14,6 +14,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('seller-shipping', 'SellerShippingController');
         Route::resource('attribute', 'AttributeController');
         Route::resource('product', 'ProductController');
+        Route::resource('attribute-group', 'AttributeGroupController');
+        Route::resource('attribute', 'AttributeController');
     });
 
 });
