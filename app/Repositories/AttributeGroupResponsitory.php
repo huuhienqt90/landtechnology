@@ -19,4 +19,12 @@ class AttributeGroupResponsitory extends Repository {
         }
         return null;
     }
+
+    public function listTypes(){
+        return $arrTypes = [
+            'select' => 'Select',
+            'text' => 'Text',
+            'color' => 'Color',
+        ];
+    }
 }

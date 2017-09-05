@@ -13,6 +13,7 @@ use App\Repositories\ProductResponsitory;
 use App\Repositories\UserResponsitory;
 use App\Repositories\ProductCategoryResponsitory;
 use App\Repositories\ProductImageResponsitory;
+use App\Repositories\AttributeResponsitory;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
@@ -26,7 +27,7 @@ class ProductController extends Controller
     protected $userResponsitory;
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory){
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
@@ -35,6 +36,7 @@ class ProductController extends Controller
         $this->userResponsitory             = $userResponsitory;
         $this->productCategoryResponsitory  = $productCategoryResponsitory;
         $this->productImageResponsitory     = $productImageResponsitory;
+        $this->attributeResponsitory        = $attributeResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -77,6 +79,12 @@ class ProductController extends Controller
             }
         }
 
+        $attrs = $this->attributeResponsitory->all();
+        $attrArr = [];
+        foreach($attrs as $attr){
+            $attrArr[$attr->id] = $attr->name;
+        }
+
         $sellTypes = $this->sellTypeResponsitory->all();
         $sellTypeArr = ['' => 'Select a seller'];
         if( $sellTypes && $sellTypes->count() ){
@@ -84,7 +92,7 @@ class ProductController extends Controller
                 $sellTypeArr[$sellType->id] = $sellType->name;
             }
         }
-        return view('dashboard::product.create', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr'));
+        return view('dashboard::product.create', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr'));
     }
 
     /**
@@ -189,9 +197,16 @@ class ProductController extends Controller
                 $productImageArr[$productImage->id] = $productImage->image_path;
             }
         }
+
+        $attrs = $this->attributeResponsitory->all();
+        $attrArr = [];
+        foreach($attrs as $attr){
+            $attrArr[$attr->id] = $attr->name;
+        }
+
         $product->product_images = $productImageArr;
 
-        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr'));
+        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr'));
     }
 
     /**
