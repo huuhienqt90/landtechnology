@@ -49,7 +49,7 @@
                                         <tbody>
                                             @foreach($products as $product)
                                             <tr> 
-                                                <th scope="row"><img src="{{ asset('storage/app') }}/{{ $product->feature_image }}"></th> 
+                                                <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$product->feature_image) }}"/></td></th> 
                                                 <td>{{ $product->name }}</td>
                                                 <td>{{ $product->original_price }}</td> 
                                                 <td>{{ $product->stock }}</td>

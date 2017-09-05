@@ -96,7 +96,7 @@ class SellerController extends Controller
         if( $request->hasFile('product_images') ){
             $productImages = $request->file('product_images');
             foreach ($productImages as $file) {
-                $path = $file->storeAs('sellproduct/galeries');
+                $path = $file->store('sellproduct/galeries');
                 $this->productImageResponsitory->create(['product_id' => $result->id, 'image_path' => $path, 'image_name'=> $file->getClientOriginalName()]);
             }
         }

@@ -91,8 +91,8 @@
                                                     <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
                                                         {{ Form::label('feature_image', 'Feature Image', ['class' => 'col-sm-3 control-label']) }}
                                                         <div class="col-sm-9">
-                                                            @if (Form::getValueAttribute('feature_image'))
-                                                                <img id="feature_image-prev" style="max-height:150px; border: 1px solid #cdcdcd; border-radius: 3px; overflow: hidden; margin-right: 10px; margin-bottom: 10px; padding: 2px;" src="{{ asset('storage/'.Form::getValueAttribute('feature_image')) }}"/>
+                                                            @if ($product->feature_image != null)
+                                                                <img id="feature_image-prev" style="max-height:150px; border: 1px solid #cdcdcd; border-radius: 3px; overflow: hidden; margin-right: 10px; margin-bottom: 10px; padding: 2px;" src="{{ asset('storage/'.$product->feature_image) }}"/>
                                                             @else
                                                                 <img id="feature_image-prev" style="max-height:150px" />
                                                             @endif
