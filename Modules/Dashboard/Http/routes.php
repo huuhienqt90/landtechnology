@@ -16,6 +16,12 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('product', 'ProductController');
         Route::resource('attribute-group', 'AttributeGroupController');
         Route::resource('attribute', 'AttributeController');
+
+        Route::resource('setting', 'SettingController');
+        Route::resource('payment-method', 'PaymentMethodController');
+        Route::resource('role', 'RoleController');
+        Route::resource('user', 'UserController');
+
     });
 
 });
