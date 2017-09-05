@@ -87,7 +87,7 @@ class BrandController extends Controller
             $update['image'] = $path;
         }
         $this->brandResponsitory->update($update, $id);
-        return redirect(route('dashboard.brand.index'))->with('alert-success', 'Update brand sucess!');
+        return redirect(route('dashboard.brand.index'))->with('alert-success', 'Update brand success!');
     }
 
     /**

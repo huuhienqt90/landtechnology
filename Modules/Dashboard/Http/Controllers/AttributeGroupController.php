@@ -7,8 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\UserResponsitory;
-use Modules\Dashboard\Http\Requests\AttributeGroupUpdateRequest;
-use Modules\Dashboard\Http\Requests\AttributeGroupStoreRequest;
+use Modules\Dashboard\Http\Requests\AttributeGroupRequest;
+use Auth;
 
 class AttributeGroupController extends Controller
 {
@@ -37,22 +37,23 @@ class AttributeGroupController extends Controller
     {
         $attributeGroup = $this->attrGroupResponsitory;
         $sellers = $this->userResponsitory->findAllBy('is_seller', 1);
-        $sellerArr = [];
+        $sellerArr = ['' => 'Select a seller'];
         if( $sellers->count() ){
             foreach ($sellers as $seller) {
                 $sellerArr[$seller->id] = $seller->getFullName();
             }
         }
 
-        $sellers = $this->userResponsitory->getUsersNotMatch(1);
-        $sellerArr = [];
-        if( $sellers->count() ){
-            foreach ($sellers as $seller) {
-                $sellerArr[$seller->id] = $seller->getFullName();
+        $attributesGroup = $this->attrGroupResponsitory->all();
+        $attributesGroupArr = ['' => 'Select a parent'];
+        if( $attributesGroup->count() ){
+            foreach ($attributesGroup as $attr) {
+                $attributesGroupArr[$attr->id] = $attr->name;
             }
         }
 
-        return view('dashboard::attribute-group.create', compact('attributeGroup', 'sellerArr'));
+        $listTypes = $this->attrGroupResponsitory->listTypes();
+        return view('dashboard::attribute-group.create', compact('attributeGroup', 'sellerArr', 'attributesGroupArr', 'listTypes'));
     }
 
     /**
@@ -60,8 +61,15 @@ class AttributeGroupController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(AttributeGroupRequest $request)
     {
+        $create = $request->only(['name', 'type', 'value']);
+        $create['seller_id'] = $request->seller_id == null ? Auth::user()->id : $request->seller_id;
+        if( $request->parent != null ) {
+            $create['parent'] = $request->parent;
+        }
+        $this->attrGroupResponsitory->create($create);
+        return redirect(route('dashboard.attribute-group.index'))->with('alert-success', 'Create attribute group sucess!');
     }
 
     /**
@@ -77,9 +85,27 @@ class AttributeGroupController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('dashboard::edit');
+        $sellers = $this->userResponsitory->findAllBy('is_seller', 1);
+        $sellerArr = ['' => 'Select a seller'];
+        if( $sellers->count() ){
+            foreach ($sellers as $seller) {
+                $sellerArr[$seller->id] = $seller->getFullName();
+            }
+        }
+
+        $attributesGroup = $this->attrGroupResponsitory->getParent($id);
+        $attributesGroupArr = ['' => 'Select a parent'];
+        if( $attributesGroup->count() ){
+            foreach ($attributesGroup as $attr) {
+                $attributesGroupArr[$attr->id] = $attr->name;
+            }
+        }
+
+        $listTypes = $this->attrGroupResponsitory->listTypes();
+        $attributeGroup = $this->attrGroupResponsitory->find($id);
+        return view('dashboard::attribute-group.edit', compact('attributeGroup','sellerArr','attributesGroupArr','listTypes'));
     }
 
     /**
@@ -87,15 +113,25 @@ class AttributeGroupController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(AttributeGroupRequest $request, $id)
     {
+        $update = $request->only(['name', 'type', 'value']);
+        $update['seller_id'] = $request->seller_id == null ? Auth::user()->id : $request->seller_id;
+        if( $request->parent != null ) {
+            $update['parent'] = $request->parent;
+        }
+        $this->attrGroupResponsitory->update($update, $id);
+        return redirect(route('dashboard.attribute-group.index'))->with('alert-success', 'Update attribute group success!');
     }
 
     /**
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy($id)
     {
+        $arItem = $this->attrGroupResponsitory->find($id);
+        $arItem->delete();
+        return redirect(route('dashboard.attribute-group.index'))->with('alert-success', 'Delete attribute group success');
     }
 }

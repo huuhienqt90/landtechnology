@@ -7,37 +7,37 @@
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">List all attribute groups</h3>
+                        <h3 class="box-title">List all attributes</h3>
                         <div class="pull-right box-tools">
-                            <a href="{{ route('dashboard.attribute-group.create') }}" class="btn btn-info btn-sm" data-toggle="tooltip" title="" data-original-title="Create">
+                            <a href="{{ route('dashboard.attribute.create') }}" class="btn btn-info btn-sm" data-toggle="tooltip" title="" data-original-title="Create">
                               <i class="fa fa-plus"></i></a>
                           </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        @if(isset($attributeGroups) && $attributeGroups->count() )
+                        @if(isset($attributes) && $attributes->count() )
                         <table id="list" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Type</th>
+                                    <th>Option</th>
                                     <th width="100">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($attributeGroups as $attributeGroup)
+                                @foreach($attributes as $attribute)
                                     <tr>
-                                        <td>{{ $attributeGroup->id }}</td>
-                                        <td>{{ $attributeGroup->name }}</td>
-                                        <td>{{ $attributeGroup->type }}</td>
+                                        <td>{{ $attribute->id }}</td>
+                                        <td>{{ $attribute->name }}</td>
+                                        <td>{{ $attribute->options }}</td>
                                         <td style="text-align: center;">
-                                                <form method="post" action="{{ route('dashboard.attribute-group.destroy', $attributeGroup->id) }}">
+                                                <form method="post" action="{{ route('dashboard.attribute.destroy', $attribute->id) }}">
                                                     {{ method_field('DELETE') }}
                                                     <div class="form-group">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <div class="btn-group">
-                                                        <a class="btn btn-info btn-flat" href="{{ route('dashboard.attribute-group.edit', $attributeGroup->id) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                        <a class="btn btn-info btn-flat" href="{{ route('dashboard.attribute.edit', $attribute->id) }}"><i class="fa fa-pencil-square-o"></i></a>
                                                         <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
                                                     </div>
                                                 </form>
@@ -54,7 +54,7 @@
                             </tfoot>
                         </table>
                         @else
-                        <h3>Attribute group not found</h3>
+                        <h3>Attribute not found</h3>
                         @endif
                     </div>
                     <!-- /.box-body -->
