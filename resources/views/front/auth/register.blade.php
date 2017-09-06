@@ -150,7 +150,7 @@
                                     <div class="text-center mg-top-20">
                                         I have read and agree to the<a href="index11ee.html?route=information/information/agree&amp;information_id=3" class="agree"><b> Privacy Policy</b></a>
                                         {{ Form::checkbox('agree', '1', false,['required' => 'required']) }}&nbsp;
-                                        {{ Form::submit('Continue', ['class' => 'btn btn-primary']) }}
+                                        {{ Form::submit('Continue', ['class' => 'btn-default btn-primary']) }}
                                     </div>
                                 {!! Form::close() !!}
                             </div>
