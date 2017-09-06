@@ -51,7 +51,8 @@ class SellerController extends Controller
      */
     public function index()
     {
-        // return view('front.seller.index');
+        $products = $this->productResponsitory->findWhere(['seller_id' => Auth::user()->id]);
+        return view('front.seller.index', compact('products'));
     }
 
     /**
@@ -122,7 +123,11 @@ class SellerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->productResponsitory->find($id);
+        $brands = $this->brandResponsitory->getArrayNameBrands();
+        $categories = $this->categoryResponsitory->getArrayNameCategories();
+        $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
+        return view('front.seller.edit', compact('product','brands','categories','selltypes'));
     }
 
     /**

@@ -1,7 +1,6 @@
 @component('mail::message')
-# Introduction
 
-Hi!!<br><br>
+Hi!<br>
 
 Code your verification is {{ $confirm_code }}
 

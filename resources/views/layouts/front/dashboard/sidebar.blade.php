@@ -30,8 +30,20 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a href="{{ route('seller.create') }}"><span class="glyphicon glyphicon-gift"></span>Sell an item</a>
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseSell"><span class="glyphicon glyphicon-list-alt">
+                    </span>Manage Sell Item</a>
                 </h4>
+            </div>
+            <div id="collapseSell" class="panel-collapse collapse">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ route('seller.create') }}">Sell an item</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-eye-open text-primary"></span><a href="{{ route('seller.index') }}">List sell items</a>
+                    </li>
+                    <!-- <li class="list-group-item"> <span class="glyphicon glyphicon-comment text-success"></span><a href="http://fb.com/moinakbarali">Comments</a><span class="badge">42</span></li> -->
+                </ul>
             </div>
         </div>
     </div>
