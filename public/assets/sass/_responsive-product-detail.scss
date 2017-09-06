@@ -1,0 +1,45 @@
+
+@include responsive_1920 {
+    #product-list .second-effect .news-product:before {
+        left: 3.6em;
+    }
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+    
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+    
+}
+
+@include responsive_600 {
+    #js-gallery .detail-content{ padding-top: 2em; }
+    #tabs-3 .nav-tabs{ padding-left: 1em; }
+    #tabs-3 .tab-content{ padding-left: 1em; }
+    #upsell .title{ padding-left: 1em; }
+}
+
+@include responsive_568 {
+    
+}
+
+@include responsive_480 {
+    
+}
+
+@include responsive_320 {
+    
+}

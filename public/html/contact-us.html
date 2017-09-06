@@ -153,6 +153,86 @@
         </div> <!-- .container-fluid -->
     </header><!-- END #header -->
 
+    <!-- START #bg-title -->
+    <section id="bg-title-grid">
+        <div class="conteiner-fulid">
+            <div class="img-bg-title-grid">
+                <img src="../assets/images/bg-contact-us.png" class="img-responsive" alt="images bg title grid">
+            </div> <!-- .img-bg-title-grid -->
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="content-bg-title-grid">
+                    <h1 class="text-uppercase h-white">contact us</h1>
+                    <p class="tetx-p">Typi non habent claritatem insitam.</p>
+                </div> <!-- .content-bg-title-grid -->
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+    </section> <!-- #bg-title -->
+
+    <!-- START #content-contact-us -->
+    <section id="content-contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="content-us-title">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                        <li class="breadcrumb-item active">Contact us</li>
+                    </ol>
+                </div> <!-- .content-us-title -->
+                <div class="col-md-7 col-sm-7 send-us">
+                    <h3 class="text-uppercase">Send us a message</h3>
+                    <form>
+                        <div class="form-group pd-left col-md-6 col-sm-6">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Mark Stevens">
+                        </div>
+                        <div class="form-group pd-right col-md-6 col-sm-6 ">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mark Stevens">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputMessage1">Message</label>
+                            <textarea class="form-control" placeholder="Write your message here..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-default btn-primary text-uppercase">Send your message</button>
+                    </form>
+                </div> <!-- .send-us -->
+
+                <div class="col-md-4 col-sm-4 get-office">
+                    <h3 class="text-uppercase">Get office info.</h3>
+                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan.</p>
+                    <div class="contact">
+                        <ul>
+                            <li>
+                                <span class="text-uppercase"><i class="fa fa-map-marker" aria-hidden="true"></i>Our Address</span>
+                                <p>1234 Heaven Stress, Beverly Hill.</p>
+                            </li>
+                            <li>
+                                <span class="text-uppercase"><i class="fa fa-phone" aria-hidden="true"></i>Phone Number</span>
+                                <p>Office: (800) 123 456 789 </p>
+                            </li>
+                            <li>
+                                <span class="text-uppercase"><i class="fa fa-envelope-o" aria-hidden="true"></i>Email address</span>
+                                <p>
+                                    Email: Erentheme@gmail.com
+                                    Support: Erentheme@gmail.com
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- .get-office -->
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+    </section> <!-- #content-contact-us -->
+
+    <!-- START #maps -->
+    <!-- <section id="maps">
+        <div class="map-responsive">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d6030.418742494061!2d-111.34563870463673!3d26.01036670629853!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1471908546569" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div> --> <!-- .map-responsive -->
+    <!-- </section> --><!-- END #maps -->
 
     <!-- START #footer -->
     <footer id="footer">
@@ -256,8 +336,19 @@
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/slick.min.js"></script>
     <script src="../assets/js/slider-slick.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
         $(document).ready(function(){
+            function initialize() {
+                var map_canvas = document.getElementById('map_canvas');
+                var map_options = {
+                  center: new google.maps.LatLng(44.5403, -78.5463),
+                  zoom: 8,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+                var map = new google.maps.Map(map_canvas, map_options)
+              }
+              google.maps.event.addDomListener(window, 'load', initialize);
 
             $('#back-to-top').on('click', function (e) {
                 e.preventDefault();

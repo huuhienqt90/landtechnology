@@ -1,0 +1,49 @@
+
+@include responsive_1920 {
+    #product-list .second-effect .news-product:before {
+        left: 3.6em;
+    }
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+    .list-show-content ul li{ margin-bottom: 3em; }
+    .list-show-content ul li .content-list-show .breadcrumb{
+        margin-bottom: 0;
+        padding: 0;
+    }
+    .list-show-content ul li .content-list-show .breadcrumb .breadcrumb-item{ margin-bottom: 0.5em; }
+    .list-show-content ul li .content-list-show .btn-add-to-cart{ margin-top: 0.5em; }
+}
+
+@include responsive_600 {
+
+}
+
+@include responsive_568 {
+}
+
+@include responsive_480 {
+}
+
+@include responsive_320 {
+    .list-show-content ul li .content-list-show {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    #content-grid .navigation-page .pagination{ margin-top: 0; }
+}
