@@ -22,6 +22,12 @@ body{
 				    font-size: 16px;
 				    color: #000;
 				    margin-top: 0;
+				    a{
+				    	color: $bg-color-black;
+				    	&:hover {
+				    		color: $bg-color-main;
+				    	}
+				    }
 				}
 				p{
 				    color: #606060;
@@ -32,6 +38,12 @@ body{
 				    padding-left: 0;
 				    li a {
 					    color: #606060;
+					    &:hover {
+					    	color: $bg-color-main;
+					    }
+					}
+					li i{
+						color: #606060;
 					    &:hover {
 					    	color: $bg-color-main;
 					    }

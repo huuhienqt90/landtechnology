@@ -1,0 +1,55 @@
+
+@include responsive_1920 {
+    #product-list .second-effect .news-product:before {
+        left: 3.6em;
+    }
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+    #cart-totals .calculate-shipping .select-your-state{ width: 45%; }
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+    #content-shopping .menu-content-shopping{ padding-left: 0.5em; }
+    #content-shopping .shopping-cart-table{ padding-left: 0.5em; padding-right: 0.5em; }
+    #cart-totals .calculate-shipping{ padding-left: 0.5em; }
+    #cart-totals .cart-totals{ padding-right: 0.5em; }
+    #cart-totals .calculate-shipping .select-your-state{ width: 45%; }
+    #cart-totals .calculate-shipping .zip-code{ width: 45%; }
+}
+
+@include responsive_600 {
+    #content-shopping .shopping-cart-table .continue .button-continue button{ margin-left: 2em; }
+    #cart-totals .calculate-shipping{ padding-bottom: 3em; }
+}
+
+@include responsive_568 {
+	#content-shopping .shopping-cart-table .content-table th{ padding-left: 0.5em; }
+    #content-shopping .shopping-cart-table .continue .button-continue button{ margin-left: 0.5em; }
+}
+
+@include responsive_480 {
+    #content-shopping .shopping-cart-table .continue .button-continue {
+	    float: left;
+	    margin-top: 1em;
+	}
+	#content-shopping .shopping-cart-table .continue .button-continue button {
+	    margin-left: 0;
+	}
+}
+
+@include responsive_320 {
+    
+}

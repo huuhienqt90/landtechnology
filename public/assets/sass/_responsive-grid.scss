@@ -1,0 +1,202 @@
+
+@include responsive_1920 {
+    #product-list .second-effect .news-product:before {
+        left: 3.6em;
+    }
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+    #bg-title-grid .content-bg-title-grid{ margin-top: -16em; }
+    #bg-title-grid .content-bg-title-grid p{
+        margin-top: 1em;
+        margin-bottom: 2em;
+    }
+    #content-grid .news-product-slider {
+        left: 0.4em;
+        width: 26.5%;
+    }
+    #content-grid .sale-product-slider{ left: 0.5em; }
+    #content-grid .item { padding-bottom: 1.5em; }
+    #content-grid .slider .item .overlay .text {
+        top: 55%;
+    }
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+    #content-grid { margin-top: 0; }
+    #content-grid .content-grid-title{ padding-left: 1em; }
+    #bg-title-grid .content-bg-title-grid{ margin-top: -12em; }
+    #bg-title-grid .content-bg-title-grid h1 {
+        font-size: 25px;
+    }
+    #bg-title-grid .content-bg-title-grid h1 p{ font-size: 25px; }
+    #bg-title-grid .content-bg-title-grid p {
+        font-size: 13px;
+        margin-top: 1em;
+        margin-bottom: 2em;
+    }
+    #bg-title-grid .content-bg-title-grid a{
+        padding: 0.5em 1em;
+        font-size: 13px;
+    }
+    #content-grid .item{ padding-left: 0; }
+    #content-grid .news-product-slider{
+        top: 0.4em;
+        left: 0.4em;
+        width: 35.5%;
+    }
+    #content-grid .sale-product-slider {
+        left: 0.7em;
+        width: 31.5%;
+    }
+    #content-grid .slider .item .overlay .text {
+        top: 50%;
+    }
+    #content-grid .item .tetx .text-detail{ width: 65%; }
+    #content-grid .sidebar .shop-by .demo .range-style{ margin-bottom: 0; }
+    #content-grid .sidebar .shop-by .demo p label{ margin-top: 0; }
+}
+
+@include responsive_600 {
+    #bg-title-grid .content-bg-title-grid {
+        margin-top: -10.5em;
+    }
+    #bg-title-grid .content-bg-title-grid h1 {
+        font-size: 20px;
+    }
+    #bg-title-grid .content-bg-title-grid h1 p{ font-size: 20px; }
+    #bg-title-grid .content-bg-title-grid p {
+        font-size: 12px;
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+    }
+    #bg-title-grid .content-bg-title-grid a{
+        padding: 0.5em 1em;
+        font-size: 12px;
+    }
+    #content-grid .grid-content-detail-list{ margin-top: 2.5em; }
+    #content-grid .news-product-slider:before {
+        left: 3.8em;
+    }
+    #content-grid .sale-product-slider{
+        left: 0.67em;
+    }
+    #content-grid .sale-product-slider:before {
+        left: 3.35em;
+    }
+    #content-grid .sidebar .shop-by .demo .range-style{ margin-bottom: 1em; }
+    #content-grid .sidebar .shop-by .demo a{ float: right; }
+    #content-grid .sidebar .shop-by .color-options{ clear: both; }
+    #content-grid .news-product-slider{ width: 22%; }
+    #content-grid .sale-product-slider{ width: 19.3%; }
+
+}
+
+@include responsive_568 {
+    #bg-title-grid .content-bg-title-grid {
+        margin-top: -10em;
+    }
+}
+
+@include responsive_480 {
+    #bg-title-grid .content-bg-title-grid {
+        margin-top: -8.5em;
+    }
+    #bg-title-grid .content-bg-title-grid h1 {
+        font-size: 15px;
+    }
+    #bg-title-grid .content-bg-title-grid h1 p{ font-size: 15px; }
+    #bg-title-grid .content-bg-title-grid p {
+        font-size: 10px;
+        margin-top: 0.5em;
+        margin-bottom: 1em;
+    }
+    #bg-title-grid .content-bg-title-grid a{
+        padding: 0.5em 1em;
+        font-size: 10px;
+    }
+    #content-grid .news-product-slider {
+        width: 27%;
+    }
+    #content-grid .sale-product-slider {
+        width: 24.3%;
+    }
+    #content-grid .grid-content-detail-list .show-click span{ font-size: 12.5px; }
+    #content-grid .navigation-page .showing{ font-size: 12.5px; }
+}
+
+@include responsive_320 {
+    #bg-title-grid .content-bg-title-grid {
+        margin-top: -6.5em;
+    }
+    #bg-title-grid .content-bg-title-grid h1 {
+        font-size: 12px;
+        margin-bottom: 0.5em;
+    }
+    #bg-title-grid .content-bg-title-grid h1 p{ font-size: 12px; }
+    #bg-title-grid .content-bg-title-grid p {
+        font-size: 8px;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    #bg-title-grid .content-bg-title-grid a{
+        padding: 0.3em 0.8em;
+        font-size: 8px;
+    }
+    #content-grid .news-product-slider p{ font-size: 9px; }
+    #content-grid .sale-product-slider p{ font-size: 9px; }
+    #content-grid .news-product-slider {
+        top: 0.1em;
+    }
+    #content-grid .news-product-slider:before {
+        border-bottom: 10.5px solid $bg-color-main;
+        border-top: 10.5px solid $bg-color-main;
+        left: 2.3em;
+    }
+    #content-grid .sale-product-slider:before {
+        border-bottom: 10.5px solid $bg-color-sale-product;
+        border-top: 10.5px solid $bg-color-sale-product;
+        left: 2.1em;
+    }
+    #content-grid .sale-product-slider {
+        top: 3.5em;
+        left: 0.55em;
+    }
+    #content-grid .sale-product-slider:after {
+        border-left: 10.5px solid transparent;
+        border-right: 10.5px solid transparent;
+        left: -1.4em;
+        top: 0.1em;
+    }
+    #content-grid .item .overlay .text {
+        font-size: 10px;
+    }
+    #content-grid .slider .item .overlay .text {
+        top: 40%;
+    }
+    #content-grid .grid-content-detail-list .show-click span {
+        font-size: 12.5px;
+        float: left;
+        margin: 1em;
+        margin-left: 0;
+    }
+    #content-grid .navigation-page .showing {
+        float: left;
+        padding-top: 0;
+    }
+    #content-grid .item .tetx .text-detail {
+        width: 55%;
+    }
+}

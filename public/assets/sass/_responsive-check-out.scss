@@ -1,0 +1,41 @@
+
+@include responsive_1920 {
+    #product-list .second-effect .news-product:before {
+        left: 3.6em;
+    }
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+    #content-check-out .create p{ margin-bottom: 2.8em; }
+    #content-check-out .create form .bt-res { font-size: 10px; }
+    #show-list-infomation{ margin-left: 1em; }
+}
+
+@include responsive_600 {
+
+}
+
+@include responsive_568 {
+}
+
+@include responsive_480 {
+}
+
+@include responsive_320 {
+    #content-check-out .create form .bt-res { font-size: 8px; }
+}
