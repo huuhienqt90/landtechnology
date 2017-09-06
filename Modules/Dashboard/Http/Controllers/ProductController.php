@@ -14,6 +14,7 @@ use App\Repositories\UserResponsitory;
 use App\Repositories\ProductCategoryResponsitory;
 use App\Repositories\ProductImageResponsitory;
 use App\Repositories\AttributeResponsitory;
+use App\Repositories\AttributeGroupResponsitory;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
@@ -27,7 +28,9 @@ class ProductController extends Controller
     protected $userResponsitory;
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory){
+    protected $attributeGroupResponsitory;
+
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
@@ -37,6 +40,7 @@ class ProductController extends Controller
         $this->productCategoryResponsitory  = $productCategoryResponsitory;
         $this->productImageResponsitory     = $productImageResponsitory;
         $this->attributeResponsitory        = $attributeResponsitory;
+        $this->attributeGroupResponsitory   = $attributeGroupResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -140,7 +144,7 @@ class ProductController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        // return view('dashboard::show');
     }
 
     /**
@@ -275,5 +279,18 @@ class ProductController extends Controller
      */
     public function destroy()
     {
+    }
+
+    public function setType(Request $request){
+        if( $request->ajax() ){
+            $ids = $request->id;
+            if( !empty($ids) ){
+                foreach($ids as $key => $id){
+                    $data[$key] = $this->attributeResponsitory->getTypeByID($id);
+                }
+                return response()->json($data);
+            }
+            return null;
+        }
     }
 }

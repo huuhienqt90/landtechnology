@@ -24,17 +24,6 @@
                         @include('dashboard::partials.text-editor', ['field' => 'description', 'label' => 'Description', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.select', ['field' => 'product_brand', 'label' => 'Product Brand', 'options' => $brandArr])
                         @include('dashboard::partials.select-multiple', ['field' => 'category', 'placeholder' => 'Please select category', 'label' => 'Category', 'options' => $cateArr])
-                        <div class="form-group {{ $errors->has('attribute') ? ' has-error' : ''}}">
-                           <label for="{{ 'attribute' }}" class="col-sm-2 control-label">Attributes</label>
-                           <div class="col-sm-4">
-                                {!! Form::select('attribute'.'[]', $attrArr, Form::getValueAttribute('attribute'), ['class' => 'form-control select2', 'multiple' => true, 'data-placeholder' => 'Please select attribute']) !!}
-                                @include('dashboard::partials.error', ['field' => 'attribute'])
-                            </div>
-                            <div class="col-sm-2">
-                                <a href="#" class="btn btn-primary">Add</a>
-                            </div>
-                        </div>
-                        <div id="attribute"></div>
                         @include('dashboard::partials.select', ['field' => 'seller_id', 'label' => 'Seller', 'options' => $sellerArr])
                         @include('dashboard::partials.input', ['field' => 'key_words', 'label' => 'Key Words', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.select', ['field' => 'sell_type_id', 'label' => 'Sell Type', 'options' => $sellTypeArr])
@@ -42,6 +31,17 @@
                         @include('dashboard::partials.input', ['field' => 'location', 'label' => 'Location', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field' => 'stock', 'label' => 'Stock', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field' => 'sold_units', 'label' => 'Sold units', 'options' => ['class'=>'form-control']])
+                        <div class="form-group {{ $errors->has('attribute') ? ' has-error' : ''}}">
+                           <label for="{{ 'attribute' }}" class="col-sm-2 control-label">Attributes</label>
+                           <div class="col-sm-4">
+                                {!! Form::select('attribute'.'[]', $attrArr, Form::getValueAttribute('attribute'), ['class' => 'form-control select2', 'multiple' => true, 'data-placeholder' => 'Please select attribute', 'id' => 'attribute']) !!}
+                                @include('dashboard::partials.error', ['field' => 'attribute'])
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-primary" id="addAttr">+</a>
+                            </div>
+                        </div>
+                        <div id="attributes"></div>
                         <div class="buttons">
                             <input type="submit" class="btn btn-primary" value="Save changes" />
                         </div>
@@ -56,6 +56,22 @@
     <script type="text/javascript">
         jQuery(document).ready(function($){
             $('.select2').select2();
+
+            $("#addAttr").click(function(e) {
+                e.preventDefault();
+                var id = $('#attribute').val();
+                $.ajax({
+                    url: "{{ route('dashboard.getattr') }}",
+                    type: "GET",
+                    data: {id: id},
+                    success: function(result) {
+                        console.log(result);
+                    },
+                    error: function(data){
+                        console.log(data);
+                    },
+                });
+            });
         });
     </script>
 @stop
