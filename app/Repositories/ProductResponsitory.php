@@ -12,4 +12,8 @@ class ProductResponsitory extends Repository {
     public function model() {
         return 'App\Models\Product';
     }
+
+    public function getFeatureProducts($take = 4){
+        return Product::where('status', 'active')->take($take)->get();
+    }
 }

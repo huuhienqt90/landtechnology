@@ -19,4 +19,17 @@ class Attribute extends Model
     public function group(){
         return $this->hasOne('App\Models\AttributeGroup', 'id', 'group_id');
     }
+
+    public static function getValuesById($id = 0){
+        if( $id ){
+            $attrs = static::find($id);
+            if($attrs->options){
+                return explode(',', $attrs->options);
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
+    }
 }

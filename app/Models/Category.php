@@ -50,4 +50,8 @@ class Category extends Model
             return null;
         }
     }
+
+    public function getChildren(){
+        return static::where('parent_id', $this->id)->get();
+    }
 }

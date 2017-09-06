@@ -17,11 +17,16 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('attribute-group', 'AttributeGroupController');
         Route::resource('attribute', 'AttributeController');
 
+
+        // Return json type attribute group
+        Route::get('getattribute', 'ProductController@getAttribute')->name('getattr');
+        // Add attribute quick
+        Route::post('addfastattribute', 'ProductController@addFastAttribute')->name('addfast');
+
         Route::resource('setting', 'SettingController');
         Route::resource('payment-method', 'PaymentMethodController');
         Route::resource('role', 'RoleController');
         Route::resource('user', 'UserController');
-
     });
 
 });

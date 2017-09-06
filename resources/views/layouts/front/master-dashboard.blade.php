@@ -63,6 +63,7 @@
         <script src="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
         <!-- Select 2 -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+        <script src="{{ asset('assets/js/notify.min.js') }}"></script>
         <script type="text/javascript">
         jQuery(document).ready(function($){
             $('input[name="name"]').keyup(function(e){
@@ -137,5 +138,6 @@
             $('.select2').select2();
         });
     </script>
+    @include('front.messages')
     </body>
 </html>

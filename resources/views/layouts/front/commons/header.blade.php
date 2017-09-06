@@ -89,30 +89,29 @@
                                 <li class="menu-cart">
                                     <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                     <div class="hv-cart">
+                                        @if( Cart::count() )
                                         <div class="info-cart">
-                                            <ul>
-                                                <li>
-                                                    <a href="#" title="images info" class="img-responsive"><img src="{{ asset('assets/images/img-hv-cart.png') }}" alt="images img hover cart"></a>
+                                            <ul class="mini-cart-items">
+                                                @foreach(Cart::content() as $row)
+                                                <li class="list-mini-cart-item row">
+                                                    <div class="col-md-3"><a href="{{ route('front.product.detail', \App\Models\Product::find($row->id)->slug) }}" title="{{ $row->name }}" class="img-responsive thumbnail"><img src="{{ \App\Models\Product::getFeatureImage($row->id) }}" alt="images img hover cart img-responsive"></a></div>
+                                                    <div class="col-md-7">
+                                                        <p>{{ $row->name }}</p>
+                                                        <p>Qty: {{ $row->qty }}</p>
+                                                        <span>${{ $row->price }}</span>
+                                                    </div>
+                                                    <div class="col-md-2"><a href="{{ route('front.product.removeFromCart', $row->rowId) }}" title="icon close" class="img-icon-close"><i class="fa fa-times" aria-hidden="true"></i></a></div>
                                                 </li>
-                                                <li>
-                                                    <p>Sacrificial Chair Design</p>
-                                                    <p>Qty: 2</p>
-                                                    <span>$170.00</span>
-                                                </li>
-                                                <li>
-                                                    <a href="#" title="icon close" class="img-icon-close"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                </li>
+                                                @endforeach
                                             </ul>
                                         </div> <!-- .info-cart -->
                                         <div class="content-cart">
                                             <ul>
                                                 <li>
-                                                    <p>Shipping :</p>
                                                     <span>Total :</span>
                                                 </li>
                                                 <li>
-                                                    <p>$30.00</p>
-                                                    <span>$173.00</span>
+                                                    <span>${{ Cart::total() }}</span>
                                                 </li>
                                             </ul>
                                         </div> <!-- .content-cart -->
@@ -122,6 +121,11 @@
                                                 <li><a href="#" title="btn cart" class="btn-view-cart">CHECKOUT</a></li>
                                             </ul>
                                         </div> <!-- .btn-cart -->
+                                        @else
+                                            <div class="info-cart">
+                                                <p>Not found products in cart</p>
+                                            </div>
+                                        @endif
                                     </div> <!-- .hv-cart -->
                                 </li>
                             </ul> <!-- .nav .navbar-nav .navbar-right -->

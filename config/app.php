@@ -171,6 +171,7 @@ return [
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         SetKyar\Social\SocialServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -234,6 +235,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Module' => Nwidart\Modules\Facades\Module::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
 
     ],
 

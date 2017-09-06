@@ -1,11 +1,12 @@
 @extends('layouts.front.master')
 
 @section('meta')
+    <title>Home - Land Technology</title>
     @include('social::meta-article', [
         'title'         => 'Home',
-        'description'   => 'Welcome from Hello World',
-        'image'         => 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
-        'author'        => 'Set Kyar Wa Lar'
+        'description'   => 'Land Technology',
+        'image'         => asset('assets/images/logo.png'),
+        'author'        => 'Land Technology'
     ])
 @stop
 
@@ -129,202 +130,232 @@
         </div> <!-- .row -->
         <div class="row" style="overflow: hidden;">
             <div class="col-md-12 slider slider-nav">
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="news-product-slider">
-                            <p>NEW</p>
-                        </div> <!-- .news-product -->
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="news-product-slider">
-                            <p>NEW</p>
-                        </div> <!-- .news-product -->
-                        <div class="sale-product-slider">
-                            <p>-15%</p>
-                        </div> <!-- .news-product -->
+                @if(isset($featureProducts) && $featureProducts->count())
+                    @foreach($featureProducts as $product)
+                        <div class="item">
+                            <div class="slider-item">
+                                <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ asset('storage/'.$product->feature_image) }}" class="img-responsive" alt=""/></a>
+                                <div class="news-product-slider">
+                                    <p>{{ $product->sellType->name }}</p>
+                                </div> <!-- .news-product -->
+                                <div class="overlay">
+                                    <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                    <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                </div> <!-- .overlay -->
+                                <ul class="tetx">
+                                    <li class="text-detail">
+                                        <h4><a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}">{{ $product->name }}</a></h4>
+                                        <span>$ {{ number_format($product->display_price) }}</span>
+                                    </li> <!-- .text-detail -->
+                                    <li class="lock">
+                                        <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="lock">
+                                            <div class="glyph">
+                                                <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                            </div>
+                                        </a>
+                                    </li> <!-- .lock -->
+                                </ul>
+                            </div> <!-- .slider-item -->
+                        </div> <!-- .item -->
+                    @endforeach
+                @else
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="sale-product-slider">
+                                <p>-15%</p>
+                            </div> <!-- .news-product -->
 
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="news-product-slider">
-                            <p>NEW</p>
-                        </div> <!-- .news-product -->
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="news-product-slider">
-                            <p>NEW</p>
-                        </div> <!-- .news-product -->
-                        <div class="sale-product-slider">
-                            <p>-15%</p>
-                        </div> <!-- .news-product -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="sale-product-slider">
+                                <p>-15%</p>
+                            </div> <!-- .news-product -->
 
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
-                <div class="item">
-                    <div class="slider-item">
-                        <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
-                        <div class="overlay">
-                            <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                            <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                        </div> <!-- .overlay -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul>
-                    </div> <!-- .slider-item -->
-                </div> <!-- .item -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                @endif
             </div> <!-- END .slider .slider-nav -->
         </div> <!-- .row -->
         <div class="row">

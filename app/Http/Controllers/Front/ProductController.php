@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Front;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductResponsitory;
+use Cart;
 
 class ProductController extends Controller
 {
-    private $productRepositories;
+    private $productRepository;
 
-    public function __construct(ProductResponsitory $productRepositories){
-        $this->productRepositories = $productRepositories;
+    public function __construct(ProductResponsitory $productRepository){
+        $this->productRepository = $productRepository;
     }
     /**
      * Display a listing of the resource.
@@ -50,9 +51,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug = null)
     {
-        //
+        return view('front.product.detail');
     }
 
     /**
@@ -73,7 +74,8 @@ class ProductController extends Controller
      */
     public function showList()
     {
-        return view('front.product.list');
+        $products = $this->productRepository->paginate(12);
+        return view('front.product.list', compact('products'));
     }
 
     /**
@@ -83,7 +85,8 @@ class ProductController extends Controller
      */
     public function showGrid()
     {
-        return view('front.product.grid');
+        $products = $this->productRepository->paginate(12);
+        return view('front.product.grid', compact('products'));
     }
 
     /**
@@ -107,5 +110,31 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addToCart($id = 0, $quantity = 1, $options = [], $type = 'redirect'){
+        $product = $this->productRepository->find($id);
+        $cart = Cart::add($id, $product->name, $quantity, $product->display_price, $options);
+        if( $type == 'redirect'){
+            return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+        }else{
+            return response()->json($cart);
+        }
+    }
+
+    public function removeFromCart($id = 0){
+        Cart::remove($id);
+        return redirect()->back()->with('alert-success', 'Remove product in cart success');
+    }
+
+    public function addToFavorite($id = 0, $quantity = 1, $options = [], $type = 'redirect'){
+        $product = $this->productRepository->find($id);
+        Cart::instance('wishlist')->add($id, $product->name, $quantity, $product->display_price, $options);
+        return redirect()->back()->with('alert-success', 'Add product to wish list success');
+    }
+
+    public function productCategory($slug = null){
+        $products = $this->productRepository->paginate(12);
+        return view('front.product.grid', compact('products'));
     }
 }

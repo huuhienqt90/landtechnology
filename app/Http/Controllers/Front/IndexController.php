@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Repositories\ProductResponsitory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class IndexController extends Controller
 {
+    protected $productRepository;
+    public function __construct(ProductResponsitory $productResponsitory)
+    {
+        $this->productRepository = $productResponsitory;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,8 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('front.index.index');
+        $featureProducts = $this->productRepository->getFeatureProducts(8);
+        return view('front.index.index', compact('featureProducts'));
     }
 
     /**

@@ -12,4 +12,9 @@ class AttributeResponsitory extends Repository {
     public function model() {
         return 'App\Models\Attribute';
     }
+
+    public function getArrOptions($id){
+    	$attrs = Attribute::find($id)->options;
+    	return explode(",", $attrs);
+    }
 }
