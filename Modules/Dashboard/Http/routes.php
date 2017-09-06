@@ -17,8 +17,13 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('attribute-group', 'AttributeGroupController');
         Route::resource('attribute', 'AttributeController');
 
+
         // Return json type attribute group
         Route::get('gettypeattr', 'ProductController@setType')->name('getattr');
+        Route::resource('setting', 'SettingController');
+        Route::resource('payment-method', 'PaymentMethodController');
+        Route::resource('role', 'RoleController');
+        Route::resource('user', 'UserController');
     });
 
 });

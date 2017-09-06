@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentMethodsTable extends Migration
+class CreateUserMetasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreatePaymentMethodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_methods', function (Blueprint $table) {
+        Schema::create('user_metas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('status')->default('active');
-            $table->string('class_name');
+            $table->integer('user_id')->unsigned();
+            $table->string('key');
+            $table->longText('value')->nullable();
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreatePaymentMethodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('user_metas');
     }
 }

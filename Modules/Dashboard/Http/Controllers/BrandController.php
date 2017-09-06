@@ -48,7 +48,7 @@ class BrandController extends Controller
             $create['image'] = $path;
         }
         $this->brandResponsitory->create($create);
-        return redirect(route('dashboard.brand.index'))->with('alert-success', 'Create brand sucess!');
+        return redirect(route('dashboard.brand.index'))->with('alert-success', 'Create brand success!');
     }
 
     /**

@@ -54,7 +54,7 @@
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Orders</a></li>
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Coupons</a></li>
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Reviews</a></li>
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
+                    <li><a href="{{ route('dashboard.setting.index') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -63,10 +63,8 @@
                     <span>Users</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Sellers</a></li>
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Buyers</a></li>
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Admins</a></li>
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
+                    <li><a href="{{ route('dashboard.user.index') }}"><i class="fa fa-circle-o"></i> Users</a></li>
+                    <li><a href="{{ route('dashboard.role.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
                 </ul>
             </li>
         </ul>
