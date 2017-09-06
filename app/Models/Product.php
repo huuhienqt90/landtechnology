@@ -73,4 +73,12 @@ class Product extends Model
     public function categories() {
         return $this->belongsToMany('App\Models\Category', 'product_categories', 'product_id', 'category_id');
     }
+    public static function getFeatureImage($productId = 0){
+        $product = static::find($productId);
+        if( isset( $product->feature_image ) && !empty( $product->feature_image ) ){
+            return asset('storage/'.$product->feature_image);
+        }else{
+            return asset('assets/images/img-hv-cart.png');
+        }
+    }
 }

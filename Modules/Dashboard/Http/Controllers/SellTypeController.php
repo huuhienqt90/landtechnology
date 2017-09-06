@@ -44,7 +44,7 @@ class SellTypeController extends Controller
     {
         $create = ['name' => $request->name, 'created_by' => auth()->user()->id, 'updated_by' => auth()->user()->id];
         $this->sellTypeResponsitory->create($create);
-        return redirect(route('dashboard.sell-type.index'))->with('alert-success', 'Create sell type sucess!');
+        return redirect(route('dashboard.sell-type.index'))->with('alert-success', 'Create sell type success!');
     }
 
     /**
@@ -71,7 +71,7 @@ class SellTypeController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(SellTypeUpdateRequest $request)
+    public function update(SellTypeUpdateRequest $request, $id)
     {
         $update = [
             'name' => $request->name,

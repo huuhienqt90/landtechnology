@@ -39,8 +39,9 @@
         <script src="{{ asset('assets/js/price.js') }}"></script>
         <script src="{{ asset('assets/js/grid-list-show.js') }}"></script>
         <!-- Detail product -->
-        <script src="{{ asset('assets/js/product-detail.js') }}""></script>
-        
+        <script src="{{ asset('assets/js/notify.min.js') }}"></script>
+        <script src="{{ asset('assets/js/product-detail.js') }}"></script>
+
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.slider-nav').slick({
@@ -96,5 +97,6 @@
                 });
             });
         </script>
+        @include('front.messages')
     </body>
 </html>

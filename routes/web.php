@@ -35,7 +35,11 @@ Route::group(['namespace' => 'Front'], function() {
     Route::group(['prefix' => 'product'], function(){
 
         // Route::resource('products', 'ProductController');
-        Route::get('detail', 'ProductController@edit')->name('front.product.detail');
+        Route::get('detail/{slug?}', 'ProductController@show')->name('front.product.detail');
+        Route::get('add-to-cart/{id?}/{quantity?}', 'ProductController@addToCart')->name('front.product.addToCart');
+        Route::get('add-to-favorite/{id?}', 'ProductController@addToFavorite')->name('front.product.addToFavorite');
+        Route::get('remove-from-cart/{id?}', 'ProductController@removeFromCart')->name('front.product.removeFromCart');
+        Route::get('category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
         Route::get('list', 'ProductController@showList')->name('front.product.list');
         Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
     });

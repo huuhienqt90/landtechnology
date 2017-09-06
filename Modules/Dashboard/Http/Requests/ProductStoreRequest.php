@@ -31,7 +31,7 @@ class ProductStoreRequest extends FormRequest
             'seller_id' => 'required',
             'sell_type_id' => 'required',
             'product_brand' => 'required',
-            'feature_image' => 'image|mimes:jpeg,bmp,png|size:4800'
+            'feature_image' => 'image|mimes:jpeg,bmp,png'
         ];
     }
 
