@@ -1,8 +1,5 @@
 
 @include responsive_1920 {
-    #product-list .second-effect .news-product:before {
-        left: 3.6em;
-    }
 }
 
 @include responsive_1300 {
@@ -65,7 +62,6 @@
         top: 50%;
     }
     #content-grid .item .tetx .text-detail{ width: 65%; }
-    #content-grid .sidebar .shop-by .demo .range-style{ margin-bottom: 0; }
     #content-grid .sidebar .shop-by .demo p label{ margin-top: 0; }
 }
 

@@ -1,8 +1,5 @@
 
 @include responsive_1920 {
-    #product-list .second-effect .news-product:before {
-        left: 3.6em;
-    }
 }
 
 @include responsive_1300 {
@@ -307,11 +304,12 @@
     #product-list .second-effect .news-product:before{
         border-bottom: 12px solid #79B6C8;
         border-top: 12px solid #79B6C8;
-        left: 2.5em;
+        left: 2.4em;
     }
     #product-list .second-effect .overlay a{ font-size: 14px; }
     #product-list .second-effect .overlay p{ font-size: 11px; }
     #product-list .second-effect .overlay .text{ top: 66%; }
+    #new-arrivals .detail-content-product{ padding-bottom: 4em; }
     #new-arrivals .news-product-slider{ width: 22.5%; }
     #new-arrivals .sale-product-slider{ width: 22.5%; }
     #new-arrivals .img-detail-content .news-product-detail{ left: 14.5em; }
@@ -319,11 +317,20 @@
     #featured-products .news-product-slider{ width: 17%; left: 13.5em; }
     #featured-products .sale-product-slider{ width: 16.5%; left: 13.6em; }
     #purchase .text-content-purchase h4{ font-size: 9px; }
+    #featured-products .item .overlay .text{ top: 65%; }
     #purchase .text-content-purchase {
         top: -3.5em;
         padding-bottom: 2.8em;
         margin: 0;
     }
+    #purchase .text-content-purchase h4{ margin-bottom: 0.1em; }
+    #purchase .text-content-purchase p{ width: 75%; }
+    #sign-up .content-sign-up {
+        text-align: left;
+        padding: 6em 0.5em;
+    }
+    #purchase .text-content-purchase .btn-purchase{ margin-top: -0.5em; }
+    #out-blog .content-out-blog{ display: block; }
     #footer .container:before {
         left: calc(100% - 95%);
     }

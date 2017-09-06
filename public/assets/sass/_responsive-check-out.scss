@@ -1,8 +1,5 @@
 
 @include responsive_1920 {
-    #product-list .second-effect .news-product:before {
-        left: 3.6em;
-    }
 }
 
 @include responsive_1300 {
@@ -14,6 +11,7 @@
 }
 
 @include responsive_1024 {
+	#content-check-out .create form .bt-res { font-size: 12px; }
 }
 
 @include responsive_992 {
