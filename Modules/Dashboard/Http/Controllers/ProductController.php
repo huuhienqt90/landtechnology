@@ -12,6 +12,7 @@ use App\Repositories\BrandResponsitory;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\UserResponsitory;
 use App\Repositories\ProductCategoryResponsitory;
+use App\Repositories\ProductAttributeResponsitory;
 use App\Repositories\ProductImageResponsitory;
 use App\Repositories\AttributeResponsitory;
 use App\Repositories\AttributeGroupResponsitory;
@@ -29,8 +30,9 @@ class ProductController extends Controller
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
     protected $attributeGroupResponsitory;
+    protected $productAttributeResponsitory;
 
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory){
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
@@ -41,6 +43,7 @@ class ProductController extends Controller
         $this->productImageResponsitory     = $productImageResponsitory;
         $this->attributeResponsitory        = $attributeResponsitory;
         $this->attributeGroupResponsitory   = $attributeGroupResponsitory;
+        $this->productAttributeResponsitory = $productAttributeResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -135,6 +138,15 @@ class ProductController extends Controller
                 $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $cat]);
             }
         }
+
+        if( $request->input('prattr') != null ){
+            $paramAttrs = $request->input('prattr');
+            foreach($paramAttrs as $key => $paramAttr){
+                foreach($paramAttr as $item){
+                    $this->productAttributeResponsitory->create(['product_id' => $result->id, 'attribute_id' => $key, 'value' => $item]);
+                }
+            }
+        }        
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Create product sucess!');
     }
 
@@ -202,15 +214,24 @@ class ProductController extends Controller
             }
         }
 
-        $attrs = $this->attributeResponsitory->all();
-        $attrArr = [];
-        foreach($attrs as $attr){
-            $attrArr[$attr->id] = $attr->name;
+        $productAttributes = $this->productAttributeResponsitory->findAllBy('product_id', $id);
+        $productAttributesArr = [];
+        $attributesArr = [];
+        $listAttrs = [];
+        if( $productAttributes && $productAttributes->count() ){
+            foreach( $productAttributes as $productAttribute ){
+                $productAttributesArr[$productAttribute->attribute_id] = $productAttribute->attribute->name;
+                $attributesArr[$productAttribute->id] = $productAttribute->value;
+            }
         }
+
+        $product->attribute = $productAttributesArr;
+
+        $attrArr = $this->attributeResponsitory->all();
 
         $product->product_images = $productImageArr;
 
-        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr'));
+        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs'));
     }
 
     /**
@@ -270,6 +291,16 @@ class ProductController extends Controller
                 $this->productImageResponsitory->delete($prID);
             }
         }
+
+        if( $request->input('prattr') != null ){
+            $paramAttrs = $request->input('prattr');
+            $this->productAttributeResponsitory->deleteProductAttribute($id);
+            foreach($paramAttrs as $key => $paramAttr){
+                foreach($paramAttr as $item){
+                    $this->productAttributeResponsitory->create(['product_id' => $id, 'attribute_id' => $key, 'value' => $item]);
+                }
+            }
+        } 
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product sucess!');
     }
 
@@ -281,16 +312,33 @@ class ProductController extends Controller
     {
     }
 
-    public function setType(Request $request){
+    public function getAttribute(Request $request){
         if( $request->ajax() ){
             $ids = $request->id;
             if( !empty($ids) ){
                 foreach($ids as $key => $id){
-                    $data[$key] = $this->attributeResponsitory->getTypeByID($id);
+                    $data[$key] = $this->attributeResponsitory->find($id);
                 }
                 return response()->json($data);
             }
             return null;
+        }
+    }
+
+    public function addFastAttribute(Request $request){
+        if( $request->ajax() ){
+            $id = $request->id;
+            $val = $request->val;
+            if( $id != null ){
+                $data = $this->attributeResponsitory->find($id);
+                $options = explode(',', $data->options);
+                $options[] = $val;
+                $options = implode(',',$options);
+                $param['options'] = $options;
+                $kq = $this->attributeResponsitory->update($param, $id);
+                return $kq;
+            }
+            return false;
         }
     }
 }

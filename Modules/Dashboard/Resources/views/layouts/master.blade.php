@@ -54,6 +54,13 @@
 
     <!-- jQuery 3 -->
     <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
