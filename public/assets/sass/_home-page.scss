@@ -402,23 +402,23 @@ body{
         left: 15em;
         padding: 0;
         &:before{
-            left: 3.82em;
+            left: 3.7em;
         }
         p{
             color: $bg-color-white;
             font-size: 15px;
             background: $bg-color-main;
             padding: 0.5em 0;
-            padding-left: 1.1em;
+            padding-left: 0.5em;
         }
     }
     .sale-product-slider{
         @include news-product();
-        top: 77px;
+        top: 76px;
         left: 210px;
         padding: 0;
         &:before{
-            left: 3.82em;
+            left: 3.7em;
             border-bottom: 18px solid $bg-color-sale-product;
             border-top: 18px solid $bg-color-sale-product;
             border-left: 20px solid transparent;
@@ -441,7 +441,7 @@ body{
             font-size: 15px;
             background: $bg-color-sale-product;
             padding: 0.5em 0;
-            padding-left: 1.1em;
+            padding-left: 0.5em;
         }
     }
     .item{

@@ -29,6 +29,10 @@ body{
 				font-family: 'Montserrat', sans-serif;
 				font-weight: bold;
 				font-size: 15px;
+				a{
+					color: $bg-color-black;
+					&:hover { color: $bg-color-main; }
+				}
 			}
 			p{
 				font-style: italic;

@@ -1,0 +1,49 @@
+
+@include responsive_1920 {
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+	#content-blog-post{ padding-left: 0.6em; }
+	#content-blog-post .sidebar-blog-post .popular ul li {
+	    padding-bottom: 2em;
+	}
+}
+
+@include responsive_600 {
+	#content-blog-post .sidebar-blog-post .popular ul li {
+	    padding-bottom: 17em;
+	}
+}
+
+@include responsive_568 {
+	#content-blog-post .sidebar-blog-post .popular ul li {
+	    padding-bottom: 15.5em;
+	}
+}
+
+@include responsive_480 {
+	#content-blog-post .sidebar-blog-post .popular ul li {
+	    padding-bottom: 12.5em;
+	}
+}
+
+@include responsive_320 {
+	#content-blog-post .sidebar-blog-post .popular ul li {
+	    padding-bottom: 6.5em;
+	}
+}
