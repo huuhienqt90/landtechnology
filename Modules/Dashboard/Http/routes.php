@@ -19,7 +19,10 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
 
 
         // Return json type attribute group
-        Route::get('gettypeattr', 'ProductController@setType')->name('getattr');
+        Route::get('getattribute', 'ProductController@getAttribute')->name('getattr');
+        // Add attribute quick
+        Route::post('addfastattribute', 'ProductController@addFastAttribute')->name('addfast');
+
         Route::resource('setting', 'SettingController');
         Route::resource('payment-method', 'PaymentMethodController');
         Route::resource('role', 'RoleController');

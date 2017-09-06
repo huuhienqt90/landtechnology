@@ -20,7 +20,7 @@ class ProductAttribute extends Model
         return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
 
-    public function group(){
+    public function attribute(){
         return $this->hasOne('App\Models\Attribute', 'id', 'attribute_id');
     }
 }

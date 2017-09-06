@@ -12,4 +12,11 @@ class ProductAttributeResponsitory extends Repository {
     public function model() {
         return 'App\Models\ProductAttribute';
     }
+
+    public function deleteProductAttribute($id = 0){
+    	if( $id ){
+    		return ProductAttribute::where('product_id',$id)->delete();
+    	}
+    	return false;
+    }
 }
