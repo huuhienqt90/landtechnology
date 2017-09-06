@@ -35,8 +35,8 @@ $('.slider-nav').slick({
 
 $('.slider-for').slick({slidesToShow: 1,slidesToScroll: 1,arrows: false,fade: true,asNavFor: '.slider-nav-one'});
 $('.slider-nav-one').slick({slidesToShow: 1,slidesToScroll: 1,asNavFor: '.slider-for',dots: false,centerMode: false,focusOnSelect: true,responsive: [
-    { breakpoint: 1024,settings:{slidesToShow: 4,} },
+    /*{ breakpoint: 1024,settings:{slidesToShow: 4,} },
     { breakpoint: 600,settings:{slidesToShow: 3,} },
-    { breakpoint: 480,settings:{slidesToShow: 2,} }
+    { breakpoint: 480,settings:{slidesToShow: 2,} }*/
     ]
 });
