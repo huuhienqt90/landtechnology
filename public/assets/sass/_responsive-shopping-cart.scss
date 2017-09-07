@@ -25,11 +25,17 @@
     #cart-totals .cart-totals{ padding-right: 0.5em; }
     #cart-totals .calculate-shipping .select-your-state{ width: 45%; }
     #cart-totals .calculate-shipping .zip-code{ width: 45%; }
+    #content-shopping .shopping-cart-table .content-table th{ padding-right: 0.5em; }
+    #content-shopping .shopping-cart-table .content-table th a img {
+        padding-right: 0;
+    }
+    #content-shopping .shopping-cart-table .content-table th input{ width: 100%; }
 }
 
 @include responsive_600 {
     #content-shopping .shopping-cart-table .continue .button-continue button{ margin-left: 2em; }
     #cart-totals .calculate-shipping{ padding-bottom: 3em; }
+    #content-shopping .shopping-cart-table .content-table th { padding-right: 0.5em; }
 }
 
 @include responsive_568 {
@@ -45,8 +51,9 @@
 	#content-shopping .shopping-cart-table .continue .button-continue button {
 	    margin-left: 0;
 	}
+    #content-shopping .shopping-cart-table .title-table th{ font-size: 12px; }
 }
 
 @include responsive_320 {
-    
+    #content-shopping .shopping-cart-table .continue .button-continue button{ margin-bottom: 1em; }
 }

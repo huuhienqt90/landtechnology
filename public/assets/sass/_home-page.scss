@@ -15,7 +15,13 @@ body{
         margin-top: $i * 1px;
     }
 }
-
+.tx-sp-line-through{
+    text-decoration: line-through;
+    font-size: 20px;
+    font-weight: 400;
+    color: #4E4E4E;
+    padding-right: 1em;
+}
 .img-responsive {
     min-width: 100%;
 }
@@ -68,7 +74,7 @@ body{
             }
             .navbar-nav {
                 li{
-                    padding-bottom: 2em;
+                    padding-bottom: 1em;
                     a{
                         color: $bg-color-white;
                         font-family: 'Montserrat', sans-serif;
@@ -102,7 +108,7 @@ body{
     }
     .hv-menu{
         position: absolute;
-        margin-top: 2em;
+        margin-top: 1em;
         padding: 0;
         left: -13em;
         background: $bg-color-white;
@@ -147,7 +153,7 @@ body{
         position: absolute;
         border: none;
         background: #fff;
-        margin-top: 2em;
+        margin-top: 1em;
         left: -27.5em;
         width: 32.5em;
         box-shadow: 0px 0px 4px #606060;
@@ -156,6 +162,7 @@ body{
             border: none;
             width: 90%;
             padding: 1em;
+            outline: none;
             &:focus{
                 border: none;
             }
@@ -168,15 +175,27 @@ body{
             background: url(../../assets/images/icon-search.png) no-repeat;
         }
     }
+    .a-badge{
+        position: relative;
+        .badge{
+            position: absolute;
+            font-size: 8px;
+            padding: 4px 4px;
+            top: 8px;
+            right: 2px;
+            background: $bg-color-main;
+            border-radius: 50%;
+        }
+    }
     .hv-cart{
         position: absolute;
         display: none;
         z-index: 999;
         width: 20em;
-        height: 25em;
+        height: auto;
         left: -17em;
         padding: 2em 0;
-        margin-top: 2em;
+        margin-top: 1em;
         background: $bg-color-white;
         box-shadow: 0px 0px 4px $bg-color-hv-menu;
         .info-cart{
@@ -184,7 +203,7 @@ body{
             ul{
                 list-style: none;
                 padding: 0;
-                display: flex;
+                display: block;
                 border-bottom: 1px solid $bg-color-hv-menu-border;
                 padding-bottom: 1.5em;
                 li{
@@ -399,7 +418,7 @@ body{
     .news-product-slider{
         @include news-product();
         top: 5px;
-        left: 15em;
+        left: 14em;
         padding: 0;
         &:before{
             left: 3.7em;
@@ -415,7 +434,7 @@ body{
     .sale-product-slider{
         @include news-product();
         top: 76px;
-        left: 210px;
+        left: 14em;
         padding: 0;
         &:before{
             left: 3.7em;
@@ -476,22 +495,25 @@ body{
             margin-top: 1.5em;
             .text-detail{
                 float: left;
+                width: 70%;
                 h4{
                     margin-top: 0;
                     a{
-                        color: $bg-color-hv-menu; /* font-style: italic; */ font-weight: 500;
+                        color: $bg-color-hv-menu; font-weight: 500;
                         font-size: 14px;
+                        outline: none;
                         &:hover {
                             color: $bg-color-main;
                         }
                     }
                 }
-                span{ color: $bg-color-main; }
+                span{ font-size: 15px; color: $bg-color-main; }
             }
             .lock{
                 float: right;
                 a{
                     color: $bg-color-black;
+                    outline: none;
                     &:hover{
                         color: $bg-color-main;
                     }
@@ -503,6 +525,7 @@ body{
                     padding-top: 0;
                     text-align: right;
                     font-size: 11px;
+                    width: 30%;
                 }
             }
         }
@@ -631,12 +654,6 @@ body{
                 font-size: 20px;
                 padding-right: 1em;
             }
-            .tx-sp-line-through{
-                text-decoration: line-through;
-                font-size: 20px;
-                font-weight: 400;
-                color: $bg-color-text-breadcrumb;
-            }
             .parameter{
                 list-style: none;
                 padding: 0;
@@ -658,11 +675,13 @@ body{
 #featured-products{
     margin-top: 5em;
     @extend #new-arrivals;
+    .news-product-slider, .sale-product-slider{ left: 14em; }
     .slider{
         list-style: none;
         padding: 0;
         display: flex;
     }
+    .item .overlay .text { top: 68%; }
 }
 
 
@@ -832,7 +851,7 @@ body{
     margin-bottom: 4.5em;
     .slick-prev, .slick-next{
         background: #dedede;
-        top: 28%;
+        top: 38%;
         border-radius: 50%;
     }
     .slider-item{
