@@ -32,7 +32,10 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('setting', 'SettingController');
         Route::resource('payment-method', 'PaymentMethodController');
         Route::resource('role', 'RoleController');
+        // User
         Route::resource('user', 'UserController');
+        // Delete Avatar User By Ajax
+        Route::post('delavatar/{id?}','UserController@deleteAvatar')->name('delavatar');
     });
 
 });

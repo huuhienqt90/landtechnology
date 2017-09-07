@@ -51,6 +51,11 @@ class UserController extends Controller
         $param['is_notify'] = 1;
         $param['confirmed'] = 1;
 
+        if($request->hasFile('avatar')){
+            $path = $request->file('avatar')->store('users/avatar');
+            $param['avatar'] = $path;
+        }
+
         $id = $this->userRepository->insertGetID($param);
         if( $id != null ){
             return redirect(route('dashboard.user.index'))->with('alert-success', 'Create user success!');
@@ -93,6 +98,16 @@ class UserController extends Controller
         $user->address2 = $request->address2;
         $user->country = $request->country;
         $user->postal_code = $request->postal_code;
+        if($request->password != null){
+            $user->password = trim( bcrypt( $request->input('password') ) );
+        }
+        if($request->hasFile('avatar')){
+            if($user->avatar != null){
+                \Storage::delete($user->avatar);
+            }
+            $path = $request->file('avatar')->store('users/avatar');
+            $user->avatar = $path;
+        }
         $result = $user->update();
         if($result) {
             return redirect(route('dashboard.user.index'))->with('alert-success', 'Update user success!');
@@ -109,7 +124,20 @@ class UserController extends Controller
     public function destroy($id)
     {
         $arItem = $this->userRepository->find($id);
+        if($arItem->avatar != null){
+            \Storage::delete($arItem->avatar);
+        }
         $arItem->delete();
         return redirect(route('dashboard.user.index'))->with('alert-success', 'Delete user success');
+    }
+
+    public function deleteAvatar($id){
+        $arItem = $this->userRepository->find($id);
+        if($arItem->avatar != null){
+            \Storage::delete($arItem->avatar);
+        }
+        $arItem['avatar'] = null;
+        $arItem->update();
+        return ['success' => true];
     }
 }
