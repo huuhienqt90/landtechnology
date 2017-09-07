@@ -88,7 +88,7 @@
                                                 @endfor
                                             @endif
                                         </li>
-                                        <li class="breadcrumb-item"><a href="#">10 review(s)</a></li>
+                                        <li class="breadcrumb-item"><a href="#">{{ $product->reviews->count() }} review(s)</a></li>
                                         <li class="breadcrumb-item">Add your review</li>
                                     </ol>
                                     {!! $product->getPrice() !!}
