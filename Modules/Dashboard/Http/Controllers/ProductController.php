@@ -63,7 +63,7 @@ class ProductController extends Controller
     {
         $product = $this->productResponsitory;
         $categories = $this->categoryResponsitory->all();
-        $cateArr = ['' => 'Select a category'];
+        $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
                 $cateArr[$cat->id] = $cat->name;
@@ -99,7 +99,7 @@ class ProductController extends Controller
                 $sellTypeArr[$sellType->id] = $sellType->name;
             }
         }
-        return view('dashboard::product.create', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr'));
+        return view('dashboard::product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr'));
     }
 
     /**
@@ -242,7 +242,7 @@ class ProductController extends Controller
 
         $product->product_images = $productImageArr;
 
-        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages'));
+        return view('dashboard::product.edit', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages'));
     }
 
     /**

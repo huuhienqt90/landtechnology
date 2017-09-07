@@ -24,8 +24,25 @@
                         @include('dashboard::partials.file-multiple-bootstrap', ['field' => 'product_images', 'label' => 'Product Images', 'url' => '#'])
                         @include('dashboard::partials.text-editor', ['field' => 'description_short', 'label' => 'Description_short', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.text-editor', ['field' => 'description', 'label' => 'Description', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.select', ['field' => 'product_brand', 'label' => 'Product Brand', 'options' => $brandArr])
-                        @include('dashboard::partials.select-multiple', ['field' => 'category', 'placeholder' => 'Please select category', 'label' => 'Category', 'options' => $cateArr])
+                        @include('dashboard::partials.select', ['field' => 'product_brand', 'label' => 'Product Brand', 'options' => $brandArr])<!-- 
+                        @include('dashboard::partials.select-multiple', ['field' => 'category', 'placeholder' => 'Please select category', 'label' => 'Category', 'options' => $cateArr]) -->
+                        <div class="form-group {{ $errors->has('category') ? ' has-error' : ''}}">
+                           <label for="category" class="col-sm-2 control-label">Category</label>
+                           <div class="col-sm-4">
+                                <select class="form-control select2" name="category[]" multiple data-placeholder="Please select categories">
+                                    @foreach($categories as $category)
+                                        @if($category->parent_id == 0)
+                                        <optgroup label="{{ $category->name }}">
+                                            @foreach($category->getChildren() as $item)
+                                                <option value="{{ $item->id }}" {{ selected(in_array($item->id, array_keys($product->category)), true) }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @include('dashboard::partials.error', ['field' => 'attribute'])
+                            </div>
+                        </div>
                         @include('dashboard::partials.select', ['field' => 'seller_id', 'label' => 'Seller', 'options' => $sellerArr])
                         @include('dashboard::partials.input', ['field' => 'key_words', 'label' => 'Key Words', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.select', ['field' => 'sell_type_id', 'label' => 'Sell Type', 'options' => $sellTypeArr])
