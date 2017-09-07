@@ -93,6 +93,7 @@ body{
 			    font-size: 13px;
 			    font-weight: bold;
 			    font-family: 'Montserrat', sans-serif;
+			    outline: none;
 				&:after {
 					font-family: "Glyphicons Halflings";
 					content: "\e114";
@@ -168,6 +169,7 @@ body{
 				}
 				p{
 					float: left;
+					input{ outline: none; }
 				}
 				a{
 					@include btn();
@@ -250,7 +252,7 @@ body{
 		}
 	}
 	.sale-product-slider {
-		top: 74px;
+		top: 73px;
     	left: 184px;
     	&:before {
     		left: 3.6em;

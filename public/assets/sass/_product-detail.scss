@@ -95,11 +95,12 @@ body{
     text-align: center;
 	a {
         display: inline-block;
-		width: 20%;
-        padding: $base-spacing/2;
+		width: 23%;
         opacity: $thumb-opacity-inactive;
         transition: opacity $base-transition-duration $base-transition-timing;
-    
+        padding-top: 1em;
+        margin-right: 0.5em;
+        &:last-child { margin-right: 0; }
         &:hover {
             opacity: $thumb-opacity-hover;
         }
@@ -141,6 +142,10 @@ body{
             color: $bg-color-black;
             margin-top: 0;
             font-family: 'Lato', sans-serif;
+            a{
+                color: $bg-color-black;
+                &:hover { color: $bg-color-main; }
+            }
         }
         p{
             color: $bg-color-hv-menu;
@@ -174,12 +179,14 @@ body{
         p{
             margin-top: 1.5em;
             font-size: 14px;
+            font-weight: bold;
         }
         select{
             width: 100%;
             border: 1px solid $bg-color-border-btn-face;
             padding: 1em;
             color: $bg-color-select-product;
+            outline: none;
         }
         .repuired{
             margin: 2em 0;
@@ -213,7 +220,7 @@ body{
     .nav-tabs{
         border: none;
         li{
-            &:first-child {
+            /* &:first-child {
                 a{
                     &:first-child {
                         &:before {
@@ -226,7 +233,7 @@ body{
                         }
                     }
                 }
-            }
+            } */
             a{
                 border: none;
                 color: $bg-color-text-tabs;
@@ -240,7 +247,20 @@ body{
                     color: $bg-color-main;
                 }
             }
-            .active{ color: $bg-color-main; }
+        }
+        .active{
+            a{
+                color: $bg-color-main;
+                position: relative;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    border-bottom: 3px solid $bg-color-main;
+                    width: 22%;
+                    left: 0;
+                    bottom: 0;
+                }
+            }
         }
     }
     .tab-content{
@@ -254,6 +274,9 @@ body{
 #upsell{
     @extend #featured-products;
     margin-bottom: 7em;
+    .news-product-slider{ left: 14em; }
+    .sale-product-slider{ left: 14em; }
+    .item .overlay .text { top: 65%; }
     .title{
         margin-bottom: 2.5em;
         h3{
