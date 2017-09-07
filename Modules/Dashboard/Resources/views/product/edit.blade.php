@@ -16,10 +16,10 @@
                         @include('dashboard::partials.input', ['field' => 'name', 'label' => 'Name', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field'=>'slug', 'label' => 'Slug', 'options' => ['class'=>'form-control', 'readonly' => 'true']])
                         @include('dashboard::partials.input', ['field' => 'original_price', 'label' => 'Price', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'discount', 'label' => 'Discount', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'price_after_discount', 'label' => 'Price after discount', 'options' => ['class'=>'form-control']])
+                        <!-- @include('dashboard::partials.input', ['field' => 'discount', 'label' => 'Discount', 'options' => ['class'=>'form-control']])
+                        @include('dashboard::partials.input', ['field' => 'price_after_discount', 'label' => 'Price after discount', 'options' => ['class'=>'form-control']]) -->
                         @include('dashboard::partials.input', ['field' => 'sale_price', 'label' => 'Sale Price', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'display_price', 'label' => 'Display Price', 'options' => ['class'=>'form-control']])
+                        <!-- @include('dashboard::partials.input', ['field' => 'display_price', 'label' => 'Display Price', 'options' => ['class'=>'form-control']]) -->
                         @include('dashboard::partials.file-bootstrap', ['field' => 'feature_image', 'label' => 'Feature Image', 'url' => '#'])
                         @include('dashboard::partials.file-multiple-bootstrap', ['field' => 'product_images', 'label' => 'Product Images', 'url' => '#'])
                         @include('dashboard::partials.text-editor', ['field' => 'description_short', 'label' => 'Description_short', 'options' => ['class'=>'form-control']])
@@ -49,7 +49,6 @@
                         @include('dashboard::partials.input', ['field' => 'weight', 'label' => 'Weight', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field' => 'location', 'label' => 'Location', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field' => 'stock', 'label' => 'Stock', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'sold_units', 'label' => 'Sold units', 'options' => ['class'=>'form-control']])
                         <div class="form-group">
                            <label for="{{ 'attribute' }}" class="col-sm-2 control-label">Attributes</label>
                            <div class="col-sm-4">
