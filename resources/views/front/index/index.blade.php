@@ -145,7 +145,7 @@
                                 <ul class="tetx">
                                     <li class="text-detail">
                                         <h4><a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}">{{ $product->name }}</a></h4>
-                                        <span>$ {{ number_format($product->display_price) }}</span>
+                                        {!! $product->getPrice() !!}
                                     </li> <!-- .text-detail -->
                                     <li class="lock">
                                         <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="lock">

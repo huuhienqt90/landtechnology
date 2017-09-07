@@ -225,4 +225,8 @@ class UserController extends Controller
             return redirect()->route('front.dashboard.index');
         }
     }
+
+    public function showProfile($slug = null){
+        return view('front.index.index');
+    }
 }

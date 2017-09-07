@@ -68,16 +68,30 @@
                                     <p>{!! $product->description !!}</p>
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item">
-                                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
+                                            <?php
+                                            if( $product->reviews->sum('rating') && $product->reviews->count()){
+                                                $currentRating = ceil($product->reviews->sum('rating') / $product->reviews->count());
+                                            }else{
+                                                $currentRating = false;
+                                            }
+
+                                            ?>
+                                            @if($currentRating === false)
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            @else
+                                                @for($i=1; $i<=$currentRating; $i++)
+                                                    <i class="fa fa-star-o active" aria-hidden="true"></i>
+                                                @endfor
+                                            @endif
                                         </li>
                                         <li class="breadcrumb-item"><a href="#">10 review(s)</a></li>
                                         <li class="breadcrumb-item">Add your review</li>
                                     </ol>
-                                    <span class="tx-sp-cl">${{ number_format($product->display_price) }} </span>
+                                    {!! $product->getPrice() !!}
                                     <ul class="btn-add-to-cart">
                                         <li class="cover-btn-glyph">
                                             <div class="glyph">

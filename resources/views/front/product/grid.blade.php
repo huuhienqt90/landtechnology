@@ -34,11 +34,7 @@
     <div class="container">
         <div class="row">
             <div class="content-grid-title">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Chair</li>
-                </ol>
+                {{ Breadcrumbs::render('home') }}
             </div> <!-- .content-grid-title -->
             @include('layouts.front.commons.product-sidebar')
             <div class="col-md-9 col-sm-9">
@@ -67,7 +63,7 @@
                                 <ul class="tetx">
                                     <li class="text-detail">
                                         <h4><a href="{{ route('front.product.detail', $product->slug) }}" title="title product">{{ $product->name }}</a></h4>
-                                        <span>${{ number_format($product->display_price) }}</span>
+                                        {!! $product->getPrice() !!}
                                     </li> <!-- .text-detail -->
                                     <li class="lock">
                                         <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="lock">

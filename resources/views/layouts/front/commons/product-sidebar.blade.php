@@ -51,50 +51,24 @@
 
         <div class="shop-by">
             <h2 class="text-uppercase">Shop by</h2>
-            <div class="Manufacturer">
-                <p class="text-uppercase">Manufacturer</p>
-                <a href="#">Adidas <span class="badge">(10)</span></a>
-                <a href="#">Nike <span class="badge">(9)</span></a>
-                <a href="#">Converse <span class="badge">(11)</span></a>
-                <a href="#">Chanel <span class="badge">(19)</span></a>
-                <a href="#">Gucci <span class="badge">(2)</span></a>
-            </div> <!-- .Manufacturer -->
+            @if( \App\Models\Brand::count() )
+                <div class="Manufacturer">
+                    <p class="text-uppercase">Brands</p>
+                    @foreach(\App\Models\Brand::all() as $brand)
+                        <a href="{{ route('front.product.brand', $brand->slug) }}">{{ $brand->name }} <span class="badge">({{ getProductCountByBrand($brand->id) }})</span></a>
+                    @endforeach
+                </div>
+            @endif
 
             <div class="demo">
                 <span class="text-uppercase title-prince">Price</span>
                 <div id="slider-range" class="range-style"></div>
                 <p>
-                    <label for="amount"></label>
+                    <!-- <label for="amount"></label> -->
                     <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
                 </p>
                 <a href="#" title="btn search price">Search</a>
             </div>
-
-            <!-- <div class="color-options">
-                <p class="text-uppercase">color options</p>
-                <a href="#">Black <span class="badge">(10)</span></a>
-                <a href="#">White <span class="badge">(9)</span></a>
-                <a href="#">Blue <span class="badge">(11)</span></a>
-                <a href="#">Red <span class="badge">(19)</span></a>
-                <a href="#">Screen <span class="badge">(2)</span></a>
-            </div> <!-- .color-options -->
-
-            <div class="subcategory">
-                <p class="text-uppercase">subcategory</p>
-                <a href="#">Materlal Bag <span class="badge">(10)</span></a>
-                <a href="#">Arreglos <span class="badge">(9)</span></a>
-                <a href="#">Dresses <span class="badge">(11)</span></a>
-                <a href="#">Headphone <span class="badge">(19)</span></a>
-            </div> <!-- .subcategory -->
-
-            <!-- <div class="size-options">
-                <p class="text-uppercase">size options</p>
-                <a href="#">L <span class="badge">(10)</span></a>
-                <a href="#">M <span class="badge">(9)</span></a>
-                <a href="#">S <span class="badge">(11)</span></a>
-                <a href="#">XL <span class="badge">(19)</span></a>
-                <a href="#">XXL <span class="badge">(2)</span></a>
-            </div> <!-- .size-options -->
 
         </div> <!-- .shop-by -->
     </div> <!-- .sidebar -->

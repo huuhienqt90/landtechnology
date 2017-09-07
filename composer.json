@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "bosnadev/repositories": " 0.*",
         "cviebrock/eloquent-sluggable": "^4.2",
+        "davejamesmiller/laravel-breadcrumbs": "^4.1",
         "fideloper/proxy": "~3.3",
         "gloudemans/shoppingcart": "^2.4",
         "guzzlehttp/guzzle": "^6.3",

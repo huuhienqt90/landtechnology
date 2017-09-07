@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Requests\PostToCartRequest;
+use App\Http\Requests\StoreReviewRequest;
+use App\Repositories\ProductReviewResponsitory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductResponsitory;
@@ -10,9 +13,11 @@ use Cart;
 class ProductController extends Controller
 {
     private $productRepository;
+    private $productReviewResponsitory;
 
-    public function __construct(ProductResponsitory $productRepository){
+    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory){
         $this->productRepository = $productRepository;
+        $this->productReviewResponsitory = $productReviewResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -53,7 +58,13 @@ class ProductController extends Controller
      */
     public function show($slug = null)
     {
-        return view('front.product.detail');
+        $product = $this->productRepository->findBy('slug', $slug);
+        $productReview = $this->productReviewResponsitory;
+        if( !empty($slug) && isset($product->id) && $product->id){
+            return view('front.product.detail', compact('product', 'productReview'));
+        }else{
+            return redirect()->route('front.index')->with('alert-danger', 'Product not found');
+        }
     }
 
     /**
@@ -62,9 +73,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id = null)
+    public function edit($slug = null)
     {
-        return view('front.product.detail');
+        $product = $this->productRepository->findBy('slug', $slug);
+        if( !empty($slug) && isset($product->id) && $product->id){
+            return view('front.product.detail');
+        }else{
+            return redirect()->route('front.index')->with('alert-danger', 'Product not found');
+        }
     }
 
     /**
@@ -122,6 +138,12 @@ class ProductController extends Controller
         }
     }
 
+    public function postToCart(PostToCartRequest $request, $id = 0){
+        $product = $this->productRepository->find($id);
+        Cart::add($id, $product->name, $request->quantity, $product->display_price);
+        return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+    }
+
     public function removeFromCart($id = 0){
         Cart::remove($id);
         return redirect()->back()->with('alert-success', 'Remove product in cart success');
@@ -136,5 +158,15 @@ class ProductController extends Controller
     public function productCategory($slug = null){
         $products = $this->productRepository->paginate(12);
         return view('front.product.grid', compact('products'));
+    }
+
+    public function productCategoryBrand($slug = null){
+        $products = $this->productRepository->paginate(12);
+        return view('front.product.grid', compact('products'));
+    }
+
+    public function storeReview(StoreReviewRequest $request, $id){
+        $this->productReviewResponsitory->create(['product_id'=>$id, 'user_id'=>auth()->user()->id, 'rating'=>$request->rating, 'message'=>$request->message, 'status'=>'active']);
+        return redirect()->back()->with('alert-success', 'Add product to wish list success');
     }
 }

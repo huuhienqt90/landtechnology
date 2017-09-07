@@ -13,6 +13,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/frameworks.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
 
         <!-- Style Dashboard -->
@@ -41,49 +42,10 @@
         <!-- Detail product -->
         <script src="{{ asset('assets/js/notify.min.js') }}"></script>
         <script src="{{ asset('assets/js/product-detail.js') }}"></script>
+        <script src="{{ asset('assets/js/slider-slick.js') }}"></script>
 
         <script type="text/javascript">
             $(document).ready(function(){
-                $('.slider-nav').slick({
-                    dots: true,
-                    infinite: false,
-                    speed: 300,
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                    responsive: [
-                        {
-                            breakpoint: 1024,
-                            settings: {
-                                slidesToShow: 3,
-                                slidesToScroll: 3,
-                                infinite: true,
-                                dots: true
-                            }
-                        },
-                        {
-                            breakpoint: 600,
-                            settings: {
-                                slidesToShow: 2,
-                                slidesToScroll: 2
-                            }
-                        },
-                        {
-                            breakpoint: 480,
-                            settings: {
-                                slidesToShow: 1,
-                                slidesToScroll: 1
-                            }
-                        }
-                    ]
-                });
-                $('.slider-for').slick({slidesToShow: 1,slidesToScroll: 1,arrows: false,fade: true,asNavFor: '.slider-nav-one'});
-                $('.slider-nav-one').slick({slidesToShow: 1,slidesToScroll: 1,asNavFor: '.slider-for',dots: false,centerMode: false,focusOnSelect: true,responsive: [
-                    { breakpoint: 1024,settings:{slidesToShow: 4,} },
-                    { breakpoint: 600,settings:{slidesToShow: 3,} },
-                    { breakpoint: 480,settings:{slidesToShow: 2,} }
-                    ]
-                });
-                $('.single-item').slick();
                 $('#back-to-top').on('click', function (e) {
                     e.preventDefault();
                     $('html,body').animate({
@@ -92,8 +54,25 @@
                 });
                 $('.overlay').click(function(){
                     var url = $(this).parent().find('.product-detail-url').attr('href');
-                    window.location = url;
-                    return false;
+                    if( typeof url === "undefined"){
+                        return true;
+                    }else{
+                        window.location = url;
+                        return false;
+                    }
+
+                });
+                $('.rating input').each(function () {
+                   if($(this).is(':checked')){
+                       $('.rating label').removeClass('hovered');
+                       $(this).parent().addClass('hovered');
+                   }
+                });
+                $('.rating input').change(function () {
+                    $('.rating label').removeClass('hovered');
+                    if($(this).is(':checked')){
+                        $(this).parent().addClass('hovered');
+                    }
                 });
             });
         </script>

@@ -1,11 +1,12 @@
 @extends('layouts.front.master')
 
 @section('meta')
+    <title>{{ $product->name . " - " . config('app.name', 'Laravel') }}</title>
     @include('social::meta-article', [
-        'title'         => 'Home',
-        'description'   => 'Welcome from Hello World',
-        'image'         => 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
-        'author'        => 'Set Kyar Wa Lar'
+        'title'         => $product->name . " - " . config('app.name', 'Laravel'),
+        'description'   => $product->short_description,
+        'image'         => asset('storage/'.$product->feature_image),
+        'author'        => config('app.name', 'Laravel')
     ])
 @stop
 
@@ -16,89 +17,92 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="breadcrumb-product-detail">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Products</a></li>
-                        <li class="breadcrumb-item active">Sacrificial Chair Design</li>
-                    </ol>
+                    {{ Breadcrumbs::render('product_detail', $product) }}
                 </div>
             </div>
             <div class="col-md-6 col-sm-6">
                 <!--Gallery Hero-->
                 <div class="gallery__hero">
-                    <!-- <a href="" class="gallery__hero-enlarge ir" data-gallery="zoom">Zoom</a> -->
-
-                    <img src="https://public-619e3.firebaseapp.com/Product-Gallery/products/normal/product-01_view-01.jpg" class="img-responsive">
+                    <img src="{{ asset('storage/'.$product->feature_image) }}" class="img-responsive">
                 </div>
                 <!--Gallery Hero-->
 
                 <!--Gallery Thumbs-->
                 <div class="gallery__thumbs">
-                    <a href="https://public-619e3.firebaseapp.com/Product-Gallery/products/normal/product-01_view-01.jpg" data-gallery="thumb" class="is-active">
-                        <img src="https://public-619e3.firebaseapp.com/Product-Gallery/products/thumb/product-01_view-01.jpg" class="img-responsive">
+                    <a href="{{ asset('storage/'.$product->feature_image) }}" data-gallery="thumb" class="is-active">
+                        <img src="{{ asset('storage/'.$product->feature_image) }}" class="img-responsive">
                     </a>
-                    <a href="https://public-619e3.firebaseapp.com/Product-Gallery/products/normal/product-01_view-02.jpg" data-gallery="thumb">
-                        <img src="https://public-619e3.firebaseapp.com/Product-Gallery/products/thumb/product-01_view-02.jpg" class="img-responsive">
-                    </a>
-                    <a href="https://public-619e3.firebaseapp.com/Product-Gallery/products/normal/product-01_view-03.jpg" data-gallery="thumb">
-                        <img src="https://public-619e3.firebaseapp.com/Product-Gallery/products/thumb/product-01_view-03.jpg" class="img-responsive">
-                    </a>
-                    <a href="https://public-619e3.firebaseapp.com/Product-Gallery/products/normal/product-01_view-03.jpg" data-gallery="thumb">
-                        <img src="https://public-619e3.firebaseapp.com/Product-Gallery/products/thumb/product-01_view-03.jpg" class="img-responsive">
-                    </a>
+
+                    @if($product->images->count() )
+                        @foreach($product->images as $img)
+                            <a href="{{ asset('storage/'.$img->image_path) }}" data-gallery="thumb">
+                                <img src="{{ asset('storage/'.$img->image_path) }}" class="img-responsive">
+                            </a>
+                        @endforeach
+                    @endif
                 </div>
                 <!--Gallery Thumbs-->
             </div>
 
             <div class="col-md-6 col-sm-6">
                 <div class="detail-content">
-                    <h4>Sacrificial Chair Design</h4>
-                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. </p>
+                    <h4>{{ $product->name }}</h4>
+                    <p>{{ $product->description_short }}</p>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
+                            <?php
+                            if( $product->reviews->sum('rating') && $product->reviews->count()){
+                                $currentRating = ceil($product->reviews->sum('rating') / $product->reviews->count());
+                            }else{
+                                $currentRating = false;
+                            }
+                            ?>
+                            @if($currentRating === false)
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                            @else
+                                @for($i=1; $i<=$currentRating; $i++)
+                                    <i class="fa fa-star-o active" aria-hidden="true"></i>
+                                @endfor
+                            @endif
                         </li>
-                        <li class="breadcrumb-item"><a href="#">10 review(s)</a></li>
+                        <li class="breadcrumb-item"><a href="#review">{{ $product->reviews->count() }} review(s)</a></li>
                         <li class="breadcrumb-item">Add your review</li>
                     </ol>
-                    <span class="tx-sp-cl">$170.00 </span>
+                    <div class="single-product-price">{!! $product->getPrice() !!}</div>
                 </div> <!-- .detail-content -->
-                <div class="add-to-cart">
-                    <p>Size *</p>
-                    <select>
-                        <option>- Please select -</option>
-                    </select>
-                    <p>Color *</p>
-                    <select>
-                        <option>- Please select -</option>
-                    </select>
-                    <p class="repuired">Repuired Fiields *</p>
-                    <div class="quanty">
-                        <span>Quanty:</span>
-                        <select>
-                            <option>01</option>
-                        </select>
-                    </div> <!-- .quanty -->
-                </div> <!-- .add-to-cart -->
-                <ul class="btn-add-to-cart">
-                    <li class="cover-btn-glyph">
-                        <div class="glyph">
-                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;">
-                                <a href="#" title="btn add to cart" class="text-uppercase">Add to cart</a>
+                <form action="{{ route('front.product.postToCart', $product->id, 1) }}" method="post">
+                    {{ csrf_field() }}
+                    <div class="add-to-cart">
+                        @if($product->attributes->groupBy('attribute_id')->count())
+                            @foreach($product->attributes->groupBy('attribute_id')->all() as $attr)
+                                @include('partials.'.$attr->first()->attribute->group->type, ['field' => 'attrs['.$attr->first()->attribute->id.']', 'label' => $attr->first()->attribute->name, 'options' => $attr->toArray()])
+                            @endforeach
+                        @endif
+                        <p class="required">Required Field *</p>
+                        <div class="quantity">
+
+                            <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
+                                <label for="quantity" class="label-control">Quantity</label>
+                                <input type="number" name="quantity" value="1" class="form-control" min="1" max="{{ $product->stock }}" />
+                                @include('partials.error', ['field' => 'quantity'])
                             </div>
-                        </div>
-                    </li> <!-- .cover-btn-glyph -->
-                    <li class="heart">
-                        <a href="#" title="heart"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                    </li> <!-- .heart -->
-                    <li class="setting">
-                        <a href="#" title="setting"><i class="fa fa-sliders" aria-hidden="true"></i></a>
-                    </li> <!-- .setting -->
-                </ul> <!-- .btn-add-to-cart -->
+                        </div> <!-- .quanty -->
+                    </div> <!-- .add-to-cart -->
+                    <ul class="btn-add-to-cart">
+                        <li class="cover-btn-glyph">
+                            <div class="glyph">
+                                <button class="fs1 btn text-uppercase" type="submit" aria-hidden="true" data-icon="&#xe013;">Add to cart</button>
+                            </div>
+                        </li> <!-- .cover-btn-glyph -->
+                        <li class="heart">
+                            <a href="{{ route('front.product.addToFavorite', $product->id, 1) }}" title="heart"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                        </li> <!-- .heart -->
+                    </ul> <!-- .btn-add-to-cart -->
+                </form>
                 <div class="list">
                     <img src="{{ asset('assets/images/list-add-to-cart-product.png') }}" title="images list">
                 </div>
@@ -114,135 +118,124 @@
         <div class="row">
              <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="text-uppercase">Description</a></li>
-                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="text-uppercase">Customer Review</a></li>
+                <li role="presentation" {{ $errors->has('rating') || $errors->has('message') ? '' : 'class="active"' }}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="text-uppercase">Description</a></li>
+                <li role="presentation" {{ $errors->has('rating') || $errors->has('message') ? 'class="active"' : '' }}><a href="#review" aria-controls="profile" role="tab" data-toggle="tab" class="text-uppercase">Customer Review</a></li>
                 <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="text-uppercase">Product Tags</a></li>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="home">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when anunknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronictypesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.</p>
+                <div role="tabpanel" class="tab-pane{{ $errors->has('rating') || $errors->has('message') ? '' : ' active' }}" id="home">
+                    {!! $product->description !!}
                 </div>
-                <div role="tabpanel" class="tab-pane" id="profile">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                <div role="tabpanel" class="tab-pane{{ $errors->has('rating') || $errors->has('message') ? 'active' : '' }}" id="review">
+                    @if($product->reviews->count())
+                        <ul class="media-list">
+                        @foreach($product->reviews as $review)
+                            <li class="media">
+                                <div class="media-left">
+                                    <a href="{{ route('front.user.showProfile', $review->user->username ) }}">
+                                    {!! $review->user->getAvatarByEmail(80) !!}
+                                    {{ str_limit($review->user->getFullName(), $limit = 10, $end = '...') }}
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <p>
+                                        @for($i=1; $i <= $review->rating; $i++)
+                                            <i class="fa fa-star-o active" aria-hidden="true"></i>
+                                        @endfor
+                                    </p>
+                                    {!! $review->message !!}
+                                </div>
+                            </li>
+                        @endforeach
+                        </ul>
+                    @else
+                        <h3>Be the first to review this product!</h3>
+                    @endif
+                    {!! Form::model($productReview, ['route' => ['front.product.storeReview', $product->id], 'files' => true]) !!}
+                        <div class="form-group {{ $errors->has('rating') ? ' has-error' : '' }}">
+                            <label for="rating" class="control-label">Rating</label>
+                            <div class="rating">
+                                <label class="review-item-star">
+                                    <input type="radio" name="rating" value="5">
+                                    <span class="review-item"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                </label>
+                                <label class="review-item-star">
+                                    <input type="radio" name="rating" value="4">
+                                    <span class="review-item"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                </label>
+                                <label class="review-item-star">
+                                    <input type="radio" name="rating" value="3">
+                                    <span class="review-item"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                </label>
+                                <label class="review-item-star">
+                                    <input type="radio" name="rating" value="2">
+                                    <span class="review-item"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                </label>
+                                <label class="review-item-star">
+                                    <input type="radio" name="rating" value="1">
+                                    <span class="review-item"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                </label>
+                            </div>
+                            @include('dashboard::partials.error', ['field' => 'rating'])
+                        </div>
+                        <div class="form-group {{ $errors->has('message') ? ' has-error' : '' }}">
+                            <label for="message" class="control-label">Message</label>
+                            {!! Form::textarea('message', old('message'), ['class'=>'form-control']) !!}
+                            @include('partials.error', ['field' => 'message'])
+                        </div>
+                        <div class="form-group">
+                            {!! Form::button('Review', ['class' => 'btn btn-success btn-default', 'type' => 'submit']) !!}
+                        </div>
+                    {!! Form::close() !!}
                 </div>
                 <div role="tabpanel" class="tab-pane" id="messages">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when anunknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    {!! $product->key_words !!}
                 </div>
             </div>
         </div>
     </div>
 </section> <!-- #tabs-3 -->
 
-<!-- START #upsell -->
-<section id="upsell">
-    <div class="container">
-        <div class="row">
-            <div class="title">
-                <h3 class="text-uppercase">upsell products</h3>
-            </div> <!-- .title -->
-            <div class="col-md-12 slider">
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
-                            <div class="news-product-slider">
-                                <p>NEW</p>
-                            </div> <!-- .news-product -->
-                            <div class="overlay">
-                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
-                            <div class="overlay">
-                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
-                            <div class="news-product-slider">
-                                <p>NEW</p>
-                            </div> <!-- .news-product -->
-                            <div class="sale-product-slider">
-                                <p>-15%</p>
-                            </div> <!-- .news-product -->
-
-                            <div class="overlay">
-                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
-                            <div class="overlay">
-                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                </div> <!-- .slider -->
-        </div> <!-- .row -->
-    </div> <!-- .container -->
-</section> <!-- #upsell -->
+<style type="text/css">
+    .color-attr-item input[type="radio"], .text-attr-item input[type="radio"], .rating input[type="radio"] {
+        visibility: hidden;
+        width: 1px;
+        height: 1px;
+    }
+    .color-attr-item input[type="radio"] + span, .text-attr-item input[type="radio"] + span {
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        border: 2px solid #FFF;
+        cursor: pointer;
+    }
+    .text-attr-item input[type="radio"] + span{
+        border-radius: 5px;
+        padding: 5px 10px;
+        width: auto;
+        height: auto;
+        background: #cdcdcd;
+    }
+    .color-attr-item input[type="radio"]:checked + span, .text-attr-item input[type="radio"]:checked + span {
+        box-shadow: 0 0 4px #000;
+    }
+    .rating {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+        text-align: left;
+    }
+    .rating label{
+        margin-top: 0;
+    }
+    .rating > label:hover,
+    .rating > input:checked + span,
+    .rating > label:hover ~ label,
+    .rating > label.hovered,
+    .rating > label.hovered ~ label{
+        color: #79B6C8;
+    }
+</style>
 @stop
