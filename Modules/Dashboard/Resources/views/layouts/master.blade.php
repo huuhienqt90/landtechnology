@@ -20,7 +20,8 @@
     <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/AdminLTE.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/iCheck/square/blue.css') }}">
-
+    <!-- File Input -->
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/fileinput.min.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -54,6 +55,8 @@
 
     <!-- jQuery 3 -->
     <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <!-- File Input -->
+    <script src="{{ asset('themes/dashboard/dist/js/fileinput.min.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {

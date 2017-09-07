@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->dateTime('end_date')->nullable();
             $table->integer('seller_id')->unsigned();
             $table->string('feature_image')->nullable();
+            $table->longText('description_short')->nullable();
             $table->longText('description')->nullable();
             $table->integer('product_brand')->unsigned();
             $table->string('key_words')->nullable();

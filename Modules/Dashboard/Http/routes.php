@@ -13,7 +13,13 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('sell-type', 'SellTypeController');
         Route::resource('seller-shipping', 'SellerShippingController');
         Route::resource('attribute', 'AttributeController');
+        // Product
         Route::resource('product', 'ProductController');
+        // Delete Feature Image By Ajax
+        Route::post('deleteimage/{id?}', 'ProductController@deleteImageByAjax')->name('delimg');
+        // Delete Product Image By Ajax
+        Route::post('deleteproductimage/{id?}', 'ProductController@deleteProductImageByAjax')->name('delProductImg');
+
         Route::resource('attribute-group', 'AttributeGroupController');
         Route::resource('attribute', 'AttributeController');
 

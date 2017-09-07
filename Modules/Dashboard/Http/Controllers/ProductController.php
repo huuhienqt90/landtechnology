@@ -120,6 +120,7 @@ class ProductController extends Controller
             'sale_price' => $request->sale_price,
             'stock' => $request->stock,
             'sold_units' => $request->sold_units,
+            'description_short' => $request->description_short,
             'description' => $request->description,
             'key_words' => $request->status,
             'weight' => $request->weight,
@@ -128,14 +129,24 @@ class ProductController extends Controller
             'sell_type_id' => $request->sell_type_id,
             'product_brand' => $request->product_brand,
         ];
+
         if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('products');
+            $path = $request->file('feature_image')->store('products/features');
             $create['feature_image'] = $path;
         }
         $result = $this->productResponsitory->create($create);
         if( isset( $request->category ) ){
             foreach($request->category as $cat){
                 $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $cat]);
+            }
+        }
+
+        // Create Product Images
+        if( $request->hasFile('product_images') ){
+            $productImages = $request->file('product_images');
+            foreach ($productImages as $file) {
+                $path = $file->store('products/galeries');
+                $this->productImageResponsitory->create(['product_id' => $result->id, 'image_path' => $path, 'image_name'=> $file->getClientOriginalName()]);
             }
         }
 
@@ -231,7 +242,7 @@ class ProductController extends Controller
 
         $product->product_images = $productImageArr;
 
-        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs'));
+        return view('dashboard::product.edit', compact('product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages'));
     }
 
     /**
@@ -252,6 +263,7 @@ class ProductController extends Controller
             'sale_price' => $request->sale_price,
             'stock' => $request->stock,
             'sold_units' => $request->sold_units,
+            'description_short' => $request->description_short,
             'description' => $request->description,
             'key_words' => $request->status,
             'weight' => $request->weight,
@@ -285,13 +297,6 @@ class ProductController extends Controller
             }
         }
 
-        // Remove product images
-        if( isset( $request->remove_product_images ) && count($request->remove_product_images)){
-            foreach ($request->remove_product_images as $prID) {
-                $this->productImageResponsitory->delete($prID);
-            }
-        }
-
         if( $request->input('prattr') != null ){
             $paramAttrs = $request->input('prattr');
             $this->productAttributeResponsitory->deleteProductAttribute($id);
@@ -301,15 +306,26 @@ class ProductController extends Controller
                 }
             }
         } 
-        return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product sucess!');
+        return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product success!');
     }
 
     /**
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy(Request $request, $id)
     {
+        $product_images = $this->productImageResponsitory->findAllBy('product_id', $id);
+        if($product_images != null) {
+            foreach($product_images as $image){
+                \Storage::delete($image->image_path);
+                $this->productImageResponsitory->delete($id);
+            }
+        }
+        $product = $this->productResponsitory->find($id);
+        \Storage::delete($product->feature_image);
+        $this->productResponsitory->delete($id);
+        return redirect(route('dashboard.product.index'))->with('alert-success', 'Delete product success!');
     }
 
     public function getAttribute(Request $request){
@@ -340,5 +356,30 @@ class ProductController extends Controller
             }
             return false;
         }
+    }
+
+    /**
+     * [deleteImageByAjax Delete image in table product]
+     * @param  [type] $id [description]
+     * @return boolean
+     */
+    public function deleteImageByAjax($id){
+        $arItem = $this->productResponsitory->find($id);
+        \Storage::delete($arItem->feature_image);
+        $param['feature_image'] = null;
+        $this->productResponsitory->update($param, $id);
+        return ['success' => true];
+    }
+
+    /**
+     * [deleteImageByAjax Delete image in table product image]
+     * @param  [type] $id [description]
+     * @return boolean
+     */
+    public function deleteProductImageByAjax($id){
+        $arItem = $this->productImageResponsitory->find($id);
+        \Storage::delete($arItem->image_path);
+        $this->productImageResponsitory->delete($id);
+        return ['success' => true];
     }
 }
