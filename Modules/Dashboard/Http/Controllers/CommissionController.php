@@ -36,14 +36,16 @@ class CommissionController extends Controller
     public function create()
     {
         $commission = $this->commissionResponsitory;
+        
+        $cateArr = ['' => 'Select a subcategory'];
 
-        $categories = $this->categoryResponsitory->all();
-        $cateArr = ['' => 'Select a category'];
-        foreach ($categories as $category) {
-            $cateArr[$category->id] = $category->name; 
+        $parentCates = $this->categoryResponsitory->findAllBy('parent_id', 0);
+        $parentCateArr = ['' => 'Select a category'];
+        foreach($parentCates as $parentCate){
+            $parentCateArr[$parentCate->id] = $parentCate->name;
         }
 
-        return view('dashboard::commissions.create', compact('commission','cateArr'));
+        return view('dashboard::commissions.create', compact('commission','cateArr','parentCateArr'));
     }
 
     /**
@@ -108,5 +110,13 @@ class CommissionController extends Controller
     {
         $this->commissionResponsitory->delete($id);
         return redirect(route('dashboard.commission.index'))->with('alert-success', 'Delete commissions sucess!');
+    }
+
+    public function getSubCategory(Request $request){
+        if($request->ajax()){
+            $id = $request->id;
+            $data = $this->categoryResponsitory->findAllBy('parent_id', $id);
+            return response()->json($data);
+        }
     }
 }

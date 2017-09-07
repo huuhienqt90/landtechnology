@@ -17,7 +17,7 @@ class CommissionStoreRequest extends FormRequest
             'category_id' => 'required',
             'type' => 'required',
             'cost' => 'numeric',
-            'maximum' => 'numeric',
+            'maximum' => 'numeric|max:100',
             'product_type' => 'required'
         ];
     }

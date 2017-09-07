@@ -8,7 +8,9 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
 
     Route::group(['middleware' => 'check.auth:Admin', 'as' => 'dashboard.'], function(){
         Route::get('/', 'DashboardController@index');
+        // Category
         Route::resource('category', 'CategoryController');
+        
         Route::resource('brand', 'BrandController');
         Route::resource('sell-type', 'SellTypeController');
         Route::resource('seller-shipping', 'SellerShippingController');
@@ -38,6 +40,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::post('delavatar/{id?}','UserController@deleteAvatar')->name('delavatar');
         // Commission
         Route::resource('commission', 'CommissionController');
+        // Get subcategory by ajax
+        Route::get('getsubcategory', 'CommissionController@getSubCategory')->name('getsubcategory');
     });
 
 });

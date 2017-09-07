@@ -11,7 +11,8 @@
                     </div>
                     {!! Form::model($commission, ['route' => ['dashboard.commission.store'], 'class' => 'form-horizontal', 'files' => true]) !!}
                     <div class="box-body">
-                        @include('dashboard::partials.select', ['field' => 'category_id', 'label' => 'Category', 'options' => $cateArr])
+                        @include('dashboard::partials.select', ['field' => 'category', 'label' => 'Category', 'options' => $parentCateArr])
+                        @include('dashboard::partials.select', ['field' => 'category_id', 'label' => 'Subcategory', 'options' => $cateArr])
                         @include('dashboard::partials.input', ['field' => 'type', 'label' => 'Type', 'options' => ['class' => 'form-control']])
                         @include('dashboard::partials.input', ['field' => 'cost', 'label' => 'Cost', 'options' => ['class' => 'form-control']])
                         @include('dashboard::partials.input', ['field' => 'maximum', 'label' => 'Maximum', 'options' => ['class' => 'form-control']])
@@ -26,4 +27,23 @@
         </div>
     </section>
     <!-- /.content -->
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $('select[name="category"]').on('change', function(){
+                var optionSelected = $("option:selected", this);
+                var id = this.value;
+                $('select[name="category_id"]').html('<option value="">Select a subcategory</option>');
+                $.ajax({
+                    url: "{{ route('dashboard.getsubcategory') }}",
+                    type: "GET",
+                    data: {id:id},
+                    success: function(result){
+                        $.each(result, function(k,v){
+                            $('select[name="category_id"]').append('<option value="'+v.id+'">'+v.name+'</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @stop
