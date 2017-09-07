@@ -70,6 +70,7 @@
                             var arOptions = this.options.split(",");
                             var htmlOptions;
                             $.each(arOptions, function(k,v){
+                                alert(v.trim());
                                 htmlOptions += '<option value="'+v+'">'+v+'</option>';
                             });
                             if( $("#"+this.name).length <= 0 ){

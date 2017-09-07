@@ -36,6 +36,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('user', 'UserController');
         // Delete Avatar User By Ajax
         Route::post('delavatar/{id?}','UserController@deleteAvatar')->name('delavatar');
+        // Commission
+        Route::resource('commission', 'CommissionController');
     });
 
 });

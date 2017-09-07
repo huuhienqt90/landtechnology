@@ -118,7 +118,7 @@
                             var arOptions = this.options.split(",");
                             var htmlOptions;
                             $.each(arOptions, function(k,v){
-                                htmlOptions += '<option value="'+v+'">'+v+'</option>';
+                                htmlOptions += '<option value="'+v.trim()+'">'+v.trim()+'</option>';
                             });
                             if( $("#"+this.name + this.id).length <= 0 ){
                                 $("#attributes").append('<div class="form-group"><label for="'+this.name+'" class="col-sm-2 control-label">'+this.name+'</label><div class="col-sm-4"><select class="form-control select2" multiple data-placeholder="Please select '+this.name+'" id="'+this.name+this.id+'" name="prattr['+this.id+'][]">'+htmlOptions+'</select></div><div class="col-sm-2"><a class="btn btn-warning" id="btnAddAttr'+this.id+'">+</a></div>');

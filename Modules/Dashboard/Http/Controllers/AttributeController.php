@@ -54,6 +54,8 @@ class AttributeController extends Controller
     public function store(AttributeRequest $request)
     {
         $param = $request->all();
+        $param['options'] = trim($request->input('options'));
+        $param['options'] = str_replace(' ', '', $param['options']);
         $this->attributeResponsitory->create($param);
         return redirect(route('dashboard.attribute.index'))->with('alert-success', 'Create attribute sucess!');
     }
@@ -89,7 +91,9 @@ class AttributeController extends Controller
      */
     public function update(AttributeRequest $request, $id)
     {
-        $param = $request->only(['group_id','name','options']);
+        $param = $request->only(['group_id','name']);
+        $param['options'] = trim( $request->input('options') );
+        $param['options'] = str_replace(' ', '', $param['options']);
         $this->attributeResponsitory->update($param, $id);
         return redirect(route('dashboard.attribute.index'))->with('alert-success', 'Update attribute sucess!');
     }
