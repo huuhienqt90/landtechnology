@@ -259,7 +259,6 @@ class ProductController extends Controller
             'original_price' => $request->original_price,
             'sale_price' => $request->sale_price,
             'stock' => $request->stock,
-            'sold_units' => $request->sold_units,
             'description_short' => $request->description_short,
             'description' => $request->description,
             'key_words' => $request->status,
@@ -269,7 +268,7 @@ class ProductController extends Controller
             'sell_type_id' => $request->sell_type_id,
             'product_brand' => $request->product_brand,
         ];
-
+        
         // Update feature image
         if( $request->hasFile('feature_image') ){
             $path = $request->file('feature_image')->store('products/features');

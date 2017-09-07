@@ -18,12 +18,10 @@ class ProductStoreRequest extends FormRequest
             'slug' => 'required',
             'status' => 'required',
             'original_price' => 'required|numeric',
-            'display_price' => 'required|numeric',
-            'discount' => 'required|numeric',
-            'price_after_discount' => 'required|numeric',
             'sale_price' => 'required|numeric',
             'stock' => 'required|numeric',
-            'sold_units' => 'required|numeric',
+            'sold_units' => 'numeric',
+            'description_short' => 'required',
             'description' => 'required',
             'key_words' => 'required',
             'weight' => 'required',
@@ -31,7 +29,6 @@ class ProductStoreRequest extends FormRequest
             'seller_id' => 'required',
             'sell_type_id' => 'required',
             'product_brand' => 'required',
-            'feature_image' => 'image|mimes:jpeg,bmp,png'
         ];
     }
 
