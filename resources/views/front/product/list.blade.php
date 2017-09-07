@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="col-md-8 col-sm-8 content-list-show">
                                     <h4>{{ $product->name }}</h4>
-                                    <p>{!! $product->description !!}</p>
+                                    <p>{!! $product->description_short !!}</p>
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item">
                                             <?php
