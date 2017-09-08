@@ -32,11 +32,17 @@
                                 <select class="form-control select2" name="category[]" multiple data-placeholder="Please select categories">
                                     @foreach($categories as $category)
                                         @if($category->parent_id == 0)
-                                        <optgroup label="{{ $category->name }}">
-                                            @foreach($category->getChildren() as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </optgroup>
+                                            @if( $category->getChildren()->count() )
+                                                <optgroup label="{{ $category->name }}">
+                                                    @foreach($category->getChildren() as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @else
+                                                <optgroup label="{{ $category->name }}">
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                </optgroup>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </select>
