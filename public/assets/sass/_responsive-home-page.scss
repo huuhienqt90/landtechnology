@@ -126,6 +126,8 @@
 }
 
 @include responsive_600 {
+    .navbar-default .navbar-toggle{ margin-top: 1.5em; margin-bottom: 0; }
+    #header .a-badge .badge{ right: 68.5em; }
     #header .navbar-default{ margin-bottom: 1em; }
     #header .navbar-default .navbar-collapse .navbar-nav .search:hover .sb-search{ left: 15%; bottom: 15%; }
     #header .navbar-default .navbar-collapse .navbar-nav .menu-cart:hover .hv-cart{ left: 20%; bottom: 30%; }
