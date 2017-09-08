@@ -192,7 +192,16 @@ legend{
 				font-weight: bold;
 				font-family: 'Montserrat', sans-serif;
 				a{
-					i{ padding-right: 1em; font-size: 15px; }
+					color: $bg-color-panel;
+					span{
+						font-size: 15px;
+						color: $bg-color-white;
+						background: $bg-color-panel;
+						font-family: 'Montserrat', sans-serif;
+						padding: 0.1em 0.5em;
+						padding-top: 0;
+						margin-right: 1em;
+					}
 				}
 			}
 		}
