@@ -52,6 +52,30 @@ class SettingController extends Controller
                 $this->settingRepository->create(['key' => 'admin_paypal', 'value' => $request->admin_paypal]);
             }
         }
+
+        if( isset( $request->APIUsername ) && !empty( $request->APIUsername ) ){
+            if( $this->settingRepository->findWhere(['key' =>'APIUsername'])->count() ){
+                $this->settingRepository->update(['key' => 'APIUsername', 'value' => $request->APIUsername], $this->settingRepository->findWhere(['key' =>'APIUsername'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'APIUsername', 'value' => $request->APIUsername]);
+            }
+        }
+
+        if( isset( $request->APIPassword ) && !empty( $request->APIPassword ) ){
+            if( $this->settingRepository->findWhere(['key' =>'APIPassword'])->count() ){
+                $this->settingRepository->update(['key' => 'APIPassword', 'value' => $request->APIPassword], $this->settingRepository->findWhere(['key' =>'APIPassword'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'APIPassword', 'value' => $request->APIPassword]);
+            }
+        }
+
+        if( isset( $request->APISignature ) && !empty( $request->APISignature ) ){
+            if( $this->settingRepository->findWhere(['key' =>'APISignature'])->count() ){
+                $this->settingRepository->update(['key' => 'APISignature', 'value' => $request->APISignature], $this->settingRepository->findWhere(['key' =>'APISignature'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'APISignature', 'value' => $request->APISignature]);
+            }
+        }
         return redirect()->route('dashboard.setting.index')->with('alert-success', 'Update e-commerce setting sucess!');
     }
 

@@ -117,8 +117,8 @@
                                         </div> <!-- .content-cart -->
                                         <div class="btn-cart">
                                             <ul>
-                                                <li><a href="#" title="btn cart" class="btn-view-cart">VIEW CART</a></li>
-                                                <li><a href="#" title="btn cart" class="btn-view-cart">CHECKOUT</a></li>
+                                                <li><a href="{{ route('front.cart') }}" title="btn cart" class="btn-view-cart">VIEW CART</a></li>
+                                                <li><a href="{{ route('front.checkout') }}" title="btn cart" class="btn-view-cart">CHECKOUT</a></li>
                                             </ul>
                                         </div> <!-- .btn-cart -->
                                         @else

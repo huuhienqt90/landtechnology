@@ -34,19 +34,25 @@ Route::group(['namespace' => 'Front'], function() {
 
     // PRODUCTS
     Route::group(['prefix' => 'product'], function(){
-
         // Route::resource('products', 'ProductController');
         Route::get('detail/{slug?}', 'ProductController@show')->name('front.product.detail');
-        Route::get('add-to-cart/{id?}/{quantity?}', 'ProductController@addToCart')->name('front.product.addToCart');
-        Route::post('add-to-cart/{id?}', 'ProductController@postToCart')->name('front.product.postToCart');
-        Route::post('store-review/{id?}', 'ProductController@storeReview')->name('front.product.storeReview');
-        Route::get('add-to-favorite/{id?}', 'ProductController@addToFavorite')->name('front.product.addToFavorite');
-        Route::get('remove-from-cart/{id?}', 'ProductController@removeFromCart')->name('front.product.removeFromCart');
         Route::get('product-category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
         Route::get('brand/{slug?}', 'ProductController@productBrand')->name('front.product.brand');
         Route::get('list', 'ProductController@showList')->name('front.product.list');
         Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
     });
+
+    Route::get('add-to-cart/{id?}/{quantity?}', 'ProductController@addToCart')->name('front.product.addToCart');
+    Route::post('add-to-cart/{id?}', 'ProductController@postToCart')->name('front.product.postToCart');
+    Route::post('store-review/{id?}', 'ProductController@storeReview')->name('front.product.storeReview');
+    Route::get('add-to-favorite/{id?}', 'ProductController@addToFavorite')->name('front.product.addToFavorite');
+    Route::get('remove-from-cart/{id?}', 'ProductController@removeFromCart')->name('front.product.removeFromCart');
+    Route::get('cart', 'ProductController@showCart')->name('front.cart');
+    Route::post('cart', 'ProductController@updateCart')->name('front.cart.update');
+    Route::get('checkout', 'ProductController@showCheckout')->name('front.checkout');
+    Route::post('checkout', 'ProductController@postCheckout')->name('front.checkout.post');
+    Route::get('checkout-success', 'ProductController@showCheckoutThankYou')->name('front.checkout.thankYou');
+    Route::get('checkout-fail', 'ProductController@showCheckoutFail')->name('front.checkout.fail');
 
     Route::group(['middleware' => 'auth', 'prefix' => 'user'], function(){
 
@@ -92,6 +98,18 @@ Breadcrumbs::register('product_category', function ($breadcrumbs, $product_cat) 
 Breadcrumbs::register('product_brand', function ($breadcrumbs, $product_brand) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push($product_brand->name, route('front.product.brand', $product_brand->slug));
+});
+
+// Product brand
+Breadcrumbs::register('cart', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Cart', route('front.cart'));
+});
+
+// Product brand
+Breadcrumbs::register('checkout', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Checkout', route('front.checkout'));
 });
 
 // Product brand
