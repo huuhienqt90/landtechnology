@@ -42,8 +42,8 @@ Route::group(['namespace' => 'Front'], function() {
         Route::post('store-review/{id?}', 'ProductController@storeReview')->name('front.product.storeReview');
         Route::get('add-to-favorite/{id?}', 'ProductController@addToFavorite')->name('front.product.addToFavorite');
         Route::get('remove-from-cart/{id?}', 'ProductController@removeFromCart')->name('front.product.removeFromCart');
-        Route::get('category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
-        Route::get('brand/{slug?}', 'ProductController@productCategoryBrand')->name('front.product.brand');
+        Route::get('product-category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
+        Route::get('brand/{slug?}', 'ProductController@productBrand')->name('front.product.brand');
         Route::get('list', 'ProductController@showList')->name('front.product.list');
         Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
     });
@@ -68,6 +68,18 @@ Route::group(['namespace' => 'Front'], function() {
 // Home
 Breadcrumbs::register('home', function ($breadcrumbs) {
     $breadcrumbs->push('Home', route('front.index'));
+});
+
+// Product List
+Breadcrumbs::register('product_list', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('List View Products', route('front.product.list'));
+});
+
+// Product List
+Breadcrumbs::register('product_grid', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Grid View Products', route('front.product.grid'));
 });
 
 // Product category

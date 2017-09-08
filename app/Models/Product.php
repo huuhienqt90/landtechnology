@@ -141,4 +141,17 @@ class Product extends Model
             return '<span class="product-price tx-sp-cl">$'.number_format($this->original_price, 2). '</span>';
         }
     }
+
+    /**
+     * Get Price as number value
+     *
+     * @return mixed
+     */
+    public function getPriceNumber(){
+        if( $this->sale_price > 0 && $this->original_price > $this->sale_price){
+            return $this->sale_price;
+        }else{
+            return $this->original_price;
+        }
+    }
 }

@@ -29,13 +29,13 @@
 
                 <!--Gallery Thumbs-->
                 <div class="gallery__thumbs">
-                    <a href="{{ asset('storage/'.$product->feature_image) }}" data-gallery="thumb" class="is-active">
+                    <a href="{{ asset('storage/'.$product->feature_image) }}" data-gallery="thumb" class="is-active col-md-3 col-sm-3">
                         <img src="{{ asset('storage/'.$product->feature_image) }}" class="img-responsive">
                     </a>
 
                     @if($product->images->count() )
                         @foreach($product->images as $img)
-                            <a href="{{ asset('storage/'.$img->image_path) }}" data-gallery="thumb">
+                            <a href="{{ asset('storage/'.$img->image_path) }}" data-gallery="thumb" class="col-md-3 col-sm-3">
                                 <img src="{{ asset('storage/'.$img->image_path) }}" class="img-responsive">
                             </a>
                         @endforeach
