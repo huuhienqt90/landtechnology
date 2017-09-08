@@ -375,4 +375,34 @@ class ProductController extends Controller
         $this->productImageResponsitory->delete($id);
         return ['success' => true];
     }
+
+    /**
+     * [getProductByName description]
+     * @param  Request $request [description]
+     * @return [json]           [description]
+     */
+    public function getProductByName(Request $request)
+    {
+        if($request->ajax()){
+
+            $name = trim($request->q);
+
+            if (empty($name)) {
+                return response()->json([]);
+            }
+
+            $names = $this->productResponsitory->getProductByName($name);
+
+            $productArr = [];
+
+            foreach($names as $item){
+                $res = new \stdClass;
+                $res->id = $item->id;
+                $res->text = $item->name;
+                $productArr[] = $res;
+            }
+
+            return response()->json($productArr);
+        }
+    }
 }

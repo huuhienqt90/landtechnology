@@ -21,6 +21,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::post('deleteimage/{id?}', 'ProductController@deleteImageByAjax')->name('delimg');
         // Delete Product Image By Ajax
         Route::post('deleteproductimage/{id?}', 'ProductController@deleteProductImageByAjax')->name('delProductImg');
+        // Get Product By Name
+        Route::get('getproduct','ProductController@getProductByName')->name('getproduct');
 
         Route::resource('attribute-group', 'AttributeGroupController');
         Route::resource('attribute', 'AttributeController');
@@ -42,6 +44,9 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('commission', 'CommissionController');
         // Get subcategory by ajax
         Route::get('getsubcategory', 'CommissionController@getSubCategory')->name('getsubcategory');
+
+        // Coupon
+        Route::resource('coupon', 'CouponController');
     });
 
 });

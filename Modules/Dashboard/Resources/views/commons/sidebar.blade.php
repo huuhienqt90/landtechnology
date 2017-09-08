@@ -52,7 +52,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Orders</a></li>
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Coupons</a></li>
+                    <li><a href="{{ route('dashboard.coupon.index') }}"><i class="fa fa-circle-o"></i> Coupons</a></li>
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Reviews</a></li>
                     <li><a href="{{ route('dashboard.setting.index') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
                     <li><a href="{{ route('dashboard.commission.index') }}"><i class="fa fa-circle-o"></i> Commissions</a></li>
