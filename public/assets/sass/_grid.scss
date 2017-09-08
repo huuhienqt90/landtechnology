@@ -6,16 +6,16 @@ body{
 }
 #bg-title-grid{
 	.img-bg-title-grid{
-		position: relative;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
 		img{
 			min-width: 100%;
 		}
 	}
 	.content-bg-title-grid{
-		position: relative;
 		text-align: center;
-		margin-top: -20em;
-		padding-bottom: 6em;
+		padding: 6em;
 		h1{
 			font-size: 35px;
 			p{
@@ -29,7 +29,7 @@ body{
 		p{
 			font-size: 15px;
 			margin-top: 2em;
-			margin-bottom: 4em;
+			margin-bottom: 3.5em;
 		}
 		a{
 			@include btn();
@@ -143,6 +143,7 @@ body{
 			.color-options, .subcategory, .size-options{
 				@extend .Manufacturer;
 			}
+			.color-options{ clear: both; }
 			.demo{
 				margin: 1em 0;
 				.title-prince{
@@ -165,21 +166,25 @@ body{
 						 $bg-color-ui-slider-range 50% 50%;
 						border: none;
 						border-radius: 50%;
+						outline: none;
 					}
 				}
 				p{
 					float: left;
-					input{ outline: none; }
+					input{ outline: none; color: $bg-color-text-tabs; float: left; }
 				}
-				a{
-					@include btn();
-					background: $bg-color-btn-slide;
-					color: $bg-color-white;
-					padding: 0.5em 1.2em;
-					&:hover {
-						color: $bg-color-btn-slide;
-						background: none;
-						border: 2px solid $bg-color-btn-slide;
+				form{
+					input{
+						@include btn();
+						background: $bg-color-btn-slide;
+						color: $bg-color-white;
+						padding: 0.5em 1.2em;
+						float: right;
+						&:hover {
+							color: $bg-color-btn-slide;
+							background: none;
+							border: 2px solid $bg-color-btn-slide;
+						}
 					}
 				}
 			}

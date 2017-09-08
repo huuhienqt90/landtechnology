@@ -162,19 +162,16 @@
     <!-- START #bg-title -->
     <section id="bg-title-grid">
         <div class="conteiner-fulid">
-            <div class="img-bg-title-grid">
-                <img src="../assets/images/bg-grid.png" class="img-responsive" alt="images bg title grid">
-            </div> <!-- .img-bg-title-grid -->
-        </div>
-        <div class="container">
-            <div class="row">
+            <div class="img-bg-title-grid" style="background-image: url(../assets/images/bg-grid.png);">
+                <!-- <img src="../assets/images/bg-grid.png" class="img-responsive" alt="images bg title grid"> -->
                 <div class="content-bg-title-grid">
                     <h1 class="text-uppercase">creative design<p>lighting furniture</p></h1>
                     <p>Typi non habent claritatem insitam.</p>
                     <a href="#" title="btn grid" class="text-uppercase">view collection</a>
                 </div> <!-- .content-bg-title-grid -->
-            </div> <!-- .row -->
-        </div> <!-- .container -->
+            </div> <!-- .img-bg-title-grid -->
+            
+        </div>
     </section> <!-- #bg-title -->
 
     <!-- START #content-grid -->
@@ -242,9 +239,11 @@
                                 <div id="slider-range" class="range-style"></div>
                                 <p>
                                     <label for="amount"></label>
-                                    <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+                                    <input type="text" id="amount" style="border: 0; font-weight: bold;" />
                                 </p>
-                                <a href="#" title="btn search price">Search</a>
+                                <form>
+                                    <input class="sb-search-submit" type="submit" value="SEARCH">
+                                </form>
                             </div>
 
                             <div class="color-options">

@@ -1,0 +1,35 @@
+
+@include responsive_1920 {
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+}
+
+@include responsive_600 {
+
+}
+
+@include responsive_568 {
+}
+
+@include responsive_480 {
+}
+
+@include responsive_320 {
+	#content-error .text-content-error form .sb-search-input{ width: 75%; }
+}

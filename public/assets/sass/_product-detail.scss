@@ -92,15 +92,17 @@ body{
 }
 
 .gallery__thumbs {
-    text-align: center;
+    /* text-align: center; */
+    margin-left: -10px;
+    margin-right: -10px;
 	a {
         display: inline-block;
-		width: 23%;
+		/* width: 23%; */
         opacity: $thumb-opacity-inactive;
         transition: opacity $base-transition-duration $base-transition-timing;
-        padding-top: 1em;
-        margin-right: 0.5em;
-        &:last-child { margin-right: 0; }
+        padding-top: 1.5em;
+        padding-left: 10px;
+        padding-right: 10px;
         &:hover {
             opacity: $thumb-opacity-hover;
         }
