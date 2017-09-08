@@ -19,5 +19,16 @@ class ProductResponsitory extends Repository {
 
     public function getProductByName($name){
     	return Product::where('name','like','%'.$name.'%')->where('status','active')->get();
+
+    public function getProductsByCategory($slug, $take = 12){
+        return Product::where('status', 'active')->whereHas('categories', function ($query) use ($slug){
+            $query->where('slug', $slug);
+        })->paginate($take);
+    }
+
+    public function getProductsByBrand($slug, $take = 12){
+        return Product::where('status', 'active')->whereHas('brand', function ($query) use ($slug){
+            $query->where('slug', $slug);
+        })->paginate($take);
     }
 }

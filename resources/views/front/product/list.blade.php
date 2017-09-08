@@ -35,11 +35,7 @@
     <div class="container">
         <div class="row">
             <div class="content-grid-title">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Chair</li>
-                </ol>
+                {{ Breadcrumbs::render('product_list') }}
             </div> <!-- .content-grid-title -->
             @include('layouts.front.commons.product-sidebar')
             <div class="col-md-9 col-sm-9">
@@ -47,9 +43,6 @@
                     <div class="show-click">
                         <a href="{{ route('front.product.grid') }}" class="btn btn-default grid-show"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                         <a href="{{ route('front.product.list') }}" class="btn btn-default list-show active"><i class="fa fa-align-justify" aria-hidden="true"></i></a>
-                        <select name="order">
-                            <option value="desc">Default sorting</option>
-                        </select>
                         @if(isset($products) && $products->count() )
                         <span class="text-uppercase">Showing {{ $products->firstItem()  }} - {{ $products->lastItem()  }} of {{ $products->total() }} results</span>
                         @endif
