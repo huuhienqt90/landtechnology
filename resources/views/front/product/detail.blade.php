@@ -84,10 +84,22 @@
                         @endif
                         <p class="required">Required Field *</p>
                         <div class="quantity">
-
                             <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
                                 <label for="quantity" class="label-control">Quantity</label>
-                                <input type="number" name="quantity" value="1" class="form-control" min="1" max="{{ $product->stock }}" />
+                                <!-- <input type="number" name="quantity" value="1" class="form-control" min="1" max="{{ $product->stock }}" /> -->
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quantity">
+                                            <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" name="quantity" class="form-control input-number" value="1" min="1" max="{{ $product->stock }}">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quantity">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                              </div>
                                 @include('partials.error', ['field' => 'quantity'])
                             </div>
                         </div> <!-- .quanty -->
@@ -236,6 +248,12 @@
     .rating > label.hovered,
     .rating > label.hovered ~ label{
         color: #79B6C8;
+    }
+    button.btn.btn-default.btn-number {
+        padding: 13px 15px 10px 15px;
+    }
+    .input-group{
+        width: 170px;
     }
 </style>
 @stop
