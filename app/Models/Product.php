@@ -53,14 +53,28 @@ class Product extends Model
         ];
     }
 
+    /**
+     * Get product brands
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function brand(){
         return $this->hasOne('App\Models\Brand', 'id', 'product_brand');
     }
 
+    /**
+     * Get sell type product
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function sellType(){
         return $this->hasOne('App\Models\SellType', 'id','sell_type_id');
     }
 
+    /**
+     * Get seller
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function seller(){
         return $this->hasOne('App\Models\User', 'id', 'seller_id');
     }
@@ -72,5 +86,72 @@ class Product extends Model
      */
     public function categories() {
         return $this->belongsToMany('App\Models\Category', 'product_categories', 'product_id', 'category_id');
+    }
+
+    /**
+     * Get product images
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images(){
+        return $this->hasMany('App\Models\ProductImage', 'product_id', 'id');
+    }
+
+    /**
+     * Product reviews
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reviews(){
+        return $this->hasMany('App\Models\ProductReview', 'product_id', 'id');
+    }
+
+    /**
+     * Product attributes
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attributes(){
+        return $this->hasMany('App\Models\ProductAttribute', 'product_id', 'id');
+    }
+
+    /**
+     * Get feature image
+     * @param int $productId
+     * @return string
+     */
+    public static function getFeatureImage($productId = 0){
+        $product = static::find($productId);
+        if( isset( $product->feature_image ) && !empty( $product->feature_image ) ){
+            return asset('storage/'.$product->feature_image);
+        }else{
+            return asset('assets/images/img-hv-cart.png');
+        }
+    }
+
+    /**
+     * Get price
+     *
+     * @return mixed
+     */
+    public function getPrice(){
+        if( $this->sale_price > 0 && $this->original_price > $this->sale_price){
+            return '<span class="tx-sp-line-through">$'.number_format($this->original_price, 2).'</span> <span class="product-price tx-sp-cl">$'.number_format($this->sale_price, 2). '</span>';
+        }else{
+            return '<span class="product-price tx-sp-cl">$'.number_format($this->original_price, 2). '</span>';
+        }
+    }
+
+    /**
+     * Get Price as number value
+     *
+     * @return mixed
+     */
+    public function getPriceNumber(){
+        if( $this->sale_price > 0 && $this->original_price > $this->sale_price){
+            return $this->sale_price;
+        }else{
+            return $this->original_price;
+        }
     }
 }

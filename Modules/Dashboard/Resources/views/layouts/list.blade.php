@@ -42,6 +42,7 @@
     <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/custom.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,6 +53,14 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -90,9 +99,17 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/dashboard/dist/js/demo.js') }}"></script>
     <script>
-        $(function () {
-            $('#list').DataTable();
-        })
+        jQuery(document).ready(function($){
+            $("#list").DataTable();
+            $('.btn-delete-item').click(function(){
+                var cf = confirm($(this).data('confirm'));
+                if(cf){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+        });
     </script>
 </body>
 </html>

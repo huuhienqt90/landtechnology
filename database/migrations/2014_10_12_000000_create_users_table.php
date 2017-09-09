@@ -19,9 +19,11 @@ class CreateUsersTable extends Migration
             $table->integer('is_buyer')->default(1);
             $table->integer('is_seller')->default(0);
             $table->string('status')->default('active');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('avatar')->nullable();
             $table->string('address1');
             $table->string('address2')->nullable();
             $table->string('country')->nullable();

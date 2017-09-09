@@ -14,31 +14,44 @@ class SocialAccountService
         if ($account) {
             return [$account, $providerUser];
         } else {
-            $email = !empty($providerUser->getEmail()) ? $providerUser->getEmail() : $providerUser->getId().'@'.$driver.'com';
-            $account = new SocialAccount([
-                'provider_user_id' => $providerUser->getId(),
-                'provider' => $driver,
-                'email' => $email,
-            ]);
+            $email = !empty($providerUser->getEmail()) ? $providerUser->getEmail() : $providerUser->getId().'@'.$driver.'.com';
+
             $user = User::whereemail($providerUser->getEmail())->first();
             if (!$user) {
                 if( !empty($providerUser->getEmail()) ){
                     $user = User::create([
                         'email' => $email,
+                        'last_name' => 'null',
+                        'username' => 'null',
                         'first_name' => $providerUser->getName(),
+                        'address1' => 'null',
+                        'password' => 'null',
                         'confirm_code' => 'null',
                         'confirmed' => 1,
+                        'is_notify' => 1,
                     ]);
                 }else{
                     $user = User::create([
                         'email' => $email,
+                        'username' => 'null',
+                        'last_name' => 'null',
                         'first_name' => $providerUser->getName(),
+                        'address1' => 'null',
+                        'password' => 'null',
                         'confirm_code' => rand(10000000, 99999999),
+                        'is_notify' => 1,
                         'confirmed' => 0,
                     ]);
                 }
 
             }
+
+            $account = new SocialAccount([
+                'user_id' => $user->id,
+                'provider_user_id' => $providerUser->getId(),
+                'provider' => $driver,
+                'email' => $email,
+            ]);
             $account->user()->associate($user);
             $account->save();
             return [$user, $providerUser];

@@ -5,11 +5,17 @@ body{
     font-family: 'Lato', sans-serif;
 }
 #bg-title-grid{
-	background: url(../../assets/images/bg-grid.png) no-repeat;
+	.img-bg-title-grid{
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		img{
+			min-width: 100%;
+		}
+	}
 	.content-bg-title-grid{
 		text-align: center;
-		padding-top: 3em;
-		padding-bottom: 6em;
+		padding: 6em;
 		h1{
 			font-size: 35px;
 			p{
@@ -23,7 +29,7 @@ body{
 		p{
 			font-size: 15px;
 			margin-top: 2em;
-			margin-bottom: 4em;
+			margin-bottom: 3.5em;
 		}
 		a{
 			@include btn();
@@ -34,7 +40,8 @@ body{
 	}
 }
 #content-grid{
-	margin-top: 4em;
+	@extend #new-arrivals;
+	margin: 4em 0;
 	.content-grid-title{
 		margin-bottom: 4em;
         .breadcrumb{
@@ -63,6 +70,7 @@ body{
 			    font-family: 'Oswald', sans-serif;
 			    position: relative;
     			padding-bottom: 0.7em;
+    			margin-top: 0;
     			&:before {
     				content: '';
 				    position: absolute;
@@ -82,9 +90,10 @@ body{
 			    border-bottom: 1px solid $bg-color-border-categories;
 			    text-align: left;
 			    color: $bg-color-black;
-			    font-size: 14px;
+			    font-size: 13px;
 			    font-weight: bold;
 			    font-family: 'Montserrat', sans-serif;
+			    outline: none;
 				&:after {
 					font-family: "Glyphicons Halflings";
 					content: "\e114";
@@ -134,6 +143,7 @@ body{
 			.color-options, .subcategory, .size-options{
 				@extend .Manufacturer;
 			}
+			.color-options{ clear: both; }
 			.demo{
 				margin: 1em 0;
 				.title-prince{
@@ -142,6 +152,7 @@ body{
 					font-family: 'Montserrat', sans-serif;
 					padding: 1em 0;
 					border-bottom: 1px solid $bg-color-border-categories;
+					padding-right: 15.5em;
 				}
 				.range-style{
 					margin: 2em 0;
@@ -156,23 +167,134 @@ body{
 						 $bg-color-ui-slider-range 50% 50%;
 						border: none;
 						border-radius: 50%;
+						outline: none;
 					}
 				}
 				p{
 					float: left;
+					input{ outline: none; color: $bg-color-text-tabs; float: left; }
 				}
-				a{
-					@include btn();
-					background: $bg-color-btn-slide;
-					color: $bg-color-white;
-					padding: 0.5em 1.2em;
-					&:hover {
-						color: $bg-color-btn-slide;
-						background: none;
-						border: 2px solid $bg-color-btn-slide;
+				form{
+					input{
+						@include btn();
+						background: $bg-color-btn-slide;
+						color: $bg-color-white;
+						padding: 0.5em 1.2em;
+						float: right;
+						&:hover {
+							color: $bg-color-btn-slide;
+							background: none;
+							border: 2px solid $bg-color-btn-slide;
+						}
 					}
 				}
 			}
+		}
+	}
+	.grid-content-detail-list{
+		.show-click{
+			a{
+				background: $bg-color-select-grid;
+				margin-right: 0.1em;
+				border: none;
+				border-radius: 0;
+				padding: 0.5em 1em;
+				&:hover {
+					background: $bg-color-main;
+					i{
+						color: $bg-color-white;
+					}
+				}
+				i{
+					border: none;
+				}
+			}
+			.active{
+				background: $bg-color-main;
+					i{
+						color: $bg-color-white;
+					}
+			}
+			select{
+				color: $bg-color-text-tabs;
+				padding: 0.4em;
+				padding-bottom: 0.5em;
+				border: none;
+				background: $bg-color-select-grid;
+				margin-left: 1.5em;
+			}
+			span{
+				float: right;
+				font-weight: bold;
+				border-bottom: 1px solid $bg-color-prev;
+				padding-bottom: 0.5em;
+			}
+		}
+	}
+	.slider{
+		//display: flex;
+		padding: 0;
+		margin-top: 3em;
+		/* display: none; */
+		.item{
+			.overlay{
+				.text{
+					top: 67%;
+				}
+			}
+			.tetx{
+				.lock{
+					.glyph { width: 5em; padding-right: 0; }
+				}
+			}
+		}
+	}
+	.news-product-slider{
+		left: 13em;
+		top: 4px;
+    	width: 21.5%;
+		p{
+			padding-left: 0.8em;
+		}
+	}
+	.sale-product-slider {
+		top: 73px;
+    	left: 184px;
+    	&:before {
+    		left: 3.6em;
+    	}
+		p{
+			padding-left: 0.6em;
+		}
+	}
+	.navigation-page{
+		margin-top: 2em;
+		.pagination{
+			float: left;
+			margin-top: 2em;
+			li{
+				&:first-child, &:last-child {
+					a{
+						&:hover { background: $bg-color-text-tabs; }
+					}
+				}
+				a{
+					border-radius: 50%;
+					margin-right: 1em;
+					background: $bg-color-pagination;
+					color: $bg-color-white;
+					&:hover {
+						background: $bg-color-main;
+					}
+				}
+			}
+		}
+		.showing{
+			float: right;
+			padding-top: 2em;
+			font-weight: bold;
+		    border-bottom: 1px solid #B1B1B1;
+		    padding-bottom: 0.5em;
 		}
 	}
 }

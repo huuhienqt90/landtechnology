@@ -8,6 +8,10 @@
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">List all categories</h3>
+                        <div class="pull-right box-tools">
+                            <a href="{{ route('dashboard.category.create') }}" class="btn btn-info btn-sm" data-toggle="tooltip" title="" data-original-title="Create">
+                              <i class="fa fa-plus"></i></a>
+                          </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -15,7 +19,7 @@
                         <table id="list" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
+                                    <th width="80">Image</th>
                                     <th>Name</th>
                                     <th>Parent</th>
                                     <th width="100">Actions</th>
@@ -25,17 +29,23 @@
                                 @foreach($categories as $category)
                                     <tr>
                                         @if($category->image)
-                                            <td>Image</td>
+                                            <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$category->image) }}"/></td>
                                         @else
-                                            <td>Image</td>
+                                            <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('themes/dashboard/dist/img/boxed-bg.jpg') }}"/></td>
                                         @endif
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->showParent() }}</td>
                                         <td style="text-align: center;">
-                                            <div class="btn-group">
-                                                <a class="btn btn-info btn-flat" href="{{ route('dashboard.category.edit', $category->id) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                                <a class="btn btn-danger btn-flat"><i class="fa fa-times"></i></a>
-                                            </div>
+                                            <form method="post" action="{{ route('dashboard.category.destroy', $category->id) }}">
+                                                {{ method_field('DELETE') }}
+                                                <div class="form-group">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-info btn-flat" href="{{ route('dashboard.category.edit', $category->id) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                        <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

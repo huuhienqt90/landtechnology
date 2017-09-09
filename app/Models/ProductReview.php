@@ -17,4 +17,22 @@ class ProductReview extends Model
         'user_id',
         'status'
     ];
+
+    /**
+     * Products
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function product(){
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+    }
+
+    /**
+     * User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user(){
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
 }

@@ -1,0 +1,233 @@
+
+@import 'mixin';
+@import 'variables';
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+.date-time{
+	color: $bg-color-blog-post-span;
+	font-size: 12px;
+	font-weight: bold;
+}
+#content-blog-post{
+	margin-top: 5em;
+	.menu-content-blog-post{
+		padding-left: 0;
+		margin-bottom: 1em;
+		.breadcrumb{
+			@include breadcrumb();
+		}
+	}
+
+	.content-blog-post{
+		padding-left: 0;
+		margin-bottom: 6em;
+		.how-to{
+			margin: 2em 0;
+			h1{
+				font-family: 'Montserrat', sans-serif;
+				font-weight: bold;
+				font-size: 15px;
+				a{
+					color: $bg-color-black;
+					&:hover { color: $bg-color-main; }
+				}
+			}
+			p{
+				font-style: italic;
+				color: $bg-color-hv-menu;
+				font-size: 12.5px;
+				margin-top: 2em;
+				margin-bottom: 2em;
+			}
+			.ps{
+				color: $bg-color-hv-menu;
+				font-size: 13px;
+				i{
+					padding-right: 0.5em;
+				}
+				a{
+					color: $bg-color-main;
+				}
+			}
+		}
+
+		.share-to{
+			border-top: 2px solid $bg-color-border-share-to;
+			border-bottom: 2px solid $bg-color-border-share-to;
+			padding-top: 1em;
+			padding-bottom: 2.5em;
+			.share-to-friends{
+				float: left;
+				span{
+					font-family: 'Montserrat', sans-serif;
+					font-weight: bold;
+					font-size: 11px;
+				}
+				a{
+					color: $bg-color-black;
+					padding-left: 1.5em;
+					&:hover {
+						color: $bg-color-main;
+					}
+				}
+			}
+			.tags{
+				@extend .share-to-friends;
+				float: right;
+				span{
+					padding-right: 1.5em;
+				}
+				p{
+					color: $bg-color-text-blog;
+					font-style: italic;
+					font-size: 11px;
+					display: -webkit-inline-box;
+				}
+			}
+		}
+		.artice{
+			clear: both;
+			border-bottom: 2px solid $bg-color-border-share-to;
+		    padding-top: 3em;
+		    padding-bottom: 6em;
+		    padding-right: 0;
+			.img-artice{
+				float: left;
+				border: 2px solid $bg-color-main;
+				border-radius: 50%;
+				width: 7.5em;
+				img{
+					border-radius: 50%;
+					width: 7.5em;
+					height: 7.5em; 
+				}
+			}
+			.text-artice{
+				padding-top: 1.5em;
+				padding-left: 10em;
+				span{
+					font-weight: bold;
+					font-size: 12px;
+				}
+				a{
+					color: $bg-color-main;
+					font-size: 12px;
+				}
+				p{
+					font-style: italic;
+					font-size: 12.5px;
+					text-align: justify;
+					margin-top: 1em;
+				}
+			}
+		}
+
+		.post-comment{
+			clear: both;
+			h3{
+				font-family: 'Oswald', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+				padding-bottom: 1em;
+				position: relative;
+				&:before {
+					content: '';
+					position: absolute;
+					border-bottom: 2.5px solid $bg-color-black;
+					bottom: 0;
+					left: 0;
+					width: 4%;
+				}
+			}
+			span{
+				font-family: 'Montserrat', sans-serif;
+				font-weight: bold;
+				font-size: 13px;
+			}
+			.form-group{
+				label {
+					font-weight: 100;
+					span{ font-weight: 100; color: red; }
+				}
+			}
+			button{
+				margin-top: 1em;
+				padding: 1em 2em;
+				border-radius: 0.3em;
+			}
+		}
+	}
+
+	.sidebar-blog-post{
+		@extend .content-blog-post;
+		.popular{
+			@extend .post-comment;
+			h3{
+				margin-top: 0;
+				margin-bottom: 1.5em;
+				&:before {
+					width: 15%;
+				}
+			}
+			ul{
+				list-style: none;
+				padding-left: 0;
+				li{
+					padding-bottom: 7em;
+					clear: both;
+					.img-popular{
+						float: left;
+						width: 50%;
+						padding-right: 1em;
+					}
+					.text-popular{
+						a{
+							color: $bg-color-black;
+							font-style: italic;
+							font-size: 13px;
+							&:hover {
+								color: $bg-color-main;
+							}
+						}
+						p{
+							color: $bg-color-blog-post-span;
+							font-style: italic;
+							font-size: 12px;
+							i{ padding-right: 0.5em; }
+						}
+					}
+				}
+			}
+		}
+		.blog{
+			@extend .post-comment;
+			h3{
+				margin-top: 2.5em;
+				&:before { width: 15%; }
+			}
+			.categories{
+				margin-top: 2em;
+				a{
+					display: block;
+					color: $bg-color-blog-post-span;
+					padding: 0.3em 0;
+					&:hover { color: $bg-color-main; }
+				}
+			}
+			.recent-post{
+				margin-top: 1.5em;
+				a{
+					display: block;
+					font-style: italic;
+					padding: 0.5em 0;
+					color: $bg-color-hv-menu;
+					&:hover {
+						color: $bg-color-main;
+					}
+				}
+			}
+		}
+	}
+}

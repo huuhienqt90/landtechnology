@@ -1,0 +1,56 @@
+@import 'mixin';
+@import 'variables';
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+
+#content-error{
+	text-align: center;
+	margin: 7em 0;
+	.text-content-error{
+		margin-top: 6em;
+		span{
+			color: $bg-color-text-blog;
+			font-family: 'Montserrat', sans-serif;
+			font-weight: bold;
+			font-size: 18px;
+		}
+		h1{
+			font-family: 'Oswald', sans-serif;
+			font-weight: bold;
+			margin-top: 0;
+			margin-bottom: 1em;
+		}
+		p{
+			font-style: italic;
+			color: $bg-color-hv-menu;
+			font-size: 12.5px;
+			margin-bottom: 6em;
+			a{ color: $bg-color-main; }
+		}
+		form{
+			.sb-search-input{
+				border: 1px solid $bg-color-border-error;
+				border-right: none;
+			    padding: 1em;
+			    width: 80%;
+			    font-style: italic;
+    			font-size: 12.5px;
+    			outline: none;
+			}
+			.sb-search-submit{
+				border: 1px solid $bg-color-border-error;
+			    padding: 1em;
+			    padding-left: 0;
+			    margin-left: -5px;
+				background: none;
+				border-left: none;
+				font-family: 'Montserrat', sans-serif;
+				font-weight: bold;
+				font-size: 12.5px;
+				outline: none;
+			}
+		}
+	}
+}

@@ -44,10 +44,14 @@ class Category extends Model
     }
 
     public function showParent(){
-        if(static::where('parent_id', $this->parent)->count()){
-            return static::where('parent_id', $this->parent)->first()->name;
+        if(static::where('id', $this->parent_id)->count()){
+            return static::where('id', $this->parent_id)->first()->name;
         }else{
             return null;
         }
+    }
+
+    public function getChildren(){
+        return static::where('parent_id', $this->id)->get();
     }
 }

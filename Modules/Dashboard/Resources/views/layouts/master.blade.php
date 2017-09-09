@@ -20,7 +20,8 @@
     <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/AdminLTE.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/iCheck/square/blue.css') }}">
-
+    <!-- File Input -->
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/fileinput.min.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -40,6 +41,7 @@
     <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/custom.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,6 +52,18 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <!-- jQuery 3 -->
+    <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <!-- File Input -->
+    <script src="{{ asset('themes/dashboard/dist/js/fileinput.min.js') }}"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -73,8 +87,7 @@
             @yield('content')
         </div>
     </div>
-    <!-- jQuery 3 -->
-    <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('themes/dashboard/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -110,5 +123,21 @@
     <script src="{{ asset('themes/dashboard/dist/js/pages/dashboard.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/dashboard/dist/js/demo.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $('input[name="name"]').keyup(function(e){
+                $('input[name="slug"]').val(convertToSlug($(this).val()));
+                return true;
+            });
+            function convertToSlug(Text)
+            {
+                return Text
+                    .toLowerCase()
+                    .replace(/[^\w ]+/g,'')
+                    .replace(/ +/g,'-')
+                    ;
+            }
+        });
+    </script>
 </body>
 </html>

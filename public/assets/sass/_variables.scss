@@ -12,8 +12,10 @@ $bg-color-header: #303030 !default;
 $bg-color-main: #79B6C8 !default;
 $bg-color-hv-menu: #606060 !default;
 $bg-color-hv-menu-border: #F1F1F1 !default;
+
 $bg-color-hv-text-cart: #454545 !default;
 $bg-color-btn-cart: #303030 !default;
+$bg-color-btn-cart-list-show: #4A4A4A !default;
 $bg-color-border-btn-cart: #707070 !default;
 
 $bg-color-text-slide: #1F1F1F !default;
@@ -36,6 +38,8 @@ $bg-color-ui-slider-range: #90C1D0 !default;
 $bg-color-select-product: #888888 !default;
 $bg-color-text-tabs: #333333 !default;
 
+$bg-color-panel: #3A3D42 !default;
+
 $bg-color-blue: #2485f1 !default;
 $bg-color-footer: #262626 !default;
 $bg-color-text-footer: #8E8E8E !default;
@@ -43,11 +47,30 @@ $bg-color-end: #323232 !default;
 $bg-color-footer-end: #2D2D2D !default;
 $bg-color-author: #AA1116 !default;
 
+$bg-color-pagination: #DBDDDC !default;
+
+$bg-color-select-grid: #EEEEEE !default;
+
+$bg-color-title-p: #A6A6A6 !default;
+
+$bg-color-login-account: #79B6C8 !default;
+$bg-color-login-facebook: #2C5990 !default;
+$bg-color-login-twitter: #16BCE6 !default;
+
+$bg-color-blog-post-span: #AFAFAF !default;
+
 //bg-color-border
 $bg-color-boder-dotted: #C9C9C9 !default;
 $bg-color-border-breadcrumb-product: #EBEBEB !default;
 $bg-color-border-product-heart-setting: #C8C8C8 !default;
 $bg-color-border-categories: #D9D9D9 !default;
+$bg-color-border-error: #D7D7D7 !default;
+
+$bg-color-border-share-to: #E5E5E5 !default;
+
+$bg-color-border-input-shopping-cart: #DDDDDD !default;
+
+$bg-color-border-th-shopping-cart: #D9D9D9 !default;
 
 $bg-color-hover-support: #D9BF8F !default;
 
@@ -78,7 +101,7 @@ $res_320 : "only screen and (max-width: 320px)";
 $res_480 : "only screen and (max-width: 480px)";
 $res_568 : "only screen and (max-width: 568px)";
 $res_600 : "only screen and (max-width: 600px)";
-$res_800 : "only screen and (max-width: 768px)";
+$res_800 : "only screen and (max-width: 800px)";
 $res_992 : "only screen and (max-width: 992px)";
 $res_1024 : "only screen and (max-width: 1024px)";
 $res_1200 : "only screen and (max-width: 1200px)";

@@ -1,0 +1,36 @@
+
+@include responsive_1920 {
+}
+
+@include responsive_1300 {
+    
+}
+
+@include responsive_1200 {
+    
+}
+
+@include responsive_1024 {
+}
+
+@include responsive_992 {
+    
+}
+
+@include responsive_800 {
+	#content-blog .content-col-how-to .text-col-how-to h1{ line-height: 0.35em; }
+	#content-blog{ padding-left: 0.6em; }
+}
+
+@include responsive_600 {
+
+}
+
+@include responsive_568 {
+}
+
+@include responsive_480 {
+}
+
+@include responsive_320 {
+}

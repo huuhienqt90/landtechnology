@@ -16,4 +16,8 @@ class SellerShipping extends Model
         'to_country',
         'cost'
     ];
+
+    public function user(){
+        return $this->hasOne('App\Models\User', 'id', 'seller_id');
+    }
 }

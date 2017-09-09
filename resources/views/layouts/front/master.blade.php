@@ -10,9 +10,14 @@
         @yield('meta')
 
         <!-- Style -->
-        <link href="https://file.myfontastic.com/MxywPYeJeetJEud3nnLj53/icons.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/frameworks.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+
+        <!-- Style Dashboard -->
+        @yield('style-dashboard')
     </head>
     <body>
         <!-- Header -->
@@ -26,53 +31,51 @@
         <!-- Footer -->
         @include('layouts.front.commons.footer')
         <!-- End footer -->
-
+        
         <!-- Script -->
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/slick.min.js') }}"></script>
+        <script src="{{ asset('assets/js/price.js') }}"></script>
+        <script src="{{ asset('assets/js/grid-list-show.js') }}"></script>
+        <!-- Detail product -->
+        <script src="{{ asset('assets/js/notify.min.js') }}"></script>
+        <script src="{{ asset('assets/js/product-detail.js') }}"></script>
+        <script src="{{ asset('assets/js/slider-slick.js') }}"></script>
+
         <script type="text/javascript">
             $(document).ready(function(){
-                $('.slider-nav').slick({
-                    dots: true,
-                    infinite: false,
-                    speed: 300,
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                    responsive: [
-                        {
-                            breakpoint: 1024,
-                            settings: {
-                                slidesToShow: 3,
-                                slidesToScroll: 3,
-                                infinite: true,
-                                dots: true
-                            }
-                        },
-                        {
-                            breakpoint: 600,
-                            settings: {
-                                slidesToShow: 2,
-                                slidesToScroll: 2
-                            }
-                        },
-                        {
-                            breakpoint: 480,
-                            settings: {
-                                slidesToShow: 1,
-                                slidesToScroll: 1
-                            }
-                        }
-                    ]
-                });
-
                 $('#back-to-top').on('click', function (e) {
                     e.preventDefault();
                     $('html,body').animate({
                         scrollTop: 0
                     }, 700);
                 });
+                $('.overlay').click(function(){
+                    var url = $(this).parent().find('.product-detail-url').attr('href');
+                    if( typeof url === "undefined"){
+                        return true;
+                    }else{
+                        window.location = url;
+                        return false;
+                    }
+
+                });
+                $('.rating input').each(function () {
+                   if($(this).is(':checked')){
+                       $('.rating label').removeClass('hovered');
+                       $(this).parent().addClass('hovered');
+                   }
+                });
+                $('.rating input').change(function () {
+                    $('.rating label').removeClass('hovered');
+                    if($(this).is(':checked')){
+                        $(this).parent().addClass('hovered');
+                    }
+                });
             });
         </script>
+        @include('front.messages')
     </body>
 </html>

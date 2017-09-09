@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests;
 use Socialite;
-use Session;
-use App\SocialAccountService;
+use App\Models\SocialAccountService;
 use App\Models\SocialAccount;
 use App\Models\User;
+use Auth;
 
 class SocialAuthController extends Controller
 {
@@ -24,20 +23,17 @@ class SocialAuthController extends Controller
         }else{
             list($user, $provider) = $service->createOrGetUser(Socialite::driver($driver)->stateless()->user(), $driver);
         }
-        if(!empty($user->id)){
-            session()->regenerate();
-            session(['usertype' => 'buyer', 'id' => $user->id]);
+        if(!empty($user->user_id)){
+            Auth::loginUsingId($user->user_id);
+            return redirect()->route('front.dashboard.index');
         }else{
-            $user_ids = User::where('email', $user->email)->first();
-            SocialAccount::where('email',$user->email)->update(['id' => $user_ids->id]);
-            session()->regenerate();
-            session(['usertype' => 'buyer', 'id' => $user_ids->id]);
+            Auth::loginUsingId($user->id);
+            return redirect()->route('front.user.edit')->with('msgOk','Please fill complete information of my account');
         }
         if( !empty($provider->getEmail()) ){
-            return redirect('/buyerdashboard');
+            return redirect()->route('front.dashboard.index');
         }else{
-            session(['usertype' => 'pending']);
-            return redirect('/update-profile');
+            return redirect()->route('front.user.edit');
         }
     }
 }

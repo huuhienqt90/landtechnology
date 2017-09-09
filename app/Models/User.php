@@ -16,6 +16,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'email',
+        'username',
         'password',
         'is_admin',
         'is_buyer',
@@ -175,5 +176,10 @@ class User extends Authenticatable
      */
     public function getFullName(){
         return $this->first_name. " " . $this->last_name;
+    }
+
+    public function getAvatarByEmail($size=64){
+        $gravatar_link = 'http://www.gravatar.com/avatar/' . md5($this->email) . '?s='.$size;
+        return '<img src="' . $gravatar_link . '" />';
     }
 }

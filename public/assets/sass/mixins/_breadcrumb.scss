@@ -1,0 +1,18 @@
+
+@mixin breadcrumb(){
+	background: none;
+    border-bottom: 1px solid $bg-color-border-breadcrumb-product;
+    border-radius: 0;
+    padding-left: 0;
+    .breadcrumb-item{
+        a{
+            color: $bg-color-hv-menu;
+            &:hover {
+                color: $bg-color-main;
+            }
+        }
+    }
+    .active{
+        color: $bg-color-main;
+    }
+}

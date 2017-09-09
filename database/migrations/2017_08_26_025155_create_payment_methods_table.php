@@ -17,8 +17,8 @@ class CreatePaymentMethodsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('created_by')->default(0);
-            $table->integer('updated_by')->default(0);
+            $table->string('status')->default('active');
+            $table->string('class_name');
             $table->timestamps();
         });
     }

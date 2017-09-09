@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Repositories\CategoryResponsitory;
+use Modules\Dashboard\Http\Requests\CategoryUpdateRequest;
+use Modules\Dashboard\Http\Requests\CategoryStoreRequest;
 
 class CategoryController extends Controller
 {
@@ -29,7 +31,15 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('dashboard::create');
+        $categories = $this->categoryResponsitory->all();
+        $category = $this->categoryResponsitory;
+        $cateArr = [0 => 'Select a category'];
+        if( $categories && $categories->count() ){
+            foreach ($categories as $cat) {
+                $cateArr[$cat->id] = $cat->name;
+            }
+        }
+        return view('dashboard::category.create', compact('category', 'cateArr'));
     }
 
     /**
@@ -37,8 +47,18 @@ class CategoryController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
+        $create = ['name' => $request->name, 'status' => $request->status, 'created_by' => auth()->user()->id, 'updated_by' => auth()->user()->id];
+        if( $request->hasFile('image') ){
+            $path = $request->file('image')->store('categories');
+            $create['image'] = $path;
+        }
+        if( isset( $request->parent_id ) && $request->parent_id > 0 ){
+            $create['parent_id'] = $request->parent_id;
+        }
+        $this->categoryResponsitory->create($create);
+        return redirect(route('dashboard.category.index'))->with('alert-success', 'Create category sucess!');
     }
 
     /**
@@ -47,7 +67,7 @@ class CategoryController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return view('dashboard::index');
     }
 
     /**
@@ -72,15 +92,34 @@ class CategoryController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(CategoryUpdateRequest $request, $id = 0)
     {
+        $update = [
+            'name' => $request->name,
+            'status' => $request->status,
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id
+        ];
+        if( $request->hasFile('image') ){
+            $path = $request->file('image')->store('categories');
+            $update['name'] = $path;
+        }
+        if( isset( $request->parent_id ) && $request->parent_id > 0 ){
+            $update['parent_id'] = $request->parent_id;
+        }
+        $this->categoryResponsitory->update($update, $id);
+        return redirect(route('dashboard.category.index'))->with('alert-success', 'Update category sucess!');
     }
 
     /**
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy(Request $request, $id)
     {
+        $arItem = $this->categoryResponsitory->find($id);
+        $this->categoryResponsitory->deleteProductCategories($id);
+        $arItem->delete();
+        return redirect(route('dashboard.category.index'))->with('alert-success', 'Delete category success');
     }
 }

@@ -107,22 +107,27 @@
                                         </div>
                                     </li>
                                     <li class="menu-cart">
-                                        <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                        <a href="#" class="a-badge">
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                            <span class="badge badge-default">50</span>
+                                        </a>
                                         <div class="hv-cart">
                                             <div class="info-cart">
-                                                <ul>
-                                                    <li>
-                                                        <a href="#" title="images info" class="img-responsive"><img src="../assets/images/img-hv-cart.png" alt="images img hover cart"></a>
-                                                    </li>
-                                                    <li>
-                                                        <p>Sacrificial Chair Design</p>
-                                                        <p>Qty: 2</p>
-                                                        <span>$170.00</span>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" title="icon close" class="img-icon-close"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                    </li>
-                                                </ul>
+                                                <ul class="mini-cart-items">
+                                                    <li class="list-mini-cart-item row">
+                                                        <div class="col-md-3">
+                                                            <a href="#" title="images info"><img src="../assets/images/img-hv-cart.png" class="img-responsive" alt="images img hover cart"></a>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <p><a href="#" class="title-hover-cart">Sacrificial Chair Design</a></p>
+                                                            <p>Qty: 2</p>
+                                                            <span>$170.00</span>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="#" title="icon close" class="img-icon-close"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </li> <!-- .list-mini-cart-item -->
+                                                </ul> <!-- .mini-cart-items -->
                                             </div> <!-- .info-cart -->
                                             <div class="content-cart">
                                                 <ul>
@@ -199,7 +204,7 @@
                 <span class="sr-only">Previous</span>
             </a>
             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right active" aria-hidden="true">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </span>
                 <span class="sr-only">Next</span>
@@ -211,7 +216,7 @@
     <section id="product-list">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-6">
                     <div class="second-effect">
                         <a href="#" title="images detail"><img src="../assets/images/img-product-list-1.png" alt="images product list"></a>
                         <div class="news-product">
@@ -226,7 +231,7 @@
                         </div> <!-- .overlay -->
                     </div> <!-- .second-effect -->
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-6">
                     <div class="second-effect">
                         <a href="#" title="images detail"><img src="../assets/images/img-product-list-2.png" alt="images product list"></a>
                         <div class="overlay">
@@ -238,7 +243,7 @@
                         </div> <!-- .overlay -->
                     </div> <!-- .second-effect -->
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-6">
                     <div class="second-effect">
                         <a href="#" title="images detail"><img src="../assets/images/img-product-list-3.png" alt="images product list"></a>
                         <div class="overlay">
@@ -267,7 +272,7 @@
                 <div class="col-md-12 slider slider-nav">
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-1.png" class="img-responsive" alt=""/></a>
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-1.png" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -278,7 +283,7 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -293,7 +298,7 @@
                     </div> <!-- .item -->
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-2.png" class="img-responsive" alt=""/></a>
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-2.png" class="img-responsive" alt=""/></a>
                             <div class="overlay">
                                 <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
@@ -301,7 +306,7 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -316,109 +321,7 @@
                     </div> <!-- .item -->
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-3.png" class="img-responsive" alt=""/></a>
-                            <div class="news-product-slider">
-                                <p>NEW</p>
-                            </div> <!-- .news-product -->
-                            <div class="sale-product-slider">
-                                <p>-15%</p>
-                            </div> <!-- .news-product -->
-
-                            <div class="overlay">
-                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-4.png" class="img-responsive" alt=""/></a>
-                            <div class="overlay">
-                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-1.png" class="img-responsive" alt=""/></a>
-                            <div class="news-product-slider">
-                                <p>NEW</p>
-                            </div> <!-- .news-product -->
-                            <div class="overlay">
-                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-2.png" class="img-responsive" alt=""/></a>
-                            <div class="overlay">
-                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
-                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                            </div> <!-- .overlay -->
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
-                                    <span>$170.00</span>
-                                </li> <!-- .text-detail -->
-                                <li class="lock">
-                                    <a href="#" title="lock">
-                                        <div class="glyph">
-                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                        </div>
-                                    </a>
-                                </li> <!-- .lock -->
-                            </ul>
-                        </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
-                        <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-3.png" class="img-responsive" alt=""/></a>
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-3.png" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
@@ -433,7 +336,31 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span class="tx-sp-line-through">$170.00</span>
+                                    <span>$69.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-4.png" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -448,7 +375,10 @@
                     </div> <!-- .item -->
                     <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-new-arrivals-4.png" class="img-responsive" alt=""/></a>
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-1.png" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
                             <div class="overlay">
                                 <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                 <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
@@ -456,7 +386,84 @@
                             </div> <!-- .overlay -->
                             <ul class="tetx">
                                 <li class="text-detail">
-                                    <p>Sacrificial Chair Design</p>
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-2.png" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-3.png" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="sale-product-slider">
+                                <p>-15%</p>
+                            </div> <!-- .news-product -->
+
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span class="tx-sp-line-through">$170.00</span>
+                                    <span>$69.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="http://google.com" class="product-detail-url"><img src="../assets/images/img-new-arrivals-4.png" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
                                     <span>$170.00</span>
                                 </li> <!-- .text-detail -->
                                 <li class="lock">
@@ -487,17 +494,19 @@
                     <div class="detail-content-product">
                         <div class="col-md-6 col-sm-6">
                             <div class="detail-content">
-                                <h4 class="text-uppercase">Sacrificial Chair Design</h4>
+                                <h4 class="text-uppercase">
+                                    <a href="#">Sacrificial Chair Design</a>
+                                </h4>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                        <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                        <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                        <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                        <a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
                                     </li>
                                     <li class="breadcrumb-item"><a href="#">10 review(s)</a></li>
-                                    <li class="breadcrumb-item">Add your review</li>
+                                    <li class="breadcrumb-item"><a href="">Add your review</a></li>
                                 </ol>
                                 <span class="tx-sp-cl">$170.00 </span>
                                 <span class="tx-sp-line-through">$69.00  </span>
@@ -522,87 +531,111 @@
                     <h3 class="text-uppercase">Freatured Products</h3>
                     <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
                 </div> <!-- .title-new-arrivals -->
-                <ul class="list-featured-products col-ms-12">
-                    <li class="col-md-3 col-sm-3">
-                        <a href="#"><img src="../assets/images/img-featured-product-1.png" class="img-responsive" alt=""/></a>
-                        <div class="news-featured-products">
+                <div class="col-md-12 slider">
+                    <div class="item col-sm-6">
+                        <div class="slider-item">
+                            <a href="#"><img src="../assets/images/img-new-arrivals-1.png" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
-                            <div class="sale-featured-products">
-                                <p>-15%</p>
-                            </div> <!-- .news-product -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <p>Sacrificial Chair Design</p>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul> <!-- .tetx -->
-                    </li>
-
-                    <li class="col-md-3 col-sm-3">
-                        <a href="#"><img src="../assets/images/img-featured-product-2.png" class="img-responsive" alt=""/></a>
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <p>Sacrificial Chair Design</p>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul> <!-- .tetx -->
-                    </li>
-
-                    <li class="col-md-3 col-sm-3">
-                        <a href="#"><img src="../assets/images/img-featured-product-3.png" class="img-responsive" alt=""/></a>
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <p>Sacrificial Chair Design</p>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul> <!-- .tetx -->
-                    </li>
-
-                    <li class="col-md-3 col-sm-3">
-                        <a href="#"><img src="../assets/images/img-featured-product-4.png" class="img-responsive" alt=""/></a>
-                        <div class="news-featured-products">
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item col-sm-6">
+                        <div class="slider-item">
+                            <a href="#"><img src="../assets/images/img-new-arrivals-2.png" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item col-sm-6">
+                        <div class="slider-item">
+                            <a href="#"><img src="../assets/images/img-new-arrivals-3.png" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
                                 <p>NEW</p>
                             </div> <!-- .news-product -->
-                            <div class="sale-featured-products">
+                            <div class="sale-product-slider">
                                 <p>-15%</p>
                             </div> <!-- .news-product -->
-                        <ul class="tetx">
-                            <li class="text-detail">
-                                <p>Sacrificial Chair Design</p>
-                                <span>$170.00</span>
-                            </li> <!-- .text-detail -->
-                            <li class="lock">
-                                <a href="#" title="lock">
-                                    <div class="glyph">
-                                        <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                    </div>
-                                </a>
-                            </li> <!-- .lock -->
-                        </ul> <!-- .tetx -->
-                    </li>
-                </ul> <!-- .list-featured-products -->
+
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span class="tx-sp-line-through">$170.00</span>
+                                    <span>$69.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item col-sm-6">
+                        <div class="slider-item">
+                            <a href="#"><img src="../assets/images/img-new-arrivals-4.png" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-40"><i class="fa fa-sliders" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="#" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                </div> <!-- .slider -->
             </div> <!-- .row -->
         </div> <!-- .container -->
     </section> <!-- #featured-products -->
@@ -725,36 +758,33 @@
     <section id="testimonials">
         <div class="container">
             <div class="row">
-                <div class="col-md-2 col-md-offset-5 single-item">
-                    <div class="item">
+                <div class="col-md-2 col-md-offset-5 col-sm-2 col-sm-offset-5 col-xs-4 col-xs-offset-4">
+                    <div class="item slider-nav-one">
                         <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-testimonials.png" class="img-responsive" alt=""/></a>
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <h6 class="text-uppercase">Michel Smith</h6>
-                                </li> <!-- .text-detail -->
-                                <li class="job">
-                                    <a href="#" title="job" class="text-uppercase">developer</a>
-                                </li> <!-- .lock -->
-                            </ul>
+                            <img src="../assets/images/img-testimonials.png" class="img-responsive" alt=""/>
+                            <div class="tetx">
+                                <h6 class="text-uppercase text-detail">Michel Smith</h6>
+                                <a href="#" title="job" class="text-uppercase job">developer</a>
+                            </div>
                         </div> <!-- .slider-item -->
-                    </div> <!-- .item -->
-                    <div class="item">
                         <div class="slider-item">
-                            <a href="#"><img src="../assets/images/img-testimonials.png" class="img-responsive" alt=""/></a>
-                            <ul class="tetx">
-                                <li class="text-detail">
-                                    <h6 class="text-uppercase">Michel Smith</h6>
-                                </li> <!-- .text-detail -->
-                                <li class="job">
-                                    <a href="#" title="job" class="text-uppercase">developer</a>
-                                </li> <!-- .lock -->
-                            </ul>
+                            <img src="../assets/images/img-testimonials.png" class="img-responsive" alt=""/>
+                            <div class="tetx">
+                                <h6 class="text-uppercase text-detail">jashon staham</h6>
+                                <a href="#" title="job" class="text-uppercase job">Tester</a>
+                            </div>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
                 </div>
-                <div class="col-md-12 text-testimonials">
-                    <p>Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica.</p>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="item slider-for">
+                        <div class="text-testimonials">
+                            <p>1. Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica.</p>
+                        </div>
+                        <div class="text-testimonials">
+                            <p>2. Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica.</p>
+                        </div>
+                    </div>
                 </div> <!-- .text-testimonials -->
             </div>
             <div class="row">
@@ -807,11 +837,21 @@
                         <p><i class="fa fa-phone" aria-hidden="true"></i>(800) 123 456 789</p>
                         <p><i class="fa fa-envelope-o" aria-hidden="true"></i>Contact@erentheme.com</p>
                         <ul>
-                            <li><a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png"></a></li>
-                            <li><a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png"></a></li>
-                            <li><a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png"></a></li>
-                            <li><a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png"></a></li>
-                            <li><a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png"></a></li>
+                            <li>
+                                <a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png" class="img-responsive" title="images visa"></a>
+                            </li>
+                            <li>
+                                <a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png" class="img-responsive" title="images mastercard"></a>
+                            </li>
+                            <li>
+                                <a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png" class="img-responsive" title="images mastercard"></a>
+                            </li>
+                            <li>
+                                <a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png" class="img-responsive" title="images mastercard"></a>
+                            </li>
+                            <li>
+                                <a href="#" title="images img about store"><img src="../assets/images/img-footer-about-store-1.png" class="img-responsive" title="images mastercard"></a>
+                            </li>
                         </ul>
                     </div> <!-- .about-store -->
                 </div>
@@ -884,46 +924,20 @@
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/slick.min.js"></script>
+    <script src="../assets/js/slider-slick.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('.slider-nav').slick({
-                dots: true,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 4,
-                slidesToScroll: 4,
-                responsive: [
-                    {
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 3,
-                            infinite: true,
-                            dots: true
-                        }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
-            $('.single-item').slick();
+
             $('#back-to-top').on('click', function (e) {
                 e.preventDefault();
                 $('html,body').animate({
                     scrollTop: 0
                 }, 700);
+            });
+            $('.overlay').click(function(){
+                var url = $(this).parent().find('.product-detail-url').attr('href');
+                window.location = url;
+                return false;
             });
         });
     </script>
