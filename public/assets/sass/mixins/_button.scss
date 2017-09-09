@@ -7,7 +7,7 @@
 @mixin btn(){
 	color: $bg-color-btn-slide;
 	border: 2px solid $bg-color-btn-slide;
-	padding: 1em;
+	padding: 0.5em 1.5em;
 	&:hover{
 		background: $bg-color-btn-slide;
 		border: 1px solid $bg-color-white;
