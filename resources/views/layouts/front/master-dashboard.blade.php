@@ -17,10 +17,27 @@
         <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
         <!-- Select 2 -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+        <!-- File Input -->
+        <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/fileinput.min.css') }}">
         <!-- Style custom -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style-dashboard.css') }}">
-
+        
+        <!-- File Input -->
+        <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+        <script src="{{ asset('themes/dashboard/dist/js/fileinput.min.js') }}"></script>
+        <style type="text/css">
+            .kv-file-upload{
+                display: none;
+            }
+        </style>
+        <script type="text/javascript">
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        </script>
     </head>
     <body>
         <!-- Header -->
@@ -57,7 +74,6 @@
         <!-- End footer -->
         
         <!-- Script -->
-        <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="{{ asset('themes/dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
@@ -135,6 +151,7 @@
                 }
             });
             $('#description').wysihtml5();
+            $('#description_short').wysihtml5();
             $('.select2').select2();
         });
     </script>

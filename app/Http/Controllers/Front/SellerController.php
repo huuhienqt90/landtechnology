@@ -10,9 +10,12 @@ use App\Repositories\SellTypeResponsitory;
 use App\Repositories\BrandResponsitory;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\UserResponsitory;
+use App\Repositories\AttributeResponsitory;
 use App\Repositories\ProductCategoryResponsitory;
 use App\Repositories\ProductImageResponsitory;
+use App\Repositories\ProductAttributeResponsitory;
 use App\Http\Requests\SellerRequest;
+
 use Auth;
 
 class SellerController extends Controller
@@ -25,6 +28,7 @@ class SellerController extends Controller
     protected $userResponsitory;
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
+    protected $productAttributeResponsitory;
 
     public function __construct(CategoryResponsitory $categoryResponsitory,
                                 BrandResponsitory $brandResponsitory,
@@ -33,7 +37,9 @@ class SellerController extends Controller
                                 ProductResponsitory $productResponsitory, 
                                 UserResponsitory $userResponsitory, 
                                 ProductCategoryResponsitory $productCategoryResponsitory, 
-                                ProductImageResponsitory $productImageResponsitory)
+                                ProductImageResponsitory $productImageResponsitory,
+                                AttributeResponsitory $attributeResponsitory,
+                                ProductAttributeResponsitory $productAttributeResponsitory)
     {
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
@@ -43,6 +49,8 @@ class SellerController extends Controller
         $this->userResponsitory             = $userResponsitory;
         $this->productCategoryResponsitory  = $productCategoryResponsitory;
         $this->productImageResponsitory     = $productImageResponsitory;
+        $this->attributeResponsitory        = $attributeResponsitory;
+        $this->productAttributeResponsitory = $productAttributeResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -64,8 +72,15 @@ class SellerController extends Controller
     {
         $brands = $this->brandResponsitory->getArrayNameBrands();
         $categories = $this->categoryResponsitory->getArrayNameCategories();
+        $allCategories = $this->categoryResponsitory->all();
         $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
-        return view('front.seller.create', compact('brands','categories','selltypes'));
+
+        $attrs = $this->attributeResponsitory->all();
+        $attrArr = [];
+        foreach($attrs as $attr){
+            $attrArr[$attr->id] = $attr->name;
+        }
+        return view('front.seller.create', compact('brands','categories','selltypes','allCategories','attrArr'));
     }
 
     /**
@@ -76,7 +91,8 @@ class SellerController extends Controller
      */
     public function store(SellerRequest $request)
     {
-        $param = $request->only(['name','slug','original_price','discount','price_after_discount','sale_price','display_price','description','product_brand','key_words','sell_type_id','weight','location','stock','sold_units']);
+        $param = $request->only(['name','slug','original_price','sale_price','description','description_short','product_brand','key_words','sell_type_id','weight','location','stock']);
+        $param['sold_units'] = 0;
         $param['seller_id'] = Auth::user()->id;
         $param['status'] = 'Pending';
         $param['created_by'] = Auth::user()->id;
@@ -101,7 +117,16 @@ class SellerController extends Controller
             }
         }
 
-        return redirect(route('front.dashboard.index'))->with('msgOk', 'Create product success!');
+        if( $request->input('prattr') != null ){
+            $paramAttrs = $request->input('prattr');
+            foreach($paramAttrs as $key => $paramAttr){
+                foreach($paramAttr as $item){
+                    $this->productAttributeResponsitory->create(['product_id' => $result->id, 'attribute_id' => $key, 'value' => $item]);
+                }
+            }
+        }  
+
+        return redirect(route('seller.index'))->with('msgOk', 'Create product success!');
     }
 
     /**
@@ -125,9 +150,50 @@ class SellerController extends Controller
     {
         $product = $this->productResponsitory->find($id);
         $brands = $this->brandResponsitory->getArrayNameBrands();
-        $categories = $this->categoryResponsitory->getArrayNameCategories();
+
+        $categories = $this->categoryResponsitory->all();
+        $cateArr = [];
+        if( $categories && $categories->count() ){
+            foreach ($categories as $cat) {
+                $cateArr[$cat->id] = $cat->name;
+            }
+        }
+
         $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
-        return view('front.seller.edit', compact('product','brands','categories','selltypes'));
+
+        $productImages = $this->productImageResponsitory->findAllBy('product_id', $id);
+        $productImageArr = [];
+        if( $productImages && $productImages->count() ){
+            foreach ($productImages as $productImage) {
+                $productImageArr[$productImage->id] = $productImage->image_path;
+            }
+        }
+
+        $productAttributesArr = [];
+        $attributesArr = [];
+        $productAttributes = $this->productAttributeResponsitory->findAllBy('product_id', $id);
+        if( $productAttributes && $productAttributes->count() ){
+            foreach( $productAttributes as $productAttribute ){
+                $productAttributesArr[$productAttribute->attribute_id] = $productAttribute->attribute->name;
+                $attributesArr[$productAttribute->id] = $productAttribute->value;
+            }
+        }
+
+        $productCategories = $this->productCategoryResponsitory->findAllBy('product_id', $id);
+        $productCategoryArr = [];
+        if( $productCategories && $productCategories->count() ){
+            foreach ($productCategories as $productCategory) {
+                $productCategoryArr[$productCategory->category_id] = $productCategory->category_id;
+            }
+        }
+        $product->category = $productCategoryArr;
+
+        $attrs = $this->attributeResponsitory->all();
+        $attrArr = $this->attributeResponsitory->all();
+
+        $product->attribute = $productAttributesArr;
+
+        return view('front.seller.edit', compact('product','brands','categories','selltypes','productImages','attrArr','attributesArr','cateArr'));
     }
 
     /**
@@ -137,9 +203,59 @@ class SellerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SellerRequest $request, $id)
     {
-        //
+        $update = [
+            'status' => 'Pending',
+            'slug' => $request->slug,
+            'name' => $request->name,
+            'original_price' => $request->original_price,
+            'sale_price' => $request->sale_price,
+            'stock' => $request->stock,
+            'description_short' => $request->description_short,
+            'description' => $request->description,
+            'key_words' => $request->key_words,
+            'weight' => $request->weight,
+            'location' => $request->location,
+            'seller_id' => Auth::user()->id,
+            'sell_type_id' => $request->sell_type_id,
+            'product_brand' => $request->product_brand,
+        ];
+        
+        // Update feature image
+        if( $request->hasFile('feature_image') ){
+            $path = $request->file('feature_image')->store('products/features');
+            $update['feature_image'] = $path;
+        }
+        $this->productResponsitory->update($update, $id);
+
+        // Update product category
+        if( isset( $request->category ) ){
+            $this->productCategoryResponsitory->deleteProductCategory($id);
+            foreach($request->category as $cat){
+                $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $cat]);
+            }
+        }
+
+        // Update product images
+        if( $request->hasFile('product_images') ){
+            $productImages = $request->file('product_images');
+            foreach ($productImages as $file) {
+                $path = $file->store('products/galeries');
+                $this->productImageResponsitory->create(['product_id' => $id, 'image_path' => $path, 'image_name'=>$file->getClientOriginalName()]);
+            }
+        }
+
+        if( $request->input('prattr') != null ){
+            $paramAttrs = $request->input('prattr');
+            $this->productAttributeResponsitory->deleteProductAttribute($id);
+            foreach($paramAttrs as $key => $paramAttr){
+                foreach($paramAttr as $item){
+                    $this->productAttributeResponsitory->create(['product_id' => $id, 'attribute_id' => $key, 'value' => $item]);
+                }
+            }
+        } 
+        return redirect(route('seller.index'))->with('alert-success', 'Update product success!');
     }
 
     /**
@@ -150,6 +266,17 @@ class SellerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product_images = $this->productImageResponsitory->findAllBy('product_id', $id);
+        if($product_images != null) {
+            foreach($product_images as $image){
+                \Storage::delete($image->image_path);
+                $this->productImageResponsitory->delete($id);
+            }
+        }
+        $this->productAttributeResponsitory->deleteProductAttribute($id);
+        $product = $this->productResponsitory->find($id);
+        \Storage::delete($product->feature_image);
+        $this->productResponsitory->delete($id);
+        return redirect(route('seller.index'))->with('alert-success', 'Delete product success!');
     }
 }

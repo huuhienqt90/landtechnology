@@ -28,7 +28,7 @@
                         @include('dashboard::partials.select-multiple', ['field' => 'category', 'placeholder' => 'Please select category', 'label' => 'Category', 'options' => $cateArr]) -->
                         <div class="form-group {{ $errors->has('category') ? ' has-error' : ''}}">
                            <label for="category" class="col-sm-2 control-label">Category</label>
-                           <div class="col-sm-4">
+                            <div class="col-sm-4">
                                 <select class="form-control select2" name="category[]" multiple data-placeholder="Please select categories">
                                     @foreach($categories as $category)
                                         @if($category->parent_id == 0)
