@@ -15,6 +15,12 @@ body{
         margin-top: $i * 1px;
     }
 }
+.slick-prev:before, .slick-next:before {
+    color: $bg-color-prev; font-size: 30px;
+    &:hover {
+        color: $bg-color-main;
+    }
+}
 .product-not-found{
     font-size: 15px;
     text-align: center;
@@ -514,7 +520,7 @@ body{
                         }
                     }
                 }
-                span{ font-size: 15px; color: $bg-color-main; }
+                .product-price{ font-size: 15px; color: $bg-color-main; }
             }
             .lock{
                 float: right;
@@ -857,9 +863,7 @@ body{
     margin-top: 4.5em;
     margin-bottom: 4.5em;
     .slick-prev, .slick-next{
-        background: #dedede;
         top: 38%;
-        border-radius: 50%;
     }
     .slider-item{
         img{ margin: 0 auto; border-radius: 50%; }
