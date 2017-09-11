@@ -11,6 +11,8 @@ body{
   box-sizing: border-box; /* 1 */
 }
 
+[data-icon]:before{ padding-right: 0.5em; }
+
 
 /* img {
   max-width: 100%;

@@ -862,6 +862,7 @@ body{
 #testimonials{
     margin-top: 4.5em;
     margin-bottom: 4.5em;
+    .slick-prev { left: -38px; }
     .slick-prev, .slick-next{
         top: 38%;
     }
