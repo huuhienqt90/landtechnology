@@ -132,11 +132,9 @@ class ProductController extends Controller
             $create['feature_image'] = $path;
         }
         $result = $this->productResponsitory->create($create);
-        if( isset( $request->category ) ){
-            foreach($request->category as $cat){
-                $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $cat]);
-            }
-        }
+        
+        // Create category product
+        $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
 
         // Create Product Images
         if( $request->hasFile('product_images') ){
@@ -274,12 +272,8 @@ class ProductController extends Controller
         $this->productResponsitory->update($update, $id);
 
         // Update product category
-        if( isset( $request->category ) ){
-            $this->productCategoryResponsitory->deleteProductCategory($id);
-            foreach($request->category as $cat){
-                $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $cat]);
-            }
-        }
+        $this->productCategoryResponsitory->deleteProductCategory($id);
+        $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $request->category]);
 
         // Update product images
         if( $request->hasFile('product_images') ){

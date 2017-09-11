@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categories = $this->categoryResponsitory->all();
+        $categories = $this->categoryResponsitory->getParent();
         $category = $this->categoryResponsitory;
         $cateArr = [0 => 'Select a category'];
         if( $categories && $categories->count() ){
@@ -77,7 +77,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->categoryResponsitory->find($id);
-        $categories = $this->categoryResponsitory->findAllNotWhere('id', $id);
+        $categories = $this->categoryResponsitory->getParent();
         $cateArr = [0 => 'Select an category'];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {

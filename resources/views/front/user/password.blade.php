@@ -33,35 +33,29 @@
         <div class="main-content full-width inner-page">
             <div class="background">
                 <div class="pattern">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <div class="row">
-                                    <div class="col-sm-9 center-column">
-                                        {!! Form::open(['route' => 'front.user.updatePass', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
-                                            <fieldset>
-                                                <div class="form-group {{ $errors->has('password_new')? 'has-error' : '' }}">
-                                                    {{ Form::label('input-password-new', 'Password New', ['class' => 'col-sm-3 control-label']) }}
-                                                    <div class="col-sm-9">
-                                                        {{ Form::password('password_new', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-password-new']) }}
-                                                        {{ Form::label(null, $errors->has('password_new')? $errors->first('password_new') : '', ['class' => 'help-block']) }}
-                                                    </div>
-                                                </div>
-                                                <div class="form-group {{ $errors->has('confirm_password_new')? 'has-error' : '' }}">
-                                                    {{ Form::label('input-confirm-password-new', 'Confirm New Password ', ['class' => 'col-sm-3 control-label']) }}
-                                                    <div class="col-sm-9">
-                                                        {{ Form::password('confirm_password_new', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-confirm-password-new']) }}
-                                                        {{ Form::label(null, $errors->has('confirm_password_new')? $errors->first('confirm_password_new') : '', ['class' => 'help-block']) }}
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                            <div class="text-center mg-top-20">
-                                                {{ Form::submit('Update', ['class' => 'btn btn-primary']) }}
-                                            </div>
-                                        {!! Form::close() !!}
+                    <div class="col-sm-12">
+                        <div class="col-sm-12 center-column">
+                            {!! Form::open(['route' => 'front.user.updatePass', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
+                                <fieldset>
+                                    <div class="form-group {{ $errors->has('password_new')? 'has-error' : '' }}">
+                                        {{ Form::label('input-password-new', 'Password New', ['class' => 'col-sm-3 control-label']) }}
+                                        <div class="col-sm-9">
+                                            {{ Form::password('password_new', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-password-new']) }}
+                                            {{ Form::label(null, $errors->has('password_new')? $errors->first('password_new') : '', ['class' => 'help-block']) }}
+                                        </div>
                                     </div>
+                                    <div class="form-group {{ $errors->has('confirm_password_new')? 'has-error' : '' }}">
+                                        {{ Form::label('input-confirm-password-new', 'Confirm New Password ', ['class' => 'col-sm-3 control-label']) }}
+                                        <div class="col-sm-9">
+                                            {{ Form::password('confirm_password_new', ['class' => 'form-control', 'placeholder' => 'Password', 'id' => 'input-confirm-password-new']) }}
+                                            {{ Form::label(null, $errors->has('confirm_password_new')? $errors->first('confirm_password_new') : '', ['class' => 'help-block']) }}
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="text-center mg-top-20">
+                                    {{ Form::submit('Update', ['class' => 'btn btn-primary']) }}
                                 </div>
-                            </div>
+                            {!! Form::close() !!}
                         </div>
                     </div>
                 </div>

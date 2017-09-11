@@ -55,9 +55,14 @@ class CommissionController extends Controller
      */
     public function store(CommissionStoreRequest $request)
     {
-        $param = $request->all();
+        $param = $request->only(['type','cost','maximum','product_type']);
+        if($request->category_id == null){
+            $param['category_id'] = $request->category;
+        }else{
+            $param['category_id'] = $request->category_id;
+        }
         $this->commissionResponsitory->create($param);
-        return redirect(route('dashboard.commission.index'))->with('alert-success', 'Create commissions sucess!');
+        return redirect(route('dashboard.commission.index'))->with('alert-success', 'Create commissions success!');
     }
 
     /**
@@ -93,13 +98,17 @@ class CommissionController extends Controller
     public function update(CommissionUpdateRequest $request, $id)
     {
         $param = $this->commissionResponsitory->find($id);
-        $param['category_id'] = $request->input('category_id');
+        if($request->category_id == null){
+            $param['category_id'] = $request->category;
+        }else{
+            $param['category_id'] = $request->category_id;
+        }
         $param['type'] = $request->input('type');
         $param['cost'] = $request->input('cost');
         $param['maximum'] = $request->input('maximum');
         $param['product_type'] = $request->input('product_type');
         $param->update();
-        return redirect(route('dashboard.commission.index'))->with('alert-success', 'Update commissions sucess!');
+        return redirect(route('dashboard.commission.index'))->with('alert-success', 'Update commissions success!');
     }
 
     /**
@@ -109,7 +118,7 @@ class CommissionController extends Controller
     public function destroy($id)
     {
         $this->commissionResponsitory->delete($id);
-        return redirect(route('dashboard.commission.index'))->with('alert-success', 'Delete commissions sucess!');
+        return redirect(route('dashboard.commission.index'))->with('alert-success', 'Delete commissions success!');
     }
 
     public function getSubCategory(Request $request){

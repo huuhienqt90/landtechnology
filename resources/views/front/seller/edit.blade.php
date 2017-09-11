@@ -32,164 +32,227 @@
             <div class="main-content full-width inner-page">
                 <div class="background">
                     <div class="pattern">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-9">
-                                    <div class="row">
-                                        <div class="col-sm-9 center-column">
-                                            {!! Form::open(['route' => ['seller.update', $product->id], 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
-                                                <fieldset>
-                                                    <div class="form-group {{ $errors->has('name')? 'has-error' : '' }}">
-                                                        {{ Form::label('name', 'Product Title', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('name', $product->name, ['placeholder' => 'Product Title', 'class' => 'form-control', 'id' => 'name']) }}
-                                                            {{ Form::label(null, $errors->has('name')? $errors->first('name') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('slug')? 'has-error' : '' }}">
-                                                        {{ Form::label('slug', 'Slug', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('slug', $product->slug, ['placeholder' => 'Slug Product Title', 'class' => 'form-control', 'id' => 'slug', 'readonly' => true]) }}
-                                                            {{ Form::label(null, $errors->has('slug')? $errors->first('slug') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}">
-                                                        {{ Form::label('original_price', 'Price', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('original_price', $product->original_price, ['placeholder' => 'Price', 'class' => 'form-control', 'id' => 'original_price']) }}
-                                                            {{ Form::label(null, $errors->has('original_price')? $errors->first('original_price') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('discount')? 'has-error' : '' }}">
-                                                        {{ Form::label('discount', 'Discount', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('discount', $product->discount, ['placeholder' => 'Discount', 'class' => 'form-control', 'id' => 'discount']) }}
-                                                            {{ Form::label(null, $errors->has('discount')? $errors->first('discount') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('price_after_discount')? 'has-error' : '' }}">
-                                                        {{ Form::label('price_after_discount', 'Price after discount', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('price_after_discount', $product->price_after_discount, ['placeholder' => 'Price after discount', 'class' => 'form-control', 'id' => 'price_after_discount']) }}
-                                                            {{ Form::label(null, $errors->has('price_after_discount')? $errors->first('price_after_discount') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('sale_price')? 'has-error' : '' }}">
-                                                        {{ Form::label('sale_price', 'Sale Price', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('sale_price', $product->sale_price, ['placeholder' => 'Sale Price', 'class' => 'form-control', 'id' => 'sale_price']) }}
-                                                            {{ Form::label(null, $errors->has('sale_price')? $errors->first('sale_price') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('display_price')? 'has-error' : '' }}">
-                                                        {{ Form::label('display_price', 'Display Price', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('display_price', $product->display_price, ['placeholder' => 'Display Price', 'class' => 'form-control', 'id' => 'display_price']) }}
-                                                            {{ Form::label(null, $errors->has('display_price')? $errors->first('display_price') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
-                                                        {{ Form::label('feature_image', 'Feature Image', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            @if ($product->feature_image != null)
-                                                                <img id="feature_image-prev" style="max-height:150px; border: 1px solid #cdcdcd; border-radius: 3px; overflow: hidden; margin-right: 10px; margin-bottom: 10px; padding: 2px;" src="{{ asset('storage/'.$product->feature_image) }}"/>
-                                                            @else
-                                                                <img id="feature_image-prev" style="max-height:150px" />
-                                                            @endif
-                                                            {!! Form::file('feature_image',['id'=>'feature_image']) !!}
-                                                            {{ Form::label(null, $errors->has('feature_image')? $errors->first('feature_image') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('product_images') ? ' has-error' : '' }}">
-                                                        {{ Form::label('product_images', 'Product Images', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            @if( count(Form::getValueAttribute('product_images')) )
-                                                            <div class="product_images-list-image">
-                                                                @foreach(Form::getValueAttribute('product_images') as $imgID => $image)
-                                                                    <div class="current-image-item" id="image-item-{{ $imgID }}">
-                                                                        <img src="{{ asset('storage/'.$image) }}" />
-                                                                        <button type="button" class="btn btn-box-tool delete-image" data-id="{{ $imgID }}"><i class="fa fa-times"></i></button>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                            <div id="input-remove-product_images"></div>
-                                                            @endif
-                                                            <div id="product_images-list-image"></div>
-                                                            {!! Form::file('product_images'.'[]',['id'=>'product_images', 'multiple' => true]) !!}
-                                                            {{ Form::label(null, $errors->has('product_images')? $errors->first('product_images') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('description')? 'has-error' : '' }}">
-                                                        {{ Form::label('description', 'Description', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            <textarea class="textarea" id="description" name="description" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ $product->description }}</textarea>
-                                                            {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}">
-                                                        {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::select('product_brand', $brands, $product->product_brand, ['class' => 'form-control']) }}
-                                                            {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}">
-                                                        {{ Form::label('category', 'Category', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {!! Form::select('category'.'[]', $categories, Form::getValueAttribute('category'), ['class' => 'form-control select2', 'multiple' => true, 'data-placeholder' => 'Select category']) !!}
-                                                            {{ Form::label(null, $errors->has('category')? $errors->first('category') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}">
-                                                        {{ Form::label('key_words', 'Key words', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('key_words', $product->key_words, ['placeholder' => 'Key words', 'class' => 'form-control', 'id' => 'key_words']) }}
-                                                            {{ Form::label(null, $errors->has('key_words')? $errors->first('key_words') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('sell_type_id')? 'has-error' : '' }}">
-                                                        {{ Form::label('sell_type_id', 'Sell Type', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::select('sell_type_id', $selltypes, $product->sell_type_id, ['class' => 'form-control']) }}
-                                                            {{ Form::label(null, $errors->has('sell_type_id')? $errors->first('sell_type_id') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('weight')? 'has-error' : '' }}">
-                                                        {{ Form::label('weight', 'Weight', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('weight', $product->weight, ['placeholder' => 'Weight', 'class' => 'form-control', 'id' => 'weight']) }}
-                                                            {{ Form::label(null, $errors->has('weight')? $errors->first('weight') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('Location')? 'has-error' : '' }}">
-                                                        {{ Form::label('location', 'location', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('location', $product->location, ['placeholder' => 'Location', 'class' => 'form-control', 'id' => 'location']) }}
-                                                            {{ Form::label(null, $errors->has('location')? $errors->first('location') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('stock')? 'has-error' : '' }}">
-                                                        {{ Form::label('stock', 'Stock', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('stock', $product->stock, ['placeholder' => 'Stock', 'class' => 'form-control', 'id' => 'stock']) }}
-                                                            {{ Form::label(null, $errors->has('stock')? $errors->first('stock') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group {{ $errors->has('sold_units')? 'has-error' : '' }}">
-                                                        {{ Form::label('sold_units', 'Sold units', ['class' => 'col-sm-3 control-label']) }}
-                                                        <div class="col-sm-9">
-                                                            {{ Form::text('sold_units', $product->sold_units, ['placeholder' => 'Sold units', 'class' => 'form-control', 'id' => 'sold_units']) }}
-                                                            {{ Form::label(null, $errors->has('sold_units')? $errors->first('sold_units') : '', ['class' => 'help-block']) }}
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                                <div class="text-center mg-top-20">
-                                                    {{ Form::submit('Update', ['class' => 'btn btn-primary']) }}
-                                                </div>
-                                            {!! Form::close() !!}
+                        <div class="col-sm-12">
+                            <div class="col-sm-12 center-column">
+                                {!! Form::open(['route' => ['seller.update', $product->id], 'files' => true, 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+                                {{ method_field('PUT') }}
+                                    <fieldset>
+                                        <div class="form-group {{ $errors->has('name')? 'has-error' : '' }}">
+                                            {{ Form::label('name', 'Product Title', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('name', $product->name, ['placeholder' => 'Product Title', 'class' => 'form-control', 'id' => 'name']) }}
+                                                {{ Form::label(null, $errors->has('name')? $errors->first('name') : '', ['class' => 'help-block']) }}
+                                            </div>
                                         </div>
+                                        <div class="form-group {{ $errors->has('slug')? 'has-error' : '' }}">
+                                            {{ Form::label('slug', 'Slug', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('slug', $product->slug, ['placeholder' => 'Slug Product Title', 'class' => 'form-control', 'id' => 'slug', 'readonly' => true]) }}
+                                                {{ Form::label(null, $errors->has('slug')? $errors->first('slug') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}">
+                                            {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('product_brand', $brands, $product->product_brand, ['class' => 'form-control']) }}
+                                                {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('category') ? ' has-error' : ''}}">
+                                           <label for="category" class="col-sm-3 control-label">Category</label>
+                                           <div class="col-sm-9">
+                                                <select class="form-control select2" name="category">
+                                                    <option value="">Please select a category</option>
+                                                    @foreach($categories as $category)
+                                                        @if( $category->getChildren()->count() )
+                                                            <optgroup label="{{ $category->name }}">
+                                                                @foreach($category->getChildren() as $item)
+                                                                    <option value="{{ $item->id }}" {{ selected(in_array($item->id, array_keys($product->category)), true) }}>{{ $item->name }}</option>
+                                                                @endforeach
+                                                            </optgroup>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                @include('dashboard::partials.error', ['field' => 'category'])
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}">
+                                            {{ Form::label('original_price', 'Price', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('original_price', $product->original_price, ['placeholder' => 'Price', 'class' => 'form-control', 'id' => 'original_price']) }}
+                                                {{ Form::label(null, $errors->has('original_price')? $errors->first('original_price') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('sale_price')? 'has-error' : '' }}">
+                                            {{ Form::label('sale_price', 'Sale Price', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('sale_price', $product->sale_price, ['placeholder' => 'Sale Price', 'class' => 'form-control', 'id' => 'sale_price']) }}
+                                                {{ Form::label(null, $errors->has('sale_price')? $errors->first('sale_price') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
+                                            <label for="feature_image" class="col-sm-3 control-label">Feature Image</label>
+                                            <div class="col-sm-9">
+                                                {!! Form::file('feature_image',['id'=>'feature_image', 'class' => 'file', 'data-upload-url' => '#', 'name' => 'feature_image']) !!}
+                                                @include('dashboard::partials.error', ['field' => 'feature_image'])
+                                            </div>
+                                        </div>
+                                        <script type="text/javascript">
+                                            $("#feature_image").fileinput({
+                                                uploadUrl: '#',
+                                                uploadAsync: false,
+                                                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
+                                                showUpload: false,
+                                                
+                                                initialPreviewAsData: true,
+                                                initialPreview: [
+                                                    "{{ asset('storage/'.$product->feature_image) }}"
+                                                ],
+                                                initialPreviewConfig: [
+                                                    {caption: "{{ Form::getValueAttribute('feature_image') }}", size: 329892, width: "120px", url: "{{ route('dashboard.delimg', $product->id) }}", key: "{{ Form::getValueAttribute('feature_image') }}"},
+                                                ]
+                                            });
+                                        </script>
+                                        <div class="form-group {{ $errors->has('product_images') ? ' has-error' : '' }}">
+                                            <label for="product_images" class="col-sm-3 control-label">Product Images</label>
+                                            <div class="col-sm-9">
+                                                {!! Form::file('product_images',['id'=>'product_images', 'class' => 'file', 'data-upload-url' => '#', 'multiple' => 'true', 'name' => 'product_images'.'[]']) !!}
+                                                @include('dashboard::partials.error', ['field' => 'product_images'])
+                                            </div>
+                                        </div>
+                                        <script type="text/javascript">
+                                            $("#product_images").fileinput({
+                                                uploadUrl: '#',
+                                                uploadAsync: false,
+                                                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
+                                                showUpload: false,
+                                                overwriteInitial: false,
+                                                initialPreviewAsData: true,
+                                                initialPreview: [
+                                                    @foreach ($productImages as $image)
+                                                        "{{ asset('storage/'.$image->image_path) }}",
+                                                    @endforeach
+                                                ],
+                                                initialPreviewConfig: [
+                                                    @foreach ($productImages as $image)
+                                                        {caption: "{{ $image->image_name }}", size: 329892, width: "120px", url: "{{ route('dashboard.delProductImg', $image->id) }}", key: "{{ $image->id }}"},
+                                                    @endforeach
+                                                ]
+                                            });
+                                        </script>
+                                        <div class="form-group {{ $errors->has('description_short')? 'has-error' : '' }}">
+                                            {{ Form::label('description_short', 'Description short', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                <textarea class="textarea" id="description_short" name="description_short" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{!! $product->description_short !!}</textarea>
+                                                {{ Form::label(null, $errors->has('description_short')? $errors->first('description_short') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('description')? 'has-error' : '' }}">
+                                            {{ Form::label('description', 'Description', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                <textarea class="textarea" id="description" name="description" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{!! $product->description !!}</textarea>
+                                                {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}">
+                                            {{ Form::label('key_words', 'Key words', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('key_words', $product->key_words, ['placeholder' => 'Key words', 'class' => 'form-control', 'id' => 'key_words']) }}
+                                                {{ Form::label(null, $errors->has('key_words')? $errors->first('key_words') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('sell_type_id')? 'has-error' : '' }}">
+                                            {{ Form::label('sell_type_id', 'Sell Type', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('sell_type_id', $selltypes, $product->sell_type_id, ['class' => 'form-control']) }}
+                                                {{ Form::label(null, $errors->has('sell_type_id')? $errors->first('sell_type_id') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('weight')? 'has-error' : '' }}">
+                                            {{ Form::label('weight', 'Weight', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('weight', $product->weight, ['placeholder' => 'Weight', 'class' => 'form-control', 'id' => 'weight']) }}
+                                                {{ Form::label(null, $errors->has('weight')? $errors->first('weight') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('Location')? 'has-error' : '' }}">
+                                            {{ Form::label('location', 'location', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('location', $product->location, ['placeholder' => 'Location', 'class' => 'form-control', 'id' => 'location']) }}
+                                                {{ Form::label(null, $errors->has('location')? $errors->first('location') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('stock')? 'has-error' : '' }}">
+                                            {{ Form::label('stock', 'Stock', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::text('stock', $product->stock, ['placeholder' => 'Stock', 'class' => 'form-control', 'id' => 'stock']) }}
+                                                {{ Form::label(null, $errors->has('stock')? $errors->first('stock') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                           <label for="attribute" class="col-sm-3 control-label">Attributes</label>
+                                           <div class="col-sm-7">
+                                                <select class="form-control select2" id="attribute" name="attribute[]" multiple data-placeholder="Please select attributes">
+                                                    @foreach($attrArr as $attr)
+                                                        <option value="{{ $attr->id }}" {{ selected(in_array($attr->id, array_keys($product->attribute)), true) }}>{{ $attr->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @include('dashboard::partials.error', ['field' => 'attribute'])
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a class="btn btn-primary" id="addAttr">+</a>
+                                            </div>
+                                        </div>
+                                        <div id="attributes">
+                                            @foreach($product->attribute as $id => $name)
+                                                <div class="form-group">
+                                                   <label for="'attribute'" class="col-sm-3 control-label">{{ $name }}</label>
+                                                   <div class="col-sm-7">
+                                                        <select class="form-control select2" id="{{ $name . $id }}" name="prattr[{{$id}}][]" multiple data-placeholder="Please select attributes">
+                                                            @if( \App\Models\Attribute::getValuesById($id) != null)
+                                                                @foreach(\App\Models\Attribute::getValuesById($id) as $attr)
+                                                                    <option value="{{ $attr }}" {{ selected(in_array($attr, array_values($attributesArr)), true) }}>{{ $attr }}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                        @include('dashboard::partials.error', ['field' => 'attribute'])
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <a class="btn btn-warning" id="btnAddAttr{{ $id }}">+</a>
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                        jQuery(document).ready(function($){
+                                                            $("#btnAddAttr{{ $id }}").click(function(){
+                                                                $("#textAttr").html('');
+                                                                $("#textAttr").append('<input type="text" class="form-control" placeholder="Enter value of attribute" id="otherVal{{$id}}"/>');
+                                                                $('#modal-default').modal('show');
+                                                                $("#saveAttr").on('click',function(e){
+                                                                    e.preventDefault();
+                                                                    $('#modal-default').modal('hide');
+                                                                    if( $('#otherVal{{$id}}').length > 0 ){
+                                                                        var val = $('#otherVal{{$id}}').val();
+                                                                        $('select[name="prattr[{{$id}}][]"]').append('<option value="'+val+'">'+val+'</option>');
+                                                                    }
+                                                                    $.ajax({
+                                                                        url: "{{ route('dashboard.addfast') }}",
+                                                                        type: "POST",
+                                                                        data: {id: {{$id}},val: val},
+                                                                        success: function(rs) {
+                                                                            console.log(rs);
+                                                                        }
+                                                                    });
+                                                                });
+                                                            })
+                                                        });
+                                                    </script>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </fieldset>
+                                    <div class="text-center mg-top-20">
+                                        {{ Form::submit('Update', ['class' => 'btn btn-primary']) }}
                                     </div>
-                                </div>
+                                {!! Form::close() !!}
                             </div>
                         </div>
                     </div>
@@ -197,4 +260,80 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $("#addAttr").click(function(e) {
+                e.preventDefault();
+                var id = $('#attribute').val();
+                $.ajax({
+                    url: "{{ route('dashboard.getattr') }}",
+                    type: "GET",
+                    data: {id: id},
+                    success: function(results) {
+                        $.each(results, function(){
+                            var arOptions = this.options.split(",");
+                            var htmlOptions;
+                            $.each(arOptions, function(k,v){
+                                htmlOptions += '<option value="'+v.trim()+'">'+v.trim()+'</option>';
+                            });
+                            if( $("#"+this.name + this.id).length <= 0 ){
+                                $("#attributes").append('<div class="form-group"><label for="'+this.name+'" class="col-sm-3 control-label">'+this.name+'</label><div class="col-sm-7"><select class="form-control select2" multiple data-placeholder="Please select '+this.name+'" id="'+this.name+this.id+'" name="prattr['+this.id+'][]">'+htmlOptions+'</select></div><div class="col-sm-2"><a class="btn btn-warning" id="btnAddAttr'+this.id+'">+</a></div>');
+                            }
+                            $('.select2').select2();
+                            var idAtt = this.id;
+                            $('#btnAddAttr'+idAtt+'').on('click',function(e){
+                                e.preventDefault();
+                                $("#textAttr").html('');
+                                $("#textAttr").append('<input type="text" class="form-control" placeholder="Enter value of attribute" id="otherVal'+idAtt+'"/>');
+                                $('#modal-default').modal('show'); 
+                            });
+
+                            $("#saveAttr").on('click',function(e){
+                                e.preventDefault();
+                                $('#modal-default').modal('hide');
+                                if( $('#otherVal'+idAtt).length > 0 ){
+                                    var val = $('#otherVal'+idAtt).val();
+                                    $('select[name="prattr['+idAtt+'][]"]').append('<option value="'+val+'">'+val+'</option>');
+                                }
+                                $.ajax({
+                                    url: "{{ route('dashboard.addfast') }}",
+                                    type: "POST",
+                                    data: {id: idAtt,val: val},
+                                    success: function(rs) {
+                                        console.log(rs);
+                                    }
+                                });
+                            });
+                        });
+                    },
+                    error: function(data){
+                        console.log(data);
+                    },
+                });
+            });
+
+            $('.select2').select2();
+        });
+    </script>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add values for attribute</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="textAttr"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <a id="saveAttr" class="btn btn-primary">Save changes</a>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+          <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 @stop

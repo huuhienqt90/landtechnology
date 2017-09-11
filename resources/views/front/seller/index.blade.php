@@ -46,6 +46,7 @@
                                                 <th>Actions</th>
                                             </tr> 
                                         </thead> 
+                                        @if( ($products->count() > 0) && ($products != null) )
                                         <tbody>
                                             @foreach($products as $product)
                                             <tr> 
@@ -55,14 +56,25 @@
                                                 <td>{{ $product->stock }}</td>
                                                 <td>{{ $product->status }}</td>
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-info btn-flat" href="{{ route('seller.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                                        <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
-                                                    </div>
+                                                    <form method="post" action="{{ route('seller.destroy', $product->id) }}">
+                                                        {{ method_field('DELETE') }}
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                        <div class="btn-group">
+                                                            <a class="btn btn-info btn-flat" href="{{ route('seller.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                            <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             @endforeach
                                         </tbody> 
+                                        @else
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6"><h2>Product not found</h2></td>
+                                            </tr>
+                                        </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>

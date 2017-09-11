@@ -12,10 +12,10 @@
                     {!! Form::model($commission, ['route' => ['dashboard.commission.update', $commission->id], 'class' => 'form-horizontal', 'files' => true, 'method' => 'put']) !!}
                     <div class="box-body">
                         @include('dashboard::partials.select', ['field' => 'category_id', 'label' => 'Category', 'options' => $cateArr])
-                        @include('dashboard::partials.input', ['field' => 'type', 'label' => 'Type', 'options' => ['class' => 'form-control']])
+                        @include('dashboard::partials.select', ['field' => 'type', 'label' => 'Type', 'options' => setTypeCommission()])
                         @include('dashboard::partials.input', ['field' => 'cost', 'label' => 'Cost', 'options' => ['class' => 'form-control']])
                         @include('dashboard::partials.input', ['field' => 'maximum', 'label' => 'Maximum', 'options' => ['class' => 'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'product_type', 'label' => 'Product Type', 'options' => ['class' => 'form-control']])
+                        @include('dashboard::partials.select', ['field' => 'product_type', 'label' => 'Product Type', 'options' => setProductTypeCommission()])
                         <div class="buttons">
                             <input type="submit" class="btn btn-primary" value="Save changes" />
                         </div>
