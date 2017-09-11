@@ -157,10 +157,13 @@ body{
             background: none;
             padding-left: 0;
             li{
-                &:first-child {
+                /* &:first-child {
                     i{
                         &:hover { color: $bg-color-main; }
                     }
+                } */
+                i{
+                    color: $bg-color-main;
                 }
                 a{
                     color: $bg-color-hv-menu;
