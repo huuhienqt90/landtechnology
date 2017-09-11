@@ -7,7 +7,7 @@
                     <ul class="text-uppercase">
                         <li><a href="{{ route('front.dashboard.index') }}" title="menu topheader">My Account</a></li>
                         <li><a href="#" title="menu topheader">wishlish</a></li>
-                        <li><a href="#" title="menu topheader">checkout</a></li>
+                        <li><a href="{{ route('front.checkout') }}" title="menu topheader">checkout</a></li>
                         @if(Auth::check())
                             <li><a href="{{ route('front.user.logout') }}" title="menu topheader">Logout</a></li>
                         @else

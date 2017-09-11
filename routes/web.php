@@ -42,31 +42,28 @@ Route::group(['namespace' => 'Front'], function() {
         Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
     });
 
-    Route::get('add-to-cart/{id?}/{quantity?}', 'ProductController@addToCart')->name('front.product.addToCart');
-    Route::post('add-to-cart/{id?}', 'ProductController@postToCart')->name('front.product.postToCart');
+    // Routes for cart and order page
+    Route::get('add-to-cart/{id?}/{quantity?}', 'CartController@addToCart')->name('front.product.addToCart');
+    Route::post('add-to-cart/{id?}', 'CartController@postToCart')->name('front.product.postToCart');
     Route::post('store-review/{id?}', 'ProductController@storeReview')->name('front.product.storeReview');
-    Route::get('add-to-favorite/{id?}', 'ProductController@addToFavorite')->name('front.product.addToFavorite');
-    Route::get('remove-from-cart/{id?}', 'ProductController@removeFromCart')->name('front.product.removeFromCart');
-    Route::get('cart', 'ProductController@showCart')->name('front.cart');
-    Route::post('cart', 'ProductController@updateCart')->name('front.cart.update');
-    Route::get('checkout', 'ProductController@showCheckout')->name('front.checkout');
-    Route::post('checkout', 'ProductController@postCheckout')->name('front.checkout.post');
-    Route::get('checkout-success', 'ProductController@showCheckoutThankYou')->name('front.checkout.thankYou');
-    Route::get('checkout-fail', 'ProductController@showCheckoutFail')->name('front.checkout.fail');
+    Route::get('add-to-favorite/{id?}', 'CartController@addToFavorite')->name('front.product.addToFavorite');
+    Route::get('remove-from-cart/{id?}', 'CartController@removeFromCart')->name('front.product.removeFromCart');
+    Route::get('cart', 'CartController@showCart')->name('front.cart');
+    Route::post('cart', 'CartController@updateCart')->name('front.cart.update');
+    Route::get('checkout', 'CartController@showCheckout')->name('front.checkout');
+    Route::post('checkout', 'CartController@postCheckout')->name('front.checkout.post');
+    Route::get('checkout-success', 'OrderController@showCheckoutThankYou')->name('front.checkout.thankYou');
+    Route::get('checkout-fail', 'OrderController@showCheckoutFail')->name('front.checkout.fail');
 
     Route::group(['middleware' => 'auth', 'prefix' => 'user'], function(){
-
         // Index dashboard
          Route::get('dashboard', 'DashboardController@index')->name('front.dashboard.index');
-
          // Edit Account Infomation
          Route::get('edit', 'UserController@edit')->name('front.user.edit');
          Route::post('edit', 'UserController@update')->name('front.user.update');
-
          // Password
          Route::get('editpass', 'UserController@editPass')->name('front.user.editPass');
          Route::post('editpass', 'UserController@updatePass')->name('front.user.updatePass');
-
          // Seller Dashboard
          Route::resource('seller', 'SellerController');
     });
