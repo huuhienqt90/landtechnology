@@ -3,10 +3,30 @@
 namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PostCheckoutRequest;
+use App\Http\Requests\PostToCartRequest;
 use App\Http\Controllers\Controller;
+use Cart;
+use App\PaymentMethod\PayPal\PayPal;
+use App\Repositories\SettingRepository;
+use App\Repositories\ProductResponsitory;
 
 class CartController extends Controller
 {
+    private $PayPal;
+    private $productRepository;
+    private $settingRepository;
+    public function __construct(ProductResponsitory $productRepository, SettingRepository $settingRepository){
+        $this->productRepository = $productRepository;
+        $this->settingRepository = $settingRepository;
+        $PayPalConfig = array(
+            'Sandbox' =>  true,
+            'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
+            'APIPassword' => !empty( $this->settingRepository->getValueByKey('APIPassword') ) ? $this->settingRepository->getValueByKey('APIPassword') : 'JHYYGJPYCJFQ8AWF',
+            'APISignature' => !empty( $this->settingRepository->getValueByKey('APISignature') ) ? $this->settingRepository->getValueByKey('APISignature') : 'AFcWxV21C7fd0v3bYYYRCpSSRl31A0apSfDtZpJ.RN-aXkvaXdGhAanx'
+        );
+        $this->PayPal = new PayPal($PayPalConfig);
+    }
     /**
      * Add a product to cart
      */
