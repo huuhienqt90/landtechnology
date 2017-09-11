@@ -26,7 +26,7 @@
         <div class="container">
             {!! Form::open(['route' => 'front.checkout.post', 'class' => 'form', 'method' => 'POST']) !!}
             <div class="row">
-                <h1 class="text-uppercase">Shopping cart</h1>
+                <h1 class="text-uppercase">Checkout</h1>
                     @if( Cart::count() )
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
