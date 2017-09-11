@@ -24,6 +24,7 @@
                                     <th>Price</th>
                                     <th>Stock</th>
                                     <th>Slug</th>
+                                    <th>Active</th>
                                     <th width="100">Actions</th>
                                 </tr>
                             </thead>
@@ -39,6 +40,7 @@
                                         <td>{{ $product->original_price }}</td>
                                         <td>{{ $product->stock }}</td>
                                         <td>{{ $product->slug }}</td>
+                                        <td>{{ $product->status }}</td>
                                         <td style="text-align: center;">
                                                 <form method="post" action="{{ route('dashboard.product.destroy', $product->id) }}">
                                                     {{ method_field('DELETE') }}

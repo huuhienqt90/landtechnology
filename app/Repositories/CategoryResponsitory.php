@@ -43,4 +43,8 @@ class CategoryResponsitory extends Repository {
         }
         return $cateArr;
     }
+
+    public function getParent(){
+        return Category::where('parent_id', 0)->get();
+    }
 }

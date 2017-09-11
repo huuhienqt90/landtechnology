@@ -12,7 +12,7 @@
                     </div>
                     {!! Form::model($product, ['route' => ['dashboard.product.store'], 'class' => 'form-horizontal', 'files' => true]) !!}
                     <div class="box-body">
-                        @include('dashboard::partials.select', ['field' => 'status', 'label' => 'Status', 'options' => ['active' => 'Active', 'pending' => 'Pending', 'need-confirm' => 'Need confirm']])
+                        @include('dashboard::partials.select', ['field' => 'status', 'label' => 'Status', 'options' => setActiveProduct()])
                         @include('dashboard::partials.input', ['field' => 'name', 'label' => 'Name', 'options' => ['class'=>'form-control']])
                         @include('dashboard::partials.input', ['field'=>'slug', 'label' => 'Slug', 'options' => ['class'=>'form-control', 'readonly' => 'true']])
                         @include('dashboard::partials.input', ['field' => 'original_price', 'label' => 'Price', 'options' => ['class'=>'form-control']])
@@ -29,24 +29,19 @@
                         <div class="form-group {{ $errors->has('category') ? ' has-error' : ''}}">
                            <label for="category" class="col-sm-2 control-label">Category</label>
                             <div class="col-sm-4">
-                                <select class="form-control select2" name="category[]" multiple data-placeholder="Please select categories">
+                                <select class="form-control select2" name="category">
+                                    <option value="">Please select a category</option>
                                     @foreach($categories as $category)
-                                        @if($category->parent_id == 0)
-                                            @if( $category->getChildren()->count() )
-                                                <optgroup label="{{ $category->name }}">
-                                                    @foreach($category->getChildren() as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            @else
-                                                <optgroup label="{{ $category->name }}">
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                </optgroup>
-                                            @endif
+                                        @if( $category->getChildren()->count() )
+                                            <optgroup label="{{ $category->name }}">
+                                                @foreach($category->getChildren() as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </optgroup>
                                         @endif
                                     @endforeach
                                 </select>
-                                @include('dashboard::partials.error', ['field' => 'attribute'])
+                                @include('dashboard::partials.error', ['field' => 'category'])
                             </div>
                         </div>
                         @include('dashboard::partials.select', ['field' => 'seller_id', 'label' => 'Seller', 'options' => $sellerArr])

@@ -12,6 +12,11 @@ function selected($pr1, $pr2){
 	return $return;
 }
 
+/**
+ * [getProductCountByBrand description]
+ * @param  integer $brandId [description]
+ * @return [type]           [description]
+ */
 function getProductCountByBrand($brandId = 0 )
 {
     if ($brandId) {
@@ -19,4 +24,30 @@ function getProductCountByBrand($brandId = 0 )
     } else {
         return 0;
     }
+}
+
+/**
+ * [setTypeCommission description]
+ */
+function setTypeCommission(){
+	return $array = [
+		'percent' => 'Percent',
+		'fixed' => 'Fixed'
+	];
+}
+
+function setProductTypeCommission(){
+	return $array = [
+		'hunting' => 'Hunting', 
+		'seller' => 'Seller', 
+		'swap' => 'Swap'
+	];
+}
+
+function setActiveProduct(){
+	return $array = [
+		'active' => 'Active', 
+		'pending' => 'Pending', 
+		'need-confirm' => 'Need confirm'
+	];
 }

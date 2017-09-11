@@ -14,10 +14,9 @@ class CommissionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'required',
             'type' => 'required',
             'cost' => 'numeric',
-            'maximum' => 'numeric|max:100',
+            'maximum' => 'numeric',
             'product_type' => 'required'
         ];
     }

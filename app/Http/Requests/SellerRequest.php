@@ -36,7 +36,8 @@ class SellerRequest extends FormRequest
             'location' => 'required',
             'sell_type_id' => 'required',
             'product_brand' => 'required',
-            'feature_image' => 'image|mimes:jpeg,bmp,png'
+            'feature_image' => 'image|mimes:jpeg,bmp,png',
+            'category' => 'required'
         ];
     }
 }

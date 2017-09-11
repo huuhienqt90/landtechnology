@@ -103,11 +103,9 @@ class SellerController extends Controller
 
         $result = $this->productResponsitory->create($param);
 
-        if( isset( $request->category ) ){
-            foreach($request->category as $cat){
-                $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $cat]);
-            }
-        }
+        // Create category product
+        $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
+
         // Create Product Images
         if( $request->hasFile('product_images') ){
             $productImages = $request->file('product_images');
@@ -230,12 +228,8 @@ class SellerController extends Controller
         $this->productResponsitory->update($update, $id);
 
         // Update product category
-        if( isset( $request->category ) ){
-            $this->productCategoryResponsitory->deleteProductCategory($id);
-            foreach($request->category as $cat){
-                $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $cat]);
-            }
-        }
+        $this->productCategoryResponsitory->deleteProductCategory($id);
+        $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $request->category]);
 
         // Update product images
         if( $request->hasFile('product_images') ){

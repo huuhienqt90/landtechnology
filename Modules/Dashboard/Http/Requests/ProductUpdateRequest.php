@@ -27,6 +27,7 @@ class ProductUpdateRequest extends FormRequest
             'seller_id' => 'required',
             'sell_type_id' => 'required',
             'product_brand' => 'required',
+            'category' => 'required'
         ];
     }
 

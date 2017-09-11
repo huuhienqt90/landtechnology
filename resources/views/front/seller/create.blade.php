@@ -50,6 +50,31 @@
                                                 {{ Form::label(null, $errors->has('slug')? $errors->first('slug') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
+                                        <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}">
+                                            {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('product_brand', $brands, null, ['class' => 'form-control']) }}
+                                                {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}">
+                                            <label for="category" class="col-sm-3 control-label">Category</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control select2" name="category">
+                                                    <option value="">Please select a category</option>
+                                                    @foreach($allCategories as $category)
+                                                            @if( $category->getChildren()->count() )
+                                                                <optgroup label="{{ $category->name }}">
+                                                                    @foreach($category->getChildren() as $item)
+                                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endif
+                                                    @endforeach
+                                                </select>
+                                                @include('dashboard::partials.error', ['field' => 'category'])
+                                            </div>
+                                        </div>
                                         <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}">
                                             {{ Form::label('original_price', 'Price', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
@@ -106,36 +131,6 @@
                                             <div class="col-sm-9">
                                                 <textarea class="textarea" id="description" name="description" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ Form::getValueAttribute('description') }}</textarea>
                                                 {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}">
-                                            {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::select('product_brand', $brands, null, ['class' => 'form-control']) }}
-                                                {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}">
-                                            <label for="category" class="col-sm-3 control-label">Category</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control select2" name="category[]" multiple data-placeholder="Please select categories">
-                                                    @foreach($allCategories as $category)
-                                                        @if($category->parent_id == 0)
-                                                            @if( $category->getChildren()->count() )
-                                                                <optgroup label="{{ $category->name }}">
-                                                                    @foreach($category->getChildren() as $item)
-                                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                                    @endforeach
-                                                                </optgroup>
-                                                            @else
-                                                                <optgroup label="{{ $category->name }}">
-                                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                                </optgroup>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                                @include('dashboard::partials.error', ['field' => 'attribute'])
                                             </div>
                                         </div>
                                         <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}">
