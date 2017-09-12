@@ -207,15 +207,18 @@
                     <div class="contact">
                         <ul>
                             <li>
-                                <span class="text-uppercase"><i class="fa fa-map-marker" aria-hidden="true"></i>Our Address</span>
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span class="text-uppercase">Our Address</span>
                                 <p>1234 Heaven Stress, Beverly Hill.</p>
                             </li>
                             <li>
-                                <span class="text-uppercase"><i class="fa fa-phone" aria-hidden="true"></i>Phone Number</span>
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <span class="text-uppercase">Phone Number</span>
                                 <p>Office: (800) 123 456 789 </p>
                             </li>
                             <li>
-                                <span class="text-uppercase"><i class="fa fa-envelope-o" aria-hidden="true"></i>Email address</span>
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                <span class="text-uppercase">Email address</span>
                                 <p>
                                     Email: Erentheme@gmail.com
                                     Support: Erentheme@gmail.com
@@ -229,11 +232,7 @@
     </section> <!-- #content-contact-us -->
 
     <!-- START #maps -->
-    <section id="maps">
-        <div class="map-responsive">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d6030.418742494061!2d-111.34563870463673!3d26.01036670629853!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2smx!4v1471908546569" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-        </div> <!-- .map-responsive -->
-    </section><!-- END #maps -->
+    <div id="map"></div><!-- END #maps -->
 
     <!-- START #footer -->
     <footer id="footer">
@@ -337,10 +336,13 @@
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/slick.min.js"></script>
     <script src="../assets/js/slider-slick.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="../assets/js/contact-maps.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkWb5fDwO9Vy_0XnWZyvfLQEYYPabekmM&callback=initMap"
+    async defer></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
     <script type="text/javascript">
         $(document).ready(function(){
-            function initialize() {
+            /*function initialize() {
                 var map_canvas = document.getElementById('map_canvas');
                 var map_options = {
                   center: new google.maps.LatLng(44.5403, -78.5463),
@@ -349,7 +351,7 @@
                 }
                 var map = new google.maps.Map(map_canvas, map_options)
               }
-              google.maps.event.addDomListener(window, 'load', initialize);
+              google.maps.event.addDomListener(window, 'load', initialize);*/
 
             $('#back-to-top').on('click', function (e) {
                 e.preventDefault();
