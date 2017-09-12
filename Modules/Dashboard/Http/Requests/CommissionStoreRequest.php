@@ -3,6 +3,8 @@
 namespace Modules\Dashboard\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CommissionStoreRequest extends FormRequest
 {
@@ -11,14 +13,44 @@ class CommissionStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            'type' => 'required',
-            'cost' => 'numeric',
-            'maximum' => 'numeric',
-            'product_type' => 'required'
-        ];
+        if( $request->type == 'percent' ) {
+            return [
+                'type' => 'required',
+                'cost' => 'numeric',
+                'product_type' => [
+                    'required',
+                    Rule::unique('commissions')->where(function ($query) use ($request) {
+                        $query->where('product_type', $request->product_type)->where('category_id', $request->category_id)->first();
+                    })
+                ],
+                'category_id' => [
+                    'required',
+                    Rule::unique('commissions')->where(function ($query) use ($request) {
+                        $query->where('product_type', $request->product_type)->where('category_id', $request->category_id)->first();
+                    })
+                ],
+                'maximum' => 'required|numeric'
+            ];
+        }else{
+            return [
+                'type' => 'required',
+                'cost' => 'numeric',
+                'product_type' => [
+                    'required',
+                    Rule::unique('commissions')->where(function ($query) use ($request) {
+                        $query->where('product_type', $request->product_type)->where('category_id', $request->category_id)->first();
+                    })
+                ],
+                'category_id' => [
+                    'required',
+                    Rule::unique('commissions')->where(function ($query) use ($request) {
+                        $query->where('product_type', $request->product_type)->where('category_id', $request->category_id)->first();
+                    })
+                ],
+            ];
+        }
     }
 
     /**

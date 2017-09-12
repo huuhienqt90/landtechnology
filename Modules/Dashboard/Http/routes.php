@@ -42,8 +42,10 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::post('delavatar/{id?}','UserController@deleteAvatar')->name('delavatar');
         // Commission
         Route::resource('commission', 'CommissionController');
-        // Get subcategory by ajax
-        Route::get('getsubcategory', 'CommissionController@getSubCategory')->name('getsubcategory');
+        // Get commission by product type and category
+        Route::get('getcommission', 'CommissionController@getCommission')->name('getcommission');
+        // Get cost commission by product type and category
+        Route::get('getCostByCategory', 'CommissionController@getCostByCategory')->name('getcostbycategory');
 
         // Coupon
         Route::resource('coupon', 'CouponController');

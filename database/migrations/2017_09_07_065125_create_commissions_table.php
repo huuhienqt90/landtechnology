@@ -16,10 +16,10 @@ class CreateCommissionsTable extends Migration
         Schema::create('commissions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('category_id')->unsigned();
+            $table->string('product_type');
             $table->string('type')->default('percent');
             $table->float('cost')->default(0);
             $table->tinyInteger('maximum')->default(0);
-            $table->string('product_type');
             $table->foreign('category_id')
                 ->references('id')->on('categories')
                 ->onDelete('cascade');

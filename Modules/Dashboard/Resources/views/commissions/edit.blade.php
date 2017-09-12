@@ -11,7 +11,24 @@
                     </div>
                     {!! Form::model($commission, ['route' => ['dashboard.commission.update', $commission->id], 'class' => 'form-horizontal', 'files' => true, 'method' => 'put']) !!}
                     <div class="box-body">
-                        @include('dashboard::partials.select', ['field' => 'category_id', 'label' => 'Category', 'options' => $cateArr])
+                        <div class="form-group {{ $errors->has('category_id') ? ' has-error' : ''}}">
+                           <label for="category_id" class="col-sm-2 control-label">Category</label>
+                            <div class="col-sm-4">
+                                <select class="form-control select2" name="category_id">
+                                    <option value="">Please select a subcategory</option>
+                                    @foreach($categories as $category)
+                                        @if( $category->getChildren()->count() )
+                                            <optgroup label="{{ $category->name }}">
+                                                @foreach($category->getChildren() as $item)
+                                                    <option value="{{ $item->id }}" {{ selected($item->id, $commission->category_id) }}>{{ $item->name }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @include('dashboard::partials.error', ['field' => 'category'])
+                            </div>
+                        </div>
                         @include('dashboard::partials.select', ['field' => 'type', 'label' => 'Type', 'options' => setTypeCommission()])
                         @include('dashboard::partials.input', ['field' => 'cost', 'label' => 'Cost', 'options' => ['class' => 'form-control']])
                         @include('dashboard::partials.input', ['field' => 'maximum', 'label' => 'Maximum', 'options' => ['class' => 'form-control']])
