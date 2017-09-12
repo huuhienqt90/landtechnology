@@ -148,8 +148,7 @@ body{
 			select{
 				display: block;
 				font-size: 12px;
-				padding: 1em;
-				height: auto;
+				height: 44px;
 				width: 100%;
 				border: 1px solid $bg-color-border-input-shopping-cart;
 				margin-top: 1em;
@@ -180,7 +179,7 @@ body{
 			input{
 				display: block;
 				font-size: 12px;
-				padding: 1em;
+				height: 44px;
 				width: 100%;
 				border: 1px solid $bg-color-border-input-shopping-cart;
 				margin-top: 1em;

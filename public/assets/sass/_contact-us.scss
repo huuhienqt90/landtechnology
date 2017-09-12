@@ -4,6 +4,12 @@
 body{
     font-family: 'Lato', sans-serif;
 }
+ html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
 .h-white{
 	color: $bg-color-white;
 	font-family: 'oswald' , sans-serif;
@@ -58,7 +64,7 @@ body{
 		}
 		p{
 			font-style: italic;
-			font-size: 12px;
+			font-size: 14px;
 			color: $bg-color-hv-menu;
 		}
 		.contact{
@@ -67,32 +73,30 @@ body{
 				padding-left: 0;
 				li{
 					padding-bottom: 1em;
+					i{
+						font-size: 30px;
+						color: $bg-color-main;
+						padding-right: 1em;
+						width: 13%;
+					}
 					span{
-						i{
-							font-size: 30px;
-							color: $bg-color-main;
-							padding-right: 1em;
-						}
 						font-family: 'Montserrat' , sans-serif;
 						font-weight: bold;
+						font-size: 14px;
 					}
 					p{
 						padding-left: 3.5em;
-						font-size: 14px;
+						font-size: 13.94px;
 						margin-top: 1em;
 					}
 				}
 			}
 		}
 	}
+	textarea{ height: 127px; } 
 }
-#maps{
-	margin-bottom: 4em;
-	iframe{
-		width: 100%;
-	}
+#map{
+	margin-top: 80px;
+	margin-bottom: 108px;
+	height: 590px;
 }
-#map_canvas {
-        width: 500px;
-        height: 400px;
-      }

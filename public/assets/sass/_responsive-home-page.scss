@@ -11,6 +11,7 @@
 }
 
 @include responsive_1024 {
+    slick-prev, .slick-next { display: none; }
     #banner .glyphicon-chevron-left{ left: 0.5em; }
     #banner .glyphicon-chevron-right{ right: 0.5em; }
     #product-list .second-effect .news-product{
