@@ -39,30 +39,30 @@
                                 <div class="well">
                                     <h2>New Customer</h2>
                                     <p><strong>Register Account</strong></p>
-                                    <a href="{{ route('front.social.login', 'facebook') }}" class="btn-default btn-block btn-social btn-facebook">
+                                    <a href="{{ route('front.social.login', 'facebook') }}" class="btn-main btn-block btn-social btn-facebook">
                                         <span class="fa fa-facebook"></span> Sign up with Facebook
                                     </a>
-                                    <a href="{{ route('front.social.login', 'twitter') }}" class="btn-default btn-block btn-social btn-twitter">
+                                    <a href="{{ route('front.social.login', 'twitter') }}" class="btn-main btn-block btn-social btn-twitter">
                                         <span class="fa fa-twitter"></span> Sign up with Twitter
                                     </a>
-                                    <a href="{{ route('front.social.login', 'linkedin') }}" class="btn-default btn-block btn-social btn-linkedin">
+                                    <a href="{{ route('front.social.login', 'linkedin') }}" class="btn-main btn-block btn-social btn-linkedin">
                                         <span class="fa fa-linkedin"></span> Sign up with Linkedin
                                     </a>
                                     <p style="padding-bottom: 20px; padding-top: 20px;">By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
-                                    <a href="{{ route('front.user.create') }}" class="btn-default btn-primary">Continue</a>
+                                    <a href="{{ route('front.user.create') }}" class="btn-main btn-primary">Continue</a>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="well">
                                     <h2>Returning Customer</h2>
                                     <p><strong>I am a returning customer</strong></p>
-                                    <a href="{{ route('front.social.login', 'facebook') }}" class="btn-default btn-block btn-social btn-facebook">
+                                    <a href="{{ route('front.social.login', 'facebook') }}" class="btn-main btn-block btn-social btn-facebook">
                                         <span class="fa fa-facebook"></span> Sign in with Facebook
                                     </a>
-                                    <a href="{{ route('front.social.login', 'twitter') }}" class="btn-default btn-block btn-social btn-twitter">
+                                    <a href="{{ route('front.social.login', 'twitter') }}" class="btn-main btn-block btn-social btn-twitter">
                                         <span class="fa fa-twitter"></span> Sign in with Twitter
                                     </a>
-                                    <a href="{{ route('front.social.login', 'linkedin') }}" class="btn-default btn-block btn-social btn-linkedin">
+                                    <a href="{{ route('front.social.login', 'linkedin') }}" class="btn-main btn-block btn-social btn-linkedin">
                                         <span class="fa fa-linkedin"></span> Sign in with Linkedin
                                     </a>
                                     @if(Session::has('messageError'))
@@ -84,7 +84,7 @@
                                             <a href="#">Forgotten Password</a>
                                         </div>
 
-                                        {!! Form::submit('Login!',['class' => 'btn-default btn-primary']) !!}
+                                        {!! Form::submit('Login!',['class' => 'btn-main btn-primary']) !!}
                                     {!! Form::close() !!}
                                 </div>
                             </div>
