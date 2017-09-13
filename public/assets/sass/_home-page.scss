@@ -365,7 +365,8 @@ body{
     margin-bottom: 2.3em;
     .second-effect{
         position: relative;
-        img{ display:block;width: 100%; height: 227px;}
+        .bg-img-pro-list{ background: #F4F6F5; display: block; }
+        img{ display:block; width: auto; height: 227px; margin: 0 auto; }
         &:hover .overlay {
             bottom: 0;
             height: 100%;
@@ -430,6 +431,7 @@ body{
             color: $bg-color-hv-menu;
         }
     }
+    .slick-dotted.slick-slider{ padding: 0; }
     .news-product-slider{
         @include news-product();
         top: 4px;
