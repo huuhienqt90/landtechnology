@@ -23,7 +23,7 @@
     #content-grid .sale-product-slider:before {
         left: 3.9em;
     }
-    #new-arrivals .news-product-slider:before{ left: 3.9em; }
+    #new-arrivals .news-product-slider:before{ left: 4.15em; }
     #out-blog .blog-face li {
         padding-left: 0;
     }
@@ -37,7 +37,7 @@
         left: 7.5px;
         width: 26%;
     }
-    #new-arrivals .sale-product-slider:before{ left: 3.9em; }
+    #new-arrivals .sale-product-slider:before{ left: 4.15em; }
     #new-arrivals .news-product-slider p{ padding-left: 1em; }
     #new-arrivals .item .overlay .text{ top: 60%; }
     #featured-products .news-product-slider{ top: 0.4em; }
@@ -69,6 +69,8 @@
     #product-list .second-effect .news-product {
         top: 0;
     }
+    #product-list .second-effect .overlay a{ font-size: 20px; }
+    #new-arrivals .item .slider-item img{ height: 243px; }
     #new-arrivals .news-product-slider:before{
         left: 4.1em;
     }
@@ -93,6 +95,9 @@
         font-size: 12px;
         top: 65%;
     }
+    #new-arrivals .item{ padding-left: 1em; }
+    #featured-products .item .tetx .lock{ width: auto; }
+    #featured-products .item{ padding-right: 1em; }
     #featured-products .news-product-slider{
         left: 18em;
         top: 0.5em;
@@ -176,9 +181,12 @@
         font-size: 12px;
         top: 55%;
     }
+    #new-arrivals .news-product-slider:before, #featured-products .news-product-slider:before{ left: 4em; }
+    #new-arrivals .sale-product-slider{ top: 75px; }
+    #new-arrivals .sale-product-slider:before, #featured-products .sale-product-slider:before{ left: 4em; }
     #featured-products .item{ padding-top: 4em; }
     #featured-products .slider{ display: block; }
-    #featured-products .news-product-slider{ left: 34em; top: 0.2em; width: 8% }
+    #featured-products .news-product-slider{ left: 34em; top: 0.2em; width: 17% }
     #featured-products .news-product-slider p{ font-size: 12px; }
     #featured-products .news-product-slider:before{
         border-bottom: 14.5px solid $bg-color-main;
@@ -188,7 +196,7 @@
     #featured-products .sale-product-slider{
         left: 34em;
         top: 4.6em;
-        width: 8%;
+        width: 17%;
     }
     #featured-products .sale-product-slider p{ font-size: 12px; }
     #featured-products .sale-product-slider:after{
@@ -244,11 +252,11 @@
         width: 23.5%;
     }
     #featured-products .news-product-slider{
-        width: 8.7%;
+        width: 18.2%;
         left: 32em;
     }
     #featured-products .sale-product-slider{
-        width: 8.5%;
+        width: 17.9%;
         left: 32.1em;
     }
     #purchase .text-content-purchase h4 {
@@ -273,11 +281,11 @@
     #new-arrivals .news-product-slider{ width: 28.5%; }
     #new-arrivals .sale-product-slider{ width: 28.5%; }
     #featured-products .news-product-slider{
-        width: 10.5%;
+        width: 22.3%;
         left: 25.5em;
     }
     #featured-products .sale-product-slider{
-        width: 10.5%;
+        width: 22.3%;
         left: 25.5em;
     }
     #purchase .text-content-purchase h4 {
@@ -316,14 +324,16 @@
 @include responsive_320 {
     #header .menu-topheader ul li a{ font-size: 12px; }
     #header .menu-topheader ul{ padding-left: 0; }
-    #product-list .second-effect .news-product { top: 0.8em; }
-    #product-list .second-effect .overlay { top: 9%; }
+    #product-list .second-effect .news-product { top: 0.7em; }
+    #product-list .second-effect .overlay { top: 6%; }
     #product-list .second-effect .news-product p{ font-size: 10px; }
     #product-list .second-effect .news-product:before{
         border-bottom: 12px solid #79B6C8;
         border-top: 12px solid #79B6C8;
         left: 2.4em;
     }
+    #product-list .second-effect img{ max-width: 100%; }
+    #product-list .second-effect:hover .overlay{ height: 95%; }
     #product-list .second-effect .overlay a{ font-size: 14px; }
     #product-list .second-effect .overlay p{ font-size: 11px; }
     #product-list .second-effect .overlay .text{ top: 66%; }
@@ -332,15 +342,17 @@
     #new-arrivals .sale-product-slider{ width: 22.5%; }
     #new-arrivals .img-detail-content .news-product-detail{ left: 14.5em; }
     #new-arrivals .img-detail-content .sale-product-detail{ left: 14.5em; }
-    #featured-products .news-product-slider{ width: 17%; left: 13.5em; }
-    #featured-products .sale-product-slider{ width: 16.5%; left: 13.6em; }
+    #featured-products .news-product-slider{ width: 37.6%; left: 10.5em; top: 5px; }
+    #featured-products .sale-product-slider{ width: 37.5%; left: 10.5em; }
     #purchase .text-content-purchase h4{ font-size: 9px; }
-    #featured-products .item .overlay .text{ top: 65%; }
+    #featured-products .item .overlay .text{ top: 55%; font-size: 12px; }
+    #featured-products .item{ padding-top: 0; padding-left: 0; padding-right: 1em; }
     #purchase .text-content-purchase {
         top: -3.5em;
         padding-bottom: 2.8em;
         margin: 0;
     }
+    #featured-products .item .tetx .lock{ width: 25%; }
     #purchase .text-content-purchase h4{ margin-bottom: 0.1em; }
     #purchase .text-content-purchase p{ width: 75%; }
     #sign-up .content-sign-up {
