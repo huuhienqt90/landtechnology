@@ -124,7 +124,7 @@
     <div class="container">
         <div class="row">
             <div class="title-new-arrivals">
-                <h3 class="text-uppercase">new arrivals</h3>
+                <h3 class="text-uppercase">New arrivals</h3>
                 <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
             </div> <!-- .title-new-arrivals -->
         </div> <!-- .row -->
@@ -400,7 +400,7 @@
                         </div> <!-- .item -->
                     @endforeach
                 @else
-                    <div class="item">
+                    <div class="item col-md-3 col-sm-6">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
@@ -425,7 +425,7 @@
                             </ul>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
-                    <div class="item">
+                    <div class="item col-md-3 col-sm-6">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
@@ -447,7 +447,7 @@
                             </ul>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
-                    <div class="item">
+                    <div class="item col-md-3 col-sm-6">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
@@ -476,7 +476,7 @@
                             </ul>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
-                    <div class="item">
+                    <div class="item col-md-3 col-sm-6">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
