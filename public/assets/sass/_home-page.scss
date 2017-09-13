@@ -431,14 +431,14 @@ body{
             color: $bg-color-hv-menu;
         }
     }
-    .slick-dotted.slick-slider{ padding: 0; }
+    .slick-dotted.slick-slider{ padding: 0;}
     .news-product-slider{
         @include news-product();
         top: 4px;
         left: 14em;
         padding: 0;
         &:before{
-            left: 3.7em;
+            left: 3.9em;
         }
         p{
             color: $bg-color-white;
@@ -450,11 +450,11 @@ body{
     }
     .sale-product-slider{
         @include news-product();
-        top: 76px;
+        top: 75px;
         left: 14em;
         padding: 0;
         &:before{
-            left: 3.7em;
+            left: 3.9em;
             border-bottom: 18px solid $bg-color-sale-product;
             border-top: 18px solid $bg-color-sale-product;
             border-left: 20px solid transparent;
