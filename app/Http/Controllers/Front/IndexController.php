@@ -22,8 +22,9 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $featureProducts = $this->productRepository->getFeatureProducts(8);
-        return view('front.index.index', compact('featureProducts'));
+        $featureNewArrivalProducts = $this->productRepository->getNewArrivalProducts(8);
+        $newHuntingProducts = $this->productRepository->getNewHuntingProducts(8);
+        return view('front.index.index', compact('featureNewArrivalProducts', 'newHuntingProducts'));
     }
 
     /**

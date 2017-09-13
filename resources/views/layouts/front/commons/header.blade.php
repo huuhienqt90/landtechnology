@@ -94,7 +94,7 @@
                                             <ul class="mini-cart-items">
                                                 @foreach(Cart::content() as $row)
                                                 <li class="list-mini-cart-item row">
-                                                    <div class="col-md-3"><a href="{{ route('front.product.detail', \App\Models\Product::find($row->id)->slug) }}" title="{{ $row->name }}" class="img-responsive thumbnail"><img src="{{ \App\Models\Product::getFeatureImage($row->id) }}" alt="images img hover cart img-responsive"></a></div>
+                                                    <div class="col-md-3"><a href="{{ route('front.product.detail', getProductAttr($row->id, 'slug')) }}" title="{{ $row->name }}" class="img-responsive thumbnail"><img src="{{ getFeatureImage($row->id) }}" alt="images img hover cart img-responsive"></a></div>
                                                     <div class="col-md-7">
                                                         <p>{{ $row->name }}</p>
                                                         <p>Qty: {{ $row->qty }}</p>

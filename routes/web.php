@@ -66,6 +66,7 @@ Route::group(['namespace' => 'Front'], function() {
          Route::post('editpass', 'UserController@updatePass')->name('front.user.updatePass');
          // Seller Dashboard
          Route::resource('seller', 'SellerController');
+         Route::resource('hunting', 'HuntingController');
     });
 });
 // Home

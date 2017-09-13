@@ -52,7 +52,7 @@
                     @foreach($products as $product)
                         <div class="item col-md-4 col-sm-4">
                             <div class="slider-item">
-                                <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ \App\Models\Product::getFeatureImage($product->id) }}" class="img-responsive" alt="{{ $product->name }}"/></a>
+                                <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"/></a>
                                 <div class="overlay">
                                     <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                     <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>

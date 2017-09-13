@@ -14,11 +14,10 @@ use App\Repositories\AttributeResponsitory;
 use App\Repositories\ProductCategoryResponsitory;
 use App\Repositories\ProductImageResponsitory;
 use App\Repositories\ProductAttributeResponsitory;
-use App\Http\Requests\SellerRequest;
+use App\Http\Requests\HuntingStoreRequest;
+use App\Http\Requests\HuntingUpdateRequest;
 
-use Auth;
-
-class SellerController extends Controller
+class HuntingController extends Controller
 {
     protected $categoryResponsitory;
     protected $brandResponsitory;
@@ -29,7 +28,6 @@ class SellerController extends Controller
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
     protected $productAttributeResponsitory;
-
     public function __construct(CategoryResponsitory $categoryResponsitory,
                                 BrandResponsitory $brandResponsitory,
                                 SellerShippingResponsitory $sellerShippingResponsitory,
@@ -60,8 +58,8 @@ class SellerController extends Controller
      */
     public function index()
     {
-        $products = $this->productResponsitory->getSellingProducts(Auth::user()->id);
-        return view('front.seller.index', compact('products'));
+        $products = $this->productResponsitory->getHuntingProducts(auth()->user()->id);
+        return view('front.hunting.index', compact('products'));
     }
 
     /**
@@ -81,7 +79,7 @@ class SellerController extends Controller
         foreach($attrs as $attr){
             $attrArr[$attr->id] = $attr->name;
         }
-        return view('front.seller.create', compact('brands','categories','selltypes','allCategories','attrArr'));
+        return view('front.hunting.create', compact('brands','categories','selltypes','allCategories','attrArr'));
     }
 
     /**
@@ -90,13 +88,14 @@ class SellerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SellerRequest $request)
+    public function store(HuntingStoreRequest $request)
     {
         $param = $request->only(['name','slug','original_price','sale_price','description','description_short','product_brand','key_words','sell_type_id','weight','location','stock']);
         $param['sold_units'] = 0;
-        $param['seller_id'] = Auth::user()->id;
+        $param['seller_id'] = auth()->user()->id;
         $param['status'] = 'Pending';
-        $param['created_by'] = Auth::user()->id;
+        $param['created_by'] = auth()->user()->id;
+        $param['kind'] = 'hunting';
         if( $request->hasFile('feature_image') ){
             $path = $request->file('feature_image')->store('sellproduct');
             $param['feature_image'] = $path;
@@ -115,17 +114,7 @@ class SellerController extends Controller
                 $this->productImageResponsitory->create(['product_id' => $result->id, 'image_path' => $path, 'image_name'=> $file->getClientOriginalName()]);
             }
         }
-
-        if( $request->input('prattr') != null ){
-            $paramAttrs = $request->input('prattr');
-            foreach($paramAttrs as $key => $paramAttr){
-                foreach($paramAttr as $item){
-                    $this->productAttributeResponsitory->create(['product_id' => $result->id, 'attribute_id' => $key, 'value' => $item]);
-                }
-            }
-        }
-
-        return redirect(route('seller.index'))->with('msgOk', 'Create product success!');
+        return redirect(route('hunting.index'))->with('alert-success', 'Create hunting product success!');
     }
 
     /**
@@ -192,7 +181,7 @@ class SellerController extends Controller
 
         $product->attribute = $productAttributesArr;
 
-        return view('front.seller.edit', compact('product','brands','categories','selltypes','productImages','attrArr','attributesArr','cateArr'));
+        return view('front.hunting.edit', compact('product','brands','categories','selltypes','productImages','attrArr','attributesArr','cateArr'));
     }
 
     /**
@@ -202,7 +191,7 @@ class SellerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(SellerRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $update = [
             'status' => 'Pending',
@@ -218,7 +207,7 @@ class SellerController extends Controller
             'location' => $request->location,
             'seller_id' => Auth::user()->id,
             'sell_type_id' => $request->sell_type_id,
-            'product_brand' => $request->product_brand,
+            'product_brand' => $request->product_brand
         ];
 
         // Update feature image
@@ -240,17 +229,7 @@ class SellerController extends Controller
                 $this->productImageResponsitory->create(['product_id' => $id, 'image_path' => $path, 'image_name'=>$file->getClientOriginalName()]);
             }
         }
-
-        if( $request->input('prattr') != null ){
-            $paramAttrs = $request->input('prattr');
-            $this->productAttributeResponsitory->deleteProductAttribute($id);
-            foreach($paramAttrs as $key => $paramAttr){
-                foreach($paramAttr as $item){
-                    $this->productAttributeResponsitory->create(['product_id' => $id, 'attribute_id' => $key, 'value' => $item]);
-                }
-            }
-        }
-        return redirect(route('seller.index'))->with('alert-success', 'Update product success!');
+        return redirect(route('hunting.index'))->with('alert-success', 'Update product success!');
     }
 
     /**
@@ -272,6 +251,6 @@ class SellerController extends Controller
         $product = $this->productResponsitory->find($id);
         \Storage::delete($product->feature_image);
         $this->productResponsitory->delete($id);
-        return redirect(route('seller.index'))->with('alert-success', 'Delete product success!');
+        return redirect(route('hunting.index'))->with('alert-success', 'Delete product success!');
     }
 }

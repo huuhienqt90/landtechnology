@@ -32,7 +32,6 @@ class InstallData extends Seeder
             'confirmed' => 1,
             'is_notify' => 1
         ]);
-
         RoleUser::create(['role_id' => $roleID, 'user_id' => $userID]);
     }
 }

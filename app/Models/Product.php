@@ -34,7 +34,8 @@ class Product extends Model
         'stock',
         'sold_units',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'kind'
     ];
 
     /**
@@ -118,10 +119,9 @@ class Product extends Model
      * @param int $productId
      * @return string
      */
-    public static function getFeatureImage($productId = 0){
-        $product = static::find($productId);
-        if( isset( $product->feature_image ) && !empty( $product->feature_image ) ){
-            return asset('storage/'.$product->feature_image);
+    public function getFeatureImage(){
+        if( isset( $this->feature_image ) && !empty( $this->feature_image ) ){
+            return asset('storage/'.$this->feature_image);
         }else{
             return asset('assets/images/img-hv-cart.png');
         }
@@ -151,5 +151,13 @@ class Product extends Model
         }else{
             return $this->original_price;
         }
+    }
+
+    /**
+     * Scope active
+     *
+     */
+    public function scopeActive($query) {
+        return $query->whereStatus('active');
     }
 }

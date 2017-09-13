@@ -1,9 +1,9 @@
 @extends('layouts.front.master-dashboard')
 
 @section('meta')
-    <title>Dashboard - Land Technology</title>
+    <title>Hunting - Land Technology</title>
     @include('social::meta-article', [
-        'title'         => 'Login',
+        'title'         => 'List all hunting products',
         'description'   => 'Welcome from Hello World',
         'image'         => 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
         'author'        => 'Set Kyar Wa Lar'
@@ -11,7 +11,7 @@
 @stop
 
 @section('content-dashboard')
-    <h3 style="visibility: hidden;">List all selling products</h3>
+    <h3 style="visibility: hidden;">List all hunting products</h3>
     @if(Session::has('msgOk'))
         <div class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
