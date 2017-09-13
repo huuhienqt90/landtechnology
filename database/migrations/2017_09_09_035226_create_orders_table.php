@@ -17,7 +17,10 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('status')->default('processing');
             $table->integer('customer')->default(0);
+            $table->float('tax')->default(0);
+            $table->float('subtotal')->default(0);
             $table->float('total')->default(0);
+            $table->longText('customer_note')->nullable();
             $table->timestamps();
         });
         Schema::create('order_metas', function (Blueprint $table) {

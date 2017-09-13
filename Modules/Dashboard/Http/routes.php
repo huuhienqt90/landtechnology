@@ -23,6 +23,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::post('deleteproductimage/{id?}', 'ProductController@deleteProductImageByAjax')->name('delProductImg');
         // Get Product By Name
         Route::get('getproduct','ProductController@getProductByName')->name('getproduct');
+        // Get Product By ID
+        Route::get('getproductbyid','ProductController@getProductById')->name('getproductid');
 
         Route::resource('attribute-group', 'AttributeGroupController');
         Route::resource('attribute', 'AttributeController');
@@ -38,6 +40,10 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('role', 'RoleController');
         // User
         Route::resource('user', 'UserController');
+        // Get customer user by name ajax
+        Route::get('getcustomer','UserController@getCustomerUser')->name('getcustomer');
+        // Get user fill billing details
+        Route::get('getcustomerbyid', 'UserController@getInfoBill')->name('getcustomerbyid');
         // Delete Avatar User By Ajax
         Route::post('delavatar/{id?}','UserController@deleteAvatar')->name('delavatar');
         // Commission
@@ -49,6 +55,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
 
         // Coupon
         Route::resource('coupon', 'CouponController');
+        // Order
+        Route::resource('order','OrderController');
     });
 
 });

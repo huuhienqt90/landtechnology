@@ -51,3 +51,13 @@ function setActiveProduct(){
 		'need-confirm' => 'Need confirm'
 	];
 }
+
+function setOrderStatus(){
+	return $array = [
+		'pending' => 'Pending payment',
+		'processing' => 'Processing',
+		'on-hold' => 'On hold',
+		'completed' => 'Completed',
+		'cancelled' => 'Cancelled'
+	];
+}

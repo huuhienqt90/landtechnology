@@ -19,4 +19,10 @@ class UserResponsitory extends Repository {
         }
         return null;
     }
+
+    public function getUserByName($name) {
+        return User::where('confirmed',1)->where(function ($query) use ($name) {
+            $query->where('first_name','like','%'.$name.'%')->orWhere('last_name','like','%'.$name.'%');
+        })->get();
+    }
 }

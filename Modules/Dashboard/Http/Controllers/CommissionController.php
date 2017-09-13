@@ -134,7 +134,7 @@ class CommissionController extends Controller
                 }else{
                     $after_price = $price - ($commission->cost * $price)/100;
                     if( $after_price > $commission->maximum ){
-                        echo $commission->maximum
+                        echo $commission->maximum;
                     }else{
                         echo $after_price;
                     }

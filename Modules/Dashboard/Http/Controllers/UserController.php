@@ -11,10 +11,10 @@ use Modules\Dashboard\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
-    protected $userRepository;
+    protected $userReponsitory;
     public function __construct(UserResponsitory $userResponsitory)
     {
-        $this->userRepository = $userResponsitory;
+        $this->userReponsitory = $userResponsitory;
     }
 
     /**
@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userRepository->all();
+        $users = $this->userReponsitory->all();
         return view('dashboard::user.index', compact('users'));
     }
 
@@ -33,7 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $user = $this->userRepository;
+        $user = $this->userReponsitory;
         return view('dashboard::user.create', compact('user'));
     }
 
@@ -56,7 +56,7 @@ class UserController extends Controller
             $param['avatar'] = $path;
         }
 
-        $id = $this->userRepository->insertGetID($param);
+        $id = $this->userReponsitory->insertGetID($param);
         if( $id != null ){
             return redirect(route('dashboard.user.index'))->with('alert-success', 'Create user success!');
         }else{
@@ -79,7 +79,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = $this->userRepository->find($id);
+        $user = $this->userReponsitory->find($id);
         return view('dashboard::user.edit', compact('user'));
     }
 
@@ -90,7 +90,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, $id)
     {
-        $user = $this->userRepository->find( $id );
+        $user = $this->userReponsitory->find( $id );
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
@@ -123,7 +123,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $arItem = $this->userRepository->find($id);
+        $arItem = $this->userReponsitory->find($id);
         if($arItem->avatar != null){
             \Storage::delete($arItem->avatar);
         }
@@ -132,12 +132,56 @@ class UserController extends Controller
     }
 
     public function deleteAvatar($id){
-        $arItem = $this->userRepository->find($id);
+        $arItem = $this->userReponsitory->find($id);
         if($arItem->avatar != null){
             \Storage::delete($arItem->avatar);
         }
         $arItem['avatar'] = null;
         $arItem->update();
         return ['success' => true];
+    }
+
+    /**
+     * [getCustomerUser description]
+     * @param  Request $request [description]
+     * @return json
+     */
+    public function getCustomerUser(Request $request)
+    {
+        if($request->ajax()){
+
+            $name = trim($request->q);
+
+            if (empty($name)) {
+                return response()->json([]);
+            }
+
+            $names = $this->userReponsitory->getUserByName($name);
+
+            $customerUserArr = [];
+
+            foreach($names as $item){
+                $res = new \stdClass;
+                $res->id = $item->id;
+                $res->text = $item->username;
+                $customerUserArr[] = $res;
+            }
+
+            return response()->json($customerUserArr);
+        }
+    }
+
+    public function getInfoBill(Request $request)
+    {
+        if( $request->ajax() ) {
+            $id = $request->id;
+            $user = $this->userReponsitory->find($id);
+
+            if (empty($user)) {
+                return response()->json([]);
+            }
+
+            return response()->json($user);
+        }
     }
 }
