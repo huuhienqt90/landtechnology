@@ -432,7 +432,7 @@ body{
     }
     .news-product-slider{
         @include news-product();
-        top: 5px;
+        top: 4px;
         left: 14em;
         padding: 0;
         &:before{
@@ -482,6 +482,7 @@ body{
         padding-right: 1em;
         .slider-item {
             position: relative;
+            img{ height: 343px; }
         }
         &:hover .overlay {
             bottom: 0;
@@ -526,6 +527,7 @@ body{
             }
             .lock{
                 float: right;
+                width: 30px;
                 a{
                     color: $bg-color-black;
                     outline: none;
@@ -536,7 +538,7 @@ body{
                 }
                 .glyph {
                     margin: 0;
-                    padding-right: 1em;
+                    padding-right: 0;
                     padding-top: 0;
                     text-align: right;
                     font-size: 11px;

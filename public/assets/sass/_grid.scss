@@ -198,7 +198,6 @@ body{
 				margin-right: 0.1em;
 				border: none;
 				border-radius: 0;
-				padding: 0.5em 1em;
 				&:hover {
 					background: $bg-color-main;
 					i{
@@ -217,8 +216,8 @@ body{
 			}
 			select{
 				color: $bg-color-text-tabs;
-				padding: 0.4em;
-				padding-bottom: 0.5em;
+				padding: 0 15px;
+				height: 46px;
 				border: none;
 				background: $bg-color-select-grid;
 				margin-left: 1.5em;
