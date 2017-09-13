@@ -54,7 +54,7 @@
                         @foreach($products as $product)
                             <li>
                                 <div class="col-md-4 col-sm-4 img-list-show">
-                                    <a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}"><img src="{{ \App\Models\Product::getFeatureImage($product->id) }}" class="img-responsive" alt="{{ $product->name }}"></a>
+                                    <a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"></a>
                                 </div>
                                 <div class="col-md-8 col-sm-8 content-list-show">
                                     <h4>{{ $product->name }}</h4>

@@ -27,11 +27,12 @@
                 </ul>
             </div>
         </div>
+        @if(Auth::user()->is_seller)
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseSell"><span class="glyphicon glyphicon-list-alt">
-                    </span>Manage Sell Item</a>
+                    </span>Manage Selling Item</a>
                 </h4>
             </div>
             <div id="collapseSell" class="panel-collapse collapse">
@@ -46,5 +47,26 @@
                 </ul>
             </div>
         </div>
+        @endif
+        @if(Auth::user()->is_buyer)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseHunting"><span class="glyphicon glyphicon-list-alt">
+                    </span>Manage Hunting Item</a>
+                </h4>
+            </div>
+            <div id="collapseHunting" class="panel-collapse collapse">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ route('hunting.create') }}">Hunt an item</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-eye-open text-primary"></span><a href="{{ route('hunting.index') }}">List hunting items</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        @endif
     </div>
 </div>

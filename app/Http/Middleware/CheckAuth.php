@@ -14,11 +14,14 @@ class CheckAuth
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $userType = 'Buyer')
+    public function handle($request, Closure $next, $userType = 'buyer')
     {
         $check = strtolower($userType);
-        if (!Auth::check() || !auth()->user()->$check()->count()) {
-            return redirect(route('login.'.$userType));
+        if(!Auth::check() ){
+            return redirect(route('front.user.login'));
+        }
+        if (!auth()->user()->$check()->count()) {
+            return redirect(route('front.dashboard.index'));
         }
 
         return $next($request);

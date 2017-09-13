@@ -38,16 +38,39 @@ function setTypeCommission(){
 
 function setProductTypeCommission(){
 	return $array = [
-		'hunting' => 'Hunting', 
-		'seller' => 'Seller', 
+		'hunting' => 'Hunting',
+		'seller' => 'Seller',
 		'swap' => 'Swap'
 	];
 }
 
 function setActiveProduct(){
 	return $array = [
-		'active' => 'Active', 
-		'pending' => 'Pending', 
+		'active' => 'Active',
+		'pending' => 'Pending',
 		'need-confirm' => 'Need confirm'
 	];
+}
+
+function getProductAttr($productId, $column){
+    $product = Product::find($productId);
+    if( isset( $product ) && $product->{$column} ){
+        return $product->{$column};
+    }else{
+        return null;
+    }
+}
+
+/**
+ * Get feature image
+ * @param int $productId
+ * @return string
+ */
+function getFeatureImage($productId = 0){
+    $product = Product::find($productId);
+    if( isset( $product->feature_image ) && !empty( $product->feature_image ) ){
+        return asset('storage/'.$product->feature_image);
+    }else{
+        return asset('assets/images/img-hv-cart.png');
+    }
 }
