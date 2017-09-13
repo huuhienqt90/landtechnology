@@ -33,6 +33,7 @@ body{
 		background: none;
 		color: $bg-color-login-account;
 		border: 2px solid $bg-color-login-account;
+		transition: all 0.4s;
 	}
 }
 .well{ padding-bottom: 2em; }

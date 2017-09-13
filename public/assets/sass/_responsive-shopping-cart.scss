@@ -56,4 +56,7 @@
 
 @include responsive_320 {
     #content-shopping .shopping-cart-table .continue .button-continue button{ margin-bottom: 1em; }
+    #content-shopping .shopping-cart-table .title-table th{ font-size: 8px; padding-right: 5px; }
+    #content-shopping .shopping-cart-table .content-table th{ padding-left: 0; padding-right: 5px;
+    font-size: 8px; }
 }
