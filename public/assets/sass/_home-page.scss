@@ -485,7 +485,19 @@ body{
         outline: none;
         .slider-item {
             position: relative;
-            img{ height: 343px; }
+            .product-detail-url{
+                display: flex;
+                background: #F4F6F5;
+                height: 343px;
+                overflow: hidden;
+                align-items: center;
+            }
+            img{
+                margin: 0 auto;
+                height: auto;
+                width: 100%;
+                max-width: none;
+            }
         }
         &:hover .overlay {
             bottom: 0;
