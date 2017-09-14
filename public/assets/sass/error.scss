@@ -1,6 +1,16 @@
 @import 'mixin';
 @import 'variables';
-
+@font-face {
+	font-family: 'VfFree40';
+	src: url('fonts/VfFree40.eot');
+	src: url('fonts/VfFree40.eot?#iefix') format('embedded-opentype'),
+		url('fonts/VfFree40.woff2') format('woff2'),
+		url('fonts/VfFree40.woff') format('woff'),
+		url('fonts/VfFree40.ttf') format('truetype'),
+		url('fonts/VfFree40.svg#VfFree40') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 body{
     font-family: 'Lato', sans-serif;
 }
@@ -8,6 +18,11 @@ body{
 #content-error{
 	text-align: center;
 	margin: 7em 0;
+	.text-error-number{
+		font-family: VfFree40, sans-serif;
+		font-size: 250px;
+		opacity: 0.2;
+	}
 	.text-content-error{
 		margin-top: 6em;
 		span{
