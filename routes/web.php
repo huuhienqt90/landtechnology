@@ -36,6 +36,7 @@ Route::group(['namespace' => 'Front'], function() {
     Route::group(['prefix' => 'product'], function(){
         // Route::resource('products', 'ProductController');
         Route::get('detail/{slug?}', 'ProductController@show')->name('front.product.detail');
+        Route::post('detail/{slug?}', 'ProductController@sendOffer')->name('hunting.sendOffer');
         Route::get('product-category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
         Route::get('brand/{slug?}', 'ProductController@productBrand')->name('front.product.brand');
         Route::get('list', 'ProductController@showList')->name('front.product.list');

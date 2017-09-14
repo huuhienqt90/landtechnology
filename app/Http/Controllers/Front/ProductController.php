@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\PostCheckoutRequest;
 use App\Http\Requests\PostToCartRequest;
+use App\Http\Requests\SendOfferRequest;
 use App\Http\Requests\StoreReviewRequest;
 use App\Repositories\BrandResponsitory;
 use App\Repositories\CategoryResponsitory;
@@ -80,7 +81,12 @@ class ProductController extends Controller
         $product = $this->productRepository->findBy('slug', $slug);
         $productReview = $this->productReviewResponsitory;
         if( !empty($slug) && isset($product->id) && $product->id){
-            return view('front.product.detail', compact('product', 'productReview'));
+            if( $product->kind == 'hunting'){
+                return view('front.product.detail-hunting', compact('product', 'productReview'));
+            }else{
+                return view('front.product.detail', compact('product', 'productReview'));
+            }
+
         }else{
             return redirect()->route('front.index')->with('alert-danger', 'Product not found');
         }
@@ -178,5 +184,10 @@ class ProductController extends Controller
     public function storeReview(StoreReviewRequest $request, $id){
         $this->productReviewResponsitory->create(['product_id'=>$id, 'user_id'=>auth()->user()->id, 'rating'=>$request->rating, 'message'=>$request->message, 'status'=>'active']);
         return redirect()->back()->with('alert-success', 'Add review for product success');
+    }
+
+    public function sendOffer(SendOfferRequest $request, $slug = null){
+
+        return $this->show($slug);
     }
 }

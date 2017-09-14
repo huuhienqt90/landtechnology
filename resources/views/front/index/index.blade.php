@@ -370,8 +370,8 @@
                     <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
                 </div> <!-- .title-new-arrivals -->
                 <div class="col-md-12 slider">
-                    @if(isset($featureNewArrivalProducts) && $featureNewArrivalProducts->count())
-                    @foreach($featureNewArrivalProducts as $product)
+                    @if(isset($newHuntingProducts) && $newHuntingProducts->count())
+                    @foreach($newHuntingProducts as $product)
                         <div class="item col-md-3 col-sm-6">
                             <div class="slider-item">
                                 <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"/></a>

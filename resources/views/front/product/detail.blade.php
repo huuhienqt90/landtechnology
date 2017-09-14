@@ -47,7 +47,7 @@
             <div class="col-md-6 col-sm-6">
                 <div class="detail-content">
                     <h4>{{ $product->name }}</h4>
-                    <p>{{ $product->description_short }}</p>
+                    <p>{!! $product->description_short !!}</p>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <?php
