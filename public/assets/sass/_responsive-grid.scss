@@ -54,6 +54,7 @@
         padding: 0.5em 1em;
         font-size: 13px;
     }
+    #content-grid .sidebar .shop-by .demo form input{ float: left; width: 80%; }
     #content-grid .sidebar .shop-by .demo .title-prince{ padding-right: 8em; }
     #content-grid .item{ padding-left: 0; }
     #content-grid .news-product-slider{
@@ -89,6 +90,9 @@
         padding: 0.5em 1em;
         font-size: 12px;
     }
+    #content-grid .sidebar .shop-by .demo form input{ float: right; width: 30%; }
+    #content-grid .sidebar .shop-by .demo p{ width: 45%; }
+    #content-grid .sidebar .shop-by .demo p input { width: 50%; }
     #content-grid .grid-content-detail-list{ margin-top: 2.5em; }
     #content-grid .news-product-slider:before {
         left: 3.8em;
@@ -160,6 +164,7 @@
         padding: 0.3em 0.8em;
         font-size: 8px;
     }
+    #content-grid .sidebar .shop-by .demo p input { width: 80%; }
     #content-grid .sidebar .shop-by .demo .title-prince{ padding-right: 16em; }
     #content-grid .news-product-slider p{ font-size: 9px; }
     #content-grid .sale-product-slider p{ font-size: 9px; }

@@ -172,7 +172,15 @@ body{
 				}
 				p{
 					float: left;
-					input{ outline: none; color: $bg-color-text-tabs; float: left; }
+					input{
+						outline: none;
+						color: $bg-color-text-tabs;
+						background: $bg-color-select-grid;
+						float: left;
+						padding: 0.7em 0;
+						text-align: center;
+						width: 50%;
+					}
 				}
 				form{
 					input{
@@ -221,6 +229,7 @@ body{
 				border: none;
 				background: $bg-color-select-grid;
 				margin-left: 1.5em;
+				outline: none;
 			}
 			span{
 				float: right;
@@ -236,6 +245,7 @@ body{
 		margin-top: 3em;
 		/* display: none; */
 		.item{
+			padding-bottom: 1em;
 			.overlay{
 				.text{
 					top: 67%;

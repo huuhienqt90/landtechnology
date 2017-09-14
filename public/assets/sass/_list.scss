@@ -58,6 +58,7 @@ body{
 					@include btn-add-to-cart();
 					.cover-btn-glyph .glyph .fs1{
 						background: $bg-color-btn-cart-list-show;
+						padding-top: 0.7em;
 						&:hover {
 							background: $bg-color-main;
 						}
