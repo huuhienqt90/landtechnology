@@ -229,6 +229,31 @@
                     </div>
                     <div class="box-body">
                         <ul class="timeline" id="order_note">
+                            <?php $temp = 0; ?>
+                            @foreach($orderMetas as $orderMeta)
+                                @if($orderMeta->key == 'orderNote')
+                                    @foreach(unserialize($orderMeta->value) as $key => $item)
+                                        <li class="time-label">
+                                            <span class="bg-green">{{ $item['date'] }}</span>
+                                            <input type="hidden" name="orderNote[{{$key}}][date]" value="{{ $item['date'] }}"/>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-comments bg-yellow"></i>
+                                            <div class="timeline-item">
+                                                <h3 class="timeline-header">
+                                                    {{ $item['name'] }}
+                                                    <input type="hidden" name="orderNote[{{$key}}][name]" value="{{ $item['name'] }}"/>
+                                                </h3>
+                                                <div class="timeline-body">
+                                                    {{ $item['note'] }}
+                                                    <input type="hidden" name="orderNote[{{$key}}][note]" value="{{ $item['note'] }}"/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <?php $temp = $key ?>
+                                    @endforeach
+                                @endif
+                            @endforeach
                         </ul>
                         <label class="form-label">Add note</label>
                         <textarea class="form-control" id="contentOrderNote"></textarea>
@@ -391,7 +416,7 @@
 
             $("#rowProduct").append('<tr><th>Item</th><th>Cost</th><th>Qty</th><th>Total</th><th></th></tr>');
             @foreach($order_products as $order_product)
-                $("#rowProduct").append('<tr><td>{{ $order_product->product_id }}</td><td>{{ $order_product->price }}</td><td>{{ $order_product->qty }}</td><td>{{ $order_product->total }}</td><td></td></tr>');
+                $("#rowProduct").append('<tr><td>{{ $order_product->product->name }}</td><td>{{ $order_product->price }}</td><td>{{ $order_product->qty }}</td><td>{{ $order_product->total }}</td><td></td></tr>');
             @endforeach
             $("#addProduct").on('click', function() {
                 if( !$("#total"+$("select[name=product_name]").val()).length ) {
@@ -418,10 +443,12 @@
             var d = new Date();
             var strDate = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate();
             var time = d.getHours() + ":" + d.getMinutes();
+            var i = {{ $temp }} + 1;
 
             $("#addOrderNote").on('click', function() {
                 if( $("#contentOrderNote").val() ){
-                    $("#order_note").append('<li class="time-label"><span class="bg-green">'+strDate+'</span><input type="hidden" name="dateOrder[]" value="'+strDate+'"/></li><li><i class="fa fa-comments bg-yellow"></i><div class="timeline-item"><span class="time"><i class="fa fa-clock-o"></i> '+time+'</span><input type="hidden" name="timeOrder[]" value="'+time+'"/><h3 class="timeline-header">{{ Auth::user()->username }}<input type="hidden" name="nameOrder" value="{{ Auth::user()->username }}"/></h3><div class="timeline-body">'+$("#contentOrderNote").val()+'<input type="hidden" name="contentOrder[]" value="'+$("#contentOrderNote").val()+'"/></div><div class="timeline-footer"><a class="btn btn-danger btn-xs btn-delNote" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></div></li>');
+                    $("#order_note").append('<li class="time-label"><span class="bg-green">'+strDate+'</span><input type="hidden" name="orderNote['+i+'][date]" value="'+strDate+'"/></li><li><i class="fa fa-comments bg-yellow"></i><div class="timeline-item"><h3 class="timeline-header">{{ Auth::user()->username }}<input type="hidden" name="orderNote['+i+'][name]" value="{{ Auth::user()->username }}"/></h3><div class="timeline-body">'+$("#contentOrderNote").val()+'<input type="hidden" name="orderNote['+i+'][note]" value="'+$("#contentOrderNote").val()+'"/></div><div class="timeline-footer"><a class="btn btn-danger btn-xs btn-delNote" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></div></li>');
+                    i++;
                 }
                 $("#contentOrderNote").val('');
 

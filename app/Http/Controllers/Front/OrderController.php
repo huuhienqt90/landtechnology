@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\PaymentMethod\PayPal\PayPal;
 use App\Repositories\SettingRepository;
 use App\Repositories\ProductResponsitory;
+use App\Repositories\OrderResponsitory;
 use Cart;
 
 class OrderController extends Controller
@@ -14,9 +15,12 @@ class OrderController extends Controller
     private $PayPal;
     private $productRepository;
     private $settingRepository;
-    public function __construct(ProductResponsitory $productRepository, SettingRepository $settingRepository){
+    private $orderResponsitory;
+
+    public function __construct(ProductResponsitory $productRepository, SettingRepository $settingRepository, OrderResponsitory $orderResponsitory){
         $this->productRepository = $productRepository;
         $this->settingRepository = $settingRepository;
+        $this->orderResponsitory = $orderResponsitory;
         $PayPalConfig = array(
             'Sandbox' =>  true,
             'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
@@ -85,8 +89,13 @@ class OrderController extends Controller
         );
 
         $data = $this->PayPal->DoExpressCheckoutPayment($PayPalRequest);
+        if($data['ACK'] == 'Success') {
+            $param['status'] = 'processing';
+            $this->orderResponsitory->update($param, session()->get('orderId'));
+        }
         Cart::destroy();
         session()->forget('SetExpressCheckoutResult');
+        session()->forget('orderId');
         return view('front.ecommerce.checkout-thankyou', compact('data'));
     }
 

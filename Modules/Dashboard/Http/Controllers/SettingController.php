@@ -76,6 +76,22 @@ class SettingController extends Controller
                 $this->settingRepository->create(['key' => 'APISignature', 'value' => $request->APISignature]);
             }
         }
+
+        if( isset( $request->stripe_key ) && !empty( $request->stripe_key ) ){
+            if( $this->settingRepository->findWhere(['key' =>'stripe_key'])->count() ){
+                $this->settingRepository->update(['key' => 'stripe_key', 'value' => $request->stripe_key], $this->settingRepository->findWhere(['key' =>'stripe_key'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'stripe_key', 'value' => $request->stripe_key]);
+            }
+        }
+
+        if( isset( $request->stripe_secret ) && !empty( $request->stripe_secret ) ){
+            if( $this->settingRepository->findWhere(['key' =>'stripe_secret'])->count() ){
+                $this->settingRepository->update(['key' => 'stripe_secret', 'value' => $request->stripe_secret], $this->settingRepository->findWhere(['key' =>'stripe_secret'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'stripe_secret', 'value' => $request->stripe_secret]);
+            }
+        }
         return redirect()->route('dashboard.setting.index')->with('alert-success', 'Update e-commerce setting sucess!');
     }
 

@@ -47,7 +47,7 @@
             <div class="col-md-6 col-sm-6">
                 <div class="detail-content">
                     <h4>{{ $product->name }}</h4>
-                    <p>{{ $product->description_short }}</p>
+                    <p>{!! $product->description_short !!}</p>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <?php
@@ -130,7 +130,7 @@
         <div class="row">
              <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" {{ $errors->has('rating') || $errors->has('message') ? '' : 'class="active"' }}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="text-uppercase">Description</a></li>
+                <li role="presentation" class="active" {{ $errors->has('rating') || $errors->has('message') ? '' : 'class="active"' }}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="text-uppercase">Description</a></li>
                 <li role="presentation" {{ $errors->has('rating') || $errors->has('message') ? 'class="active"' : '' }}><a href="#review" aria-controls="profile" role="tab" data-toggle="tab" class="text-uppercase">Customer Review</a></li>
                 <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="text-uppercase">Product Tags</a></li>
             </ul>

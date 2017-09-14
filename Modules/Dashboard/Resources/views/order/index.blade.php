@@ -34,7 +34,11 @@
                                         <td class="list-image">#{{ $order->id }}</td>
                                         <td>{{ $order->status }}</td>
                                         <td>{{ $order->customer }}</td>
-                                        <td>{{ $order->customer }}</td>
+                                        @foreach($order->user_metas as $item)
+                                            @if($item->key == 'shippingAddress1' || $item->key == 'shippingAddress2')
+                                                <td>{{ $item->value }}</td><br/>
+                                            @endif
+                                        @endforeach
                                         <td>{{ $order->created_at }}</td>
                                         <td>${{ $order->total }}</td>
                                         <td style="text-align: center;">

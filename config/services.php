@@ -31,8 +31,9 @@ return [
 
     'stripe' => [
         'model' => App\Models\User::class,
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
+        'key' => env('STRIPE_KEY', 'pk_test_jedrSzyuQZkN5iW79RFTorcC'),
+        'secret' => env('STRIPE_SECRET', 'sk_test_NZVqZ3MEZvrySS5CEEHJkiO4'),
+        'version' => '2016-07-06',
     ],
 
     'facebook' => [

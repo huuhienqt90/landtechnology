@@ -268,10 +268,12 @@
             var d = new Date();
             var strDate = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate();
             var time = d.getHours() + ":" + d.getMinutes();
+            var i = 0;
 
             $("#addOrderNote").on('click', function() {
                 if( $("#contentOrderNote").val() ){
-                    $("#order_note").append('<li class="time-label"><span class="bg-green">'+strDate+'</span><input type="hidden" name="dateOrder[]" value="'+strDate+'"/></li><li><i class="fa fa-comments bg-yellow"></i><div class="timeline-item"><span class="time"><i class="fa fa-clock-o"></i> '+time+'</span><input type="hidden" name="timeOrder[]" value="'+time+'"/><h3 class="timeline-header">{{ Auth::user()->username }}<input type="hidden" name="nameOrder" value="{{ Auth::user()->username }}"/></h3><div class="timeline-body">'+$("#contentOrderNote").val()+'<input type="hidden" name="contentOrder[]" value="'+$("#contentOrderNote").val()+'"/></div><div class="timeline-footer"><a class="btn btn-danger btn-xs btn-delNote" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></div></li>');
+                    $("#order_note").append('<li class="time-label"><span class="bg-green">'+strDate+'</span><input type="hidden" name="orderNote['+i+'][date]" value="'+strDate+'"/></li><li><i class="fa fa-comments bg-yellow"></i><div class="timeline-item"><h3 class="timeline-header">{{ Auth::user()->username }}<input type="hidden" name="orderNote['+i+'][name]" value="{{ Auth::user()->username }}"/></h3><div class="timeline-body">'+$("#contentOrderNote").val()+'<input type="hidden" name="orderNote['+i+'][note]" value="'+$("#contentOrderNote").val()+'"/></div><div class="timeline-footer"><a class="btn btn-danger btn-xs btn-delNote" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></div></li>');
+                    i++;
                 }
                 $("#contentOrderNote").val('');
 

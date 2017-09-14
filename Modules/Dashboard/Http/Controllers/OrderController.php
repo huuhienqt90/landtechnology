@@ -205,7 +205,7 @@ class OrderController extends Controller
         }
 
         // Get total for orders
-        $products = $this->orderProductResponsitory->findALlBy($order->id);
+        $products = $this->orderProductResponsitory->findALlBy('order_id', $order->id);
         $total = 0;
         $subtotal = 0;
         $tax = 0;
@@ -214,9 +214,15 @@ class OrderController extends Controller
             $tax += $product->tax;
         }
         $param = [
-            'total' => $total
+            'total' => $total,
+            'tax' => $tax
         ];
         $this->orderResponsitory->update($param, $order->id);
+
+        if( isset( $request->orderNote) ){
+            $orderNote = serialize($request->orderNote);
+            $this->orderMetaResponsitory->create(['key' => 'orderNote', 'value' => $orderNote, 'order_id' => $order->id]);
+        }
 
         return redirect(route('dashboard.order.index'))->with('alert-success', 'Create order success!');
     }
@@ -237,9 +243,9 @@ class OrderController extends Controller
     public function edit($id)
     {
         $order = $this->orderResponsitory->find($id);
-        $user = $this->userResponsitory->find($id);
         $arUser = [];
-        if($user->id){
+        if($order->customer) {
+            $user = $this->userResponsitory->find($order->customer);
             $arUser = [$user->id => $user->username];
         }
         $orderMetas = $this->orderMetaResponsitory->findAllBy('order_id',$id);
@@ -387,6 +393,11 @@ class OrderController extends Controller
             'total' => $total
         ];
         $this->orderResponsitory->update($param, $id);
+
+        if( isset( $request->orderNote) ){
+            $orderNote = serialize($request->orderNote);
+            $this->orderMetaResponsitory->create(['key' => 'orderNote', 'value' => $orderNote, 'order_id' => $id]);
+        }
 
         return redirect(route('dashboard.order.index'))->with('alert-success', 'Update order success!');
     }
