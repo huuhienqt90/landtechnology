@@ -81,6 +81,27 @@
                 $("#payment-paypal").change(function() {
                     $("#area-payment-stripe").html('');
                 });
+
+                $("#autofillShip").on('click', function() {
+                    var billingFirstName = $("input[name=billingFirstName]").val();
+                    var billingLastName = $("input[name=billingLastName]").val();
+                    var billingCompany = $("input[name=billingCompany]").val();
+                    var billingAddress1 = $("input[name=billingAddress1]").val();
+                    var billingAddress2 = $("input[name=billingAddress2]").val();
+                    var billingPostCode = $("input[name=billingPostCode]").val();
+                    var billingCity = $("input[name=billingCity]").val();
+                    var billingPhone = $("input[name=billingPhone]").val();
+                    var billingEmail = $("input[name=billingEmail]").val();
+                    $("input[name=shippingFirstName]").val(billingFirstName);
+                    $("input[name=shippingLastName]").val(billingLastName);
+                    $("input[name=shippingCompany]").val(billingCompany);
+                    $("input[name=shippingAddress1]").val(billingAddress1);
+                    $("input[name=shippingAddress2]").val(billingAddress2);
+                    $("input[name=shippingPostCode]").val(billingPostCode);
+                    $("input[name=shippingCity]").val(billingCity);
+                    $("input[name=shippingPhone]").val(billingPhone);
+                    $("input[name=shippingEmail]").val(billingEmail);
+                });
             });
             
             //plugin bootstrap minus and plus

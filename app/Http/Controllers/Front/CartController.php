@@ -16,6 +16,8 @@ use App\Repositories\OrderMetaResponsitory;
 use App\Repositories\OrderProductResponsitory;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Stripe\Error\Card;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderProduct;
 
 class CartController extends Controller
 {
@@ -260,6 +262,12 @@ class CartController extends Controller
         }
     }
 
+    public function sendCart($email, $cart){
+        if( !empty($email) && !empty($cart) ){
+            Mail::to($email)->send(new OrderProduct($cart));
+        }
+    }
+
     public function addOrder($request) {
         // Create order
         $param = [];
@@ -421,5 +429,6 @@ class CartController extends Controller
             $orderNote = serialize($request->orderNote);
             $this->orderMetaResponsitory->create(['key' => 'orderNote', 'value' => $orderNote, 'order_id' => $order->id]);
         }
+        $this->sendCart($request->shippingEmail, Cart::content());
     }
 }

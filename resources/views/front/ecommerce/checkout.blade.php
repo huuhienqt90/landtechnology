@@ -64,6 +64,7 @@
                                             @include('partials.input-text', ['field' => 'billingCity', 'label' => 'Town / City'])
                                             @include('partials.input-text', ['field' => 'billingPhone', 'label' => 'Phone'])
                                             @include('partials.input-text', ['field' => 'billingEmail', 'label' => 'Email'])
+                                            <a href="javascript:void(0)" id="autofillShip">Auto fill Shipping information from Billling information</a>
                                         </div>
                                         <div class="col-md-6">
                                             <h2>Shipping information</h2>
