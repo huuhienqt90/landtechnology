@@ -12,4 +12,8 @@ class CommissionResponsitory extends Repository {
     public function model() {
         return 'App\Models\Commissions';
     }
+
+    public function getCommission($pro_type = 'seller', $category = 0){
+    	return Commissions::where('category_id', $category)->where('product_type', $pro_type)->first();
+    }
 }

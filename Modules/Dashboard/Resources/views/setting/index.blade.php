@@ -47,6 +47,20 @@
                                     @include('dashboard::partials.error', ['field' => 'APISignature'])
                                 </div>
                             </div>
+                            <div class="form-group {{ $errors->has('stripe_key') ? ' has-error' : '' }}">
+                                <label for="admin-paypal" class="col-sm-2 control-label">Publishable Stripe Key</label>
+                                <div class="col-sm-4">
+                                    {!! Form::text('stripe_key', old('stripe_key') ? old('stripe_key') : $oldPayPal, ['class' => 'form-control', 'type' => 'password']) !!}
+                                    @include('dashboard::partials.error', ['field' => 'stripe_key'])
+                                </div>
+                            </div>
+                            <div class="form-group {{ $errors->has('stripe_secret') ? ' has-error' : '' }}">
+                                <label for="admin-paypal" class="col-sm-2 control-label">Secret Stripe Key</label>
+                                <div class="col-sm-4">
+                                    {!! Form::text('stripe_secret', old('stripe_secret') ? old('stripe_secret') : $oldPayPal, ['class' => 'form-control', 'type' => 'password']) !!}
+                                    @include('dashboard::partials.error', ['field' => 'stripe_secret'])
+                                </div>
+                            </div>
                             <div class="buttons">
                                 <input type="submit" class="btn btn-primary" value="Save changes" />
                             </div>

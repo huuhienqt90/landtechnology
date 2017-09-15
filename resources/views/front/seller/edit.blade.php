@@ -74,8 +74,35 @@
                                                     @endforeach
                                                 </select>
                                                 @include('dashboard::partials.error', ['field' => 'category'])
+                                                <div id="getcost"></div>
                                             </div>
                                         </div>
+                                        @if(!Auth::user()->is_admin)
+                                            <script type="text/javascript">
+                                                jQuery(document).ready(function($) {
+                                                    $("select[name=category]").on('change', function() {
+                                                        var category_id = $(this).val();
+                                                        $.ajax({
+                                                            url: "{{ route('dashboard.getcostbycategory') }}",
+                                                            type: "GET",
+                                                            data: {category_id : category_id, pro_type : 'seller'},
+                                                            success: function(result) {
+                                                                console.log(result);
+                                                                if( (!result) ) {
+                                                                    $("#getcost").html('<label class="help-block">Cost not defined</label>')
+                                                                }else{
+                                                                    if(result.type == "fixed") {
+                                                                        $("#getcost").html('<label class="help-block">Cost\'s category '+result.cost+'</label>')
+                                                                    }else{
+                                                                        $("#getcost").html('<label class="help-block">Cost\'s category '+result.cost+'%</label>')
+                                                                    }
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                        @endif
                                         <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}">
                                             {{ Form::label('original_price', 'Price', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
@@ -88,8 +115,41 @@
                                             <div class="col-sm-9">
                                                 {{ Form::text('sale_price', $product->sale_price, ['placeholder' => 'Sale Price', 'class' => 'form-control', 'id' => 'sale_price']) }}
                                                 {{ Form::label(null, $errors->has('sale_price')? $errors->first('sale_price') : '', ['class' => 'help-block']) }}
+                                                <div id="commission"></div>
                                             </div>
                                         </div>
+                                        @if(!Auth::user()->is_admin)
+                                            <script type="text/javascript">
+                                                jQuery(document).ready(function($) {
+                                                    $("#sale_price").keyup(function() {
+                                                        var price = $("#original_price").val();
+                                                        var sale_price = $(this).val();
+                                                        var category_id = $("select[name=category]").val();
+                                                        if(sale_price == 0) {
+                                                            $.ajax({
+                                                                url: "{{ route('dashboard.getcommission') }}",
+                                                                type: "GET",
+                                                                data: {price : price, pro_type: 'seller', category_id: category_id},
+                                                                success: function(result) {
+                                                                    console.log(result);
+                                                                    $("#commission").html('<label class="help-block">Cost\'s category '+result+'</label>')
+                                                                }
+                                                            });
+                                                        }else{
+                                                            $.ajax({
+                                                                url: "{{ route('dashboard.getcommission') }}",
+                                                                type: "GET",
+                                                                data: {price : sale_price, pro_type: 'seller', category_id: category_id},
+                                                                success: function(result) {
+                                                                    console.log(result);
+                                                                    $("#commission").html('<label class="help-block">Cost\'s category '+result+'</label>')
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        @endif
                                         <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
                                             <label for="feature_image" class="col-sm-3 control-label">Feature Image</label>
                                             <div class="col-sm-9">

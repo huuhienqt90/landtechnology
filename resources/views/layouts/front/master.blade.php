@@ -76,6 +76,34 @@
                         $(this).parent().addClass('hovered');
                     }
                 });
+
+                $("#payment-stripe").change(function() {
+                    $("#area-payment-stripe").append('<div class="row"><div class="col-md-12"><div class="form-group"><label>Card Number</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-credit-card"></i></span><input type="text" name="card_no" required value="{{ old('card_no') }}" class="form-control" placeholder="Valid Card Number"></div></div></div><div class="col-md-3"><div class="form-group"><label>Expiry Month</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-vcard"></i></span><input type="text" name="ccExpiryMonth" value="{{ old('ccExpiryMonth') }}" class="form-control" required placeholder="MM"></div></div></div><div class="col-md-3"><div class="form-group"><label>Expiry Year</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-vcard"></i></span><input type="text" name="ccExpiryYear" value="{{ old('ccExpiryYear') }}" class="form-control" required placeholder="YYYY"></div></div></div><div class="col-md-6"><div class="form-group"><label>CVV No.</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-vcard-o"></i></span><input type="text" name="cvvNumber" required value="{{ old('cvvNumber') }}" class="form-control" placeholder="CVC"></div></div></div><div class="col-md-12"><div class="form-group"><label>Amount</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-usd"></i></span><input type="text" name="amount" required value="{{ Cart::total() }}" class="form-control" placeholder="0"></div></div></div></div>');
+                });
+                $("#payment-paypal").change(function() {
+                    $("#area-payment-stripe").html('');
+                });
+
+                $("#autofillShip").on('click', function() {
+                    var billingFirstName = $("input[name=billingFirstName]").val();
+                    var billingLastName = $("input[name=billingLastName]").val();
+                    var billingCompany = $("input[name=billingCompany]").val();
+                    var billingAddress1 = $("input[name=billingAddress1]").val();
+                    var billingAddress2 = $("input[name=billingAddress2]").val();
+                    var billingPostCode = $("input[name=billingPostCode]").val();
+                    var billingCity = $("input[name=billingCity]").val();
+                    var billingPhone = $("input[name=billingPhone]").val();
+                    var billingEmail = $("input[name=billingEmail]").val();
+                    $("input[name=shippingFirstName]").val(billingFirstName);
+                    $("input[name=shippingLastName]").val(billingLastName);
+                    $("input[name=shippingCompany]").val(billingCompany);
+                    $("input[name=shippingAddress1]").val(billingAddress1);
+                    $("input[name=shippingAddress2]").val(billingAddress2);
+                    $("input[name=shippingPostCode]").val(billingPostCode);
+                    $("input[name=shippingCity]").val(billingCity);
+                    $("input[name=shippingPhone]").val(billingPhone);
+                    $("input[name=shippingEmail]").val(billingEmail);
+                });
             });
 
             //plugin bootstrap minus and plus

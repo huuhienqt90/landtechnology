@@ -6,7 +6,7 @@ use Bosnadev\Repositories\Contracts\RepositoryInterface;
 use Bosnadev\Repositories\Eloquent\Repository;
 use App\Models\Order;
 
-class OrderRepository extends Repository {
+class OrderResponsitory extends Repository {
     protected $model;
 
     public function model() {

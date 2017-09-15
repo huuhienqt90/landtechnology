@@ -52,6 +52,16 @@ function setActiveProduct(){
 	];
 }
 
+function setOrderStatus(){
+	return $array = [
+		'pending' => 'Pending payment',
+		'processing' => 'Processing',
+		'on-hold' => 'On hold',
+		'completed' => 'Completed',
+		'cancelled' => 'Cancelled'
+	];
+}
+
 function getProductAttr($productId, $column){
     $product = Product::find($productId);
     if( isset( $product ) && $product->{$column} ){

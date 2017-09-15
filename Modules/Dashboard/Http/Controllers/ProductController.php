@@ -399,4 +399,28 @@ class ProductController extends Controller
             return response()->json($productArr);
         }
     }
+
+    public function getProductById(Request $request)
+    {
+        if($request->ajax()){
+
+            $id = trim($request->id);
+
+            if (empty($id)) {
+                return response()->json([]);
+            }
+
+            $product = $this->productResponsitory->find($id);
+
+            $price = 0;
+
+            if($product->sale_price > 0){
+                $price = $product->sale_price;
+            }else{
+                $price = $product->original_price;
+            }
+
+            return response()->json($price);
+        }
+    }
 }

@@ -12,12 +12,18 @@ class Order extends Model
 
     protected $fillable = [
         'status',
-        'user',
-        'payment_method',
-        'shipping_method',
+        'customer',
         'tax',
         'subtotal',
         'total',
-        'note'
+        'customer_note'
     ];
+
+    public function products(){
+        return $this->hasMany('App\Models\OrderProduct', 'product_id', 'id');
+    }
+
+    public function user_metas(){
+        return $this->hasMany('App\Models\OrderMeta', 'order_id', 'id');
+    }
 }

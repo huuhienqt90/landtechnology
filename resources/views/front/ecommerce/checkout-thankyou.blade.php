@@ -27,6 +27,9 @@
             @if(isset($data) && $data['ACK'] == 'Success')
             <h2>Thank for your order. We will process your order with in 24 hours.</h2>
             @endif
+            @if( isset($charge) )
+            <h2>Thank for your order. We will process your order with in 24 hours.</h2>
+            @endif
         </div> <!-- .container -->
     </section> <!-- #show-list-infomation -->
 @stop

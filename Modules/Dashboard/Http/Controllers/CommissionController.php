@@ -39,13 +39,9 @@ class CommissionController extends Controller
         
         $cateArr = ['' => 'Select a subcategory'];
 
-        $parentCates = $this->categoryResponsitory->findAllBy('parent_id', 0);
-        $parentCateArr = ['' => 'Select a category'];
-        foreach($parentCates as $parentCate){
-            $parentCateArr[$parentCate->id] = $parentCate->name;
-        }
+        $categories = $this->categoryResponsitory->findAllBy('status', 'active');
 
-        return view('dashboard::commissions.create', compact('commission','cateArr','parentCateArr'));
+        return view('dashboard::commissions.create', compact('commission','categories'));
     }
 
     /**
@@ -55,11 +51,11 @@ class CommissionController extends Controller
      */
     public function store(CommissionStoreRequest $request)
     {
-        $param = $request->only(['type','cost','maximum','product_type']);
-        if($request->category_id == null){
-            $param['category_id'] = $request->category;
+        $param = $request->only(['type','cost','product_type','category_id']);
+        if( $request->type == 'fixed' ) {
+            $param['maximum'] = 0;
         }else{
-            $param['category_id'] = $request->category_id;
+            $param['maximum'] = $request->input('maximum');
         }
         $this->commissionResponsitory->create($param);
         return redirect(route('dashboard.commission.index'))->with('alert-success', 'Create commissions success!');
@@ -82,12 +78,9 @@ class CommissionController extends Controller
     {
         $commission = $this->commissionResponsitory->find($id);
 
-        $categories = $this->categoryResponsitory->all();
-        $cateArr = ['' => 'Select a category'];
-        foreach ($categories as $category) {
-            $cateArr[$category->id] = $category->name; 
-        }
-        return view('dashboard::commissions.edit', compact('commission','cateArr'));
+        $categories = $this->categoryResponsitory->findAllBy('status', 'active');
+
+        return view('dashboard::commissions.edit', compact('commission','categories'));
     }
 
     /**
@@ -98,11 +91,7 @@ class CommissionController extends Controller
     public function update(CommissionUpdateRequest $request, $id)
     {
         $param = $this->commissionResponsitory->find($id);
-        if($request->category_id == null){
-            $param['category_id'] = $request->category;
-        }else{
-            $param['category_id'] = $request->category_id;
-        }
+        $param['category_id'] = $request->category_id;
         $param['type'] = $request->input('type');
         $param['cost'] = $request->input('cost');
         $param['maximum'] = $request->input('maximum');
@@ -121,11 +110,36 @@ class CommissionController extends Controller
         return redirect(route('dashboard.commission.index'))->with('alert-success', 'Delete commissions success!');
     }
 
-    public function getSubCategory(Request $request){
-        if($request->ajax()){
-            $id = $request->id;
-            $data = $this->categoryResponsitory->findAllBy('parent_id', $id);
-            return response()->json($data);
+    public function getCostByCategory(Request $request) {
+        if( $request->ajax() ) {
+            $pro_type = $request->pro_type;
+            $category_id = $request->category_id;
+            $commission = $this->commissionResponsitory->getCommission($pro_type, $category_id);
+            if( $commission != null ){
+                return response()->json($commission);
+            }
+            return null;
+        }
+    }
+
+    public function getCommission(Request $request) {
+        if( $request->ajax() ) {
+            $price = $request->price;
+            $pro_type = $request->pro_type;
+            $category_id = $request->category_id;
+            $commission = $this->commissionResponsitory->getCommission($pro_type, $category_id);
+            if( $commission != null ) {
+                if( ($commission->type == "fixed") && ($price >= $commission->cost) ) {
+                    echo $price - $commission->cost;
+                }else{
+                    $after_price = $price - ($commission->cost * $price)/100;
+                    if( $after_price > $commission->maximum ){
+                        echo $commission->maximum;
+                    }else{
+                        echo $after_price;
+                    }
+                }
+            }
         }
     }
 }

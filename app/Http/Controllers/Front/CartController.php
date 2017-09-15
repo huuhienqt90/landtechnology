@@ -7,18 +7,39 @@ use App\Http\Requests\PostCheckoutRequest;
 use App\Http\Requests\PostToCartRequest;
 use App\Http\Controllers\Controller;
 use Cart;
+use Auth;
 use App\PaymentMethod\PayPal\PayPal;
 use App\Repositories\SettingRepository;
 use App\Repositories\ProductResponsitory;
+use App\Repositories\OrderResponsitory;
+use App\Repositories\OrderMetaResponsitory;
+use App\Repositories\OrderProductResponsitory;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
+use Stripe\Error\Card;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderProduct;
 
 class CartController extends Controller
 {
     private $PayPal;
     private $productRepository;
     private $settingRepository;
-    public function __construct(ProductResponsitory $productRepository, SettingRepository $settingRepository){
+    private $orderResponsitory;
+    private $orderMetaResponsitory;
+    private $orderProductResponsitory;
+
+    public function __construct(ProductResponsitory $productRepository, 
+                                SettingRepository $settingRepository,
+                                OrderResponsitory $orderResponsitory, 
+                                OrderMetaResponsitory $orderMetaResponsitory, 
+                                OrderProductResponsitory $orderProductResponsitory)
+    {
         $this->productRepository = $productRepository;
         $this->settingRepository = $settingRepository;
+        $this->orderResponsitory = $orderResponsitory;
+        $this->orderMetaResponsitory = $orderMetaResponsitory;
+        $this->orderProductResponsitory = $orderProductResponsitory;
+
         $PayPalConfig = array(
             'Sandbox' =>  true,
             'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
@@ -105,7 +126,7 @@ class CartController extends Controller
      * Processing order
      */
     public function postCheckout(PostCheckoutRequest $request){
-        if( isset($request->paymentMethod) && $request->paymentMethod == 'paypal'){
+        if( isset($request->paymentMethod) && $request->paymentMethod == 'paypal' ){
             $SECFields = array(
                 'token' => '',                              // A timestamped token, the value of which was returned by a previous SetExpressCheckout call.
                 'maxamt' => Cart::total(),                      // The expected maximum total amount the order will be, including S&H and sales tax.
@@ -193,7 +214,221 @@ class CartController extends Controller
 
             $data = $this->PayPal->SetExpressCheckout($PayPalRequest);
             $request->session('SetExpressCheckoutResult', $data);
+
+            $this->addOrder($request);
+
             return redirect($data['REDIRECTURL']);
+        }elseif( isset($request->paymentMethod) && $request->paymentMethod == 'stripe' ) {
+            $stripe = Stripe::make('sk_test_NZVqZ3MEZvrySS5CEEHJkiO4');
+            try {
+                $token = $stripe->tokens()->create([
+                        'card' => [
+                        'number'    => $request->input('card_no'),
+                        'exp_year' => $request->input('ccExpiryYear'),
+                        'exp_month' => $request->input('ccExpiryMonth'),
+                        'cvc'       => $request->input('cvvNumber'),
+                    ],
+                ]);
+                if (!isset($token['id'])) {
+                    \Session::put('error','The Stripe Token was not generated correctly');
+                    return redirect()->route('front.checkout');
+                }
+                $charge = $stripe->charges()->create([
+                    'card' => $token['id'],
+                    'currency' => 'USD',
+                    'amount'   => $request->input('amount'),
+                    'description' => 'Add in wallet',
+                ]);
+                if($charge['status'] == 'succeeded') {
+                    
+                    $this->addOrder($request);
+
+                    Cart::destroy();
+                    return view('front.ecommerce.checkout-thankyou', compact('charge'));
+                } else {
+                    \Session::put('error','Money not add in wallet!!');
+                    return redirect()->route('front.checkout');
+                }
+            } catch (Exception $e) {
+                \Session::put('error',$e->getMessage());
+                return redirect()->route('front.checkout');
+            } catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
+                \Session::put('error',$e->getMessage());
+                return redirect()->route('front.checkout');
+            } catch(\Cartalyst\Stripe\Exception\MissingParameterException $e) {
+                \Session::put('error',$e->getMessage());
+                return redirect()->route('front.checkout');
+            }
         }
+    }
+
+    public function sendCart($email, $cart){
+        if( !empty($email) && !empty($cart) ){
+            Mail::to($email)->send(new OrderProduct($cart));
+        }
+    }
+
+    public function addOrder($request) {
+        // Create order
+        $param = [];
+        $param['status'] = 'pending';
+        if( Auth::user() ) {
+            $param['customer'] = Auth::user()->id;
+        }else{
+            $param['customer'] = 0;
+        }
+        $order = $this->orderResponsitory->create($param);
+        $request->session('orderId', $order->id);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingFirstName',
+            'value' => $request->billingFirstName
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingLastName',
+            'value' => $request->billingLastName
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingCompany',
+            'value' => $request->billingCompany
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingAddress1',
+            'value' => $request->billingAddress1
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingAddress2',
+            'value' => $request->billingAddress2
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingPostCode',
+            'value' => $request->billingPostCode
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingCity',
+            'value' => $request->billingCity
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingPhone',
+            'value' => $request->billingPhone
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+        $paramBill = [
+            'order_id' => $order->id,
+            'key' => 'billingEmail',
+            'value' => $request->billingEmail
+        ];
+        $this->orderMetaResponsitory->create($paramBill);
+
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingFirstName',
+            'value' => $request->shippingFirstName
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingLastName',
+            'value' => $request->shippingLastName
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingCompany',
+            'value' => $request->shippingCompany
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingAddress1',
+            'value' => $request->shippingAddress1
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingAddress2',
+            'value' => $request->shippingAddress2
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingPostCode',
+            'value' => $request->shippingPostCode
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingCity',
+            'value' => $request->shippingCity
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingPhone',
+            'value' => $request->shippingPhone
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+        $paramShip = [
+            'order_id' => $order->id,
+            'key' => 'shippingEmail',
+            'value' => $request->shippingEmail
+        ];
+        $this->orderMetaResponsitory->create($paramShip);
+
+        // Create order product
+        if( Cart::content()->count() > 0 ) {
+            $products = Cart::content();
+            $price = 0;
+            foreach($products as $item) {
+                $paramOrderProd = [
+                    'order_id' => $order->id,
+                    'product_id' => $item->id,
+                    'variation_id' => 0,
+                    'price' => $item->price,
+                    'tax' => 0,
+                    'qty' => $item->qty,
+                    'subtotal' => $item->subtotal,
+                    'total' => $item->total,
+                ];
+                $this->orderProductResponsitory->create($paramOrderProd);
+            }
+        }
+
+        // Get total for orders
+        $products = $this->orderProductResponsitory->findALlBy('order_id', $order->id);
+        $total = 0;
+        $subtotal = 0;
+        $tax = 0;
+        foreach($products as $product) {
+            $total += $product->total;
+            $subtotal += $product->subtotal;
+            $tax += $product->tax;
+        }
+        $param = [
+            'total' => $total,
+            'subtotal' => $subtotal,
+            'tax' => $tax
+        ];
+        $this->orderResponsitory->update($param, $order->id);
+
+        if( isset( $request->orderNote) ){
+            $orderNote = serialize($request->orderNote);
+            $this->orderMetaResponsitory->create(['key' => 'orderNote', 'value' => $orderNote, 'order_id' => $order->id]);
+        }
+        $this->sendCart($request->shippingEmail, Cart::content());
     }
 }

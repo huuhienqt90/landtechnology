@@ -27,6 +27,20 @@
             {!! Form::open(['route' => 'front.checkout.post', 'class' => 'form', 'method' => 'POST']) !!}
             <div class="row">
                 <h1 class="text-uppercase">Checkout</h1>
+                    @if ($message = Session::get('success'))
+                        <div class="custom-alerts alert alert-success fade in">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            {!! $message !!}
+                        </div>
+                        <?php Session::forget('success');?>
+                    @endif
+                    @if ($message = Session::get('error'))
+                        <div class="custom-alerts alert alert-danger fade in">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            {!! $message !!}
+                        </div>
+                        <?php Session::forget('error');?>
+                    @endif
                     @if( Cart::count() )
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-default">
@@ -50,6 +64,7 @@
                                             @include('partials.input-text', ['field' => 'billingCity', 'label' => 'Town / City'])
                                             @include('partials.input-text', ['field' => 'billingPhone', 'label' => 'Phone'])
                                             @include('partials.input-text', ['field' => 'billingEmail', 'label' => 'Email'])
+                                            <a href="javascript:void(0)" id="autofillShip">Auto fill Shipping information from Billling information</a>
                                         </div>
                                         <div class="col-md-6">
                                             <h2>Shipping information</h2>
@@ -62,6 +77,12 @@
                                             @include('partials.input-text', ['field' => 'shippingCity', 'label' => 'Town / City'])
                                             @include('partials.input-text', ['field' => 'shippingPhone', 'label' => 'Phone'])
                                             @include('partials.input-text', ['field' => 'shippingEmail', 'label' => 'Email'])
+                                            <div class="form-group">
+                                                <label for="orderNote" class="col-sm-3 control-label">Order Notes</label>
+                                                    <input type="hidden" name="orderNote[0][date]" value="{{ Carbon\Carbon::now() }}">
+                                                    <input type="hidden" name="orderNote[0][name]" value="{{ Auth::user() ? Auth::user()->username : 'Guest' }}">
+                                                    <textarea class="form-control" name="orderNote[0][note]" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -78,9 +99,14 @@
                                     <div class="panel-body">
                                         <div class="form-group">
                                             <div class="radio">
-                                                <label for="payment-paypal"><input type="radio" checked value="paypal" name="paymentMethod">PayPal</label>
+                                                <label for="payment-paypal"><input id="payment-paypal" type="radio" checked value="paypal" name="paymentMethod">PayPal</label>
                                             </div>
-                                            <p class="description"><i>We only allow PayPal method right now!</i></p>
+                                            <div class="radio">
+                                                <label for="payment-stripe"><input id="payment-stripe" type="radio" value="stripe" name="paymentMethod">Stripe</label>
+                                            </div>
+                                            <div id="area-payment-stripe">
+                                            </div>
+                                            <!-- <p class="description"><i>We allow PayPal & Stripe method right now!</i></p> -->
                                         </div>
                                     </div>
                                 </div>
