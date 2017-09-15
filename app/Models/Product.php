@@ -160,4 +160,31 @@ class Product extends Model
     public function scopeActive($query) {
         return $query->whereStatus('active');
     }
+
+    /**
+     * Show product view
+     *
+     * @return int
+     */
+    public function view(){
+        return 0;
+    }
+
+    /**
+     * Show sent offers
+     *
+     * @return int
+     */
+    public function sentOffers(){
+        return 0;
+    }
+
+    /**
+     * Show avg price
+     *
+     * @return int
+     */
+    public function avgPrice(){
+        return 0;
+    }
 }

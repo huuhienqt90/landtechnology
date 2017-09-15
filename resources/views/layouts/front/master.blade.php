@@ -18,6 +18,10 @@
 
         <!-- Style Dashboard -->
         @yield('style-dashboard')
+        <!-- Script -->
+        <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+        <!-- Style Dashboard -->
+        @yield('headScript')
     </head>
     <body>
         <!-- Header -->
@@ -31,9 +35,7 @@
         <!-- Footer -->
         @include('layouts.front.commons.footer')
         <!-- End footer -->
-        
-        <!-- Script -->
-        <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/slick.min.js') }}"></script>
@@ -103,22 +105,22 @@
                     $("input[name=shippingEmail]").val(billingEmail);
                 });
             });
-            
+
             //plugin bootstrap minus and plus
             //http://jsfiddle.net/laelitenetwork/puJ6G/
             $('.btn-number').click(function(e){
                 e.preventDefault();
-                
+
                 fieldName = $(this).attr('data-field');
                 type      = $(this).attr('data-type');
                 var input = $("input[name='"+fieldName+"']");
                 var currentVal = parseInt(input.val());
                 if (!isNaN(currentVal)) {
                     if(type == 'minus') {
-                        
+
                         if(currentVal > input.attr('min')) {
                             input.val(currentVal - 1).change();
-                        } 
+                        }
                         if(parseInt(input.val()) == input.attr('min')) {
                             $(this).attr('disabled', true);
                         }
@@ -141,11 +143,11 @@
                $(this).data('oldValue', $(this).val());
             });
             $('.input-number').change(function() {
-                
+
                 minValue =  parseInt($(this).attr('min'));
                 maxValue =  parseInt($(this).attr('max'));
                 valueCurrent = parseInt($(this).val());
-                
+
                 name = $(this).attr('name');
                 if(valueCurrent >= minValue) {
                     $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
@@ -159,15 +161,15 @@
                     alert('Sorry, the maximum value was reached');
                     $(this).val($(this).data('oldValue'));
                 }
-                
-                
+
+
             });
 
             $(".input-number").keydown(function (e) {
                 // Allow: backspace, delete, tab, escape, enter and .
                 if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
                      // Allow: Ctrl+A
-                    (e.keyCode == 65 && e.ctrlKey === true) || 
+                    (e.keyCode == 65 && e.ctrlKey === true) ||
                      // Allow: home, end, left, right
                     (e.keyCode >= 35 && e.keyCode <= 39)) {
                          // let it happen, don't do anything
