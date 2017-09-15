@@ -438,7 +438,7 @@ body{
         left: 14em;
         padding: 0;
         &:before{
-            left: 3.9em;
+            left: 3.74em;
         }
         p{
             color: $bg-color-white;
@@ -454,7 +454,7 @@ body{
         left: 14em;
         padding: 0;
         &:before{
-            left: 3.9em;
+            left: 3.74em;
             border-bottom: 18px solid $bg-color-sale-product;
             border-top: 18px solid $bg-color-sale-product;
             border-left: 20px solid transparent;
@@ -482,9 +482,22 @@ body{
     }
     .item{
         padding-right: 1em;
+        outline: none;
         .slider-item {
             position: relative;
-            img{ height: 343px; }
+            .product-detail-url{
+                display: flex;
+                background: #F4F6F5;
+                height: 343px;
+                overflow: hidden;
+                align-items: center;
+            }
+            img{
+                margin: 0 auto;
+                height: auto;
+                width: 100%;
+                max-width: none;
+            }
         }
         &:hover .overlay {
             bottom: 0;
@@ -838,30 +851,31 @@ body{
         .sb-subscribe{
             form{
                 width: 100%;
+                border: 2px solid $bg-color-border-btn-face;
                 .sb-subscribe-input{
                     padding: 0.5em;
                     background: none;
-                    border: 2px solid $bg-color-border-btn-face;
-                    border-right: none;
-                    padding-left: 2em;
-                    padding-right: 20em;
+                    border: none;
                     width: 95%;
                     font-weight: 500;
                     &:focus {
                         border: none;
+                        outline: none;
                     }
                 }
             }
         }
         .sb-subscribe-submit{
             background: url(../../assets/images/icon-submit-sign-up.png) no-repeat 10%;
-            border: 2px solid $bg-color-border-btn-face;
-            border-left: none;
+            border: none;
             padding-top: 3px;
             padding-bottom: 11px;
             padding-left: 0;
             padding-right: 25px;
             margin-left: -5px;
+            &:focus {
+                outline: none;
+            }
         }
     }
 }
