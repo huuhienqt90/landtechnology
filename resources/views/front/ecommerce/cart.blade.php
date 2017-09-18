@@ -35,7 +35,7 @@
                             @foreach(Cart::content() as $row)
                             <tr class="content-table">
                                 <th>
-                                    <a href="{{ route('front.product.detail', \App\Models\Product::find($row->id)->slug) }}" title="{{ $row->name }}"><img src="{{ \App\Models\Product::getFeatureImage($row->id) }}" class="img-responsive" alt="images shooping cart"></a>
+                                    <a href="{{ route('front.product.detail', \App\Models\Product::find($row->id)->slug) }}" title="{{ $row->name }}"><img src="{{ asset('storage/'. \App\Models\Product::find($row->id)->feature_image) }}" class="img-responsive" alt="images shooping cart"></a>
                                 </th>
                                 <th>
                                     <a href="#" title="title product shopping cart">{{ $row->name }}</a>

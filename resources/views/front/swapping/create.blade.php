@@ -143,7 +143,7 @@
                                     </fieldset>
                                     <div class="form-group mg-top-40">
                                         <div class="col-sm-offset-3 col-sm-9">
-                                            {{ Form::submit('Submit', ['class' => 'btn btn-main btn-success btn-block']) }}
+                                            {{ Form::submit('Submit', ['class' => 'btn btn-success btn-block']) }}
                                         </div>
                                     </div>
                                 {!! Form::close() !!}
