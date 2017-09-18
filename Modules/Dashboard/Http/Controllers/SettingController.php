@@ -25,8 +25,9 @@ class SettingController extends Controller
      */
     public function index()
     {
+        $oldCommissionSwap = $this->settingRepository->getValueByKey('commission_swap');
         $oldPayPal = $this->settingRepository->getValueByKey('admin_paypal');
-        return view('dashboard::setting.index', compact('oldPayPal'));
+        return view('dashboard::setting.index', compact('oldPayPal','oldCommissionSwap'));
     }
 
     /**
@@ -90,6 +91,14 @@ class SettingController extends Controller
                 $this->settingRepository->update(['key' => 'stripe_secret', 'value' => $request->stripe_secret], $this->settingRepository->findWhere(['key' =>'stripe_secret'])->first()->id);
             }else{
                 $this->settingRepository->create(['key' => 'stripe_secret', 'value' => $request->stripe_secret]);
+            }
+        }
+
+        if( isset( $request->commission_swap ) && !empty( $request->commission_swap ) ){
+            if( $this->settingRepository->findWhere(['key' =>'commission_swap'])->count() ){
+                $this->settingRepository->update(['key' => 'commission_swap', 'value' => $request->commission_swap], $this->settingRepository->findWhere(['key' =>'commission_swap'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'commission_swap', 'value' => $request->commission_swap]);
             }
         }
         return redirect()->route('dashboard.setting.index')->with('alert-success', 'Update e-commerce setting sucess!');

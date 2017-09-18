@@ -52,7 +52,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseHunting"><span class="glyphicon glyphicon-list-alt">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseHunting"><span class="glyphicon glyphicon-th-list">
                     </span>Manage Hunting Item</a>
                 </h4>
             </div>
@@ -68,5 +68,26 @@
             </div>
         </div>
         @endif
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseSwapping"><span class="glyphicon glyphicon-file">
+                    </span>Manage Swapping Item</a>
+                </h4>
+            </div>
+            <div id="collapseSwapping" class="panel-collapse collapse">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ route('swapping.create') }}">Swap an item</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="glyphicon glyphicon-eye-open text-primary"></span><a href="{{ route('swapping.index') }}">List swapping items</a>
+                    </li>
+                    <!-- <li class="list-group-item">
+                        <span class="glyphicon glyphicon-eye-open text-primary"></span><a href="{{ route('front.swapping.listAccept') }}">List success swap</a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
     </div>
 </div>

@@ -10,11 +10,17 @@ use App\Repositories\BrandResponsitory;
 use App\Repositories\CategoryResponsitory;
 use App\Repositories\ProductReviewResponsitory;
 use App\Repositories\SettingRepository;
+use App\Repositories\SwapItemResponsitory;
+use App\Repositories\UserResponsitory;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductResponsitory;
 use Cart;
 use App\PaymentMethod\PayPal\PayPal;
+use App\Mail\SwapProduct;
+use App\Mail\AcceptSwap;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -24,13 +30,17 @@ class ProductController extends Controller
     private $brandResponsitory;
     private $settingRepository;
     private $PayPal;
+    private $swapItemResponsitory;
+    private $userResponsitory;
 
-    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory, CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SettingRepository $settingRepository){
+    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory, CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SettingRepository $settingRepository, SwapItemResponsitory $swapItemResponsitory, UserResponsitory $userResponsitory){
         $this->productRepository = $productRepository;
         $this->productReviewResponsitory = $productReviewResponsitory;
         $this->categoryResponsitory = $categoryResponsitory;
         $this->brandResponsitory = $brandResponsitory;
         $this->settingRepository = $settingRepository;
+        $this->swapItemResponsitory = $swapItemResponsitory;
+        $this->userResponsitory = $userResponsitory;
         $PayPalConfig = array(
             'Sandbox' =>  true,
             'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
@@ -90,6 +100,70 @@ class ProductController extends Controller
         }else{
             return redirect()->route('front.index')->with('alert-danger', 'Product not found');
         }
+    }
+
+    /**
+     * [swapshow description]
+     * @param  [type] $slug [description]
+     * @return [type]       [description]
+     */
+    public function swapshow($slug = null) {
+        $product = $this->productRepository->findBy('slug', $slug);
+        $listSwapItems = $this->swapItemResponsitory->findAllBy('product_id', $product->id);
+        $swapItems = [];
+        $arrListProductSwaps = [];
+        $i = 0;
+        if(auth()->user()){
+            $listProductSwaps = $this->productRepository->findWhere(['seller_id' => auth()->user()->id, 'kind' => 'swapping', 'status' => 'active']);
+            foreach($listProductSwaps as $productSwaps) {
+                $arrListProductSwaps[$productSwaps->id] = $productSwaps->name;
+                $swapItems[] = $this->swapItemResponsitory->findWhere(['product_id' => $product->id, 'user_id' => $product->seller_id, 'created_by' => auth()->user()->id, 'product_by' => $productSwaps->id]);
+            }
+
+            $acceptSwap = $this->swapItemResponsitory->findWhere(['product_id' => $product->id, 'user_id' => $product->seller_id, 'created_by' => auth()->user()->id, 'status' => 'accept']);
+        }
+
+        
+
+        foreach($swapItems as $item) {
+            if(count($item) > 0) {
+                $i++;
+            }
+        }
+
+        $countSwapItems = $i;
+        if( !empty($slug) && isset($product->id) && $product->id){
+            if( $product->kind == 'swapping'){
+                return view('front.product.detail-swapping', compact('product', 'arrListProductSwaps','countSwapItems','listSwapItems','acceptSwap'));
+            }else{
+                return view('front.product.detail', compact('product'));
+            }
+
+        }else{
+            return redirect()->route('front.index')->with('alert-danger', 'Product not found');
+        }
+    }
+
+    public function doSwap(Request $request) {
+        $product_by = $request->productSwap;
+        $note = $request->swapNote;
+        $product_id = $request->product_id;
+        $user_id = $request->seller_id;
+        $created_by = auth()->user()->id;
+        $param = [
+            'product_id' => $product_id,
+            'user_id' => $user_id,
+            'created_by' => $created_by,
+            'product_by' => $product_by,
+            'note' => $note
+        ];
+        $result = $this->swapItemResponsitory->create($param);
+        $user = $this->userResponsitory->find($user_id);
+        if($result) {
+            Mail::to($user->email)->send(new SwapProduct($result->note));
+            return redirect()->back()->with('msgOk', 'Recommed swap product success!');
+        }
+        return redirect()->back()->with('msgOk', 'You already swap for this product!');
     }
 
     /**
@@ -189,5 +263,26 @@ class ProductController extends Controller
     public function sendOffer(SendOfferRequest $request, $slug = null){
 
         return $this->show($slug);
+    }
+
+    /**
+     * [doConfirmSwap description]
+     * @param  [type] $created_by [description]
+     * @param  [type] $product_by [description]
+     * @return [type]             [description]
+     */
+    public function doConfirmSwap($product_id, $user_id, $created_by, $product_by) {
+        if(auth()->user() != null) {
+            $this->swapItemResponsitory->updateStatusItem('accept', $product_id, $user_id, $created_by, $product_by);
+            $param['status'] = 'accept';
+            $userIsSwap = $this->userResponsitory->find($user_id);
+            $userSwap = $this->userResponsitory->find($created_by);
+            $this->productRepository->update($param, $product_id);
+            $this->productRepository->update($param, $product_by);
+            Mail::to($userIsSwap->email)->send(new AcceptSwap());
+            Mail::to($userSwap->email)->send(new AcceptSwap());
+            return redirect()->route('front.swapping.listAccept')->with('msgOk', 'Product accept swap success!!');
+        }
+        return redirect()->route('front.user.login');
     }
 }

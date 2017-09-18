@@ -15,7 +15,7 @@ Thank you for purchasing from our store. Below is your receipt and link to track
 
 @endcomponent
 
-@component('mail::button', ['url' => 'URL::to("/")', 'color' => 'blue'])
+@component('mail::button', ['url' => 'http://landtechnology.thinkbest4you.com', 'color' => 'blue'])
 View Home
 @endcomponent
 

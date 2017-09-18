@@ -46,7 +46,7 @@ class UserController extends Controller
         $loginDT['confirmed'] = 1;
         if (Auth::attempt($loginDT))
         {
-            return redirect()->route('front.dashboard.index');
+            return redirect()->intended('/');
         }
         // validation not successful, send back to form
         Session::flash('messageError', 'You can not login because your information incorrect or you didn\'t verify your accout via email');

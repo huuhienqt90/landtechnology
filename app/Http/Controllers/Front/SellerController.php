@@ -98,7 +98,7 @@ class SellerController extends Controller
         $param['status'] = 'Pending';
         $param['created_by'] = Auth::user()->id;
         if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('sellproduct');
+            $path = $request->file('feature_image')->store('sellproduct/features');
             $param['feature_image'] = $path;
         }
 
@@ -223,7 +223,7 @@ class SellerController extends Controller
 
         // Update feature image
         if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('products/features');
+            $path = $request->file('feature_image')->store('sellproduct/features');
             $update['feature_image'] = $path;
         }
         $this->productResponsitory->update($update, $id);
@@ -236,7 +236,7 @@ class SellerController extends Controller
         if( $request->hasFile('product_images') ){
             $productImages = $request->file('product_images');
             foreach ($productImages as $file) {
-                $path = $file->store('products/galeries');
+                $path = $file->store('sellproduct/galeries');
                 $this->productImageResponsitory->create(['product_id' => $id, 'image_path' => $path, 'image_name'=>$file->getClientOriginalName()]);
             }
         }

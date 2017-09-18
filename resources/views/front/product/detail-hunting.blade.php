@@ -63,7 +63,7 @@
                 <div class="hunting-product-description">
                     <div class="row">
                         <div class="col-md-8">
-                            <h3>Product desciption</h3>
+                            <h3>Product description</h3>
                             <div class="product-content">{!! $product->description !!}</div>
                             <h3>Product category</h3>
                             <div class="product-category">{{ $product->categories->first()->name }}</div>

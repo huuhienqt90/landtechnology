@@ -61,7 +61,7 @@
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                         <div class="btn-group">
                                                             <a class="btn btn-info btn-flat" href="{{ route('seller.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                                            <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
+                                                            <button type="submit" class="btn btn-danger btn-delete-item btn-flat" onclick="return confirm('Are you sure to delete this item?')"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     </form>
                                                 </td>

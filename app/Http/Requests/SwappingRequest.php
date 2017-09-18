@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class HuntingUpdateRequest extends FormRequest
+class SwappingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,17 +26,11 @@ class HuntingUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'slug' => 'required',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
-            'stock' => 'required|numeric',
             'description' => 'required',
             'description_short' => 'required',
-            'key_words' => 'required',
-            'weight' => 'required',
-            'location' => 'required',
             'sell_type_id' => 'required',
             'product_brand' => 'required',
-            'feature_image' => 'image|mimes:jpeg,bmp,png',
+            'feature_image' => 'required|image|mimes:jpeg,bmp,png',
             'category' => 'required'
         ];
     }
