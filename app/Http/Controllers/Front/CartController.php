@@ -219,7 +219,9 @@ class CartController extends Controller
 
             return redirect($data['REDIRECTURL']);
         }elseif( isset($request->paymentMethod) && $request->paymentMethod == 'stripe' ) {
-            $stripe = Stripe::make('sk_test_NZVqZ3MEZvrySS5CEEHJkiO4');
+            // Payment method stripe
+            $secret = env('STRIPE_SECRET', 'sk_test_NZVqZ3MEZvrySS5CEEHJkiO4');
+            $stripe = Stripe::make($secret);
             try {
                 $token = $stripe->tokens()->create([
                         'card' => [

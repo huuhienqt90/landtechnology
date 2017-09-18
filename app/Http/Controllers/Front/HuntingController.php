@@ -28,6 +28,7 @@ class HuntingController extends Controller
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
     protected $productAttributeResponsitory;
+    protected $attributeResponsitory;
     public function __construct(CategoryResponsitory $categoryResponsitory,
                                 BrandResponsitory $brandResponsitory,
                                 SellerShippingResponsitory $sellerShippingResponsitory,
@@ -97,7 +98,7 @@ class HuntingController extends Controller
         $param['created_by'] = auth()->user()->id;
         $param['kind'] = 'hunting';
         if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('sellproduct');
+            $path = $request->file('feature_image')->store('huntproduct/features');
             $param['feature_image'] = $path;
         }
 
@@ -212,7 +213,7 @@ class HuntingController extends Controller
 
         // Update feature image
         if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('products/features');
+            $path = $request->file('feature_image')->store('huntproduct/features');
             $update['feature_image'] = $path;
         }
         $this->productResponsitory->update($update, $id);
@@ -225,7 +226,7 @@ class HuntingController extends Controller
         if( $request->hasFile('product_images') ){
             $productImages = $request->file('product_images');
             foreach ($productImages as $file) {
-                $path = $file->store('products/galeries');
+                $path = $file->store('huntproduct/galeries');
                 $this->productImageResponsitory->create(['product_id' => $id, 'image_path' => $path, 'image_name'=>$file->getClientOriginalName()]);
             }
         }

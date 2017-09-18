@@ -35,6 +35,13 @@ class ProductResponsitory extends Repository {
     }
 
     /**
+     * Get new swapping products
+     */
+    public function getNewSwappingProducts($take = 4){
+        return Product::active()->where('kind', 'swapping')->paginate($take);
+    }
+
+    /**
      * Get product by name
      */
     public function getProductByName($name)
@@ -78,6 +85,6 @@ class ProductResponsitory extends Repository {
      * Get active swaping products
      */
     public function getSwapingProducts($userId, $take = 12){
-        return Product::active()->where('seller_id', $userId)->where('kind', 'swaping')->paginate($take);
+        return Product::active()->where('seller_id', $userId)->where('kind', 'swapping')->paginate($take);
     }
 }

@@ -1,9 +1,9 @@
 @extends('layouts.front.master-dashboard')
 
 @section('meta')
-    <title>Edit hunting product - Land Technology</title>
+    <title>Edit swapping product - Land Technology</title>
     @include('social::meta-article', [
-        'title'         => 'Edit hunting product',
+        'title'         => 'Edit swapping product',
         'description'   => 'Welcome from Hello World',
         'image'         => 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
         'author'        => 'Set Kyar Wa Lar'
@@ -11,7 +11,7 @@
 @stop
 
 @section('content-dashboard')
-<h3 style="visibility: hidden;">Edit Hunting product</h3>
+<h3 style="visibility: hidden;">Edit Swapping Product</h3>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Edit An Item</h3>
@@ -22,7 +22,7 @@
                     <div class="pattern">
                         <div class="col-sm-12">
                             <div class="col-sm-12 center-column">
-                                {!! Form::open(['route' => ['hunting.update', $product->id], 'files' => true, 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
+                                {!! Form::open(['route' => ['swapping.update', $product->id], 'files' => true, 'class' => 'form-horizontal', 'method' => 'PUT']) !!}
                                 {{ method_field('PUT') }}
                                     <fieldset>
                                         <div class="form-group {{ $errors->has('name')? 'has-error' : '' }}">
@@ -62,20 +62,6 @@
                                                     @endforeach
                                                 </select>
                                                 @include('dashboard::partials.error', ['field' => 'category'])
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}">
-                                            {{ Form::label('original_price', 'Price', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::text('original_price', $product->original_price, ['placeholder' => 'Price', 'class' => 'form-control', 'id' => 'original_price']) }}
-                                                {{ Form::label(null, $errors->has('original_price')? $errors->first('original_price') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('sale_price')? 'has-error' : '' }}">
-                                            {{ Form::label('sale_price', 'Sale Price', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::text('sale_price', $product->sale_price, ['placeholder' => 'Sale Price', 'class' => 'form-control', 'id' => 'sale_price']) }}
-                                                {{ Form::label(null, $errors->has('sale_price')? $errors->first('sale_price') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
                                         <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
@@ -142,39 +128,11 @@
                                                 {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}">
-                                            {{ Form::label('key_words', 'Key words', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::text('key_words', $product->key_words, ['placeholder' => 'Key words', 'class' => 'form-control', 'id' => 'key_words']) }}
-                                                {{ Form::label(null, $errors->has('key_words')? $errors->first('key_words') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
                                         <div class="form-group {{ $errors->has('sell_type_id')? 'has-error' : '' }}">
                                             {{ Form::label('sell_type_id', 'Sell Type', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::select('sell_type_id', $selltypes, $product->sell_type_id, ['class' => 'form-control']) }}
                                                 {{ Form::label(null, $errors->has('sell_type_id')? $errors->first('sell_type_id') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('weight')? 'has-error' : '' }}">
-                                            {{ Form::label('weight', 'Weight', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::text('weight', $product->weight, ['placeholder' => 'Weight', 'class' => 'form-control', 'id' => 'weight']) }}
-                                                {{ Form::label(null, $errors->has('weight')? $errors->first('weight') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('Location')? 'has-error' : '' }}">
-                                            {{ Form::label('location', 'location', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::text('location', $product->location, ['placeholder' => 'Location', 'class' => 'form-control', 'id' => 'location']) }}
-                                                {{ Form::label(null, $errors->has('location')? $errors->first('location') : '', ['class' => 'help-block']) }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group {{ $errors->has('stock')? 'has-error' : '' }}">
-                                            {{ Form::label('stock', 'Stock', ['class' => 'col-sm-3 control-label']) }}
-                                            <div class="col-sm-9">
-                                                {{ Form::text('stock', $product->stock, ['placeholder' => 'Stock', 'class' => 'form-control', 'id' => 'stock']) }}
-                                                {{ Form::label(null, $errors->has('stock')? $errors->first('stock') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
                                     </fieldset>
@@ -189,80 +147,4 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        jQuery(document).ready(function($){
-            $("#addAttr").click(function(e) {
-                e.preventDefault();
-                var id = $('#attribute').val();
-                $.ajax({
-                    url: "{{ route('dashboard.getattr') }}",
-                    type: "GET",
-                    data: {id: id},
-                    success: function(results) {
-                        $.each(results, function(){
-                            var arOptions = this.options.split(",");
-                            var htmlOptions;
-                            $.each(arOptions, function(k,v){
-                                htmlOptions += '<option value="'+v.trim()+'">'+v.trim()+'</option>';
-                            });
-                            if( $("#"+this.name + this.id).length <= 0 ){
-                                $("#attributes").append('<div class="form-group"><label for="'+this.name+'" class="col-sm-3 control-label">'+this.name+'</label><div class="col-sm-7"><select class="form-control select2" multiple data-placeholder="Please select '+this.name+'" id="'+this.name+this.id+'" name="prattr['+this.id+'][]">'+htmlOptions+'</select></div><div class="col-sm-2"><a class="btn btn-warning" id="btnAddAttr'+this.id+'">+</a></div>');
-                            }
-                            $('.select2').select2();
-                            var idAtt = this.id;
-                            $('#btnAddAttr'+idAtt+'').on('click',function(e){
-                                e.preventDefault();
-                                $("#textAttr").html('');
-                                $("#textAttr").append('<input type="text" class="form-control" placeholder="Enter value of attribute" id="otherVal'+idAtt+'"/>');
-                                $('#modal-default').modal('show');
-                            });
-
-                            $("#saveAttr").on('click',function(e){
-                                e.preventDefault();
-                                $('#modal-default').modal('hide');
-                                if( $('#otherVal'+idAtt).length > 0 ){
-                                    var val = $('#otherVal'+idAtt).val();
-                                    $('select[name="prattr['+idAtt+'][]"]').append('<option value="'+val+'">'+val+'</option>');
-                                }
-                                $.ajax({
-                                    url: "{{ route('dashboard.addfast') }}",
-                                    type: "POST",
-                                    data: {id: idAtt,val: val},
-                                    success: function(rs) {
-                                        console.log(rs);
-                                    }
-                                });
-                            });
-                        });
-                    },
-                    error: function(data){
-                        console.log(data);
-                    },
-                });
-            });
-
-            $('.select2').select2();
-        });
-    </script>
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add values for attribute</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="textAttr"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <a id="saveAttr" class="btn btn-primary">Save changes</a>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-          <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
 @stop

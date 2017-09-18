@@ -36,6 +36,12 @@ Route::group(['namespace' => 'Front'], function() {
     Route::group(['prefix' => 'product'], function(){
         // Route::resource('products', 'ProductController');
         Route::get('detail/{slug?}', 'ProductController@show')->name('front.product.detail');
+        Route::get('swap/detail/{slug?}', 'ProductController@swapshow')->name('front.product.swapdetail');
+        // Do swap product
+        Route::post('swap/detail', 'ProductController@doSwap')->name('front.product.doSwap');
+        // Confirm swap
+        Route::get('swap/confirm/{product_id?}-{user_id?}-{created_by?}-{product_by?}', 'ProductController@doConfirmSwap')->name('front.product.doconfirmswap');
+        // Hunting
         Route::post('detail/{slug?}', 'ProductController@sendOffer')->name('hunting.sendOffer');
         Route::get('product-category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
         Route::get('brand/{slug?}', 'ProductController@productBrand')->name('front.product.brand');
@@ -67,7 +73,11 @@ Route::group(['namespace' => 'Front'], function() {
          Route::post('editpass', 'UserController@updatePass')->name('front.user.updatePass');
          // Seller Dashboard
          Route::resource('seller', 'SellerController');
+         // Hunting Dashboard
          Route::resource('hunting', 'HuntingController');
+         // Swapping Dashboard
+         Route::resource('swapping', 'SwappingController');
+         Route::get('swap/list-accept-swap', 'SwappingController@listAccept')->name('front.swapping.listAccept');
     });
 });
 // Home

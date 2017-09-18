@@ -10,6 +10,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#payment" data-toggle="tab">Payment</a></li>
                         <li><a href="#shipping" data-toggle="tab">Shipping</a></li>
+                        <li><a href="#commission_swap" data-toggle="tab">Commission swap</a></li>
                         <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
                     </ul>
                     <div class="tab-content">
@@ -68,7 +69,20 @@
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="shipping">
-
+                        </div>
+                        <div class="tab-pane" id="commission_swap">
+                            {!! Form::open(['route'=>'dashboard.setting.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                            <div class="form-group {{ $errors->has('commission_swap') ? ' has-error' : '' }}">
+                                <label for="admin-paypal" class="col-sm-2 control-label">Swap</label>
+                                <div class="col-sm-4">
+                                    {!! Form::text('commission_swap', old('commission_swap') ? old('commission_swap') : $oldCommissionSwap, ['class' => 'form-control']) !!}
+                                    @include('dashboard::partials.error', ['field' => 'commission_swap'])
+                                </div>
+                            </div>
+                            <div class="buttons">
+                                <input type="submit" class="btn btn-primary" value="Save changes" />
+                            </div>
+                            {!! Form::close() !!}
                         </div>
                         <!-- /.tab-pane -->
                     </div>

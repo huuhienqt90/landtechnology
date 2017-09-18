@@ -1,9 +1,9 @@
 @extends('layouts.front.master-dashboard')
 
 @section('meta')
-    <title>Hunting - Land Technology</title>
+    <title>Swapping - Land Technology</title>
     @include('social::meta-article', [
-        'title'         => 'List all hunting products',
+        'title'         => 'List all swapping products',
         'description'   => 'Welcome from Hello World',
         'image'         => 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
         'author'        => 'Set Kyar Wa Lar'
@@ -11,7 +11,7 @@
 @stop
 
 @section('content-dashboard')
-    <h3 style="visibility: hidden;">List all hunting products</h3>
+    <h3 style="visibility: hidden;">List all swapping products success</h3>
     @if(Session::has('msgOk'))
         <div class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -26,7 +26,7 @@
     @endif
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">List items sell</h3>
+            <h3 class="panel-title">List Swapping Products Success</h3>
         </div>
         <div class="panel-body">
             <div class="main-content full-width inner-page">
@@ -40,8 +40,6 @@
                                             <tr>
                                                 <th>Image</th>
                                                 <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Stock</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -52,15 +50,13 @@
                                             <tr>
                                                 <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$product->feature_image) }}"/></td></th>
                                                 <td>{{ $product->name }}</td>
-                                                <td>{{ $product->original_price }}</td>
-                                                <td>{{ $product->stock }}</td>
                                                 <td>{{ $product->status }}</td>
                                                 <td>
-                                                    <form method="post" action="{{ route('seller.destroy', $product->id) }}">
+                                                    <form method="post" action="{{ route('swapping.destroy', $product->id) }}">
                                                         {{ method_field('DELETE') }}
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                         <div class="btn-group">
-                                                            <a class="btn btn-info btn-flat" href="{{ route('seller.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                            <a class="btn btn-info btn-flat" href="{{ route('swapping.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
                                                             <button type="submit" class="btn btn-danger btn-delete-item btn-flat" onclick="return confirm('Are you sure to delete this item?')"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     </form>
