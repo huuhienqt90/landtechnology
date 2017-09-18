@@ -511,7 +511,7 @@
                     <h3 class="text-uppercase">Swapping Products</h3>
                     <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
                 </div> <!-- .title-new-arrivals -->
-                <div class="col-md-12 slider">
+                <div class="col-md-12 slider slider-nav">
                 @if(isset($newSwappingProducts) && $newSwappingProducts->count())
                     @foreach($newSwappingProducts as $product)
                         <div class="item col-md-3 col-sm-6">
