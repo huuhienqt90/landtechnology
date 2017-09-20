@@ -4,7 +4,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a href="{{ route('front.dashboard.index') }}"><span class="glyphicon glyphicon-folder-close"></span>Member area</a>
+                <a href="{{ route('front.dashboard.index') }}"><span class="glyphicon glyphicon-folder-close"></span>Balances</a>
                 </h4>
             </div>
         </div>

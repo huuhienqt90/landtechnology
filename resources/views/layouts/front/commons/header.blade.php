@@ -5,13 +5,24 @@
             <div class="cover-topheader">
                 <div class="menu-topheader">
                     <ul class="text-uppercase">
+                        @if(Auth::check())
                         <li><a href="{{ route('front.dashboard.index') }}" title="menu topheader">My Account</a></li>
                         <li><a href="#" title="menu topheader">wishlish</a></li>
+                        @endif
                         <li><a href="{{ route('front.checkout') }}" title="menu topheader">checkout</a></li>
                         @if(Auth::check())
-                            <li><a href="{{ route('front.user.logout') }}" title="menu topheader">Logout</a></li>
+                            <li>
+                                <a href="{{ route('front.dashboard.balances') }}">USD ${{ auth()->user()->getBalances() }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="menu topheader">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
                         @else
-                            <li><a href="{{ route('front.user.login') }}" title="menu topheader">Login</a></li>
+                            <li><a href="{{ route('register') }}" title="menu topheader">Register</a></li>
+                            <li><a href="{{ route('login') }}" title="menu topheader">Login</a></li>
                         @endif
                     </ul>
                 </div> <!-- .menu-topheader -->

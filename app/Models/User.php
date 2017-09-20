@@ -56,6 +56,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Has many user metas
+     *
+     * @return [type] [description]
+     */
+    public function metas() {
+        return $this->hasMany('App\Models\UserMeta');
+    }
+
+    /**
      * Scope active
      *
      */
@@ -181,5 +190,14 @@ class User extends Authenticatable
     public function getAvatarByEmail($size=64){
         $gravatar_link = 'http://www.gravatar.com/avatar/' . md5($this->email) . '?s='.$size;
         return '<img src="' . $gravatar_link . '" />';
+    }
+
+    public function getBalances(){
+        $balances = $this->metas->where('key', 'balances');
+        if( $balances->count() && is_numeric($balances->first()->value)){
+            return number_format($balances->first()->value, 2);
+        }else{
+            return number_format(0, 2);
+        }
     }
 }

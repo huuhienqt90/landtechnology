@@ -37,8 +37,8 @@
                         <div class="row">
                             <div class="col-sm-9 col-sm-offset-2 center-column">
 
-                                <p>If you already have an account with us, please login at the <a href="{{ route('front.user.login') }}">Login page</a>.</p>
-                                {!! Form::open(['route' => 'front.user.store', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
+                                <p>If you already have an account with us, please login at the <a href="{{ route('login') }}">Login page</a>.</p>
+                                {!! Form::open(['route' => 'register', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
                                     <fieldset>
                                         <div class="form-group {{ $errors->has('username')? 'has-error' : '' }}">
                                             {{ Form::label('input-username', 'Username', ['class' => 'col-sm-2 control-label']) }}
