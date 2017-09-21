@@ -48,8 +48,8 @@ body{
  */
 
 .gallery {
-  overflow: hidden;
-  margin-top: 5em;
+    overflow: hidden;
+    margin-top: 5em;
 }
 
 .gallery__hero {
@@ -212,6 +212,9 @@ body{
                 font-size: 15px;
                 position: relative;
             }
+        }
+        .quantity{
+            button{ padding-top: 0; }
         }
     }
     .btn-add-to-cart{

@@ -213,4 +213,18 @@ legend{
 			}
 		}
 	}
+	.button{
+		input{
+			color: $bg-color-white;
+			background: $bg-color-main;
+			font-weight: bold;
+			text-transform: uppercase;
+			border: 2px solid $bg-color-main;
+			&:hover {
+				color: $bg-color-main;
+				background: $bg-color-white;
+				border: 2px solid $bg-color-main;
+			}
+		}
+	}
 }
