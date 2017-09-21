@@ -26,18 +26,10 @@ class HuntingUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'slug' => 'required',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
-            'stock' => 'required|numeric',
+            'price' => 'required|numeric',
             'description' => 'required',
-            'description_short' => 'required',
-            'key_words' => 'required',
-            'weight' => 'required',
-            'location' => 'required',
-            'sell_type_id' => 'required',
-            'product_brand' => 'required',
-            'feature_image' => 'image|mimes:jpeg,bmp,png',
-            'category' => 'required'
+            'country_id' => 'required',
+            'image_path' => 'image|mimes:jpeg,bmp,png'
         ];
     }
 }

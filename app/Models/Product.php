@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Carbon\Carbon;
 
 class Product extends Model
 {
@@ -161,30 +162,10 @@ class Product extends Model
         return $query->whereStatus('active');
     }
 
-    /**
-     * Show product view
-     *
-     * @return int
-     */
-    public function view(){
-        return 0;
-    }
-
-    /**
-     * Show sent offers
-     *
-     * @return int
-     */
-    public function sentOffers(){
-        return 0;
-    }
-
-    /**
-     * Show avg price
-     *
-     * @return int
-     */
-    public function avgPrice(){
-        return 0;
+    public function getLabelNewProduct($created_at) {
+        if( Carbon::now()->subDays(7) <= $created_at ) {
+            return true;
+        }
+        return false;
     }
 }

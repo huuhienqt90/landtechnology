@@ -41,7 +41,6 @@
                                                 <th>Image</th>
                                                 <th>Name</th>
                                                 <th>Price</th>
-                                                <th>Stock</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -50,17 +49,16 @@
                                         <tbody>
                                             @foreach($products as $product)
                                             <tr>
-                                                <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$product->feature_image) }}"/></td></th>
+                                                <td class="list-image"><img class="img-responsive" style="max-height:100px" src="{{ asset('storage/'.$product->image_path) }}"/></td></th>
                                                 <td>{{ $product->name }}</td>
-                                                <td>{{ $product->original_price }}</td>
-                                                <td>{{ $product->stock }}</td>
+                                                <td>{{ $product->price }}</td>
                                                 <td>{{ $product->status }}</td>
                                                 <td>
-                                                    <form method="post" action="{{ route('seller.destroy', $product->id) }}">
+                                                    <form method="post" action="{{ route('hunting.destroy', $product->id) }}">
                                                         {{ method_field('DELETE') }}
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                         <div class="btn-group">
-                                                            <a class="btn btn-info btn-flat" href="{{ route('seller.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                                            <a class="btn btn-info btn-flat" href="{{ route('hunting.edit', $product->id) }}"><i class="fa fa-pencil-square-o"></i></a>
                                                             <button type="submit" class="btn btn-danger btn-delete-item btn-flat" onclick="return confirm('Are you sure to delete this item?')"><i class="fa fa-times"></i></button>
                                                         </div>
                                                     </form>

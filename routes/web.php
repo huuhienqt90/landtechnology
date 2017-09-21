@@ -37,12 +37,22 @@ Route::group(['namespace' => 'Front'], function() {
         // Route::resource('products', 'ProductController');
         Route::get('detail/{slug?}', 'ProductController@show')->name('front.product.detail');
         Route::get('swap/detail/{slug?}', 'ProductController@swapshow')->name('front.product.swapdetail');
+        Route::get('hunting/detail/{slug?}', 'ProductController@huntingshow')->name('front.product.huntingdetail');
         // Do swap product
         Route::post('swap/detail', 'ProductController@doSwap')->name('front.product.doSwap');
         // Confirm swap
         Route::get('swap/confirm/{product_id?}-{user_id?}-{created_by?}-{product_by?}', 'ProductController@doConfirmSwap')->name('front.product.doconfirmswap');
         // Hunting
         Route::post('detail/{slug?}', 'ProductController@sendOffer')->name('hunting.sendOffer');
+        // Action offer
+        Route::post('accept-offer', 'ProductController@acceptOffer')->name('hunting.acceptOffer');
+        Route::post('counter-offer', 'ProductController@counter')->name('hunting.counter');
+        Route::post('counter-offerNext', 'ProductController@counterNext')->name('hunting.counterNext');
+        Route::get('accept-counter/{id?}', 'ProductController@acceptCounter')->name('hunting.acceptCounter');
+        Route::get('deny-counter/{id?}', 'ProductController@deniCounter')->name('hunting.deniCounter');
+        Route::get('reject-offer/{id?}', 'ProductController@rejectOffer')->name('hunting.rejectOffer');
+        Route::get('hunting-success', 'ProductController@showHuntingThankYou')->name('front.hunting.thankYou');
+        // End offer
         Route::get('product-category/{slug?}', 'ProductController@productCategory')->name('front.product.category');
         Route::get('brand/{slug?}', 'ProductController@productBrand')->name('front.product.brand');
         Route::get('list', 'ProductController@showList')->name('front.product.list');
@@ -130,4 +140,9 @@ Breadcrumbs::register('product_detail', function ($breadcrumbs, $products) {
         }
     }
     $breadcrumbs->push($products->name, route('front.product.brand', $products->slug));
+});
+// Product brand
+Breadcrumbs::register('product_hunting_detail', function ($breadcrumbs, $products) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push($products->name, route('front.product.huntingdetail', $products->slug));
 });

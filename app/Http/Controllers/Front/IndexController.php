@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Repositories\ProductResponsitory;
+use App\Repositories\HuntingResponsitory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -10,9 +11,11 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class IndexController extends Controller
 {
     protected $productRepository;
-    public function __construct(ProductResponsitory $productResponsitory)
+    public function __construct(ProductResponsitory $productResponsitory,
+                                HuntingResponsitory $huntingResponsitory)
     {
         $this->productRepository = $productResponsitory;
+        $this->huntingResponsitory = $huntingResponsitory;
     }
 
     /**
@@ -23,7 +26,7 @@ class IndexController extends Controller
     public function index()
     {
         $featureNewArrivalProducts = $this->productRepository->getNewArrivalProducts(8);
-        $newHuntingProducts = $this->productRepository->getNewHuntingProducts(8);
+        $newHuntingProducts = $this->huntingResponsitory->getNewHuntingProducts(4);
         $newSwappingProducts = $this->productRepository->getNewSwappingProducts(8);
         return view('front.index.index', compact('featureNewArrivalProducts', 'newHuntingProducts', 'newSwappingProducts'));
     }

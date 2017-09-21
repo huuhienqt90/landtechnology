@@ -256,6 +256,9 @@ body{
 					.glyph { width: 5em; padding-right: 0; }
 				}
 			}
+			&:nth-child(4){
+				clear: both;
+			}
 		}
 	}
 	.news-product-slider{

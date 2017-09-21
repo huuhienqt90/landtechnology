@@ -14,19 +14,15 @@
 <!-- START #bg-title -->
 <section id="bg-title-grid">
     <div class="conteiner-fulid">
-        <div class="img-bg-title-grid">
-            <img src="{{ asset('assets/images/bg-grid.png') }}" class="img-responsive" alt="images bg title grid">
-        </div> <!-- .img-bg-title-grid -->
-    </div>
-    <div class="container">
-        <div class="row">
+        <div class="img-bg-title-grid" style="background-image: url({{ asset('assets/images/bg-grid.png') }});">
+            <!-- <img src="../assets/images/bg-grid.png" class="img-responsive" alt="images bg title grid"> -->
             <div class="content-bg-title-grid">
                 <h1 class="text-uppercase">creative design<p>lighting furniture</p></h1>
                 <p>Typi non habent claritatem insitam.</p>
                 <a href="#" title="btn grid" class="text-uppercase">view collection</a>
             </div> <!-- .content-bg-title-grid -->
-        </div> <!-- .row -->
-    </div> <!-- .container -->
+        </div> <!-- .img-bg-title-grid -->
+    </div> <!-- .conteiner-fulid -->
 </section> <!-- #bg-title -->
 
 <!-- START #content-grid -->

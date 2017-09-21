@@ -36,8 +36,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if (Session::has('error'))
+                    <div class="custom-alerts alert {{ Session::has('alert-success') ? 'alert-success' : 'alert-danger' }} fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        {!! Session::get('error') !!}
+                    </div>
+                @endif
                 <div class="breadcrumb-product-detail">
-                    {{ Breadcrumbs::render('product_detail', $product) }}
+                    {{ Breadcrumbs::render('product_hunting_detail', $product) }}
                 </div>
             </div>
             <div class="col-md-12">
@@ -47,8 +53,8 @@
                         <div class="col-sm-6">
                             <ul class="nav navbar-nav">
                                 <li>Sent Offers <span>{!! $product->sentOffers() !!}</span></li>
-                                <li>Avg Price <span>{!! $product->avgPrice() !!}</span></li>
-                                <li>Product Budget <span>{!! $product->getPrice() !!}</span></li>
+                                <li>Avg Price <span>{!! $product->avgPrice() !!}$</span></li>
+                                <li>Product Budget <span>{!! $product->price !!}$</span></li>
                                 <li>Visit <span>{!! $product->view() !!}</span></li>
                             </ul>
                         </div>
@@ -65,10 +71,12 @@
                         <div class="col-md-8">
                             <h3>Product description</h3>
                             <div class="product-content">{!! $product->description !!}</div>
-                            <h3>Product category</h3>
-                            <div class="product-category">{{ $product->categories->first()->name }}</div>
                         </div>
-                        <div class="col-md-4 text-right"><a href="#send-offer" class="btn text-uppercase btn-primary send-an-offer">Send an offer</a></div>
+                        @if(Auth::check())
+                            @if( !$product->isOwnTopic(Auth::user()->id) && $product->Offered(Auth::user()->id) )
+                                <div class="col-md-4 text-right"><a href="#send-offer" class="btn text-uppercase btn-primary send-an-offer">Send an offer</a></div>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
@@ -129,10 +137,178 @@
                 {!! Form::close() !!}
             </div>
         </div>
-
     </div>
 </section>
 
+@if($product->isActive())
+<section id="userOffers" class="mg-top-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading"><h4>List Offers</h4></div>
+                    <div class="panel-body">
+                        <?php $count = 0; ?>
+                        @if(count($listOfferItems) > 0 && isset($listOfferItems))
+                            @foreach( $listOfferItems as $item )
+                                <div class="media">
+                                    <div class="media-left">
+                                        @foreach($item->getImages() as $image)
+                                            @if($count)
+                                                <a href="{{ asset('storage/' . $image->image_path) }}" class="group-image-hunting{{$item->id}}" title="{{ $item->hunting->name }}">
+                                                    <img alt="{{ $image->image_name }}" class="media-object" src="{{ asset('storage/'.$image->image_path) }}" class="img-responsive" style="width: 120px; height: 120px;">
+                                                </a>
+                                            @else
+                                                <a href="{{ asset('storage/' . $image->image_path) }}" class="group-image-hunting{{$item->id}}" title="{{ $item->hunting->name }}">
+                                                    <img alt="{{ $image->image_name }}" class="media-object" src="{{ asset('storage/'.$image->image_path) }}" class="img-responsive" style="width: 120px; height: 120px; display: none">
+                                                </a>
+                                            @endif
+                                            <?php $count++; ?>
+                                            <script type="text/javascript">
+                                                jQuery(document).ready(function($) {
+                                                    $(".group-image-hunting{{$item->id}}").colorbox({
+                                                        rel:'group-image-hunting{{$item->id}}',
+                                                        width:"auto", 
+                                                        height:"100%"
+                                                    });
+                                                });
+                                            </script>
+                                        @endforeach
+                                        <?php $count = 0; ?>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{ $item->user->getFullName() }}</h4>
+                                        <ul>
+                                            <li><strong>Description:</strong> {!! $item->comment !!}</li>
+                                            <li>
+                                                <strong>Price: {{ number_format($item->offer_price) }}$</strong>
+                                                <input type="hidden" id="val{{$item->id}}" value="{{ $item->offer_price }}">
+                                            </li>
+                                            @if( isset($item->metas()->where('key','counter_price')->first()->value) && $item->metas()->where('key','counter_price')->first()->value > 0 && ($item->metas()->where('key','counter_price')->first()->value != $item->offer_price) )
+                                                <li>
+                                                    <strong class="text-danger">Counter Price:</strong> {{ $item->metas()->where('key','counter_price')->first()->value }}$
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                    @if( Auth::check() && $product->isOwnTopic(Auth::user()->id) )
+                                        <div class="media-right">
+                                            <div class="form-btn-inline">
+                                                <a href="#" data-toggle="modal" data-price="{{ $item->offer_price }}" data-id="{{ $item->id }}" data-target="#payment_method" title="Accept" class="btn btn-success btn-inline"><i class="fa fa-check" aria-hidden="true"></i></a>
+                                                <a href="#" data-toggle="modal" data-price="{{ $item->offer_price }}"  data-target="#offer_price" title="Counter" class="btn btn-info btn-inline" data-id="{{ $item->id }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <a href="{{ route('hunting.rejectOffer', $item->id) }}" onclick="return confirm('Are you sure?')" title="Reject" class="btn btn-danger btn-inline"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if( Auth::check() && isset($item->metas()->where('key','counter_price')->first()->value) && ($item->metas()->where('key','counter_price')->first()->value < $item->offer_price) && $item->isBuyer(Auth::user()->id) )
+                                        <div class="media-right">
+                                            <div class="form-btn-inline">
+                                                <a href="{{ route('hunting.acceptCounter', $item->id) }}" title="Accept" class="btn btn-success btn-inline"><i class="fa fa-check" aria-hidden="true"></i></a>
+                                                <a href="#" data-toggle="modal" data-price="{{ $item->offer_price }}"  data-target="#counter_offer" title="Counter" class="btn btn-info btn-inline" data-id="{{ $item->id }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <a href="{{ route('hunting.deniCounter', $item->id) }}" onclick="return confirm('Are you sure?')" title="Reject" class="btn btn-danger btn-inline"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @else
+                            <p>Now not user offer product</p>
+                        @endif
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- Payment Method -->
+<div class="modal fade" id="payment_method" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Choose Payment Method</h4>
+            </div>
+            {!! Form::open(['route' => 'hunting.acceptOffer']) !!}
+            <div class="modal-body">
+                <input type="hidden" name="price" value="0" />
+                <input type="hidden" name="product_offer_id" value="0" />
+                <div class="form-group">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="payment" id="paypal" value="paypal" checked>
+                            Paypal
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="payment" id="stripe" value="stripe">
+                            Stripe
+                        </label>
+                    </div>
+                    <div id="area-payment-stripe"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                {{ Form::submit('Payment', ['class' => 'btn btn-success']) }}
+            </div>
+            {!! Form::close() !!}
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Payment Method -->
+<!-- Offer Price -->
+<div class="modal fade" id="offer_price" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Counter Price</h4>
+            </div>
+            {!! Form::open(['route' => 'hunting.counter']) !!}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="counter_price">Counter price:</label>
+                    <input type="number" min="0" required class="form-control" name="counter_price" placeholder="Please enter price...">
+                    <input type="hidden" name="id_offer" value="0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                {{ Form::submit('Enter', ['class' => 'btn btn-success']) }}
+            </div>
+            {!! Form::close() !!}
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End offer price -->
+<!-- Offer Price -->
+<div class="modal fade" id="counter_offer" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Counter Price</h4>
+            </div>
+            {!! Form::open(['route' => 'hunting.counterNext']) !!}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="counter_price">Counter price:</label>
+                    <input type="number" min="0" required class="form-control" name="counter_price" placeholder="Please enter price...">
+                    <input type="hidden" name="id_offer" value="0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                {{ Form::submit('Enter', ['class' => 'btn btn-success']) }}
+            </div>
+            {!! Form::close() !!}
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End offer price -->
 <style type="text/css">
 .hunting-product-meta {
     background: #f5f5f5;
@@ -180,6 +356,13 @@
 .hunting-product-status span{
     color: #61AB00;
 }
+.form-btn-inline {
+    display: flex;
+    justify-content: start;
+}
+.btn-inline {
+    margin-left: 5px;
+}
 </style>
 <script type="text/javascript">
     $("#inputPhotos").fileinput({
@@ -198,10 +381,42 @@
     inputPrice.keyup(changeFeePrice);
     function changeFeePrice(){
         var price = $('#inputPrice').val();
-        var fee = parseFloat(price) * 0.1;
+        var fee = parseFloat(price) * {{ $commissionHuting }};
         var paid = price - fee;
         $('#inputFee').text(fee.toFixed(2));
         $('#inputPaidToYou').text(paid.toFixed(2));
     }
+    jQuery(document).ready(function($) {
+        $("#stripe").change(function() {
+            $("#area-payment-stripe").append('<div class="row"><div class="col-md-12"><div class="form-group"><label>Card Number</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-credit-card"></i></span><input type="text" name="card_no" required value="{{ old('card_no') }}" class="form-control" placeholder="Valid Card Number"></div></div></div><div class="col-md-3"><div class="form-group"><label>Expiry Month</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-vcard"></i></span><input type="text" name="ccExpiryMonth" value="{{ old('ccExpiryMonth') }}" class="form-control" required placeholder="MM"></div></div></div><div class="col-md-3"><div class="form-group"><label>Expiry Year</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-vcard"></i></span><input type="text" name="ccExpiryYear" value="{{ old('ccExpiryYear') }}" class="form-control" required placeholder="YYYY"></div></div></div><div class="col-md-6"><div class="form-group"><label>CVV No.</label><div class="input-group"><span class="input-group-addon"><i class="fa fa-vcard-o"></i></span><input type="text" name="cvvNumber" required value="{{ old('cvvNumber') }}" class="form-control" placeholder="CVC"></div></div></div></div></div></div>');
+        });
+        $("#paypal").change(function() {
+            $("#area-payment-stripe").html('');
+        });
+        $('#payment_method').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var recipient = button.data('price');
+          var id = button.data('id');
+          var modal = $(this);
+          modal.find('.modal-body input[name="price"]').val(recipient);
+          modal.find('.modal-body input[name="product_offer_id"]').val(id);
+        })
+        $('#offer_price').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var id = button.data('id');
+          var recipient = button.data('price');
+          var modal = $(this);
+          modal.find('.modal-body input[name="id_offer"]').val(id);
+          modal.find('.modal-body input[name="counter_price"]').attr('max',recipient - 1);
+        })
+        $('#counter_offer').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var id = button.data('id');
+          var recipient = button.data('price');
+          var modal = $(this);
+          modal.find('.modal-body input[name="id_offer"]').val(id);
+          modal.find('.modal-body input[name="counter_price"]').attr('max',recipient - 1);
+        })
+    });
 </script>
 @stop

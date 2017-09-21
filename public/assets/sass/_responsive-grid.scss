@@ -13,7 +13,6 @@
 @include responsive_1024 {
     #content-grid .sidebar .shop-by .demo p{ width: 50%; }
     #content-grid .sidebar .shop-by .demo p input{ width: 80%; }
-    #bg-title-grid .content-bg-title-grid{ margin-top: -16em; }
     #bg-title-grid .content-bg-title-grid p{
         margin-top: 1em;
         margin-bottom: 2em;
@@ -40,7 +39,6 @@
     #content-grid .sidebar .shop-by .demo p input{ width: 80%; }
     #content-grid { margin-top: 0; }
     #content-grid .content-grid-title{ padding-left: 1em; }
-    #bg-title-grid .content-bg-title-grid{ margin-top: -12em; }
     #bg-title-grid .content-bg-title-grid h1 {
         font-size: 25px;
     }
@@ -56,7 +54,6 @@
     }
     #content-grid .sidebar .shop-by .demo form input{ float: left; width: 80%; }
     #content-grid .sidebar .shop-by .demo .title-prince{ padding-right: 8em; }
-    #content-grid .item{ padding-left: 0; }
     #content-grid .news-product-slider{
         top: 0.4em;
         left: 0.4em;
@@ -73,10 +70,13 @@
     #content-grid .sidebar .shop-by .demo p label{ margin-top: 0; }
 }
 
-@include responsive_600 {
-    #bg-title-grid .content-bg-title-grid {
-        margin-top: -10.5em;
+@include responsive_767 {
+    #content-grid .slider .item {
+        clear: both;
     }
+}
+
+@include responsive_600 {
     #bg-title-grid .content-bg-title-grid h1 {
         font-size: 20px;
     }
@@ -112,16 +112,10 @@
 }
 
 @include responsive_568 {
-    #bg-title-grid .content-bg-title-grid {
-        margin-top: -10em;
-    }
     #content-grid .sidebar .shop-by .demo .title-prince{ padding-right: 34em; }
 }
 
 @include responsive_480 {
-    #bg-title-grid .content-bg-title-grid {
-        margin-top: -8.5em;
-    }
     #bg-title-grid .content-bg-title-grid h1 {
         font-size: 15px;
     }
@@ -147,9 +141,6 @@
 }
 
 @include responsive_320 {
-    #bg-title-grid .content-bg-title-grid {
-        margin-top: -6.5em;
-    }
     #bg-title-grid .content-bg-title-grid h1 {
         font-size: 12px;
         margin-bottom: 0.5em;

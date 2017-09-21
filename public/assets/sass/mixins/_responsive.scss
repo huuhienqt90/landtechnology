@@ -19,6 +19,11 @@
         @content;
     }
 }
+@mixin responsive_767() {
+    @media #{$res_767} {
+        @content;
+    }
+}
 @mixin responsive_800() {
     @media #{$res_800} {
         @content;

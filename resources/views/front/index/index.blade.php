@@ -135,9 +135,16 @@
                         <div class="item">
                             <div class="slider-item">
                                 <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt=""/></a>
-                                <div class="news-product-slider">
-                                    <p>{{ $product->sellType->name }}</p>
-                                </div> <!-- .news-product -->
+                                @if($product->getLabelNewProduct($product->created_at))
+                                    <div class="news-product-slider">
+                                        <p>NEW</p>
+                                    </div> <!-- .news-product -->
+                                @endif
+                                @if($product->sale_price)
+                                    <div class="sale-product-slider">
+                                        <p>-&nbsp;{{ round(100 - ($product->sale_price * 100)/$product->original_price, 1) }}%</p>
+                                    </div> <!-- .news-product -->
+                                @endif
                                 <div class="overlay">
                                     <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
                                     <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -374,26 +381,19 @@
                     @foreach($newHuntingProducts as $product)
                         <div class="item col-md-3 col-sm-6">
                             <div class="slider-item">
-                                <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"/></a>
+                                <a href="{{ route('front.product.huntingdetail', $product->slug) }}" class="product-detail-url"><img src="{{ asset('/storage/') . '/' .$product->image_path }}" class="img-responsive" alt="{{ $product->name }}"/></a>
                                 <div class="news-product-slider">
                                     <p>NEW</p>
                                 </div> <!-- .news-product -->
                                 <div class="overlay">
-                                    <a href="{{ route('front.product.detail', $product->slug) }}" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                    <a href="{{ route('front.product.detail', $product->slug) }}" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                    <a href="{{ route('front.product.huntingdetail', $product->slug) }}" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                    <a href="{{ route('front.product.huntingdetail', $product->slug) }}" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                                 </div> <!-- .overlay -->
                                 <ul class="tetx">
                                     <li class="text-detail">
-                                        <h4><a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}">{{ $product->name }}</a></h4>
-                                        <span class="product-price">{!! $product->getPrice() !!}</span>
+                                        <h4><a href="{{ route('front.product.huntingdetail', $product->slug) }}" title="{{ $product->name }}">{{ $product->name }}</a></h4>
+                                        <span class="product-price">{!! $product->price !!}</span>
                                     </li> <!-- .text-detail -->
-                                    <li class="lock">
-                                        <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="lock">
-                                            <div class="glyph">
-                                                <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
-                                            </div>
-                                        </a>
-                                    </li> <!-- .lock -->
                                 </ul>
                             </div> <!-- .slider-item -->
                         </div> <!-- .item -->
@@ -503,37 +503,42 @@
         </div> <!-- .container -->
     </section> <!-- #featured-products -->
 
-    <!-- START #featured-products -->
-    <section id="featured-products">
-        <div class="container">
-            <div class="row">
-                <div class="title-new-arrivals">
-                    <h3 class="text-uppercase">Swapping Products</h3>
-                    <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
-                </div> <!-- .title-new-arrivals -->
-                <div class="col-md-12 slider slider-nav">
+    <!-- START #new-arrivals -->
+
+<section id="new-arrivals">
+    <div class="container">
+        <div class="row">
+            <div class="title-new-arrivals">
+                <h3 class="text-uppercase">Swapping Products</h3>
+                <p>Claritas est etiam processus dynamicus, qui sequitur.</p>
+            </div> <!-- .title-new-arrivals -->
+        </div> <!-- .row -->
+        <div class="row" style="overflow: hidden;">
+            <div class="col-md-12 slider slider-nav">
                 @if(isset($newSwappingProducts) && $newSwappingProducts->count())
                     @foreach($newSwappingProducts as $product)
-                        <div class="item col-md-3 col-sm-6">
+                        <div class="item">
                             <div class="slider-item">
                                 <a href="{{ route('front.product.swapdetail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"/></a>
-                                <div class="news-product-slider">
-                                    <p>NEW</p>
-                                </div> <!-- .news-product -->
+                                @if($product->getLabelNewProduct($product->created_at))
+                                    <div class="news-product-slider">
+                                        <p>NEW</p>
+                                    </div> <!-- .news-product -->
+                                @endif
                                 <div class="overlay">
-                                    <a href="{{ route('front.product.swapdetail', $product->slug) }}" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
-                                    <a href="{{ route('front.product.swapdetail', $product->slug) }}" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                    <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                    <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
                                 </div> <!-- .overlay -->
                                 <ul class="tetx">
                                     <li class="text-detail">
-                                        <h4><a href="{{ route('front.product.swapdetail', $product->slug) }}" title="{{ $product->name }}">{{ $product->name }}</a></h4>
+                                        <h4><a href="{{ route('front.product.swapdetail', $product->slug) }}" title="{{ $product->getFeatureImage() }}">{{ $product->name }}</a></h4>
                                     </li> <!-- .text-detail -->
                                 </ul>
                             </div> <!-- .slider-item -->
                         </div> <!-- .item -->
                     @endforeach
                 @else
-                    <div class="item col-md-3 col-sm-6">
+                    <div class="item">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-1.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
@@ -558,7 +563,7 @@
                             </ul>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
-                    <div class="item col-md-3 col-sm-6">
+                    <div class="item">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
@@ -580,7 +585,7 @@
                             </ul>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
-                    <div class="item col-md-3 col-sm-6">
+                    <div class="item">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
                             <div class="news-product-slider">
@@ -609,7 +614,105 @@
                             </ul>
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
-                    <div class="item col-md-3 col-sm-6">
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-2.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
+                        <div class="slider-item">
+                            <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-3.png') }}" class="img-responsive" alt=""/></a>
+                            <div class="news-product-slider">
+                                <p>NEW</p>
+                            </div> <!-- .news-product -->
+                            <div class="sale-product-slider">
+                                <p>-15%</p>
+                            </div> <!-- .news-product -->
+
+                            <div class="overlay">
+                                <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
+                                <a href="#" class="text mg-top-80"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                            </div> <!-- .overlay -->
+                            <ul class="tetx">
+                                <li class="text-detail">
+                                    <h4><a href="{{ route('front.product.detail') }}" title="title product">Sacrificial Chair Design</a></h4>
+                                    <span>$170.00</span>
+                                </li> <!-- .text-detail -->
+                                <li class="lock">
+                                    <a href="#" title="lock">
+                                        <div class="glyph">
+                                            <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
+                                        </div>
+                                    </a>
+                                </li> <!-- .lock -->
+                            </ul>
+                        </div> <!-- .slider-item -->
+                    </div> <!-- .item -->
+                    <div class="item">
                         <div class="slider-item">
                             <a href="{{ route('front.product.detail') }}" class="product-detail-url"><img src="{{ asset('assets/images/img-new-arrivals-4.png') }}" class="img-responsive" alt=""/></a>
                             <div class="overlay">
@@ -632,10 +735,10 @@
                         </div> <!-- .slider-item -->
                     </div> <!-- .item -->
                 @endif
-                </div> <!-- .slider -->
-            </div> <!-- .row -->
-        </div> <!-- .container -->
-    </section> <!-- #featured-products -->
+            </div> <!-- END .slider .slider-nav -->
+        </div> <!-- .row -->
+    </div> <!-- .container -->
+</section> <!-- #new-arrivals -->
 
 <!-- START #out-blog -->
 <section id="out-blog">

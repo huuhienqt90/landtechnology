@@ -26,8 +26,9 @@ class SettingController extends Controller
     public function index()
     {
         $oldCommissionSwap = $this->settingRepository->getValueByKey('commission_swap');
+        $oldCommissionHunting = $this->settingRepository->getValueByKey('commission_hunting');
         $oldPayPal = $this->settingRepository->getValueByKey('admin_paypal');
-        return view('dashboard::setting.index', compact('oldPayPal','oldCommissionSwap'));
+        return view('dashboard::setting.index', compact('oldPayPal','oldCommissionSwap','oldCommissionHunting'));
     }
 
     /**
@@ -99,6 +100,14 @@ class SettingController extends Controller
                 $this->settingRepository->update(['key' => 'commission_swap', 'value' => $request->commission_swap], $this->settingRepository->findWhere(['key' =>'commission_swap'])->first()->id);
             }else{
                 $this->settingRepository->create(['key' => 'commission_swap', 'value' => $request->commission_swap]);
+            }
+        }
+
+        if( isset( $request->commission_hunting ) && !empty( $request->commission_hunting ) ){
+            if( $this->settingRepository->findWhere(['key' =>'commission_hunting'])->count() ){
+                $this->settingRepository->update(['key' => 'commission_hunting', 'value' => $request->commission_hunting], $this->settingRepository->findWhere(['key' =>'commission_hunting'])->first()->id);
+            }else{
+                $this->settingRepository->create(['key' => 'commission_hunting', 'value' => $request->commission_hunting]);
             }
         }
         return redirect()->route('dashboard.setting.index')->with('alert-success', 'Update e-commerce setting sucess!');

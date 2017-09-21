@@ -117,7 +117,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-info">
-                    <div class="panel-heading"><h4>List user ...</h4></div>
+                    <div class="panel-heading"><h4>List user swapping product</h4></div>
                     <div class="panel-body">
                         @if(count($listSwapItems) > 0 && isset($listSwapItems))
                             @foreach( $listSwapItems as $item )

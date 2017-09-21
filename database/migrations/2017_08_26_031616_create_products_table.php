@@ -40,6 +40,7 @@ class CreateProductsTable extends Migration
             $table->integer('sold_units')->default(0);
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
+            $table->integer('view')->default(0);
             $table->foreign('seller_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');

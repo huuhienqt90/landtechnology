@@ -4,52 +4,21 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\CategoryResponsitory;
-use App\Repositories\SellerShippingResponsitory;
-use App\Repositories\SellTypeResponsitory;
-use App\Repositories\BrandResponsitory;
-use App\Repositories\ProductResponsitory;
-use App\Repositories\UserResponsitory;
-use App\Repositories\AttributeResponsitory;
-use App\Repositories\ProductCategoryResponsitory;
-use App\Repositories\ProductImageResponsitory;
-use App\Repositories\ProductAttributeResponsitory;
 use App\Http\Requests\HuntingStoreRequest;
 use App\Http\Requests\HuntingUpdateRequest;
+use App\Repositories\HuntingResponsitory;
+use App\Repositories\CountryResponsitory;
 
 class HuntingController extends Controller
 {
-    protected $categoryResponsitory;
-    protected $brandResponsitory;
-    protected $sellerShippingResponsitory;
-    protected $sellTypeResponsitory;
-    protected $productResponsitory;
-    protected $userResponsitory;
-    protected $productCategoryResponsitory;
-    protected $productImageResponsitory;
-    protected $productAttributeResponsitory;
-    protected $attributeResponsitory;
-    public function __construct(CategoryResponsitory $categoryResponsitory,
-                                BrandResponsitory $brandResponsitory,
-                                SellerShippingResponsitory $sellerShippingResponsitory,
-                                SellTypeResponsitory $sellTypeResponsitory,
-                                ProductResponsitory $productResponsitory,
-                                UserResponsitory $userResponsitory,
-                                ProductCategoryResponsitory $productCategoryResponsitory,
-                                ProductImageResponsitory $productImageResponsitory,
-                                AttributeResponsitory $attributeResponsitory,
-                                ProductAttributeResponsitory $productAttributeResponsitory)
+    protected $huntingResponsitory;
+    protected $countryResponsitory;
+
+    public function __construct(HuntingResponsitory $huntingResponsitory,
+                                CountryResponsitory $countryResponsitory)
     {
-        $this->categoryResponsitory         = $categoryResponsitory;
-        $this->brandResponsitory            = $brandResponsitory;
-        $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
-        $this->sellTypeResponsitory         = $sellTypeResponsitory;
-        $this->productResponsitory          = $productResponsitory;
-        $this->userResponsitory             = $userResponsitory;
-        $this->productCategoryResponsitory  = $productCategoryResponsitory;
-        $this->productImageResponsitory     = $productImageResponsitory;
-        $this->attributeResponsitory        = $attributeResponsitory;
-        $this->productAttributeResponsitory = $productAttributeResponsitory;
+        $this->huntingResponsitory = $huntingResponsitory;
+        $this->countryResponsitory = $countryResponsitory;
         $this->middleware('check.auth:seller');
     }
     /**
@@ -59,7 +28,7 @@ class HuntingController extends Controller
      */
     public function index()
     {
-        $products = $this->productResponsitory->getHuntingProducts(auth()->user()->id);
+        $products = $this->huntingResponsitory->findAllBy('user_id', auth()->user()->id);
         return view('front.hunting.index', compact('products'));
     }
 
@@ -70,17 +39,9 @@ class HuntingController extends Controller
      */
     public function create()
     {
-        $brands = $this->brandResponsitory->getArrayNameBrands();
-        $categories = $this->categoryResponsitory->getArrayNameCategories();
-        $allCategories = $this->categoryResponsitory->all();
-        $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
+        $countries = $this->countryResponsitory->arrCountries();
 
-        $attrs = $this->attributeResponsitory->all();
-        $attrArr = [];
-        foreach($attrs as $attr){
-            $attrArr[$attr->id] = $attr->name;
-        }
-        return view('front.hunting.create', compact('brands','categories','selltypes','allCategories','attrArr'));
+        return view('front.hunting.create', compact('countries'));
     }
 
     /**
@@ -91,31 +52,14 @@ class HuntingController extends Controller
      */
     public function store(HuntingStoreRequest $request)
     {
-        $param = $request->only(['name','slug','original_price','sale_price','description','description_short','product_brand','key_words','sell_type_id','weight','location','stock']);
-        $param['sold_units'] = 0;
-        $param['seller_id'] = auth()->user()->id;
-        $param['status'] = 'Pending';
-        $param['created_by'] = auth()->user()->id;
-        $param['kind'] = 'hunting';
-        if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('huntproduct/features');
-            $param['feature_image'] = $path;
+        $param = $request->only(['name', 'slug', 'price', 'country_id', 'description']);
+        $param['user_id'] = auth()->user()->id;
+        if( $request->hasFile('image_path') ){
+            $path = $request->file('image_path')->store('hunting_product/features');
+            $param['image_path'] = $path;
         }
-
-        $result = $this->productResponsitory->create($param);
-
-        // Create category product
-        $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
-
-        // Create Product Images
-        if( $request->hasFile('product_images') ){
-            $productImages = $request->file('product_images');
-            foreach ($productImages as $file) {
-                $path = $file->store('sellproduct/galeries');
-                $this->productImageResponsitory->create(['product_id' => $result->id, 'image_path' => $path, 'image_name'=> $file->getClientOriginalName()]);
-            }
-        }
-        return redirect(route('hunting.index'))->with('alert-success', 'Create hunting product success!');
+        $this->huntingResponsitory->create($param);
+        return redirect(route('hunting.index'))->with('msgOk', 'Product\'s Hunting Was Created Success');
     }
 
     /**
@@ -137,52 +81,10 @@ class HuntingController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->productResponsitory->find($id);
-        $brands = $this->brandResponsitory->getArrayNameBrands();
+        $countries = $this->countryResponsitory->arrCountries();
+        $product = $this->huntingResponsitory->find($id);
 
-        $categories = $this->categoryResponsitory->all();
-        $cateArr = [];
-        if( $categories && $categories->count() ){
-            foreach ($categories as $cat) {
-                $cateArr[$cat->id] = $cat->name;
-            }
-        }
-
-        $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
-
-        $productImages = $this->productImageResponsitory->findAllBy('product_id', $id);
-        $productImageArr = [];
-        if( $productImages && $productImages->count() ){
-            foreach ($productImages as $productImage) {
-                $productImageArr[$productImage->id] = $productImage->image_path;
-            }
-        }
-
-        $productAttributesArr = [];
-        $attributesArr = [];
-        $productAttributes = $this->productAttributeResponsitory->findAllBy('product_id', $id);
-        if( $productAttributes && $productAttributes->count() ){
-            foreach( $productAttributes as $productAttribute ){
-                $productAttributesArr[$productAttribute->attribute_id] = $productAttribute->attribute->name;
-                $attributesArr[$productAttribute->id] = $productAttribute->value;
-            }
-        }
-
-        $productCategories = $this->productCategoryResponsitory->findAllBy('product_id', $id);
-        $productCategoryArr = [];
-        if( $productCategories && $productCategories->count() ){
-            foreach ($productCategories as $productCategory) {
-                $productCategoryArr[$productCategory->category_id] = $productCategory->category_id;
-            }
-        }
-        $product->category = $productCategoryArr;
-
-        $attrs = $this->attributeResponsitory->all();
-        $attrArr = $this->attributeResponsitory->all();
-
-        $product->attribute = $productAttributesArr;
-
-        return view('front.hunting.edit', compact('product','brands','categories','selltypes','productImages','attrArr','attributesArr','cateArr'));
+        return view('front.hunting.edit', compact('countries','product'));
     }
 
     /**
@@ -192,45 +94,18 @@ class HuntingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HuntingUpdateRequest $request, $id)
     {
-        $update = [
-            'status' => 'Pending',
-            'slug' => $request->slug,
-            'name' => $request->name,
-            'original_price' => $request->original_price,
-            'sale_price' => $request->sale_price,
-            'stock' => $request->stock,
-            'description_short' => $request->description_short,
-            'description' => $request->description,
-            'key_words' => $request->key_words,
-            'weight' => $request->weight,
-            'location' => $request->location,
-            'seller_id' => Auth::user()->id,
-            'sell_type_id' => $request->sell_type_id,
-            'product_brand' => $request->product_brand
-        ];
-
-        // Update feature image
-        if( $request->hasFile('feature_image') ){
-            $path = $request->file('feature_image')->store('huntproduct/features');
-            $update['feature_image'] = $path;
+        $product = $this->huntingResponsitory->find($id);
+        $param = $request->only(['name', 'slug', 'price', 'country_id', 'description']);
+        $param['user_id'] = auth()->user()->id;
+        if( $request->hasFile('image_path') ){
+            \Storage::delete($product->image_path);
+            $path = $request->file('image_path')->store('hunting_product/features');
+            $param['image_path'] = $path;
         }
-        $this->productResponsitory->update($update, $id);
-
-        // Update product category
-        $this->productCategoryResponsitory->deleteProductCategory($id);
-        $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $request->category]);
-
-        // Update product images
-        if( $request->hasFile('product_images') ){
-            $productImages = $request->file('product_images');
-            foreach ($productImages as $file) {
-                $path = $file->store('huntproduct/galeries');
-                $this->productImageResponsitory->create(['product_id' => $id, 'image_path' => $path, 'image_name'=>$file->getClientOriginalName()]);
-            }
-        }
-        return redirect(route('hunting.index'))->with('alert-success', 'Update product success!');
+        $this->huntingResponsitory->update($param, $id);
+        return redirect(route('hunting.index'))->with('msgOk', 'Product\'s Hunting Was Updated Success');
     }
 
     /**
@@ -241,17 +116,11 @@ class HuntingController extends Controller
      */
     public function destroy($id)
     {
-        $product_images = $this->productImageResponsitory->findAllBy('product_id', $id);
-        if($product_images != null) {
-            foreach($product_images as $image){
-                \Storage::delete($image->image_path);
-                $this->productImageResponsitory->delete($id);
-            }
+        $product = $this->huntingResponsitory->find($id);
+        if( $product->image_path != null ) {
+            \Storage::delete($product->image_path);
         }
-        $this->productAttributeResponsitory->deleteProductAttribute($id);
-        $product = $this->productResponsitory->find($id);
-        \Storage::delete($product->feature_image);
-        $this->productResponsitory->delete($id);
-        return redirect(route('hunting.index'))->with('alert-success', 'Delete product success!');
+        $this->huntingResponsitory->delete($id);
+        return redirect(route('hunting.index'))->with('msgOk', 'Product\'s Hunting Was Deleted Success');
     }
 }

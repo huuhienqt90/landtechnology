@@ -29,7 +29,7 @@ class SendOfferRequest extends FormRequest
     {
         return [
             'inputPrice' => 'required|numeric',
-            'inputPhotos' => 'required|image|mimes:jpeg,bmp,png',
+            'inputPhotos.*' => 'required|image|mimes:jpeg,bmp,png',
             'textareaComment' => 'required|min:10'
         ];
     }

@@ -23,7 +23,7 @@
     #content-grid .sale-product-slider:before {
         left: 3.9em;
     }
-    #new-arrivals .news-product-slider:before{ left: 4.15em; }
+    #new-arrivals .news-product-slider:before{ left: 3.9em; }
     #out-blog .blog-face li {
         padding-left: 0;
     }
@@ -37,7 +37,7 @@
         left: 7.5px;
         width: 26%;
     }
-    #new-arrivals .sale-product-slider:before{ left: 4.15em; }
+    #new-arrivals .sale-product-slider:before{ left: 3.9em; }
     #new-arrivals .news-product-slider p{ padding-left: 1em; }
     #new-arrivals .item .overlay .text{ top: 60%; }
     #featured-products .news-product-slider{ top: 0.4em; }
@@ -57,7 +57,9 @@
 }
 
 @include responsive_992 {
-    
+    #header .navbar-default .navbar-collapse .navbar-nav li {
+        margin-left: -10px;
+    }
 }
 
 @include responsive_800 {
@@ -70,7 +72,7 @@
         top: 0;
     }
     #product-list .second-effect .overlay a{ font-size: 20px; }
-    #new-arrivals .item .slider-item img{ height: 243px; }
+    #new-arrivals .item .slider-item img{ height: auto; }
     #new-arrivals .news-product-slider:before{
         left: 4.1em;
     }

@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'VfFree40';
+  src: url("fonts/VfFree40.eot");
+  src: url("fonts/VfFree40.eot?#iefix") format("embedded-opentype"), url("fonts/VfFree40.woff2") format("woff2"), url("fonts/VfFree40.woff") format("woff"), url("fonts/VfFree40.ttf") format("truetype"), url("fonts/VfFree40.svg#VfFree40") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+body {
+  font-family: 'Lato', sans-serif; }
+
+#content-error {
+  text-align: center;
+  margin: 7em 0; }
+  #content-error .text-error-number {
+    font-family: VfFree40, sans-serif;
+    font-size: 250px;
+    opacity: 0.2; }
+  #content-error .text-content-error {
+    margin-top: 6em; }
+    #content-error .text-content-error span {
+      color: #7B7B7B;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      font-size: 18px; }
+    #content-error .text-content-error h1 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 1em; }
+    #content-error .text-content-error p {
+      font-style: italic;
+      color: #606060;
+      font-size: 12.5px;
+      margin-bottom: 6em; }
+      #content-error .text-content-error p a {
+        color: #79B6C8; }
+    #content-error .text-content-error form .sb-search-input {
+      border: 1px solid #D7D7D7;
+      border-right: none;
+      padding: 1em;
+      width: 80%;
+      font-style: italic;
+      font-size: 12.5px;
+      outline: none; }
+    #content-error .text-content-error form .sb-search-submit {
+      border: 1px solid #D7D7D7;
+      padding: 1em;
+      padding-left: 0;
+      margin-left: -5px;
+      background: none;
+      border-left: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      font-size: 12.5px;
+      outline: none; }
+
+/*# sourceMappingURL=error.css.map */

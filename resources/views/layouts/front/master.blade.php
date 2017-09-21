@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
         <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/colorbox.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
 
         <!-- Style Dashboard -->
@@ -38,6 +39,7 @@
 
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/jquery.colorbox-min.js') }}"></script>
         <script src="{{ asset('assets/js/slick.min.js') }}"></script>
         <script src="{{ asset('assets/js/price.js') }}"></script>
         <script src="{{ asset('assets/js/grid-list-show.js') }}"></script>
