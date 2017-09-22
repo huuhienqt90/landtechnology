@@ -64,7 +64,15 @@
                                             {{ Form::text('email', Auth::user()->email, ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email']) }}
                                             {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                         </div>
-                                    </div><!-- 
+                                    </div>
+                                    <div class="form-group {{ $errors->has('email_paypal')? 'has-error' : '' }}">
+                                        {{ Form::label('input-email_paypal', 'E-Mail Paypal', ['class' => 'col-sm-2 control-label']) }}
+                                        <div class="col-sm-10">
+                                            {{ Form::text('email_paypal', Auth::user()->email_paypal, ['placeholder' => 'E-Mail Paypal', 'class' => 'form-control', 'id' => 'input-email_paypal']) }}
+                                            {{ Form::label(null, $errors->has('email_paypal')? $errors->first('email_paypal') : '', ['class' => 'help-block']) }}
+                                        </div>
+                                    </div>
+                                    <!-- 
                                     <div class="form-group">
                                         {{ Form::label('input-telephone', 'Mobile Number', ['class' => 'col-sm-2 control-label']) }}
                                         <div class="col-sm-10">

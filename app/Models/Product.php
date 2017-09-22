@@ -89,6 +89,14 @@ class Product extends Model
     }
 
     /**
+     * [category description]
+     * @return [type] [description]
+     */
+    public function category() {
+        return $this->belongsTo('App\Models\ProductCategory', 'id', 'product_id');
+    }
+
+    /**
      * Get product images
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

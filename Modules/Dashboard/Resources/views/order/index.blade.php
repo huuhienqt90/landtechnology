@@ -33,10 +33,14 @@
                                     <tr>
                                         <td class="list-image">#{{ $order->id }}</td>
                                         <td>{{ $order->status }}</td>
-                                        <td>{{ $order->customer }}</td>
                                         @foreach($order->user_metas as $item)
-                                            @if($item->key == 'shippingAddress1' || $item->key == 'shippingAddress2')
-                                                <td>{{ $item->value }}</td><br/>
+                                            @if($item->key == 'shippingFirstName')
+                                                <td>{{ $item->value }}</td>
+                                            @endif
+                                        @endforeach
+                                        @foreach($order->user_metas as $item)
+                                            @if($item->key == 'shippingAddress1')
+                                                <td>{{ $item->value }}</td>
                                             @endif
                                         @endforeach
                                         <td>{{ $order->created_at }}</td>
@@ -59,8 +63,11 @@
                             <tfoot>
                                 <tr>
                                     <th width="20">ID</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
+                                    <th>Status</th>
+                                    <th>Order</th>
+                                    <th>Ship to</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
                                     <th width="100">Actions</th>
                                 </tr>
                             </tfoot>

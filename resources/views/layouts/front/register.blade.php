@@ -37,8 +37,8 @@
                         <div class="row">
                             <div class="col-sm-9 col-sm-offset-2 center-column">
 
-                                <p>If you already have an account with us, please login at the <a href="{{ route('front.user.login') }}">Login page</a>.</p>
-                                {!! Form::open(['route' => 'front.user.store', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
+                                <p>If you already have an account with us, please login at the <a href="{{ route('login') }}">Login page</a>.</p>
+                                {!! Form::open(['route' => 'register', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST']) !!}
                                     <fieldset>
                                         <div class="form-group {{ $errors->has('first_name')? 'has-error' : '' }}">
                                             {{ Form::label('input-firstname', 'First Name', ['class' => 'col-sm-2 control-label']) }}
@@ -60,7 +60,7 @@
                                                 {{ Form::text('email', old('email'), ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email']) }}
                                                 {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                             </div>
-                                        </div><!-- 
+                                        </div><!--
                                         <div class="form-group">
                                             {{ Form::label('input-telephone', 'Mobile Number', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">

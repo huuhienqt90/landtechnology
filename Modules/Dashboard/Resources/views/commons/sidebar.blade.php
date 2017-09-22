@@ -56,6 +56,7 @@
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Reviews</a></li>
                     <li><a href="{{ route('dashboard.setting.index') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
                     <li><a href="{{ route('dashboard.commission.index') }}"><i class="fa fa-circle-o"></i> Commissions</a></li>
+                    <li><a href="{{ route('dashboard.payment-history.index') }}"><i class="fa fa-circle-o"></i> Payment Histories</a></li>
                 </ul>
             </li>
             <li class="treeview">

@@ -14,6 +14,7 @@ use App\Repositories\ProductResponsitory;
 use App\Repositories\OrderResponsitory;
 use App\Repositories\OrderMetaResponsitory;
 use App\Repositories\OrderProductResponsitory;
+use App\Repositories\PaymentHistoryResponsitory;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Stripe\Error\Card;
 use Illuminate\Support\Facades\Mail;
@@ -27,18 +28,21 @@ class CartController extends Controller
     private $orderResponsitory;
     private $orderMetaResponsitory;
     private $orderProductResponsitory;
+    private $paymentHistoryResponsitory;
 
     public function __construct(ProductResponsitory $productRepository, 
                                 SettingRepository $settingRepository,
                                 OrderResponsitory $orderResponsitory, 
                                 OrderMetaResponsitory $orderMetaResponsitory, 
-                                OrderProductResponsitory $orderProductResponsitory)
+                                OrderProductResponsitory $orderProductResponsitory,
+                                PaymentHistoryResponsitory $paymentHistoryResponsitory)
     {
         $this->productRepository = $productRepository;
         $this->settingRepository = $settingRepository;
         $this->orderResponsitory = $orderResponsitory;
         $this->orderMetaResponsitory = $orderMetaResponsitory;
         $this->orderProductResponsitory = $orderProductResponsitory;
+        $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
 
         $PayPalConfig = array(
             'Sandbox' =>  true,
@@ -242,10 +246,36 @@ class CartController extends Controller
                     'description' => 'Add in wallet',
                 ]);
                 if($charge['status'] == 'succeeded') {
-                    
+                    // Create order
                     $this->addOrder($request);
-
+                    // Create payment history
+                    $orders = $this->orderProductResponsitory->findALlBy('order_id', \Session::get('orderId'));
+                    foreach($orders as $order) {
+                        $price = $order->product->sale_price?$order->product->sale_price:$order->product->original_price;
+                        $fee = 0;
+                        $commission = $this->paymentHistoryResponsitory->getCostCommission($order->product->category->category_id, 'seller');
+                        if( $commission->type == 'percent' ) {
+                            $fee = ($price*$commission->cost)/100;
+                            if( $fee > $commission->maximum ) {
+                                $fee = $commission->maximum;
+                            }
+                        }else{
+                            $fee = $commission->cost;
+                        }
+                        $param = [
+                            'seller_id' => $order->product->seller_id,
+                            'order_id' => \Session::get('orderId'),
+                            'customer' => \Session::get('fullname'),
+                            'original_price' => $price,
+                            'price_after_fee' => $price + $fee,
+                            'price_fee' => $fee,
+                            'note' => 'Payment Method Stripe, Seller'
+                        ];
+                        $this->paymentHistoryResponsitory->create($param);
+                    }
                     Cart::destroy();
+                    session()->forget('fullname');
+                    session()->forget('orderId');
                     return view('front.ecommerce.checkout-thankyou', compact('charge'));
                 } else {
                     \Session::put('error','Money not add in wallet!!');
@@ -280,7 +310,10 @@ class CartController extends Controller
             $param['customer'] = 0;
         }
         $order = $this->orderResponsitory->create($param);
-        $request->session('orderId', $order->id);
+        \Session::put('orderId',$order->id);
+        $fullname = $request->billingFirstName . ' ' . $request->billingLastName;
+        \Session::put('fullname',$fullname);
+
         $paramBill = [
             'order_id' => $order->id,
             'key' => 'billingFirstName',

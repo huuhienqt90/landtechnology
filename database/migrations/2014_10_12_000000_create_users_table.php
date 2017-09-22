@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('status')->default('active');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('email_paypal')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('avatar')->nullable();

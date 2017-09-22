@@ -32,10 +32,10 @@
                                 @foreach($commissions as $commission)
                                     <tr>
                                         <td>#{{ $commission->id }}</td>
-                                        <td>{{ $commission->categories->name }}</td>
+                                        <td>{{ $commission->category->name }}</td>
                                         <td>{{ $commission->type }}</td>
                                         <td>{{ $commission->cost }}</td>
-                                        <td>{{ $commission->maximum }}</td>
+                                        <td>{{ $commission->maximum }}$</td>
                                         <td>{{ $commission->product_type }}</td>
                                         <td style="text-align: center;">
                                             <form method="post" action="{{ route('dashboard.commission.destroy', $commission->id) }}">

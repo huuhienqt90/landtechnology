@@ -23,46 +23,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display login page
-     * @return Response
-    */
-    public function showLogin(Request $request)
-    {
-        if(Auth::check()){
-            return redirect()->route('front.dashboard.index');
-        }
-        return view('front.auth.login');
-    }
-
-    /**
-     * check login
-     * @return Response
-    */
-    public function doLogin(LoginRequest $request)
-    {
-        $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        $request->merge([$field => $request->input('email')]);
-        $loginDT = $request->only($field, 'password');
-        $loginDT['confirmed'] = 1;
-        if (Auth::attempt($loginDT))
-        {
-            return redirect()->intended('/');
-        }
-        // validation not successful, send back to form
-        Session::flash('messageError', 'You can not login because your information incorrect or you didn\'t verify your accout via email');
-        return redirect()->route('front.user.login');
-    }
-    /**
-     * Logout.
-     * @return Response
-     */
-    public function logout()
-    {
-        Auth::logout();
-        return redirect()->route('front.index');
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -156,6 +116,7 @@ class UserController extends Controller
         $user->address2 = $request->address2;
         $user->country = $request->country;
         $user->postal_code = $request->postal_code;
+        $user->email_paypal = $request->email_paypal;
         $result = $user->update();
         if($result) {
             Session::flash('msgOk','Update infomation complete.');
@@ -227,6 +188,10 @@ class UserController extends Controller
     }
 
     public function showProfile($slug = null){
+        return view('front.index.index');
+    }
+
+    public function getBalances(){
         return view('front.index.index');
     }
 }

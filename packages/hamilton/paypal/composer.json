@@ -1,0 +1,11 @@
+{
+    "name": "hamilton/paypal",
+    "description": "PayPal Package for Laravel",
+    "authors": [
+        {
+            "name": "Hien(Hamilton) H.HO",
+            "email": "nhiha60591@gmail.com"
+        }
+    ],
+    "require": {}
+}

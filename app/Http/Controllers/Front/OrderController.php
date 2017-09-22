@@ -8,6 +8,8 @@ use App\PaymentMethod\PayPal\PayPal;
 use App\Repositories\SettingRepository;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\OrderResponsitory;
+use App\Repositories\OrderProductResponsitory;
+use App\Repositories\PaymentHistoryResponsitory;
 use Cart;
 
 class OrderController extends Controller
@@ -16,11 +18,15 @@ class OrderController extends Controller
     private $productRepository;
     private $settingRepository;
     private $orderResponsitory;
+    private $paymentHistoryResponsitory;
+    private $orderProductResponsitory;
 
-    public function __construct(ProductResponsitory $productRepository, SettingRepository $settingRepository, OrderResponsitory $orderResponsitory){
+    public function __construct(ProductResponsitory $productRepository, SettingRepository $settingRepository, OrderResponsitory $orderResponsitory, PaymentHistoryResponsitory $paymentHistoryResponsitory, OrderProductResponsitory $orderProductResponsitory){
         $this->productRepository = $productRepository;
         $this->settingRepository = $settingRepository;
         $this->orderResponsitory = $orderResponsitory;
+        $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
+        $this->orderProductResponsitory = $orderProductResponsitory;
         $PayPalConfig = array(
             'Sandbox' =>  true,
             'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
@@ -87,15 +93,41 @@ class OrderController extends Controller
            'DECPFields' => $DECPFields,
            'Payments' => $Payments
         );
-
         $data = $this->PayPal->DoExpressCheckoutPayment($PayPalRequest);
         if($data['ACK'] == 'Success') {
+            // Update status Order
             $param['status'] = 'processing';
-            $this->orderResponsitory->update($param, session()->get('orderId'));
+            $this->orderResponsitory->update($param, \Session::get('orderId'));
+            // Create payment history
+            $orders = $this->orderProductResponsitory->findALlBy('order_id', \Session::get('orderId'));
+            foreach($orders as $order) {
+                $price = $order->product->sale_price?$order->product->sale_price:$order->product->original_price;
+                $fee = 0;
+                $commission = $this->paymentHistoryResponsitory->getCostCommission($order->product->category->category_id, 'seller');
+                if( $commission->type == 'percent' ) {
+                    $fee = ($price*$commission->cost)/100;
+                    if( $fee > $commission->maximum ) {
+                        $fee = $commission->maximum;
+                    }
+                }else{
+                    $fee = $commission->cost;
+                }
+                $param = [
+                    'seller_id' => $order->product->seller_id,
+                    'order_id' => \Session::get('orderId'),
+                    'customer' => \Session::get('fullname'),
+                    'original_price' => $price,
+                    'price_after_fee' => $price + $fee,
+                    'price_fee' => $fee,
+                    'note' => 'Payment Method Paypal, Seller'
+                ];
+                $this->paymentHistoryResponsitory->create($param);
+            }
         }
         Cart::destroy();
         session()->forget('SetExpressCheckoutResult');
         session()->forget('orderId');
+        session()->forget('fullname');
         return view('front.ecommerce.checkout-thankyou', compact('data'));
     }
 

@@ -16,6 +16,7 @@ use App\Repositories\HuntingResponsitory;
 use App\Repositories\ProductOfferResponsitory;
 use App\Repositories\HuntingImageResponsitory;
 use App\Repositories\ProductOfferMetaResponsitory;
+use App\Repositories\PaymentHistoryResponsitory;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,8 +45,9 @@ class ProductController extends Controller
     private $huntingImageResponsitory;
     private $PayPal;
     private $productOfferMetaResponsitory;
+    private $paymentHistoryResponsitory;
 
-    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory, CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SettingRepository $settingRepository, SwapItemResponsitory $swapItemResponsitory, UserResponsitory $userResponsitory, HuntingResponsitory $huntingResponsitory, ProductOfferResponsitory $productOfferResponsitory, HuntingImageResponsitory $huntingImageResponsitory, ProductOfferMetaResponsitory $productOfferMetaResponsitory){
+    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory, CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SettingRepository $settingRepository, SwapItemResponsitory $swapItemResponsitory, UserResponsitory $userResponsitory, HuntingResponsitory $huntingResponsitory, ProductOfferResponsitory $productOfferResponsitory, HuntingImageResponsitory $huntingImageResponsitory, ProductOfferMetaResponsitory $productOfferMetaResponsitory, PaymentHistoryResponsitory $paymentHistoryResponsitory){
         $this->productRepository = $productRepository;
         $this->productReviewResponsitory = $productReviewResponsitory;
         $this->categoryResponsitory = $categoryResponsitory;

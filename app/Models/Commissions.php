@@ -18,7 +18,7 @@ class Commissions extends Model
         'product_type'
     ];
 
-    public function categories(){
+    public function category(){
         return $this->hasOne('App\Models\Category', 'id', 'category_id');
     }
 }

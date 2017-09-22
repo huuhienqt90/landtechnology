@@ -57,6 +57,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('coupon', 'CouponController');
         // Order
         Route::resource('order','OrderController');
+        // Payment history
+        Route::resource('payment-history','PaymentHistoryController');
     });
 
 });

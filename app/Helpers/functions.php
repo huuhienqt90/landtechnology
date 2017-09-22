@@ -38,9 +38,7 @@ function setTypeCommission(){
 
 function setProductTypeCommission(){
 	return $array = [
-		'hunting' => 'Hunting',
-		'seller' => 'Seller',
-		'swap' => 'Swap'
+		'seller' => 'Seller'
 	];
 }
 
@@ -49,6 +47,13 @@ function setActiveProduct(){
 		'active' => 'Active',
 		'pending' => 'Pending',
 		'need-confirm' => 'Need confirm'
+	];
+}
+
+function setPaymentMethod() {
+	return $array = [
+		'paypal' => 'PayPal',
+		'stripe' => 'Stripe'
 	];
 }
 

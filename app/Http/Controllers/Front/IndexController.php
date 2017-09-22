@@ -6,7 +6,6 @@ use App\Repositories\ProductResponsitory;
 use App\Repositories\HuntingResponsitory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 class IndexController extends Controller
 {

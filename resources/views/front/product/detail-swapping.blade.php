@@ -83,7 +83,7 @@
                             @endif
                         @endif
                     @else
-                        <p>Please login to swap! <a href="{{ route('front.user.login') }}">Click here</a> to login.</p>
+                        <p>Please login to swap! <a href="{{ route('login') }}">Click here</a> to login.</p>
                     @endif
                 <div class="list">
                     <img src="{{ asset('assets/images/list-add-to-cart-product.png') }}" title="images list">
@@ -131,7 +131,7 @@
                                         <h4 class="media-heading">{{ $item->user->getFullName() }}</h4>
                                         <a href="{{ route('front.product.swapdetail', $item->product->slug) }}" target="_blank">{{ $item->product->name }}</a>
                                     </div>
-                                    <div class="media-right"> 
+                                    <div class="media-right">
                                         @if(Auth::user() != null && $item->user_id == Auth::user()->id)
                                             <a href="{{ route('front.product.doconfirmswap', ['product_id' => $product->id, 'user_id' => $product->seller_id,'created_by' => $item->created_by, 'product_by' => $item->product_by]) }}" title="Agree" class="btn btn-warning btn-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
                                         @endif
@@ -205,7 +205,7 @@
             {!! Form::open(['route' => 'front.product.doSwap']) !!}
             <div class="modal-body">
                 @if(!Auth::user())
-                    <p>Please login to continue! <a href="{{ route('front.user.login') }}">Click here</a> to login.</p>
+                    <p>Please login to continue! <a href="{{ route('login') }}">Click here</a> to login.</p>
                 @else
                     @if(isset($arrListProductSwaps) && ($arrListProductSwaps != null))
                     <div class="form-group">
