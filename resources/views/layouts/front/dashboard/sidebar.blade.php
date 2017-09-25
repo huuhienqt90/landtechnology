@@ -4,13 +4,6 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                <a href="{{ route('front.dashboard.index') }}"><span class="glyphicon glyphicon-folder-close"></span>Balances</a>
-                </h4>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-user">
                     </span>My Account</a>
                 </h4>
