@@ -59,6 +59,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('order','OrderController');
         // Payment history
         Route::resource('payment-history','PaymentHistoryController');
+        Route::get('paid/{id?}','PaymentHistoryController@paid')->name('paid');
     });
 
 });

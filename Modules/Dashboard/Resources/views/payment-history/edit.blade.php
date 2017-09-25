@@ -32,7 +32,7 @@
                                 <td>{{ $payment->note }}</td>
                                 <td>{{ $payment->status }}</td>
                                 <td>
-                                    <a class="btn btn-info btn-flat" href="#" onclick="return confirm('Are you sure paid?');"><i class="fa fa-location-arrow" aria-hidden="true"></i></a>
+                                    <a class="btn btn-info btn-flat" href="{{ route('dashboard.paid', $payment->id) }}" onclick="return confirm('Are you sure paid?');"><i class="fa fa-location-arrow" aria-hidden="true"></i></a>
                                 </td>
                             </tr>
                             @endforeach
