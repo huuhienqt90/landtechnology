@@ -13,6 +13,7 @@ use Hamilton\PayPal\Rest\ApiContext;
 use Hamilton\PayPal\Api\PayoutSenderBatchHeader;
 use Hamilton\PayPal\Api\PayoutItem;
 use Hamilton\PayPal\Api\Currency;
+use Hamilton\PayPal\Common\ResultPrinter;
 use App\Repositories\UserResponsitory;
 use Config;
 class PaymentHistoryController extends Controller
@@ -30,8 +31,8 @@ class PaymentHistoryController extends Controller
         $this->orderResponsitory = $orderResponsitory;
         $this->userResponsitory = $userResponsitory;
 
-        $client_id = 'AbFe_YLDLF6VnRSFtD0fZHI9YuNNWMY3eOx6Dg3LNXwusLZyI7WjpiSqTBc9Kk0rr6xil_u1Wt0Y49SP';
-        $secret = 'EAbob2VpTck0P2wHNJarzxfL82mkUcTYhnof3bLRTd43UM7Ffiqzr7BL8VZy8W-Ly-XPZ-zxeyvZ-kfg';
+        $client_id = 'AZrF7au7DWcIKrKApaOzaVZq-8nd2CD3_adxF5lrmJEARxJVTsbSGXYalT53l8WVdygjmZzT6LJM2Hzs';
+        $secret = 'EP8lLv8sWIMNqe3WrQ2gLXqIjhvsW-dX3hUDRLz2aEsQMfLfCftpCsEDK81Bu4PZxwUMq6u5pruzk2y-';
         $this->apiContext = new ApiContext(new OAuthTokenCredential($client_id, $secret));
         $this->apiContext->setConfig(
             array(
@@ -53,7 +54,38 @@ class PaymentHistoryController extends Controller
     public function index()
     {
         $histories = $this->orderResponsitory->all();
-        return view('dashboard::payment-history.index', compact('histories'));
+        $payouts = new Payout();
+        $senderBatchHeader = new PayoutSenderBatchHeader();
+        $senderBatchHeader->setSenderBatchId(uniqid())
+            ->setEmailSubject("You have a Payout!");
+
+        $senderItem = new PayoutItem();
+        $senderItem->setRecipientType('Email')
+            ->setNote('Thanks for your patronage!')
+            ->setReceiver('testcustomerland@gmail.com')
+            ->setAmount(new Currency('{
+                                "value":"200",
+                                "currency":"USD"
+                            }'));
+        $payouts->setSenderBatchHeader($senderBatchHeader)
+            ->addItem($senderItem);
+            // For Sample Purposes Only.
+        $request = clone $payouts;
+        // ### Create Payout
+        try {
+            $output = $payouts->createSynchronous($this->apiContext);
+        } catch (\Exception $ex) {
+            session()->flash('alert-danger', $ex->getMessage());
+            return view('dashboard::payment-history.index', compact('histories'));
+        }
+        if( count( $output->getItems()[0]->getErrors() ) && !empty( $output->getItems()[0]->getErrors()->getMessage() ) ){
+            session()->flash('alert-danger', $output->getItems()[0]->getErrors()->getMessage());
+            return view('dashboard::payment-history.index', compact('histories'));
+        }else{
+            session()->flash('alert-success', 'Send payout success');
+            return view('dashboard::payment-history.index', compact('histories'));
+        }
+
     }
 
     /**
@@ -115,12 +147,11 @@ class PaymentHistoryController extends Controller
         $order = $this->paymentHistoryResponsitory->find($id);
         $user = $this->userResponsitory->find($order->seller_id);
         if($user->email_paypal == null) {
-            return redirect()->back()->with('msg','User have not email paypal!');
+            return redirect()->back()->with('alert-danger','User have not email paypal!');
         }
         $senderBatchHeader = new PayoutSenderBatchHeader();
-        
-        $senderBatchHeader->setSenderBatchId(uniqid())->setEmailSubject("You have a Payout!");        // #### Sender Item
-        // Please note that if you are using single payout with sync mode, you can only pass one Item in the request
+
+        $senderBatchHeader->setSenderBatchId(uniqid())->setEmailSubject("Pay for your product sold!!");
         $senderItem = new PayoutItem();
         $senderItem->setRecipientType('Email')
             ->setNote('Thanks for your patronage!')
@@ -133,18 +164,21 @@ class PaymentHistoryController extends Controller
         $payouts = new Payout();
         $payouts->setSenderBatchHeader($senderBatchHeader)
             ->addItem($senderItem);
+
         // For Sample Purposes Only.
         $request = clone $payouts;
+
         // ### Create Payout
         try {
             $output = $payouts->createSynchronous($this->apiContext);
-        } catch (Exception $ex) {
-            // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
-            ResultPrinter::printError("Created Single Synchronous Payout", "Payout", null, $request, $ex);
-            exit(1);
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('alert-danger', $ex->getMessage());
         }
-        // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
-         ResultPrinter::printResult("Created Single Synchronous Payout", "Payout", $output->getBatchHeader()->getPayoutBatchId(), $request, $output);
-        return $output;
+        if( count( $output->getItems()[0]->getErrors() ) && !empty( $output->getItems()[0]->getErrors()->getMessage() ) ){
+            return redirect()->back()->with('alert-danger', $output->getItems()[0]->getErrors()->getMessage());
+        }else{
+            $this->paymentHistoryResponsitory->update(['status' => 'paid'], $id);
+            return redirect()->back()->with('alert-success', 'Send payout success');
+        }
     }
 }
