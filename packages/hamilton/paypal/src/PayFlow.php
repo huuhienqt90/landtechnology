@@ -1,7 +1,7 @@
-<?php namespace App\PaymentMethod\PayPal;
+<?php namespace Hamilton\PayPal;
 /**
  *	An open source PHP library written to easily work with PayPal's PayFlow API
- *	
+ *
  *	Email:  service@angelleye.com
  *  Facebook: angelleyeconsulting
  *  Twitter: angelleye
@@ -30,14 +30,14 @@
 /**
  * PayPal PayFlow Gateway Class
  *
- * This class is a wrapper for the PayFlow gateway.  
+ * This class is a wrapper for the PayFlow gateway.
  *
  * @package 		paypal-php-library
  * @author			Andrew Angell <service@angelleye.com>
  */
 
-class PayFlow extends PayPal 
-{	 
+class PayFlow extends PayPal
+{
 	/**
 	 * Constructor
 	 *
@@ -48,11 +48,11 @@ class PayFlow extends PayPal
 	function __construct($DataArray)
 	{
 		parent::__construct($DataArray);
-		
+
 		$this->APIVendor = isset($DataArray['APIVendor']) ? $DataArray['APIVendor'] : '';
 		$this->APIPartner = isset($DataArray['APIPartner']) ? $DataArray['APIPartner'] : '';
 		$this->Verbosity = isset($DataArray['Verbosity']) ? $DataArray['Verbosity'] : 'HIGH';
-		
+
 		if($this->Sandbox)
 		{
 			$this->APIEndPoint = 'https://pilot-payflowpro.paypal.com';
@@ -61,9 +61,9 @@ class PayFlow extends PayPal
 		{
 			$this->APIEndPoint = 'https://payflowpro.paypal.com';
 		}
-		
+
 		$this->NVPCredentials = 'BUTTONSOURCE['.strlen($this->APIButtonSource).']='.$this->APIButtonSource.'&VERBOSITY['.strlen($this->Verbosity).']='.$this->Verbosity.'&USER['.strlen($this->APIUsername).']='.$this->APIUsername.'&VENDOR['.strlen($this->APIVendor).']='.$this->APIVendor.'&PARTNER['.strlen($this->APIPartner).']='.$this->APIPartner.'&PWD['.strlen($this->APIPassword).']='.$this->APIPassword;
-		
+
 		$this->TransactionStateCodes = array(
 				'1' => 'Error',
 				'6' => 'Settlement Pending',
@@ -72,11 +72,11 @@ class PayFlow extends PayPal
 				'11' => 'Settlement Failed',
 				'14' => 'Settlement Incomplete'
 		);
-	}	
-	
+	}
+
 	/*
 	 * GetTransactionStateCodeMessage
-	 * 
+	 *
 	 * @access public
 	 * @param	int		$Code	Transaction state code to obtain the full message for.
 	 * @return	string	Returns the full message for the supplied code.
@@ -85,15 +85,15 @@ class PayFlow extends PayPal
 	{
 		return $this -> TransactionStateCodes[$Code];
 	}
-	
+
 	/*
 	 * CURLRequest
-	 * 
+	 *
 	 * @access public
 	 * @param string Request
 	 * @return string
 	 */
-	 
+
 	/**
 	 * Send the API request to PayFlow using CURL.
 	 *
@@ -106,9 +106,9 @@ class PayFlow extends PayPal
 	 */
 	function CURLRequest($Request = "", $APIName = "", $APIOperation = "", $PrintHeaders = false)
 	{
-	
+
 		$unique_id = date('ymd-H').rand(1000,9999);
-	
+
 		$headers[] = "Content-Type: text/namevalue"; //or text/xml if using XMLPay.
 		$headers[] = "Content-Length : " . strlen ($Request);  // Length of data to be passed
 		$headers[] = "X-VPS-Timeout: 45";
@@ -119,7 +119,7 @@ class PayFlow extends PayPal
             echo '<pre />';
             print_r($headers);
         }
-	
+
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($curl, CURLOPT_HEADER, 1);
@@ -133,7 +133,7 @@ class PayFlow extends PayPal
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_POST, 1);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $Request);
-	
+
 		// Try to submit the transaction up to 3 times with 5 second delay.  This can be used
 		// in case of network issues.  The idea here is since you are posting via HTTPS there
 		// could be general network issues, so try a few times before you tell customer there
@@ -143,7 +143,7 @@ class PayFlow extends PayPal
 		{
 			$Response = curl_exec($curl);
 			$headers = curl_getinfo($curl);
-				
+
 			if ($headers['http_code'] != 200) {
 				sleep(5);  // Let's wait 5 seconds to see if its a temporary network issue.
 			}
@@ -153,13 +153,13 @@ class PayFlow extends PayPal
 				break;
 			}
 		}
-	
+
 		curl_close($curl);
-	
+
 		return $Response;
 	}
-	
-	
+
+
 	/**
 	 * Converts an NVP string to an array with URL decoded values
 	 *
@@ -173,10 +173,10 @@ class PayFlow extends PayPal
 		parse_str($NVPString,$proArray);
 		return $proArray;
 	}
-	
+
 	/**
 	 * Processes the transaction on the PayFlow gateway.
-	 * 
+	 *
 	 * @access public
 	 * @param	mixed[]	$DataArray			Array of request parameters.
 	 * @return	mixed[]	$NVPResponseArray	Returns the PayFlow response data as an array.
@@ -184,7 +184,7 @@ class PayFlow extends PayPal
 	function ProcessTransaction($DataArray)
 	{
 		$NVPRequest = $this->NVPCredentials;
-		
+
 		foreach($DataArray as $DataArrayVar => $DataArrayVal)
 		{
 			if($DataArrayVal != '')
@@ -192,17 +192,17 @@ class PayFlow extends PayPal
 				$NVPRequest .= '&'.strtoupper($DataArrayVar).'['.strlen($DataArrayVal).']='.$DataArrayVal;
 			}
 		}
-		
+
 		$NVPResponse = $this->CURLRequest($NVPRequest);
 		$NVPResponse = strstr($NVPResponse,"RESULT");
 		$NVPResponseArray = $this->NVPToArray($NVPResponse);
 
         $this->Logger($this->LogPath, 'PayFlowRequest', $NVPRequest);
         $this->Logger($this->LogPath, 'PayFlowResponse', $NVPResponse);
-		
+
 		$NVPResponseArray['RAWREQUEST'] = $NVPRequest;
 		$NVPResponseArray['RAWRESPONSE'] = $NVPResponse;
-		
+
 		return $NVPResponseArray;
 	}
 }

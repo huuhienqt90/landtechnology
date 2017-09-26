@@ -32,16 +32,16 @@
                                         @endforeach
                                         <td>{{ $order->status }}</td>
                                         <td style="text-align: center;">
-                                                <form method="post" action="{{ route('dashboard.payment-history.destroy', $order->id) }}">
-                                                    {{ method_field('DELETE') }}
-                                                    <div class="form-group">
+                                            <form method="post" action="{{ route('dashboard.payment-history.destroy', $order->id) }}">
+                                                {{ method_field('DELETE') }}
+                                                <div class="form-group">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <div class="btn-group">
                                                         <a class="btn btn-info btn-flat" href="{{ route('dashboard.payment-history.edit', $order->id) }}"><i class="fa fa-pencil-square-o"></i></a>
                                                         <button type="submit" class="btn btn-danger btn-delete-item btn-flat" onclick="return confirm('Are you sure to delete this item?');"><i class="fa fa-times"></i></button>
                                                     </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

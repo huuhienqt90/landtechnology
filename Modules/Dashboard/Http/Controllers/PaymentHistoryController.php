@@ -8,7 +8,6 @@ use Illuminate\Routing\Controller;
 use App\Repositories\PaymentHistoryResponsitory;
 use App\Repositories\OrderResponsitory;
 use Hamilton\PayPal\Api\Payout;
-use Hamilton\PayPal\Auth\OAuthTokenCredential;
 use Hamilton\PayPal\Rest\ApiContext;
 use Hamilton\PayPal\Api\PayoutSenderBatchHeader;
 use Hamilton\PayPal\Api\PayoutItem;
@@ -30,22 +29,7 @@ class PaymentHistoryController extends Controller
         $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
         $this->orderResponsitory = $orderResponsitory;
         $this->userResponsitory = $userResponsitory;
-
-        $client_id = 'AZrF7au7DWcIKrKApaOzaVZq-8nd2CD3_adxF5lrmJEARxJVTsbSGXYalT53l8WVdygjmZzT6LJM2Hzs';
-        $secret = 'EP8lLv8sWIMNqe3WrQ2gLXqIjhvsW-dX3hUDRLz2aEsQMfLfCftpCsEDK81Bu4PZxwUMq6u5pruzk2y-';
-        $this->apiContext = new ApiContext(new OAuthTokenCredential($client_id, $secret));
-        $this->apiContext->setConfig(
-            array(
-                'mode' => 'sandbox',
-                'log.LogEnabled' => true,
-                'log.FileName' => '../PayPal.log',
-                'log.LogLevel' => 'DEBUG', // PLEASE USE `INFO` LEVEL FOR LOGGING IN LIVE ENVIRONMENTS
-                'cache.enabled' => true,
-                // 'http.CURLOPT_CONNECTTIMEOUT' => 30
-                // 'http.headers.PayPal-Partner-Attribution-Id' => '123123123'
-                //'log.AdapterFactory' => '\PayPal\Log\DefaultLogFactory' // Factory class implementing \PayPal\Log\PayPalLogFactory
-            )
-        );
+        $this->apiContext = new ApiContext();
     }
     /**
      * Display a listing of the resource.
@@ -54,38 +38,7 @@ class PaymentHistoryController extends Controller
     public function index()
     {
         $histories = $this->orderResponsitory->all();
-        $payouts = new Payout();
-        $senderBatchHeader = new PayoutSenderBatchHeader();
-        $senderBatchHeader->setSenderBatchId(uniqid())
-            ->setEmailSubject("You have a Payout!");
-
-        $senderItem = new PayoutItem();
-        $senderItem->setRecipientType('Email')
-            ->setNote('Thanks for your patronage!')
-            ->setReceiver('testcustomerland@gmail.com')
-            ->setAmount(new Currency('{
-                                "value":"200",
-                                "currency":"USD"
-                            }'));
-        $payouts->setSenderBatchHeader($senderBatchHeader)
-            ->addItem($senderItem);
-            // For Sample Purposes Only.
-        $request = clone $payouts;
-        // ### Create Payout
-        try {
-            $output = $payouts->createSynchronous($this->apiContext);
-        } catch (\Exception $ex) {
-            session()->flash('alert-danger', $ex->getMessage());
-            return view('dashboard::payment-history.index', compact('histories'));
-        }
-        if( count( $output->getItems()[0]->getErrors() ) && !empty( $output->getItems()[0]->getErrors()->getMessage() ) ){
-            session()->flash('alert-danger', $output->getItems()[0]->getErrors()->getMessage());
-            return view('dashboard::payment-history.index', compact('histories'));
-        }else{
-            session()->flash('alert-success', 'Send payout success');
-            return view('dashboard::payment-history.index', compact('histories'));
-        }
-
+        return view('dashboard::payment-history.index', compact('histories'));
     }
 
     /**
@@ -142,7 +95,7 @@ class PaymentHistoryController extends Controller
     {
     }
 
-    public function paid(Request $request, $id)
+    public function paid($id)
     {
         $order = $this->paymentHistoryResponsitory->find($id);
         $user = $this->userResponsitory->find($order->seller_id);

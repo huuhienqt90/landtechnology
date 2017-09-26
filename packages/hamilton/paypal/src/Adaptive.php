@@ -1,7 +1,7 @@
-<?php namespace App\PaymentMethod\PayPal;
+<?php namespace Hamilton\PayPal;
 /**
  *	An open source PHP library written to easily work with PayPal's Adaptive Payments API
- *	
+ *
  *	Email:  service@angelleye.com
  *  Facebook: angelleyeconsulting
  *  Twitter: angelleye
@@ -30,7 +30,7 @@
 /**
  * PayPal Adaptive Payments Class
  *
- * This class houses all of the Adaptive Payments specific API's.  
+ * This class houses all of the Adaptive Payments specific API's.
  *
  * @package 		paypal-php-library
  * @author			Andrew Angell <service@angelleye.com>
@@ -58,7 +58,7 @@ class Adaptive extends PayPal
 	function __construct($DataArray)
 	{
 		parent::__construct($DataArray);
-		
+
 		$this->XMLNamespace = 'http://svcs.paypal.com/types/ap';
 		$this->DeviceID = isset($DataArray['DeviceID']) ? $DataArray['DeviceID'] : '';
 		$this->IPAddress = isset($DataArray['IPAddress']) ? $DataArray['IPAddress'] : $_SERVER['REMOTE_ADDR'];
@@ -68,7 +68,7 @@ class Adaptive extends PayPal
 		$this->DeveloperAccountEmail = isset($DataArray['DeveloperAccountEmail']) ? $DataArray['DeveloperAccountEmail'] : '';
 
 		if($this -> Sandbox)
-		{	
+		{
 			// Sandbox Credentials
 			$this -> ApplicationID = isset($DataArray['ApplicationID']) ? $DataArray['ApplicationID'] : '';
 			$this -> APIUsername = isset($DataArray['APIUsername']) && $DataArray['APIUsername'] != '' ? $DataArray['APIUsername'] : '';
@@ -86,7 +86,7 @@ class Adaptive extends PayPal
 			$this -> EndPointURL = isset($DataArray['EndPointURL']) && $DataArray['EndPointURL'] != ''  ? $DataArray['EndPointURL'] : 'https://svcs.paypal.com/';
 		}
 	}
-	
+
 	/**
 	 * Build all HTTP headers required for the API call.
 	 *
@@ -94,43 +94,43 @@ class Adaptive extends PayPal
 	 * @param	boolean	$PrintHeaders - Whether to print headers on screen or not (true/false)
 	 * @return	array $headers
 	 */
-	
+
 	/**
 	 * Builds HTTP headers for an API request.
 	 *
 	 * @access	public
 	 * @param	boolean	$PrintHeaders	Option to output headers to the screen (true/false).
-	 * @return	string	$headers		String of HTTP headers.	
+	 * @return	string	$headers		String of HTTP headers.
 	 */
 	function BuildHeaders($PrintHeaders)
 	{
 		$headers = array(
-						'X-PAYPAL-SECURITY-USERID: ' . $this -> APIUsername, 
-						'X-PAYPAL-SECURITY-PASSWORD: ' . $this -> APIPassword, 
-						'X-PAYPAL-SECURITY-SIGNATURE: ' . $this -> APISignature, 
-						'X-PAYPAL-SECURITY-SUBJECT: ' . $this -> APISubject, 
-						'X-PAYPAL-SECURITY-VERSION: ' . $this -> APIVersion, 
-						'X-PAYPAL-REQUEST-DATA-FORMAT: XML', 
-						'X-PAYPAL-RESPONSE-DATA-FORMAT: XML', 
-						'X-PAYPAL-APPLICATION-ID: ' . $this -> ApplicationID, 
-						'X-PAYPAL-DEVICE-ID: ' . $this -> DeviceID, 
+						'X-PAYPAL-SECURITY-USERID: ' . $this -> APIUsername,
+						'X-PAYPAL-SECURITY-PASSWORD: ' . $this -> APIPassword,
+						'X-PAYPAL-SECURITY-SIGNATURE: ' . $this -> APISignature,
+						'X-PAYPAL-SECURITY-SUBJECT: ' . $this -> APISubject,
+						'X-PAYPAL-SECURITY-VERSION: ' . $this -> APIVersion,
+						'X-PAYPAL-REQUEST-DATA-FORMAT: XML',
+						'X-PAYPAL-RESPONSE-DATA-FORMAT: XML',
+						'X-PAYPAL-APPLICATION-ID: ' . $this -> ApplicationID,
+						'X-PAYPAL-DEVICE-ID: ' . $this -> DeviceID,
 						'X-PAYPAL-DEVICE-IPADDRESS: ' . $this -> IPAddress
 						);
-		
+
 		if($this -> Sandbox)
 		{
 			array_push($headers, 'X-PAYPAL-SANDBOX-EMAIL-ADDRESS: '.$this->DeveloperAccountEmail);
 		}
-		
+
 		if($PrintHeaders)
 		{
 			echo '<pre />';
 			print_r($headers);
 		}
-		
+
 		return $headers;
 	}
-	
+
 	/**
 	 * Send the API request to PayPal using CURL.
 	 *
@@ -151,17 +151,17 @@ class Adaptive extends PayPal
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $Request);
 				curl_setopt($curl, CURLOPT_HTTPHEADER, $this -> BuildHeaders($this->PrintHeaders));
-								
+
 		if($this -> APIMode == 'Certificate')
 		{
 			curl_setopt($curl, CURLOPT_SSLCERT, $this -> PathToCertKeyPEM);
 		}
-		
-		$Response = curl_exec($curl);		
+
+		$Response = curl_exec($curl);
 		curl_close($curl);
 		return $Response;
 	}
-	
+
 	/**
 	 * Get all errors returned from PayPal
 	 *
@@ -173,7 +173,7 @@ class Adaptive extends PayPal
 	{
 		$DOM = new DOMDocument();
 		$DOM -> loadXML($XML);
-		
+
 		$Errors = $DOM -> getElementsByTagName('error') -> length > 0 ? $DOM -> getElementsByTagName('error') : array();
 		$ErrorsArray = array();
 		foreach($Errors as $Error)
@@ -187,23 +187,23 @@ class Adaptive extends PayPal
 			$Parameter = $Error -> getElementsByTagName('parameter') -> length > 0 ? $Error -> getElementsByTagName('parameter') -> item(0) -> nodeValue : '';
 			$Severity = $Error -> getElementsByTagName('severity') -> length  > 0 ? $Error -> getElementsByTagName('severity') -> item(0) -> nodeValue : '';
 			$Subdomain = $Error -> getElementsByTagName('subdomain') -> length > 0 ? $Error -> getElementsByTagName('subdomain') -> item(0) -> nodeValue : '';
-			
+
 			$CurrentError = array(
-								  'Receiver' => $Receiver, 
-								  'Category' => $Category, 
-								  'Domain' => $Domain, 
-								  'ErrorID' => $ErrorID, 
-								  'ExceptionID' => $ExceptionID, 
-								  'Message' => $Message, 
-								  'Parameter' => $Parameter, 
-								  'Severity' => $Severity, 
+								  'Receiver' => $Receiver,
+								  'Category' => $Category,
+								  'Domain' => $Domain,
+								  'ErrorID' => $ErrorID,
+								  'ExceptionID' => $ExceptionID,
+								  'Message' => $Message,
+								  'Parameter' => $Parameter,
+								  'Severity' => $Severity,
 								  'Subdomain' => $Subdomain
 								  );
 			array_push($ErrorsArray, $CurrentError);
 		}
 		return $ErrorsArray;
 	}
-	
+
 	/**
 	 * Get the request envelope from the XML string
 	 *
@@ -216,7 +216,7 @@ class Adaptive extends PayPal
 		$XML .= '<detailLevel>' . $this -> DetailLevel . '</detailLevel>';
 		$XML .= '<errorLanguage>' . $this -> ErrorLanguage . '</errorLanguage>';
 		$XML .= '</requestEnvelope>';
-		
+
 		return $XML;
 	}
 
@@ -255,7 +255,7 @@ class Adaptive extends PayPal
 	 * @return	mixed[] $ResponseDataArray	Returns XML result parsed as an array.
 	 */
 	function Pay($DataArray)
-	{	
+	{
 		// PayRequest Fields
 		$PayRequestFields = isset($DataArray['PayRequestFields']) ? $DataArray['PayRequestFields'] : array();
 		$ActionType = isset($PayRequestFields['ActionType']) ? $PayRequestFields['ActionType'] : '';
@@ -270,7 +270,7 @@ class Adaptive extends PayPal
 		$ReverseAllParallelPaymentsOnError = isset($PayRequestFields['ReverseAllParallelPaymentsOnError']) ? $PayRequestFields['ReverseAllParallelPaymentsOnError'] : '';
 		$SenderEmail = isset($PayRequestFields['SenderEmail']) ? $PayRequestFields['SenderEmail'] : '';
 		$TrackingID = isset($PayRequestFields['TrackingID']) ? $PayRequestFields['TrackingID'] : '';
-		
+
 		// ClientDetails Fields
 		$ClientDetailsFields = isset($DataArray['ClientDetailsFields']) ? $DataArray['ClientDetailsFields'] : array();
 		$CustomerID = isset($ClientDetailsFields['CustomerID']) ? $ClientDetailsFields['CustomerID'] : '';
@@ -278,10 +278,10 @@ class Adaptive extends PayPal
 		$GeoLocation = isset($ClientDetailsFields['GeoLocation']) ? $ClientDetailsFields['GeoLocation'] : '';
 		$Model = isset($ClientDetailsFields['Model']) ? $ClientDetailsFields['Model'] : '';
 		$PartnerName = isset($ClientDetailsFields['PartnerName']) ? $ClientDetailsFields['PartnerName'] : '';
-		
+
 		// FundingConstraint Fields
 		$FundingTypes = isset($DataArray['FundingTypes']) ? $DataArray['FundingTypes'] : array();
-		
+
 		// Receivers Fields
 		$Receivers = isset($DataArray['Receivers']) ? $DataArray['Receivers'] : array();
 
@@ -292,14 +292,14 @@ class Adaptive extends PayPal
 		$AccountIdentifierFields = isset($DataArray['AccountIdentifierFields']) ? $DataArray['AccountIdentifierFields'] : array();
 		$AccountEmail = isset($AccountIdentifierFields['Email']) ? $AccountIdentifierFields['Email'] : '';
 		$AccountPhone = isset($AccountIdentifierFields['Phone']) ? $AccountIdentifierFields['Phone'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<PayRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $ActionType != '' ? '<actionType xmlns="">' . $ActionType . '</actionType>' : '';
 		$XMLRequest .= $CancelURL != '' ? '<cancelUrl xmlns="">' . $CancelURL . '</cancelUrl>' : '';
-		
+
 		if(count($ClientDetailsFields) > 0)
 		{
 			$XMLRequest .= '<clientDetails xmlns="">';
@@ -311,40 +311,40 @@ class Adaptive extends PayPal
 			$XMLRequest .= $this -> IPAddress != '' ? '<ipAddress xmlns="">' . $this -> IPAddress . '</ipAddress>' : '';
 			$XMLRequest .= $Model != '' ? '<model xmlns="">' . $Model . '</model>' : '';
 			$XMLRequest .= $PartnerName != '' ? '<partnerName xmlns="">' . $PartnerName . '</partnerName>' : '';
-			$XMLRequest .= '</clientDetails>';		
+			$XMLRequest .= '</clientDetails>';
 		}
-		
+
 		$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 		$XMLRequest .= $FeesPayer != '' ? '<feesPayer xmlns="">' . $FeesPayer . '</feesPayer>' : '';
-		
+
 		if(count($FundingTypes) > 0)
-		{		
+		{
 			$XMLRequest .= '<fundingConstraint xmlns="">';
 			$XMLRequest .= '<allowedFundingType xmlns="">';
-			
+
 			foreach($FundingTypes as $FundingType)
 			{
 				$XMLRequest .= '<fundingTypeInfo xmlns="">';
 				$XMLRequest .= '<fundingType xmlns="">' . $FundingType . '</fundingType>';
 				$XMLRequest .= '</fundingTypeInfo>';
 			}
-			
+
 			$XMLRequest .= '</allowedFundingType>';
 			$XMLRequest .= '</fundingConstraint>';
 		}
-		
+
 		$XMLRequest .= $IPNNotificationURL != '' ? '<ipnNotificationUrl xmlns="">' . $IPNNotificationURL . '</ipnNotificationUrl>' : '';
 		$XMLRequest .= $Memo != '' ? '<memo xmlns="">' . $Memo . '</memo>' : '';
 		$XMLRequest .= $Pin != '' ? '<pin xmlns="">' . $Pin . '</pin>' : '';
 		$XMLRequest .= $PreapprovalKey != '' ? '<preapprovalKey xmlns="">' . $PreapprovalKey . '</preapprovalKey>' : '';
-		
+
 		$XMLRequest .= '<receiverList xmlns="">';
-		
+
 		$IsDigitalGoods = FALSE;
 		foreach($Receivers as $Receiver)
 		{
 			$IsDigitalGoods = strtoupper($Receiver['PaymentType']) == 'DIGITALGOODS' ? TRUE : FALSE;
-			
+
 			$XMLRequest .= '<receiver xmlns="">';
 			$XMLRequest .= $Receiver['Amount'] != '' ? '<amount xmlns="">' . $Receiver['Amount'] . '</amount>' : '';
 			$XMLRequest .= $Receiver['Email'] != '' ? '<email xmlns="">' . $Receiver['Email'] . '</email>' : '';
@@ -352,7 +352,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $Receiver['InvoiceID'] != '' ? '<invoiceId xmlns="">' . $Receiver['InvoiceID'] . '</invoiceId>' : '';
 			$XMLRequest .= $Receiver['PaymentType'] != '' ? '<paymentType xmlns="">' . $Receiver['PaymentType'] . '</paymentType>' : '';
 			$XMLRequest .= $Receiver['PaymentSubType'] != '' ? '<paymentSubType xmlns="">' . $Receiver['PaymentSubType'] . '</paymentSubType>' : '';
-			
+
 			if($Receiver['Phone']['CountryCode'] != '')
 			{
 				$XMLRequest .= '<phone xmlns="">';
@@ -361,24 +361,24 @@ class Adaptive extends PayPal
 				$XMLRequest .= $Receiver['Phone']['Extension'] != '' ? '<extension xmlns="">' . $Receiver['Phone']['Extension'] . '</extension>' : '';
 				$XMLRequest .= '</phone>';
 			}
-			
+
 			$XMLRequest .= $Receiver['Primary'] != '' ? '<primary xmlns="">' . strtolower($Receiver['Primary']) . '</primary>' : '';
 			$XMLRequest .= '</receiver>';
 		}
 		$XMLRequest .= '</receiverList>';
-		
+
 		if(count($SenderIdentifierFields) > 0)
 		{
 			$XMLRequest .= '<sender>';
 			$XMLRequest .= '<useCredentials xmlns="">' . $SenderIdentifierFields['UseCredentials'] . '</useCredentials>';
-			$XMLRequest .= '</sender>';	
+			$XMLRequest .= '</sender>';
 		}
-		
+
 		if(count($AccountIdentifierFields) > 0)
 		{
 			$XMLRequest .= '<account xmlns="">';
 			$XMLRequest .= $AccountEmail != '' ? '<email xmlns="">' . $AccountEmail . '</email>' : '';
-			
+
 			if($AccountPhone != '')
 			{
 				$XMLRequest .= '<phone xmlns="">';
@@ -387,16 +387,16 @@ class Adaptive extends PayPal
 				$XMLRequest .= $AccountPhone['Extension'] != '' ? '<extension xmlns="">' . $AccountPhone['Extension'] . '</extension>' : '';
 				$XMLRequest .= '</phone>';
 			}
-			
+
 			$XMLRequest .= '</account>';
 		}
-		
+
 		$XMLRequest .= $ReturnURL != '' ? '<returnUrl xmlns="">' . $ReturnURL . '</returnUrl>' : '';
 		$XMLRequest .= $ReverseAllParallelPaymentsOnError != '' ? '<reverseAllParallelPaymentsOnError xmlns="">' . $ReverseAllParallelPaymentsOnError . '</reverseAllParallelPaymentsOnError>' : '';
 		$XMLRequest .= $SenderEmail != '' ? '<senderEmail xmlns="">' . $SenderEmail . '</senderEmail>' : '';
 		$XMLRequest .= $TrackingID != '' ? '<trackingId xmlns="">' . $TrackingID . '</trackingId>' : '';
 		$XMLRequest .= '</PayRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'Pay');
 		$DOM = new DOMDocument();
@@ -404,7 +404,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -412,10 +412,10 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$PayKey = $DOM -> getElementsByTagName('payKey') -> length > 0 ? $DOM -> getElementsByTagName('payKey') -> item(0) -> nodeValue : '';
 		$PaymentExecStatus = $DOM -> getElementsByTagName('paymentExecStatus') -> length > 0 ? $DOM -> getElementsByTagName('paymentExecStatus') -> item(0) -> nodeValue : '';
-		
+
 		if($this -> Sandbox)
 		{
 			if($IsDigitalGoods)
@@ -438,23 +438,23 @@ class Adaptive extends PayPal
 				$RedirectURL = 'https://www.paypal.com/webscr?cmd=_ap-payment&paykey=' . $PayKey;
 			}
 		}
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'PayKey' => $PayKey, 
-								   'PaymentExecStatus' => $PaymentExecStatus, 
-								   'RedirectURL' => $PayKey != '' ? $RedirectURL : '', 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'PayKey' => $PayKey,
+								   'PaymentExecStatus' => $PaymentExecStatus,
+								   'RedirectURL' => $PayKey != '' ? $RedirectURL : '',
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submits PayWithOptions API request to PayPal
 	 *
@@ -478,7 +478,7 @@ class Adaptive extends PayPal
 		$ReverseAllParallelPaymentsOnError = isset($PayRequestFields['ReverseAllParallelPaymentsOnError']) ? $PayRequestFields['ReverseAllParallelPaymentsOnError'] : '';
 		$SenderEmail = isset($PayRequestFields['SenderEmail']) ? $PayRequestFields['SenderEmail'] : '';
 		$TrackingID = isset($PayRequestFields['TrackingID']) ? $PayRequestFields['TrackingID'] : '';
-	
+
 		// ClientDetails Fields
 		$ClientDetailsFields = isset($DataArray['ClientDetailsFields']) ? $DataArray['ClientDetailsFields'] : array();
 		$CustomerID = isset($ClientDetailsFields['CustomerID']) ? $ClientDetailsFields['CustomerID'] : '';
@@ -486,10 +486,10 @@ class Adaptive extends PayPal
 		$GeoLocation = isset($ClientDetailsFields['GeoLocation']) ? $ClientDetailsFields['GeoLocation'] : '';
 		$Model = isset($ClientDetailsFields['Model']) ? $ClientDetailsFields['Model'] : '';
 		$PartnerName = isset($ClientDetailsFields['PartnerName']) ? $ClientDetailsFields['PartnerName'] : '';
-	
+
 		// FundingConstraint Fields
 		$FundingTypes = isset($DataArray['FundingTypes']) ? $DataArray['FundingTypes'] : array();
-	
+
 		// Receivers Fields
 		$Receivers = isset($DataArray['Receivers']) ? $DataArray['Receivers'] : array();
 		$Amount = isset($Receivers['Amount']) ? $Receivers['Amount'] : '';
@@ -499,23 +499,23 @@ class Adaptive extends PayPal
 		$PaymentSubType = isset($Receivers['PaymentSubType']) ? $Receivers['PaymentSubType'] : '';
 		$Phone = isset($Receivers['Phone']) ? $Receivers['Phone'] : '';
 		$Primary = isset($Receivers['Primary']) ? strtolower($Receivers['Primary']) : '';
-	
+
 		// SenderIdentifier Fields
 		$SenderIdentifierFields = isset($DataArray['SenderIdentifierFields']) ? $DataArray['SenderIdentifierFields'] : array();
 		$UseCredentials = isset($SenderIdentifierFields['UseCredentials']) ? $SenderIdentifierFields['UseCredentials'] : '';
-	
+
 		// AccountIdentifierFields Fields
 		$AccountIdentifierFields = isset($DataArray['AccountIdentifierFields']) ? $DataArray['AccountIdentifierFields'] : array();
 		$AccountEmail = isset($AccountIdentifierFields['Email']) ? $AccountIdentifierFields['Email'] : '';
 		$AccountPhone = isset($AccountIdentifierFields['Phone']) ? $AccountIdentifierFields['Phone'] : '';
-	
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<PayRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $ActionType != '' ? '<actionType xmlns="">' . $ActionType . '</actionType>' : '';
 		$XMLRequest .= $CancelURL != '' ? '<cancelUrl xmlns="">' . $CancelURL . '</cancelUrl>' : '';
-	
+
 		if(count($ClientDetailsFields) > 0)
 		{
 			$XMLRequest .= '<clientDetails xmlns="">';
@@ -529,45 +529,45 @@ class Adaptive extends PayPal
 			$XMLRequest .= $PartnerName != '' ? '<partnerName xmlns="">' . $PartnerName . '</partnerName>' : '';
 			$XMLRequest .= '</clientDetails>';
 		}
-	
+
 		$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 		$XMLRequest .= $FeesPayer != '' ? '<feesPayer xmlns="">' . $FeesPayer . '</feesPayer>' : '';
-	
+
 		if(count($FundingTypes) > 0)
 		{
 			$XMLRequest .= '<fundingConstraint xmlns="">';
 			$XMLRequest .= '<allowedFundingType xmlns="">';
-				
+
 			foreach($FundingTypes as $FundingType)
 			{
 				$XMLRequest .= '<fundingTypeInfo xmlns="">';
 				$XMLRequest .= '<fundingType xmlns="">' . $FundingType . '</fundingType>';
 				$XMLRequest .= '</fundingTypeInfo>';
 			}
-				
+
 			$XMLRequest .= '</allowedFundingType>';
 			$XMLRequest .= '</fundingConstraint>';
 		}
-	
+
 		$XMLRequest .= $IPNNotificationURL != '' ? '<ipnNotificationUrl xmlns="">' . $IPNNotificationURL . '</ipnNotificationUrl>' : '';
 		$XMLRequest .= $Memo != '' ? '<memo xmlns="">' . $Memo . '</memo>' : '';
 		$XMLRequest .= $Pin != '' ? '<pin xmlns="">' . $Pin . '</pin>' : '';
 		$XMLRequest .= $PreapprovalKey != '' ? '<preapprovalKey xmlns="">' . $PreapprovalKey . '</preapprovalKey>' : '';
-	
+
 		$XMLRequest .= '<receiverList xmlns="">';
-	
+
 		$IsDigitalGoods = FALSE;
 		foreach($Receivers as $Receiver)
 		{
 			$IsDigitalGoods = strtoupper($Receiver['PaymentType']) == 'DIGITALGOODS' ? TRUE : FALSE;
-				
+
 			$XMLRequest .= '<receiver xmlns="">';
 			$XMLRequest .= $Receiver['Amount'] != '' ? '<amount xmlns="">' . $Receiver['Amount'] . '</amount>' : '';
 			$XMLRequest .= $Receiver['Email'] != '' ? '<email xmlns="">' . $Receiver['Email'] . '</email>' : '';
 			$XMLRequest .= $Receiver['InvoiceID'] != '' ? '<invoiceId xmlns="">' . $Receiver['InvoiceID'] . '</invoiceId>' : '';
 			$XMLRequest .= $Receiver['PaymentType'] != '' ? '<paymentType xmlns="">' . $Receiver['PaymentType'] . '</paymentType>' : '';
 			$XMLRequest .= $Receiver['PaymentSubType'] != '' ? '<paymentSubType xmlns="">' . $Receiver['PaymentSubType'] . '</paymentSubType>' : '';
-				
+
 			if($Receiver['Phone']['CountryCode'] != '')
 			{
 				$XMLRequest .= '<phone xmlns="">';
@@ -576,24 +576,24 @@ class Adaptive extends PayPal
 				$XMLRequest .= $Receiver['Phone']['Extension'] != '' ? '<extension xmlns="">' . $Receiver['Phone']['Extension'] . '</extension>' : '';
 				$XMLRequest .= '</phone>';
 			}
-				
+
 			$XMLRequest .= $Receiver['Primary'] != '' ? '<primary xmlns="">' . strtolower($Receiver['Primary']) . '</primary>' : '';
 			$XMLRequest .= '</receiver>';
 		}
 		$XMLRequest .= '</receiverList>';
-	
+
 		if(count($SenderIdentifierFields) > 0)
 		{
 			$XMLRequest .= '<sender>';
 			$XMLRequest .= '<useCredentials xmlns="">' . $SenderIdentifierFields['UseCredentials'] . '</useCredentials>';
 			$XMLRequest .= '</sender>';
 		}
-	
+
 		if(count($AccountIdentifierFields) > 0)
 		{
 			$XMLRequest .= '<account xmlns="">';
 			$XMLRequest .= $AccountEmail != '' ? '<email xmlns="">' . $AccountEmail . '</email>' : '';
-				
+
 			if($AccountPhone != '')
 			{
 				$XMLRequest .= '<phone xmlns="">';
@@ -602,28 +602,28 @@ class Adaptive extends PayPal
 				$XMLRequest .= $AccountPhone['Extension'] != '' ? '<extension xmlns="">' . $AccountPhone['Extension'] . '</extension>' : '';
 				$XMLRequest .= '</phone>';
 			}
-				
+
 			$XMLRequest .= '</account>';
 		}
-	
+
 		$XMLRequest .= $ReturnURL != '' ? '<returnUrl xmlns="">' . $ReturnURL . '</returnUrl>' : '';
 		$XMLRequest .= $ReverseAllParallelPaymentsOnError != '' ? '<reverseAllParallelPaymentsOnError xmlns="">' . $ReverseAllParallelPaymentsOnError . '</reverseAllParallelPaymentsOnError>' : '';
 		$XMLRequest .= $SenderEmail != '' ? '<senderEmail xmlns="">' . $SenderEmail . '</senderEmail>' : '';
 		$XMLRequest .= $TrackingID != '' ? '<trackingId xmlns="">' . $TrackingID . '</trackingId>' : '';
 		$XMLRequest .= '</PayRequest>';
-		
+
 		$PayXMLRequest = $XMLRequest;
-	
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'Pay');
 		$PayXMLResponse = $XMLResponse;
-		
+
 		$DOM = new DOMDocument();
 		$DOM -> loadXML($XMLResponse);
 
         $this->Logger($this->LogPath, 'PayRequest', $PayXMLRequest);
         $this->Logger($this->LogPath, 'PayResponse', $PayXMLResponse);
-	
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -631,10 +631,10 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-	
+
 		$PayKey = $DOM -> getElementsByTagName('payKey') -> length > 0 ? $DOM -> getElementsByTagName('payKey') -> item(0) -> nodeValue : '';
 		$PaymentExecStatus = $DOM -> getElementsByTagName('paymentExecStatus') -> length > 0 ? $DOM -> getElementsByTagName('paymentExecStatus') -> item(0) -> nodeValue : '';
-	
+
 		if($this -> Sandbox)
 		{
 			if($IsDigitalGoods)
@@ -657,7 +657,7 @@ class Adaptive extends PayPal
 				$RedirectURL = 'https://www.paypal.com/webscr?cmd=_ap-payment&paykey=' . $PayKey;
 			}
 		}
-		
+
 		if(!$this->APICallSuccessful($Ack))
 		{
 				$ResponseDataArray = array(
@@ -671,22 +671,22 @@ class Adaptive extends PayPal
 					'PayXMLRequest' => $PayXMLRequest,
 					'PayXMLResponse' => $PayXMLResponse
 			);
-		
+
 			return $ResponseDataArray;
 			exit();
 		}
-		
+
 		// SetPaymentOptions Basic Fields
 		$SPOFields = isset($DataArray['SPOFields']) ? $DataArray['SPOFields'] : array();
 		$ShippingAddressID = isset($SPOFields['ShippingAddressID']) ? $SPOFields['ShippingAddressID'] : '';
-		
+
 		// DisplayOptions Fields
 		$DisplayOptions = isset($DataArray['DisplayOptions']) ? $DataArray['DisplayOptions'] : array();
 		$EmailHeaderImageURL = isset($DisplayOptions['EmailHeaderImageURL']) ? $DisplayOptions['EmailHeaderImageURL'] : '';
 		$EmailMarketingImageURL = isset($DisplayOptions['EmailMarketingImageURL']) ? $DisplayOptions['EmailMarketingImageURL'] : '';
 		$HeaderImageURL = isset($DisplayOptions['HeaderImageURL']) ? $DisplayOptions['HeaderImageURL'] : '';
 		$BusinessName = isset($DisplayOptions['BusinessName']) ? $DisplayOptions['BusinessName'] : '';
-		
+
 		// InstitutionCustomer Fields
 		$InstitutionCustomer = isset($DataArray['InstitutionCustomer']) ? $DataArray['InstitutionCustomer'] : array();
 		$CountryCode = isset($InstitutionCustomer['CountryCode']) ? $InstitutionCustomer['CountryCode'] : '';
@@ -696,12 +696,12 @@ class Adaptive extends PayPal
 		$LastName = isset($InstitutionCustomer['LastName']) ? $InstitutionCustomer['LastName'] : '';
 		$InstitutionCustomerID = isset($InstitutionCustomer['InstitutionCustomerID']) ? $InstitutionCustomer['InstitutionCustomerID'] : '';
 		$InstitutionID = isset($InstitutionCustomer['InstitutionID']) ? $InstitutionCustomer['InstitutionID'] : '';
-		
+
 		// SenderOptions Fields
 		$SenderOptions = isset($DataArray['SenderOptions']) ? $DataArray['SenderOptions'] : array();
 		$RequireShippingAddressSelection = isset($SenderOptions['RequireShippingAddressSelection']) ? $SenderOptions['RequireShippingAddressSelection'] : '';
 		$ReferrerCode = $this->APIButtonSource;
-		
+
 		// ReceiverOptions Fields
 		$ReceiverOptionsXML = '';
 		$ReceiverOptions = isset($DataArray['ReceiverOptions']) ? $DataArray['ReceiverOptions'] : array();
@@ -709,34 +709,34 @@ class Adaptive extends PayPal
 		{
 			$Description = isset($ReceiverOption['Description']) ? $ReceiverOption['Description'] : '';
 			$CustomID = isset($ReceiverOption['CustomID']) ? $ReceiverOption['CustomID'] : '';
-			
+
 			// Invoice Data
 			$InvoiceData = isset($ReceiverOption['InvoiceData']) ? $ReceiverOption['InvoiceData'] : array();
 			$TotalTax = isset($InvoiceData['TotalTax']) ? $InvoiceData['TotalTax'] : '';
 			$TotalShipping = isset($InvoiceData['TotalShipping']) ? $InvoiceData['TotalShipping'] : '';
-			
+
 			// InvoiceItem Fields
 			$InvoiceItems = isset($ReceiverOption['InvoiceItems']) ? $ReceiverOption['InvoiceItems'] : array();
-			
+
 			// ReceiverIdentifer Fields
 			$ReceiverIdentifier = isset($ReceiverOption['ReceiverIdentifier']) ? $ReceiverOption['ReceiverIdentifier'] : array();
 			$ReceiverIdentifierEmail = isset($ReceiverIdentifier['Email']) ? $ReceiverIdentifier['Email'] : '';
 			$PhoneCountryCode = isset($ReceiverIdentifier['PhoneCountryCode']) ? $ReceiverIdentifier['PhoneCountryCode'] : '';
 			$PhoneNumber = isset($ReceiverIdentifier['PhoneNumber']) ? $ReceiverIdentifier['PhoneNumber'] : '';
 			$PhoneExtension = isset($ReceiverIdentifier['PhoneExtension']) ? $ReceiverIdentifier['PhoneExtension'] : '';
-			
-			
+
+
 				$ReceiverOptionsXML .= '<receiverOptions xmlns="">';
 				$ReceiverOptionsXML .= $Description != '' ? '<description xmlns="">'.$Description.'</description>' : '';
 				$ReceiverOptionsXML .= $CustomID != '' ? '<customId xmlns="">'.$CustomID.'</customId>' : '';
-					
+
 				if(!empty($InvoiceData))
 				{
 					$ReceiverOptionsXML .= '<invoiceData xmlns="">';
 					$ReceiverOptionsXML .= $TotalTax != '' ? '<totalTax xmlns="">'.$TotalTax.'</totalTax>' : '';
 					$ReceiverOptionsXML .= $TotalShipping != '' ? '<totalShipping xmlns="">'.$TotalShipping.'</totalShipping>' : '';
-			
-			
+
+
 					foreach($InvoiceItems as $InvoiceItem)
 					{
 						$ReceiverOptionsXML .= '<item xmlns="">';
@@ -747,15 +747,15 @@ class Adaptive extends PayPal
 						$ReceiverOptionsXML .= $InvoiceItem['ItemCount'] != '' ? '<itemCount xmlns="">'.$InvoiceItem['ItemCount'].'</itemCount>' : '';
 						$ReceiverOptionsXML .= '</item>';
 					}
-			
+
 					$ReceiverOptionsXML .= '</invoiceData>';
 				}
-					
+
 				if(count($ReceiverIdentifier) > 0)
 				{
 					$ReceiverOptionsXML .= '<receiver xmlns="">';
 					$ReceiverOptionsXML .= $ReceiverIdentifierEmail != '' ? '<email xmlns="">'.$ReceiverIdentifierEmail.'</email>' : '';
-			
+
 					if($PhoneNumber != '')
 					{
 						$ReceiverOptionsXML .= '<phone xmlns="">';
@@ -764,10 +764,10 @@ class Adaptive extends PayPal
 						$ReceiverOptionsXML .= $PhoneExtension != '' ? '<extension xmlns="">'.$PhoneExtension.'</extension>' : '';
 						$ReceiverOptionsXML .= '</phone>';
 					}
-			
+
 					$ReceiverOptionsXML .= '</receiver>';
 				}
-					
+
 				$ReceiverOptionsXML .= '</receiverOptions>';
 		}
 
@@ -777,7 +777,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $PayKey != '' ? '<payKey xmlns="">'.$PayKey.'</payKey>' : '';
 		$XMLRequest .= $ShippingAddressID != '' ? '<shippingAddressId xmlns="">'.$ShippingAddressID.'</shippingAddressId>' : '';
-		
+
 		if(count($InstitutionCustomer) > 0)
 		{
 			$XMLRequest .= '<initiatingEntity xmlns="">';
@@ -790,9 +790,9 @@ class Adaptive extends PayPal
 			$XMLRequest .= $CountryCode != '' ? '<countryCode xmlns="">'.$CountryCode.'</countryCode>' : '';
 			$XMLRequest .= $InstitutionCustomerEmail != '' ? '<email xmlns="">'.$InstitutionCustomerEmail.'</email>' : '';
 			$XMLRequest .= '</institutionCustomer>';
-			$XMLRequest .= '</initiatingEntity>';	
+			$XMLRequest .= '</initiatingEntity>';
 		}
-		
+
 		if(count($DisplayOptions) > 0)
 		{
 			$XMLRequest .= '<displayOptions xmlns="">';
@@ -800,36 +800,36 @@ class Adaptive extends PayPal
 			$XMLRequest .= $EmailMarketingImageURL != '' ? '<emailMarketingImageUrl xmlns="">'.$EmailMarketingImageURL.'</emailMarketingImageUrl>' : '';
 			$XMLRequest .= $HeaderImageURL != '' ? '<headerImageUrl xmlns="">'.$HeaderImageURL.'</headerImageUrl>' : '';
 			$XMLRequest .= $BusinessName != '' ? '<businessName xmlns="">'.$BusinessName.'</businessName>' : '';
-			$XMLRequest .= '</displayOptions>';	
+			$XMLRequest .= '</displayOptions>';
 		}
-		
+
 		if(count($SenderOptions) > 0)
 		{
 			$XMLRequest .= '<senderOptions xmlns="">';
 			$XMLRequest .= $RequireShippingAddressSelection != '' ? '<requireShippingAddressSelection xmlns="">'.$RequireShippingAddressSelection.'</requireShippingAddressSelection>' : '';
 			$XMLRequest .= $ReferrerCode != '' ? '<referrerCode xmlns="">'.$ReferrerCode.'</referrerCode>' : '';
-			$XMLRequest .= '</senderOptions>';	
+			$XMLRequest .= '</senderOptions>';
 		}
-		
+
 		$XMLRequest .= $ReceiverOptionsXML;
 		$XMLRequest .= '</SetPaymentOptionsRequest>';
 		$SetPaymentOptionsXMLRequest = $XMLRequest;
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'SetPaymentOptions');
 		$SetPaymentOptionsXMLResponse = $XMLResponse;
-		
+
 		$DOM = new DOMDocument();
 		$DOM -> loadXML($XMLResponse);
 
         $this->Logger($this->LogPath, 'SetPaymentOptionsRequest', $SetPaymentOptionsXMLRequest);
         $this->Logger($this->LogPath, 'SetPaymentOptionsResponse', $SetPaymentOptionsXMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
 		$Ack = $DOM -> getElementsByTagName('ack') -> length > 0 ? $DOM -> getElementsByTagName('ack') -> item(0) -> nodeValue : '';
-	
+
 		$ResponseDataArray = array(
 				'Errors' => $Errors,
 				'Ack' => $Ack,
@@ -840,14 +840,14 @@ class Adaptive extends PayPal
 				'PaymentExecStatus' => $PaymentExecStatus,
 				'RedirectURL' => $PayKey != '' ? $RedirectURL : '',
 				'PayXMLRequest' => $PayXMLRequest,
-				'PayXMLResponse' => $PayXMLResponse, 
-				'SetPaymentOptionsXMLRequest' => $SetPaymentOptionsXMLRequest, 
+				'PayXMLResponse' => $PayXMLResponse,
+				'SetPaymentOptionsXMLRequest' => $SetPaymentOptionsXMLRequest,
 				'SetPaymentOptionsXMLResponse' => $SetPaymentOptionsXMLResponse
 		);
-	
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submits PaymentDetails API request to PayPal.
 	 *
@@ -862,7 +862,7 @@ class Adaptive extends PayPal
 		$PayKey = isset($PaymentDetailsFields['PayKey']) ? $PaymentDetailsFields['PayKey'] : '';
 		$TransactionID = isset($PaymentDetailsFields['TransactionID']) ? $PaymentDetailsFields['TransactionID'] : '';
 		$TrackingID = isset($PaymentDetailsFields['TrackingID']) ? $PaymentDetailsFields['TrackingID'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<PaymentDetailsRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -871,7 +871,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $TransactionID != '' ? '<transactionId xmlns="">' . $TransactionID . '</transactionId>' : '';
 		$XMLRequest .= $TrackingID != '' ? '<trackingId xmlns="">' . $TrackingID . '</trackingId>' : '';
 		$XMLRequest .= '</PaymentDetailsRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'PaymentDetails');
 		$DOM = new DOMDocument();
@@ -879,7 +879,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -887,23 +887,23 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ActionType = $DOM -> getElementsByTagName('actionType') -> length > 0 ? $DOM -> getElementsByTagName('actionType') -> item(0) -> nodeValue : '';
 		$CancelURL = $DOM -> getElementsByTagName('cancelUrl') -> length > 0 ? $DOM -> getElementsByTagName('cancelUrl') -> item(0) -> nodeValue : '';
 		$CurrencyCode = $DOM -> getElementsByTagName('currencyCode') -> length > 0 ? $DOM -> getElementsByTagName('currencyCode') -> item(0) -> nodeValue : '';
 		$FeesPayer = $DOM -> getElementsByTagName('feesPayer') -> length > 0 ? $DOM -> getElementsByTagName('feesPayer') -> item(0) -> nodeValue : '';
-		
+
 		$FundingTypesDOM = $DOM -> getElementsByTagName('fundingType') -> length > 0 ? $DOM -> getElementsByTagName('fundingType') : array();
 		$FundingTypes = array();
 		foreach($FundingTypesDOM as $FundingType)
 		{
 			array_push($FundingTypes, $FundingType);
 		}
-		
+
 		$IPNNotificationURL = $DOM -> getElementsByTagName('ipnNotificationUrl') -> length > 0 ? $DOM -> getElementsByTagName('ipnNotificationUrl') -> item(0) -> nodeValue : '';
 		$Memo = $DOM -> getElementsByTagName('memo') -> length > 0 ? $DOM -> getElementsByTagName('memo') -> item(0) -> nodeValue : '';
 		$PayKey = $DOM -> getElementsByTagName('payKey') -> length > 0 ? $DOM -> getElementsByTagName('payKey') -> item(0) -> nodeValue : '';
-		
+
 		$PendingRefund = $DOM -> getElementsByTagName('pendingRefund') -> length > 0 ? $DOM -> getElementsByTagName('pendingRefund') -> item(0) -> nodeValue : 'false';
 		$RefundedAmount = $DOM -> getElementsByTagName('refundedAmount') -> length > 0 ? $DOM -> getElementsByTagName('refundedAmount') -> item(0) -> nodeValue : '';
 		$SenderTransactionID = $DOM -> getElementsByTagName('senderTransactionID') -> length > 0 ? $DOM -> getElementsByTagName('senderTransactionID') -> item(0) -> nodeValue : '';
@@ -912,64 +912,64 @@ class Adaptive extends PayPal
 		$TransactionID = $DOM -> getElementsByTagName('transactionId') -> length > 0 ? $DOM -> getElementsByTagName('transactionId') -> item(0) -> nodeValue : '';
 		$TransactionStatus = $DOM -> getElementsByTagName('transactionStatus') -> length > 0 ? $DOM -> getElementsByTagName('transactionStatus') -> item(0) -> nodeValue : '';
 		$PaymentInfo = array(
-							'PendingRefund' => $PendingRefund, 
-							'RefundAmount' => $RefundedAmount, 
-							'SenderTransactionID' => $SenderTransactionID, 
-							'SenderTransactionStatus' => $SenderTransactionStatus, 
-							'TransactionID' => $TransactionID, 
+							'PendingRefund' => $PendingRefund,
+							'RefundAmount' => $RefundedAmount,
+							'SenderTransactionID' => $SenderTransactionID,
+							'SenderTransactionStatus' => $SenderTransactionStatus,
+							'TransactionID' => $TransactionID,
 							'TransactionStatus' => $TransactionStatus
 							 );
-		
+
 		$PreapprovalKey = $DOM -> getElementsByTagName('preapprovalKey') -> length > 0 ? $DOM -> getElementsByTagName('preapprovalKey') -> item(0) -> nodeValue : '';
 		$ReturnURL = $DOM -> getElementsByTagName('returnUrl') -> length > 0 ? $DOM -> getElementsByTagName('returnUrl') -> item(0) -> nodeValue : '';
 		$ReverseAllParallelPaymentsOnError = $DOM -> getElementsByTagName('reverseAllParallelPaymentsOnError') -> length > 0 ? $DOM -> getElementsByTagName('reverseAllParallelPaymentsOnError') -> item(0) -> nodeValue : '';
 		$SenderEmail = $DOM -> getElementsByTagName('senderEmail') -> length > 0 ? $DOM -> getElementsByTagName('senderEmail') -> item(0) -> nodeValue : '';
 		$Status = $DOM -> getElementsByTagName('status') -> length > 0 ? $DOM -> getElementsByTagName('status') -> item(0) -> nodeValue : '';
 		$TrackingID = $DOM -> getElementsByTagName('trackingId') -> length > 0 ? $DOM -> getElementsByTagName('trackingId') -> item(0) -> nodeValue : '';
-		
+
 		$Amount = $DOM -> getElementsByTagName('amount') -> length > 0 ? $DOM -> getElementsByTagName('amount') -> item(0) -> nodeValue : '';
 		$Email = $DOM -> getElementsByTagName('email') -> length > 0 ? $DOM -> getElementsByTagName('email') -> item(0) -> nodeValue : '';
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceId') -> length > 0 ? $DOM -> getElementsByTagName('invoiceId') -> item(0) -> nodeValue : '';
 		$PaymentType = $DOM -> getElementsByTagName('paymentType') -> length > 0 ? $DOM -> getElementsByTagName('paymentType') -> item(0) -> nodeValue : '';
 		$Primary = $DOM -> getElementsByTagName('primary') -> length > 0 ? $DOM -> getElementsByTagName('primary') -> item(0) -> nodeValue : 'false';
 		$Receiver = array(
-						'Amount' => $Amount, 
-						'Email' => $Email, 
-						'InvoiceID' => $InvoiceID, 
-						'PaymentType' => $PaymentType, 
+						'Amount' => $Amount,
+						'Email' => $Email,
+						'InvoiceID' => $InvoiceID,
+						'PaymentType' => $PaymentType,
 						'Primary' => $Primary
 						  );
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'ActionType' => $ActionType, 
-								   'CancelURL' => $CancelURL, 
-								   'CurrencyCode' => $CurrencyCode, 
-								   'FeesPayer' => $FeesPayer, 
-								   'FundingTypes' => $FundingTypes, 
-								   'IPNNotificationURL' => $IPNNotificationURL, 
-								   'Memo' => $Memo, 
-								   'PayKey' => $PayKey, 
-								   'PaymentInfo' => $PaymentInfo, 
-								   'PreapprovalKey' => $PreapprovalKey, 
-								   'ReturnURL' => $ReturnURL, 
-								   'ReverseAllParallelPaymentsOnError' => $ReverseAllParallelPaymentsOnError, 
-								   'SenderEmail' => $SenderEmail, 
-								   'Status' => $Status, 
-								   'TrackingID' => $TrackingID, 
-								   'Receiver' => $Receiver, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'ActionType' => $ActionType,
+								   'CancelURL' => $CancelURL,
+								   'CurrencyCode' => $CurrencyCode,
+								   'FeesPayer' => $FeesPayer,
+								   'FundingTypes' => $FundingTypes,
+								   'IPNNotificationURL' => $IPNNotificationURL,
+								   'Memo' => $Memo,
+								   'PayKey' => $PayKey,
+								   'PaymentInfo' => $PaymentInfo,
+								   'PreapprovalKey' => $PreapprovalKey,
+								   'ReturnURL' => $ReturnURL,
+								   'ReverseAllParallelPaymentsOnError' => $ReverseAllParallelPaymentsOnError,
+								   'SenderEmail' => $SenderEmail,
+								   'Status' => $Status,
+								   'TrackingID' => $TrackingID,
+								   'Receiver' => $Receiver,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
-	
+
+
 	/**
 	 * Submits ExecutePayment API request to PayPal.
 	 *
@@ -981,7 +981,7 @@ class Adaptive extends PayPal
 	{
 		// ExecutePaymentFields Fields
 		$ExecutePaymentFields = isset($DataArray['ExecutePaymentFields']) ? $DataArray['ExecutePaymentFields'] : array();
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<ExecutePaymentRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -989,7 +989,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= isset($ExecutePaymentFields['PayKey']) && $ExecutePaymentFields['PayKey'] != '' ? '<payKey xmlns="">' . $ExecutePaymentFields['PayKey'] . '</payKey>' : '';
 		$XMLRequest .= isset($ExecutePaymentFields['FundingPlanID']) && $ExecutePaymentFields['FundingPlanID'] != '' ? '<fundingPlanId xmlns="">' . $ExecutePaymentFields['FundingPlanID'] . '</fundingPlanId>' : '';
 		$XMLRequest .= '</ExecutePaymentRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'ExecutePayment');
 		$DOM = new DOMDocument();
@@ -997,7 +997,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1006,22 +1006,22 @@ class Adaptive extends PayPal
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 		$PaymentExecStatus = $DOM -> getElementsByTagName('paymentExecStatus') -> length > 0 ? $DOM -> getElementsByTagName('paymentExecStatus') -> item(0) -> nodeValue : '';
-	
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'PaymentExecStatus' => $PaymentExecStatus, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'PaymentExecStatus' => $PaymentExecStatus,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
-	
+
+
 	/**
 	 * Submits GetPaymentOptions API request to PayPal.
 	 *
@@ -1037,7 +1037,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $PayKey != '' ? '<payKey xmlns="">' . $PayKey. '</payKey>' : '';
 		$XMLRequest .= '</GetPaymentOptionsRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'GetPaymentOptions');
 		$DOM = new DOMDocument();
@@ -1045,7 +1045,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1053,11 +1053,11 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		// GetPaymentOptionsResponse Fields
 		$PayKey = $DOM -> getElementsByTagName('payKey') -> length > 0 ? $DOM -> getElementsByTagName('payKey') -> item(0) -> nodeValue : '';
 		$ShippingAddressID = $DOM -> getElementsByTagName('shippingAddressId') -> length > 0 ? $DOM -> getElementsByTagName('shippingAddressId') -> item(0) -> nodeValue : '';
-		
+
 		// InitiatingEntity Fields
 		$InstitutionCustomer = $DOM -> getElementsByTagName('institutionCustomer') -> length > 0 ? $DOM -> getElementsByTagName('institutionCustomer') -> item(0) -> nodeValue : '';
 		$CountryCode = $InstitutionCustomer != '' && $InstitutionCustomer -> getElementsByTagName('countryCode') -> length > 0 ? $InstitutionCustomer -> getElementsByTagName('countryCode') -> item(0) -> nodeValue : '';
@@ -1068,29 +1068,29 @@ class Adaptive extends PayPal
 		$InstitutionID = $InstitutionCustomer != '' && $InstitutionCustomer -> getElementsByTagName('institutionId') -> length > 0 ? $InstitutionCustomer -> getElementsByTagName('institutionId') -> item(0) -> nodeValue : '';
 		$LastName = $InstitutionCustomer != '' && $InstitutionCustomer -> getElementsByTagName('lastName') -> length > 0 ? $InstitutionCustomer -> getElementsByTagName('lastName') -> item(0) -> nodeValue : '';
 		$InitiatingEntity = array(
-										'CountryCode' => $CountryCode, 
-										'DisplayName' => $DisplayName, 
-										'Email' => $Email, 
-										'FirstName' => $FirstName, 
-										'InstitutionCustomerID' => $InstitutionCustomerID, 
-										'InstitutionID' => $InstitutionID, 
+										'CountryCode' => $CountryCode,
+										'DisplayName' => $DisplayName,
+										'Email' => $Email,
+										'FirstName' => $FirstName,
+										'InstitutionCustomerID' => $InstitutionCustomerID,
+										'InstitutionID' => $InstitutionID,
 										'LastName' => $LastName
-										);	
-		
-		
+										);
+
+
 		// DisplayOptions Fields
 		$EmailHeaderImageURL = $DOM -> getElementsByTagName('emailHeaderImageUrl') -> length > 0 ? $DOM -> getElementsByTagName('emailHeaderImageUrl') -> item(0) -> nodeValue : '';
 		$EmailMarketingImageURL = $DOM -> getElementsByTagName('emailMarketingImageUrl') -> length > 0 ? $DOM -> getElementsByTagName('emailMarketingImageUrl') -> item(0) -> nodeValue : '';
 		$BusinessName = $DOM -> getElementsByTagName('businessName') -> length > 0 ? $DOM -> getElementsByTagName('businessName') -> item(0) -> nodeValue : '';
 		$DisplayOptions = array(
-								'EmailHeaderImageURL' => $EmailHeaderImageURL, 
-								'EmailMarketingImageURL' => $EmailMarketingImageURL, 
+								'EmailHeaderImageURL' => $EmailHeaderImageURL,
+								'EmailMarketingImageURL' => $EmailMarketingImageURL,
 								'BusinessName' => $BusinessName
 								);
 
 		// Sender Options
 		$RequireShippingAddressSelection = $DOM -> getElementsByTagName('requireShippingAddressSelection') -> length > 0 ? $DOM -> getElementsByTagName('requireShippingAddressSelection') -> item(0) -> nodeValue : '';
-	
+
 		// ReceiverOptions Fields
 		$ReceiverOptions = $DOM -> getElementsByTagName('receiverOptions') -> length > 0 ? $DOM -> getElementsByTagName('receiverOptions') -> item(0) -> nodeValue : '';
 		$Description = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('description') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('description') -> item(0) -> nodeValue : '';
@@ -1099,12 +1099,12 @@ class Adaptive extends PayPal
 		$PhoneCountryCode = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('countryCode') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('countryCode') -> item(0) -> nodeValue : '';
 		$PhoneNumber = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('phoneNumber') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('phoneNumber') -> item(0) -> nodeValue : '';
 		$PhoneExtension = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('extension') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('extension') -> item(0) -> nodeValue : '';
-		
+
 		// InvoiceDataFields
 		$InvoiceItems = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('item') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('item') : array();
 		$TotalTax = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('totalTax') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('totalTax') -> item(0) -> nodeValue : '';
 		$TotalShipping = $ReceiverOptions != '' && $ReceiverOptions -> getElementsByTagName('totalShipping') -> length > 0 ? $ReceiverOptions -> getElementsByTagName('totalShipping') -> item(0) -> nodeValue : '';
-		
+
 		$InvoiceItemsArray = array();
 		foreach($InvoiceItems as $InvoiceItem)
 		{
@@ -1113,49 +1113,49 @@ class Adaptive extends PayPal
 			$ItemSubtotal = $InvoiceItem -> getElementsByTagName('price') -> length > 0 ? $InvoiceItem -> getElementsByTagName('price') -> item(0) -> nodeValue : '';
 			$ItemPrice = $InvoiceItem -> getElementsByTagName('itemPrice') -> length > 0 ? $InvoiceItem -> getElementsByTagName('itemPrice') -> item(0) -> nodeValue : '';
 			$ItemCount = $InvoiceItem -> getElementsByTagName('itemCount') -> length > 0 ? $InvoiceItem -> getElementsByTagName('itemCount') -> item(0) -> nodeValue : '';
-			
+
 			$CurrentItem = array(
-								'Name' => $ItemName, 
-								'Identifier' => $ItemIdentifier, 
-								'Subtotal' => $ItemSubtotal, 
-								'Price' => $ItemPrice, 
+								'Name' => $ItemName,
+								'Identifier' => $ItemIdentifier,
+								'Subtotal' => $ItemSubtotal,
+								'Price' => $ItemPrice,
 								'ItemCount' => $ItemCount
 								);
-			array_push($InvoiceItemsArray,$CurrentItem);	
+			array_push($InvoiceItemsArray,$CurrentItem);
 		}
-		
+
 		$InvoiceData = array('TotalTax' => $TotalTax, 'TotalShipping' => $TotalShipping, 'InvoiceItems' => $InvoiceItemsArray);
-		
+
 		$ReceiverOptionsFields = array(
-									'Description' => $Description, 
-									'CustomID' => $CustomID, 
-									'Email' => $Email, 
-									'PhoneCountryCode' => $PhoneCountryCode, 
-									'PhoneNumber' => $PhoneNumber, 
-									'PhoneExtension' => $PhoneExtension, 
+									'Description' => $Description,
+									'CustomID' => $CustomID,
+									'Email' => $Email,
+									'PhoneCountryCode' => $PhoneCountryCode,
+									'PhoneNumber' => $PhoneNumber,
+									'PhoneExtension' => $PhoneExtension,
 									'InvoiceData' => $InvoiceData
 									);
-	
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'PayKey' => $PayKey, 
-								   'ShippingAddressID' => $ShippingAddressID, 
-								   'InitiatingEntity' => $InitiatingEntity, 
-								   'DisplayOptions' => $DisplayOptions, 
-								   'RequireShippingAddressSelection' => $RequireShippingAddressSelection, 
-								   'ReceiverOptions' => $ReceiverOptionsFields, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'PayKey' => $PayKey,
+								   'ShippingAddressID' => $ShippingAddressID,
+								   'InitiatingEntity' => $InitiatingEntity,
+								   'DisplayOptions' => $DisplayOptions,
+								   'RequireShippingAddressSelection' => $RequireShippingAddressSelection,
+								   'ReceiverOptions' => $ReceiverOptionsFields,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
-	
+
+
 	/**
 	 * Submits SetPaymentOptions API request to PayPal.
 	 *
@@ -1169,14 +1169,14 @@ class Adaptive extends PayPal
 		$SPOFields = isset($DataArray['SPOFields']) ? $DataArray['SPOFields'] : array();
 		$PayKey = isset($SPOFields['PayKey']) ? $SPOFields['PayKey'] : '';
 		$ShippingAddressID = isset($SPOFields['ShippingAddressID']) ? $SPOFields['ShippingAddressID'] : '';
-		
+
 		// DisplayOptions Fields
 		$DisplayOptions = isset($DataArray['DisplayOptions']) ? $DataArray['DisplayOptions'] : array();
 		$EmailHeaderImageURL = isset($DisplayOptions['EmailHeaderImageURL']) ? $DisplayOptions['EmailHeaderImageURL'] : '';
 		$EmailMarketingImageURL = isset($DisplayOptions['EmailMarketingImageURL']) ? $DisplayOptions['EmailMarketingImageURL'] : '';
 		$HeaderImageURL = isset($DisplayOptions['HeaderImageURL']) ? $DisplayOptions['HeaderImageURL'] : '';
 		$BusinessName = isset($DisplayOptions['BusinessName']) ? $DisplayOptions['BusinessName'] : '';
-		
+
 		// InstitutionCustomer Fields
 		$InstitutionCustomer = isset($DataArray['InstitutionCustomer']) ? $DataArray['InstitutionCustomer'] : array();
 		$CountryCode = isset($InstitutionCustomer['CountryCode']) ? $InstitutionCustomer['CountryCode'] : '';
@@ -1186,12 +1186,12 @@ class Adaptive extends PayPal
 		$LastName = isset($InstitutionCustomer['LastName']) ? $InstitutionCustomer['LastName'] : '';
 		$InstitutionCustomerID = isset($InstitutionCustomer['InstitutionCustomerID']) ? $InstitutionCustomer['InstitutionCustomerID'] : '';
 		$InstitutionID = isset($InstitutionCustomer['InstitutionID']) ? $InstitutionCustomer['InstitutionID'] : '';
-		
+
 		// SenderOptions Fields
 		$SenderOptions = isset($DataArray['SenderOptions']) ? $DataArray['SenderOptions'] : array();
 		$RequireShippingAddressSelection = isset($SenderOptions['RequireShippingAddressSelection']) ? $SenderOptions['RequireShippingAddressSelection'] : '';
 		$ReferrerCode = $this->APIButtonSource;
-		
+
 		// ReceiverOptions Fields
 		$ReceiverOptionsXML = '';
 		$ReceiverOptions = isset($DataArray['ReceiverOptions']) ? $DataArray['ReceiverOptions'] : array();
@@ -1199,15 +1199,15 @@ class Adaptive extends PayPal
 		{
 			$Description = isset($ReceiverOption['Description']) ? $ReceiverOption['Description'] : '';
 			$CustomID = isset($ReceiverOption['CustomID']) ? $ReceiverOption['CustomID'] : '';
-			
+
 			// Invoice Data
 			$InvoiceData = isset($ReceiverOption['InvoiceData']) ? $ReceiverOption['InvoiceData'] : array();
 			$TotalTax = isset($InvoiceData['TotalTax']) ? $InvoiceData['TotalTax'] : '';
 			$TotalShipping = isset($InvoiceData['TotalShipping']) ? $InvoiceData['TotalShipping'] : '';
-			
+
 			// InvoiceItem Fields
 			$InvoiceItems = isset($ReceiverOption['InvoiceItems']) ? $ReceiverOption['InvoiceItems'] : array();
-			
+
 			// ReceiverIdentifer Fields
 			$ReceiverIdentifier = isset($ReceiverOption['ReceiverIdentifier']) ? $ReceiverOption['ReceiverIdentifier'] : array();
 			$ReceiverIdentifierEmail = isset($ReceiverIdentifier['Email']) ? $ReceiverIdentifier['Email'] : '';
@@ -1215,19 +1215,19 @@ class Adaptive extends PayPal
 			$PhoneCountryCode = isset($ReceiverIdentifier['PhoneCountryCode']) ? $ReceiverIdentifier['PhoneCountryCode'] : '';
 			$PhoneNumber = isset($ReceiverIdentifier['PhoneNumber']) ? $ReceiverIdentifier['PhoneNumber'] : '';
 			$PhoneExtension = isset($ReceiverIdentifier['PhoneExtension']) ? $ReceiverIdentifier['PhoneExtension'] : '';
-			
-			
+
+
 				$ReceiverOptionsXML .= '<receiverOptions xmlns="">';
 				$ReceiverOptionsXML .= $Description != '' ? '<description xmlns="">'.$Description.'</description>' : '';
 				$ReceiverOptionsXML .= $CustomID != '' ? '<customId xmlns="">'.$CustomID.'</customId>' : '';
-					
+
 				if(!empty($InvoiceData))
 				{
 					$ReceiverOptionsXML .= '<invoiceData xmlns="">';
 					$ReceiverOptionsXML .= $TotalTax != '' ? '<totalTax xmlns="">'.$TotalTax.'</totalTax>' : '';
 					$ReceiverOptionsXML .= $TotalShipping != '' ? '<totalShipping xmlns="">'.$TotalShipping.'</totalShipping>' : '';
-			
-			
+
+
 					foreach($InvoiceItems as $InvoiceItem)
 					{
 						$ReceiverOptionsXML .= '<item xmlns="">';
@@ -1238,16 +1238,16 @@ class Adaptive extends PayPal
 						$ReceiverOptionsXML .= $InvoiceItem['ItemCount'] != '' ? '<itemCount xmlns="">'.$InvoiceItem['ItemCount'].'</itemCount>' : '';
 						$ReceiverOptionsXML .= '</item>';
 					}
-			
+
 					$ReceiverOptionsXML .= '</invoiceData>';
 				}
-					
+
 				if(count($ReceiverIdentifier) > 0)
 				{
 					$ReceiverOptionsXML .= '<receiver xmlns="">';
 					$ReceiverOptionsXML .= $ReceiverIdentifierEmail != '' ? '<email xmlns="">'.$ReceiverIdentifierEmail.'</email>' : '';
 					$ReceiverOptionsXML .= $ReceiverIdentifierAccountID != '' ? '<accountId xmlns="">'.$ReceiverIdentifierAccountID.'</accountId>' : '';
-			
+
 					if($PhoneNumber != '')
 					{
 						$ReceiverOptionsXML .= '<phone xmlns="">';
@@ -1256,10 +1256,10 @@ class Adaptive extends PayPal
 						$ReceiverOptionsXML .= $PhoneExtension != '' ? '<extension xmlns="">'.$PhoneExtension.'</extension>' : '';
 						$ReceiverOptionsXML .= '</phone>';
 					}
-			
+
 					$ReceiverOptionsXML .= '</receiver>';
 				}
-					
+
 				$ReceiverOptionsXML .= '</receiverOptions>';
 		}
 
@@ -1269,7 +1269,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $PayKey != '' ? '<payKey xmlns="">'.$PayKey.'</payKey>' : '';
 		$XMLRequest .= $ShippingAddressID != '' ? '<shippingAddressId xmlns="">'.$ShippingAddressID.'</shippingAddressId>' : '';
-		
+
 		if(count($InstitutionCustomer) > 0)
 		{
 			$XMLRequest .= '<initiatingEntity xmlns="">';
@@ -1282,9 +1282,9 @@ class Adaptive extends PayPal
 			$XMLRequest .= $CountryCode != '' ? '<countryCode xmlns="">'.$CountryCode.'</countryCode>' : '';
 			$XMLRequest .= $InstitutionCustomerEmail != '' ? '<email xmlns="">'.$InstitutionCustomerEmail.'</email>' : '';
 			$XMLRequest .= '</institutionCustomer>';
-			$XMLRequest .= '</initiatingEntity>';	
+			$XMLRequest .= '</initiatingEntity>';
 		}
-		
+
 		if(count($DisplayOptions) > 0)
 		{
 			$XMLRequest .= '<displayOptions xmlns="">';
@@ -1292,20 +1292,20 @@ class Adaptive extends PayPal
 			$XMLRequest .= $EmailMarketingImageURL != '' ? '<emailMarketingImageUrl xmlns="">'.$EmailMarketingImageURL.'</emailMarketingImageUrl>' : '';
 			$XMLRequest .= $HeaderImageURL != '' ? '<headerImageUrl xmlns="">'.$HeaderImageURL.'</headerImageUrl>' : '';
 			$XMLRequest .= $BusinessName != '' ? '<businessName xmlns="">'.$BusinessName.'</businessName>' : '';
-			$XMLRequest .= '</displayOptions>';	
+			$XMLRequest .= '</displayOptions>';
 		}
-		
+
 		if(count($SenderOptions) > 0)
 		{
 			$XMLRequest .= '<senderOptions xmlns="">';
 			$XMLRequest .= $RequireShippingAddressSelection != '' ? '<requireShippingAddressSelection xmlns="">'.$RequireShippingAddressSelection.'</requireShippingAddressSelection>' : '';
 			$XMLRequest .= $ReferrerCode != '' ? '<referrerCode xmlns="">'.$ReferrerCode.'</referrerCode>' : '';
-			$XMLRequest .= '</senderOptions>';	
+			$XMLRequest .= '</senderOptions>';
 		}
-		
+
 		$XMLRequest .= $ReceiverOptionsXML;
 		$XMLRequest .= '</SetPaymentOptionsRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'SetPaymentOptions');
 		$DOM = new DOMDocument();
@@ -1313,7 +1313,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1323,18 +1323,18 @@ class Adaptive extends PayPal
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submits Preapproval API request to PayPal.
 	 *
@@ -1343,7 +1343,7 @@ class Adaptive extends PayPal
 	 * @return	mixed[] $ResponseDataArray	Returns XML result parsed as an array.
 	 */
 	function Preapproval($DataArray)
-	{	
+	{
 		$PreapprovalFields = isset($DataArray['PreapprovalFields']) ? $DataArray['PreapprovalFields'] : array();
 		$CancelURL = isset($PreapprovalFields['CancelURL']) ? $PreapprovalFields['CancelURL'] : '';
 		$CurrencyCode = isset($PreapprovalFields['CurrencyCode']) ? $PreapprovalFields['CurrencyCode'] : '';
@@ -1371,13 +1371,13 @@ class Adaptive extends PayPal
 		$GeoLocation = isset($ClientDetailsFields['GeoLocation']) ? $ClientDetailsFields['GeoLocation'] : '';
 		$Model = isset($ClientDetailsFields['Model']) ? $ClientDetailsFields['Model'] : '';
 		$PartnerName = isset($ClientDetailsFields['PartnerName']) ? $ClientDetailsFields['PartnerName'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<PreapprovalRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= '<cancelUrl xmlns="">' . $CancelURL . '</cancelUrl>';
-		
+
 		$XMLRequest .= '<clientDetails xmlns="">';
 		$XMLRequest .= $this -> ApplicationID != '' ? '<applicationId xmlns="">' . $this -> ApplicationID . '</applicationId>' : '';
 		$XMLRequest .= $CustomerID != '' ? '<customerId xmlns="">' . $CustomerID . '</customerId>' : '';
@@ -1388,7 +1388,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $Model != '' ? '<model xmlns="">' . $Model . '</model>' : '';
 		$XMLRequest .= $PartnerName != '' ? '<partnerName xmlns="">' . $PartnerName . '</partnerName>' : '';
 		$XMLRequest .= '</clientDetails>';
-		
+
 		$XMLRequest .= '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>';
 		$XMLRequest .= $DateOfMonth != '' ? '<dateOfMonth xmlns="">' . $DateOfMonth . '</dateOfMonth>' : '';
 		$XMLRequest .= $DayOfWeek != '' ? '<dayOfWeek xmlns="">' . $DayOfWeek . '</dayOfWeek>' : '';
@@ -1408,7 +1408,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $SenderEmail != '' ? '<senderEmail xmlns="">' . $SenderEmail . '</senderEmail>' : '';
 		$XMLRequest .= $StartingDate != '' ? '<startingDate xmlns="">' . $StartingDate . '</startingDate>' : '';
 		$XMLRequest .= '</PreapprovalRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'Preapproval');
 		$DOM = new DOMDocument();
@@ -1416,7 +1416,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1425,7 +1425,7 @@ class Adaptive extends PayPal
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 		$PreapprovalKey = $DOM -> getElementsByTagName('preapprovalKey') -> length > 0 ? $DOM -> getElementsByTagName('preapprovalKey') -> item(0) -> nodeValue: '';
-		
+
 		if($this -> Sandbox)
 		{
 			$RedirectURL = 'https://www.sandbox.paypal.com/webscr?cmd=_ap-preapproval&preapprovalkey=' . $PreapprovalKey;
@@ -1434,22 +1434,22 @@ class Adaptive extends PayPal
 		{
 			$RedirectURL = 'https://www.paypal.com/webscr?cmd=_ap-preapproval&preapprovalkey=' . $PreapprovalKey;
 		}
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'PreapprovalKey' => $PreapprovalKey, 
-								   'RedirectURL' => $PreapprovalKey != '' ? $RedirectURL : '', 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'PreapprovalKey' => $PreapprovalKey,
+								   'RedirectURL' => $PreapprovalKey != '' ? $RedirectURL : '',
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submit PreapprovalDetails API request to PayPal.
 	 *
@@ -1462,7 +1462,7 @@ class Adaptive extends PayPal
 		$PreapprovalDetailsFields = isset($DataArray['PreapprovalDetailsFields']) ? $DataArray['PreapprovalDetailsFields'] : array();
 		$GetBillingAddress = isset($PreapprovalDetailsFields['GetBillingAddress']) ? $PreapprovalDetailsFields['GetBillingAddress'] : '';
 		$PreapprovalKey = isset($PreapprovalDetailsFields['PreapprovalKey']) ? $PreapprovalDetailsFields['PreapprovalKey'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<PreapprovalDetailsRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -1470,7 +1470,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $GetBillingAddress != '' ? '<getBillingAddress xmlns="">' . $GetBillingAddress . '</getBillingAddress>' : '';
 		$XMLRequest .= $PreapprovalKey != '' ? '<preapprovalKey xmlns="">' . $PreapprovalKey . '</preapprovalKey>' : '';
 		$XMLRequest .= '</PreapprovalDetailsRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'PreapprovalDetails');
 		$DOM = new DOMDocument();
@@ -1478,7 +1478,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1486,7 +1486,7 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$Approved = $DOM -> getElementsByTagName('approved') -> length > 0 ? $DOM -> getElementsByTagName('approved') -> item(0) -> nodeValue : '';
 		$CancelURL = $DOM -> getElementsByTagName('cancelUrl') -> length > 0 ? $DOM -> getElementsByTagName('cancelUrl') -> item(0) -> nodeValue : '';
 		$CurPayments = $DOM -> getElementsByTagName('curPayments') -> length > 0 ? $DOM -> getElementsByTagName('curPayments') -> item(0) -> nodeValue : '';
@@ -1509,42 +1509,42 @@ class Adaptive extends PayPal
 		$SenderEmail = $DOM -> getElementsByTagName('senderEmail') -> length > 0 ? $DOM -> getElementsByTagName('senderEmail') -> item(0) -> nodeValue : '';
 		$StartingDate = $DOM -> getElementsByTagName('startingDate') -> length > 0 ? $DOM -> getElementsByTagName('startingDate') -> item(0) -> nodeValue : '';
 		$Status = $DOM -> getElementsByTagName('status') -> length > 0 ? $DOM -> getElementsByTagName('status') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'Approved' => $Approved, 
-								   'CancelURL' => $CancelURL, 
-								   'CurPayments' => $CurPayments, 
-								   'CurPaymentsAmount' => $CurPaymentsAmount, 
-								   'CurPeriodAttempts' => $CurPeriodAttempts, 
-								   'CurPeriodEndingDate' => $CurPeriodEndingDate, 
-								   'CurrencyCode' => $CurrencyCode, 
-								   'DateOfMonth' => $DateOfMonth, 
-								   'DayOfWeek' => $DayOfWeek, 
-								   'EndingDate' => $EndingDate, 
-								   'IPNNotificationURL' => $IPNNotificationURL, 
-								   'MaxAmountPerPayment' => $MaxAmountPerPayment, 
-								   'MaxNumberOfPayments' => $MaxNumberOfPayments, 
-								   'MaxNumberOfPaymentsPerPeriod' => $MaxNumberOfPaymentsPerPeriod, 
-								   'MaxTotalAmountOfAllPayments' => $MaxTotalAmountOfAllPayments, 
-								   'Memo' => $Memo, 
-								   'PaymentPeriod' => $PaymentPeriod, 
-								   'PinType' => $PinType, 
-								   'ReturnUrl' => $ReturnUrl, 
-								   'SenderEmail' => $SenderEmail, 
-								   'StartingDate' => $StartingDate, 
-								   'Status' => $Status, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'Approved' => $Approved,
+								   'CancelURL' => $CancelURL,
+								   'CurPayments' => $CurPayments,
+								   'CurPaymentsAmount' => $CurPaymentsAmount,
+								   'CurPeriodAttempts' => $CurPeriodAttempts,
+								   'CurPeriodEndingDate' => $CurPeriodEndingDate,
+								   'CurrencyCode' => $CurrencyCode,
+								   'DateOfMonth' => $DateOfMonth,
+								   'DayOfWeek' => $DayOfWeek,
+								   'EndingDate' => $EndingDate,
+								   'IPNNotificationURL' => $IPNNotificationURL,
+								   'MaxAmountPerPayment' => $MaxAmountPerPayment,
+								   'MaxNumberOfPayments' => $MaxNumberOfPayments,
+								   'MaxNumberOfPaymentsPerPeriod' => $MaxNumberOfPaymentsPerPeriod,
+								   'MaxTotalAmountOfAllPayments' => $MaxTotalAmountOfAllPayments,
+								   'Memo' => $Memo,
+								   'PaymentPeriod' => $PaymentPeriod,
+								   'PinType' => $PinType,
+								   'ReturnUrl' => $ReturnUrl,
+								   'SenderEmail' => $SenderEmail,
+								   'StartingDate' => $StartingDate,
+								   'Status' => $Status,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submit CancelPreapproval API request to PayPal.
 	 *
@@ -1556,14 +1556,14 @@ class Adaptive extends PayPal
 	{
 		$CancelPreapprovalFields = isset($DataArray['CancelPreapprovalFields']) ? $DataArray['CancelPreapprovalFields'] : array();
 		$PreapprovalKey = isset($CancelPreapprovalFields['PreapprovalKey']) ? $CancelPreapprovalFields['PreapprovalKey'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<CancelPreapprovalRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $PreapprovalKey != '' ? '<preapprovalKey xmlns="">' . $PreapprovalKey . '</preapprovalKey>' : '';
 		$XMLRequest .= '</CancelPreapprovalRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'CancelPreapproval');
 		$DOM = new DOMDocument();
@@ -1571,7 +1571,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1579,20 +1579,20 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submit Refund API request to PayPal.
 	 *
@@ -1607,21 +1607,21 @@ class Adaptive extends PayPal
 		$PayKey = isset($RefundFields['PayKey']) ? $RefundFields['PayKey'] : '';
 		$TransactionID = isset($RefundFields['TransactionID']) ? $RefundFields['TransactionID'] : '';
 		$TrackingID = isset($RefundFields['TrackingID']) ? $RefundFields['TrackingID'] : '';
-		
+
 		$Receivers = isset($DataArray['Receivers']) ? $DataArray['Receivers'] : array();
 		$Amount = isset($Receivers['Amount']) ? $Receivers['Amount'] : '';
 		$Email = isset($Receivers['Email']) ? $Receivers['Email'] : '';
 		$InvoiceID = isset($Receivers['InvoiceID']) ? $Receivers['InvoiceID'] : '';
 		$Primary = isset($Receivers['Primary']) ? $Receivers['Primary'] : '';
 		$PaymentType = isset($Receivers['PaymentType']) ? $Receivers['PaymentType'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<RefundRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 		$XMLRequest .= $PayKey != '' ? '<payKey xmlns="">' . $PayKey . '</payKey>' : '';
-		
+
 		if(!empty($Receivers))
 		{
 			$XMLRequest .= '<receiverList xmlns="">';
@@ -1636,11 +1636,11 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</receiverList>';
 		}
-		
+
 		$XMLRequest .= $TransactionID != '' ? '<transactionId xmlns="">' . $TransactionID . '</transactionId>' : '';
 		$XMLRequest .= $TrackingID != '' ? '<trackingId xmlns="">' . $TrackingID . '</trackingId>' : '';
 		$XMLRequest .= '</RefundRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'Refund');
 		$DOM = new DOMDocument();
@@ -1648,7 +1648,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1656,7 +1656,7 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$EncryptedTransactionID = $DOM -> getElementsByTagName('encryptedRefundTransactionId') -> length > 0 ? $DOM -> getElementsByTagName('encryptedRefundTransactionId') -> item(0) -> nodeValue : '';
 		$RefundFeeAmount = $DOM -> getElementsByTagName('refundFeeAmount') -> length > 0 ? $DOM -> getElementsByTagName('refundFeeAmount') -> item(0) -> nodeValue : '';
 		$RefundGrossAmount = $DOM -> getElementsByTagName('refundGrossAmount') -> length > 0 ? $DOM -> getElementsByTagName('refundGrossAmount') -> item(0) -> nodeValue : '';
@@ -1665,42 +1665,42 @@ class Adaptive extends PayPal
 		$RefundStatus = $DOM -> getElementsByTagName('refundStatus') -> length > 0 ? $DOM -> getElementsByTagName('refundStatus') -> item(0) -> nodeValue : '';
 		$RefundTransactionStatus = $DOM -> getElementsByTagName('refundTransactionStatus') -> length > 0 ? $DOM -> getElementsByTagName('refundTransactionStatus') -> item(0) -> nodeValue : '';
 		$TotalOfAllRefunds = $DOM -> getElementsByTagName('totalOfAllRefunds') -> length > 0 ? $DOM -> getElementsByTagName('totalOfAllRefunds') -> item(0) -> nodeValue : '';
-		
+
 		$Amount = $DOM -> getElementsByTagName('amount') -> length > 0 ? $DOM -> getElementsByTagName('amount') -> item(0) -> nodeValue : '';
 		$Email = $DOM -> getElementsByTagName('email') -> length > 0 ? $DOM -> getElementsByTagName('email') -> item(0) -> nodeValue : '';
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceId') -> length > 0 ? $DOM -> getElementsByTagName('invoiceId') -> item(0) -> nodeValue : '';
 		$PaymentType = $DOM -> getElementsByTagName('paymentType') -> length > 0 ? $DOM -> getElementsByTagName('paymentType') -> item(0) -> nodeValue : '';
 		$Primary = $DOM -> getElementsByTagName('primary') -> length > 0 ? $DOM -> getElementsByTagName('primary') -> item(0) -> nodeValue : '';
 		$Receiver = array(
-						'Amount' => $Amount, 
-						'Email' => $Email, 
-						'InvoiceID' => $InvoiceID, 
-						'PaymentType' => $PaymentType, 
+						'Amount' => $Amount,
+						'Email' => $Email,
+						'InvoiceID' => $InvoiceID,
+						'PaymentType' => $PaymentType,
 						'Primary' => $Primary
 						  );
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'EncryptedTransactionID' => $EncryptedTransactionID, 
-								   'RefundFeeAmount' => $RefundFeeAmount, 
-								   'RefundGrossAmount' => $RefundGrossAmount, 
-								   'RefundHasBecomeFull' => $RefundHasBecomeFull, 
-								   'RefundNetAmount' => $RefundNetAmount, 
-								   'RefundStatus' => $RefundStatus, 
-								   'RefundTransactionStatus' => $RefundTransactionStatus, 
-								   'TotalOfAllRefunds' => $TotalOfAllRefunds, 
-								   'Receiver' => $Receiver, 
-								   'RawRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'EncryptedTransactionID' => $EncryptedTransactionID,
+								   'RefundFeeAmount' => $RefundFeeAmount,
+								   'RefundGrossAmount' => $RefundGrossAmount,
+								   'RefundHasBecomeFull' => $RefundHasBecomeFull,
+								   'RefundNetAmount' => $RefundNetAmount,
+								   'RefundStatus' => $RefundStatus,
+								   'RefundTransactionStatus' => $RefundTransactionStatus,
+								   'TotalOfAllRefunds' => $TotalOfAllRefunds,
+								   'Receiver' => $Receiver,
+								   'RawRequest' => $XMLRequest,
 								   'RawResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submit ConvertCurrency API request to PayPal.
 	 *
@@ -1712,7 +1712,7 @@ class Adaptive extends PayPal
 	{
 		$BaseAmountList = isset($DataArray['BaseAmountList']) ? $DataArray['BaseAmountList'] : array();
 		$ConvertToCurrencyList = isset($DataArray['ConvertToCurrencyList']) ? $DataArray['ConvertToCurrencyList'] : array();
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<ConvertCurrencyRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -1727,15 +1727,15 @@ class Adaptive extends PayPal
 		}
 		$XMLRequest .= '</baseAmountList>';
 		$XMLRequest .= '<convertToCurrencyList xmlns="">';
-		
+
 		foreach($ConvertToCurrencyList as $CurrencyCode)
 		{
 			$XMLRequest .= '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>';
 		}
-		
+
 		$XMLRequest .= '</convertToCurrencyList>';
 		$XMLRequest .= '</ConvertCurrencyRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'ConvertCurrency');
 		$DOM = new DOMDocument();
@@ -1743,7 +1743,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-						
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -1751,23 +1751,23 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$CurrencyConversionListArray = array();
 		$CurrencyConversionListDOM = $DOM -> getElementsByTagName('currencyConversionList') -> length > 0 ? $DOM -> getElementsByTagName('currencyConversionList') : array();
-		
+
 		foreach($CurrencyConversionListDOM as $CurrencyConversionList)
 		{
-			$BaseAmountDOM = $CurrencyConversionList -> getElementsByTagName('baseAmount') -> length > 0 ? $CurrencyConversionList -> getElementsByTagName('baseAmount') : array();		
+			$BaseAmountDOM = $CurrencyConversionList -> getElementsByTagName('baseAmount') -> length > 0 ? $CurrencyConversionList -> getElementsByTagName('baseAmount') : array();
 			foreach($BaseAmountDOM as $BaseAmount)
 			{
 				$BaseAmountCurrencyCode = $BaseAmount -> getElementsByTagName('code') -> length > 0 ? $BaseAmount -> getElementsByTagName('code') -> item(0) -> nodeValue : '';
 				$BaseAmountValue = $BaseAmount -> getElementsByTagName('amount') -> length > 0 ? $BaseAmount -> getElementsByTagName('amount') -> item(0) -> nodeValue : '';
 				$BaseAmountArray = array(
-										 'Code' => $BaseAmountCurrencyCode, 
+										 'Code' => $BaseAmountCurrencyCode,
 										 'Amount' => $BaseAmountValue
 										 );
 			}
-			
+
 			$CurrencyListArray = array();
 			$CurrencyListDOM = $CurrencyConversionList -> getElementsByTagName('currency') -> length > 0 ? $CurrencyConversionList -> getElementsByTagName('currency') : array();
 			foreach($CurrencyListDOM as $CurrencyList)
@@ -1775,34 +1775,34 @@ class Adaptive extends PayPal
 				$ListCurrencyCode = $CurrencyList -> getElementsByTagName('code') -> length > 0 ? $CurrencyList -> getElementsByTagName('code') -> item(0) -> nodeValue : '';
 				$ListCurrencyAmount = $CurrencyList -> getElementsByTagName('amount') -> length > 0 ? $CurrencyList -> getElementsByTagName('amount') -> item(0) -> nodeValue : '';
 				$ListCurrencyCurrent = array(
-											 'Code' => $ListCurrencyCode, 
+											 'Code' => $ListCurrencyCode,
 											 'Amount' => $ListCurrencyAmount
 											 );
 				array_push($CurrencyListArray, $ListCurrencyCurrent);
 			}
-			
+
 			$CurrencyConversionListCurrent = array(
-												   'BaseAmount' => $BaseAmountArray, 
+												   'BaseAmount' => $BaseAmountArray,
 												   'CurrencyList' => $CurrencyListArray
 												   );
-			
+
 			array_push($CurrencyConversionListArray, $CurrencyConversionListCurrent);
 		}
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'CurrencyConversionList' => $CurrencyConversionListArray, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'CurrencyConversionList' => $CurrencyConversionListArray,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submit CreateAccount API request to PayPal.
 	 *
@@ -1836,7 +1836,7 @@ class Adaptive extends PayPal
 		$RegistrationType = isset($CreateAccountFields['RegistrationType']) ? $CreateAccountFields['RegistrationType'] : 'Web';
 		$SuppressWelcomeEmail = isset($CreateAccountFields['SuppressWelcomeEmail']) ? $CreateAccountFields['SuppressWelcomeEmail'] : '';
 		$TaxID = isset($CreateAccountFields['TaxID']) ? $CreateAccountFields['TaxID'] : '';
-		
+
 		$ReturnURL = isset($CreateAccountFields['ReturnURL']) ? $CreateAccountFields['ReturnURL'] : '';
 		$ShowAddCreditCard = isset($CreateAccountFields['ShowAddCreditCard']) ? $CreateAccountFields['ShowAddCreditCard'] : '';
 		$ShowMobileConfirm = isset($CreateAccountFields['ShowMobileConfirm']) ? $CreateAccountFields['ShowMobileConfirm'] : '';
@@ -1887,7 +1887,7 @@ class Adaptive extends PayPal
 		$LegalAgreement = isset($DataArray['LegalAgreement']) ? $DataArray['LegalAgreement'] : array();
 		$LegalAgreementAccepted = isset($LegalAgreement['Accepted']) ? $LegalAgreement['Accepted'] : '';
 		$LegalAgreementType = isset($LegalAgreement['Type']) ? $LegalAgreement['Type'] : '';
-		
+
 		$BusinessAddress = isset($DataArray['BusinessAddress']) ? $DataArray['BusinessAddress'] : array();
 		$BusinessAddressLine1 = isset($BusinessAddress['Line1']) ? $BusinessAddress['Line1'] : '';
 		$BusinessAddressLine2 = isset($BusinessAddress['Line2']) ? $BusinessAddress['Line2'] : '';
@@ -1903,7 +1903,7 @@ class Adaptive extends PayPal
 		$PrinciplePlaceOfBusinessAddressState = isset($PrinciplePlaceOfBusinessAddress['State']) ? $PrinciplePlaceOfBusinessAddress['State'] : '';
 		$PrinciplePlaceOfBusinessAddressPostalCode = isset($PrinciplePlaceOfBusinessAddress['PostalCode']) ? $PrinciplePlaceOfBusinessAddress['PostalCode'] : '';
 		$PrinciplePlaceOfBusinessAddressCountryCode = isset($PrinciplePlaceOfBusinessAddress['CountryCode']) ? $PrinciplePlaceOfBusinessAddress['CountryCode'] : '';
-		
+
 		$RegisteredOfficeAddress = isset($DataArray['RegisteredOfficeAddress']) ? $DataArray['RegisteredOfficeAddress'] : array();
 		$RegisteredOfficeAddressLine1 = isset($RegisteredOfficeAddress['Line1']) ? $RegisteredOfficeAddress['Line1'] : '';
 		$RegisteredOfficeAddressLine2 = isset($RegisteredOfficeAddress['Line2']) ? $RegisteredOfficeAddress['Line2'] : '';
@@ -1911,7 +1911,7 @@ class Adaptive extends PayPal
 		$RegisteredOfficeAddressState = isset($RegisteredOfficeAddress['State']) ? $RegisteredOfficeAddress['State'] : '';
 		$RegisteredOfficeAddressPostalCode = isset($RegisteredOfficeAddress['PostalCode']) ? $RegisteredOfficeAddress['PostalCode'] : '';
 		$RegisteredOfficeAddressCountryCode = isset($RegisteredOfficeAddress['CountryCode']) ? $RegisteredOfficeAddress['CountryCode'] : '';
-		
+
 		$BusinessStakeHolder = isset($DataArray['BusinessStakeHolder']) ? $DataArray['BusinessStakeHolder'] : array();
 		$BusinessStakeHolderDateOfBirth = isset($BusinessStakeHolder['DateOfBirth']) ? $BusinessStakeHolder['DateOfBirth'] : '';
 		$BusinessStakeHolderFullLegalName = isset($BusinessStakeHolder['FullLegalName']) ? $BusinessStakeHolder['FullLegalName'] : '';
@@ -1922,7 +1922,7 @@ class Adaptive extends PayPal
 		$BusinessStakeHolderSuffix = isset($BusinessStakeHolder['Suffix']) ? $BusinessStakeHolder['Suffix'] : '';
 		$BusinessStakeHolderRole = isset($BusinessStakeHolder['Role']) ? $BusinessStakeHolder['Role'] : '';
 		$BusinessStakeHolderCountryCode = isset($BusinessStakeHolder['CountryCode']) ? $BusinessStakeHolder['CountryCode'] : '';
-		
+
 		$BusinessStakeHolderAddress = isset($DataArray['BusinessStakeHolderAddress']) ? $DataArray['BusinessStakeHolderAddress'] : array();
 		$BusinessStakeHolderAddressLine1 = isset($BusinessStakeHolderAddress['Line1']) ? $BusinessStakeHolderAddress['Line1'] : '';
 		$BusinessStakeHolderAddressLine2 = isset($BusinessStakeHolderAddress['Line2']) ? $BusinessStakeHolderAddress['Line2'] : '';
@@ -1930,14 +1930,14 @@ class Adaptive extends PayPal
 		$BusinessStakeHolderAddressState = isset($BusinessStakeHolderAddress['State']) ? $BusinessStakeHolderAddress['State'] : '';
 		$BusinessStakeHolderAddressPostalCode = isset($BusinessStakeHolderAddress['PostalCode']) ? $BusinessStakeHolderAddress['PostalCode'] : '';
 		$BusinessStakeHolderAddressCountryCode = isset($BusinessStakeHolderAddress['CountryCode']) ? $BusinessStakeHolderAddress['CountryCode'] : '';
-		
+
 		$PartnerFields = isset($DataArray['PartnerFields']) ? $DataArray['PartnerFields'] : array();
 		$PartnerField1 = isset($PartnerFields['Field1']) ? $PartnerFields['Field1'] : '';
 		$PartnerField2 = isset($PartnerFields['Field2']) ? $PartnerFields['Field2'] : '';
 		$PartnerField3 = isset($PartnerFields['Field3']) ? $PartnerFields['Field3'] : '';
 		$PartnerField4 = isset($PartnerFields['Field4']) ? $PartnerFields['Field4'] : '';
 		$PartnerField5 = isset($PartnerFields['Field5']) ? $PartnerFields['Field5'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<CreateAccountRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -1945,7 +1945,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $AccountType != '' ? '<accountType xmlns="">' . $AccountType . '</accountType>' : '';
 		$XMLRequest .= $EmailAddress != '' ? '<emailAddress xmlns="">' . $EmailAddress . '</emailAddress>' : '';
 		$XMLRequest .= $FunctionalArea != '' ? '<functionalArea xmlns="">' . $FunctionalArea . '</functionalArea>' : '';
-		
+
 		if($Salutation != '' || $FirstName != '' || $MiddleName != '' || $LastName != '' || $Suffix != '')
 		{
 			$XMLRequest .= '<name xmlns="">';
@@ -1956,9 +1956,9 @@ class Adaptive extends PayPal
 			$XMLRequest .= $Suffix != '' ? '<suffix xmlns="">' . $Suffix . '</suffix>' : '';
 			$XMLRequest .= '</name>';
 		}
-		
+
 		$XMLRequest .= $DateOfBirth != '' ? '<dateOfBirth xmlns="">' . $DateOfBirth . '</dateOfBirth>' : '';
-		
+
 		if(!empty($Address))
 		{
 			$XMLRequest .= '<address xmlns="">';
@@ -1970,7 +1970,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $CountryCode != '' ? '<countryCode xmlns="">' . $CountryCode . '</countryCode>' : '';
 			$XMLRequest .= '</address>';
 		}
-		
+
 		$XMLRequest .= $ContactPhoneNumber != '' ? '<contactPhoneNumber xmlns="">' . $ContactPhoneNumber . '</contactPhoneNumber>' : '';
 		$XMLRequest .= $HomePhoneNumber != '' ? '<homePhoneNumber xmlns="">' . $HomePhoneNumber . '</homePhoneNumber>' : '';
 		$XMLRequest .= $MobilePhoneNumber != '' ? '<mobilePhoneNumber xmlns="">' . $MobilePhoneNumber . '</mobilePhoneNumber>' : '';
@@ -1990,7 +1990,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $PurposeOfAccount != '' ? '<purposeOfAccount xmlns="">' . $PurposeOfAccount . '</purposeOfAccount>' : '';
 		$XMLRequest .= $Profession != '' ? '<profession xmlns="">' . $Profession . '</profession>' : '';
 		$XMLRequest .= $TaxID != '' ? '<taxId xmlns="">' . $TaxID . '</taxId>' : '';
-		
+
 		if($ReturnURL != '' || $ReturnURLDescription != '' || $ShowAddCreditCard != '' || $ShowMobileConfirm != '' || $UseMiniBrowser != '' || $ReminderEmailFrequency != '')
 		{
 			$XMLRequest .= '<createAccountWebOptions xmlns="">';
@@ -2019,12 +2019,12 @@ class Adaptive extends PayPal
 			$XMLRequest .= $LegalAgreementType != '' ? '<type xmlns="">' . $LegalAgreementType . '</type>' : '';
 			$XMLRequest .= '</legalAgreement>';
 		}
-		
+
 		if(!empty($BusinessInfo))
 		{
 			$XMLRequest .= '<businessInfo xmlns="">';
 			$XMLRequest .= $BusinessName != '' ? '<businessName xmlns="">'. $BusinessName . '</businessName>' : '';
-			
+
 			if(!empty($BusinessAddress))
 			{
 				$XMLRequest .= '<businessAddress xmlns="">';
@@ -2036,7 +2036,7 @@ class Adaptive extends PayPal
 				$XMLRequest .= $BusinessAddressCountryCode != '' ? '<countryCode xmlns="">' . $BusinessAddressCountryCode . '</countryCode>' : '';
 				$XMLRequest .= '</businessAddress>';
 			}
-			
+
 			$XMLRequest .= $WorkPhone != '' ? '<workPhone xmlns="">'. $WorkPhone . '</workPhone>' : '';
 			$XMLRequest .= $Category != '' ? '<category xmlns="">' . $Category . '</category>' : '';
 			$XMLRequest .= $SubCategory != '' ? '<subCategory xmlns="">'. $SubCategory . '</subCategory>' : '';
@@ -2059,7 +2059,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $VatID != '' ? '<vatId xmlns="">' . $VatID . '</vatId>' : '';
 			$XMLRequest .= $VatCountryCode != '' ? '<vatCountryCode xmlns="">' . $VatCountryCode . '</vatCountryCode>' : '';
 			$XMLRequest .= $CommercialRegistrationLocation != '' ? '<commercialRegistrationLocation xmlns="">' . $CommercialRegistrationLocation . '</commercialRegistrationLocation>' : '';
-			
+
 			if(!empty($PrinciplePlaceOfBusinessAddress))
 			{
 				$XMLRequest .= '<principlePlaceOfBusinessAddress xmlns="">';
@@ -2071,7 +2071,7 @@ class Adaptive extends PayPal
 				$XMLRequest .= $PrinciplePlaceOfBusinessAddressCountryCode != '' ? '<countryCode xmlns="">' . $PrinciplePlaceOfBusinessAddressCountryCode . '</countryCode>' : '';
 				$XMLRequest .= '</principlePlaceOfBusinessAddress>';
 			}
-			
+
 			if(!empty($RegisteredOfficeAddress))
 			{
 				$XMLRequest .= '<registeredOfficeAddress xmlns="">';
@@ -2080,18 +2080,18 @@ class Adaptive extends PayPal
 				$XMLRequest .= $RegisteredOfficeAddressCity != '' ? '<city xmlns="">' . $RegisteredOfficeAddressCity . '</city>' : '';
 				$XMLRequest .= $RegisteredOfficeAddressState != '' ? '<state xmlns="">' . $RegisteredOfficeAddressState . '</state>' : '';
 				$XMLRequest .= $RegisteredOfficeAddressPostalCode != '' ? '<postalCode xmlns="">' . $RegisteredOfficeAddressPostalCode . '</postalCode>' : '';
-				$XMLRequest .= $RegisteredOfficeAddressCountryCode != '' ? '<countryCode xmlns="">' . $RegisteredOfficeAddressCountryCode . '</countryCode>' : '';		
+				$XMLRequest .= $RegisteredOfficeAddressCountryCode != '' ? '<countryCode xmlns="">' . $RegisteredOfficeAddressCountryCode . '</countryCode>' : '';
 				$XMLRequest .= '</registeredOfficeAddress>';
 			}
-			
+
 			$XMLRequest .= $EstablishmentCountryCode != '' ? '<establishmentCountryCode xmlns="">' . $EstablishmentCountryCode . '</establishmentCountryCode>' : '';
 			$XMLRequest .= $EstablishmentState != '' ? '<establishmentState xmlns="">' . $EstablishmentState . '</establishmentState>' : '';
-			
+
 			if(!empty($BusinessStakeHolder))
 			{
 				$XMLRequest .= '<businessStakeHolder xmlns="">';
 				$XMLRequest .= $BusinessStakeHolderRole != '' ? '<role xmlns="">' . $BusinessStakeHolderRole . '</role>' : '';
-				
+
 				if($BusinessStakeHolderSalutation != '' || $BusinessStakeHolderFirstName != '' || $BusinessStakeHolderMiddleName != '' || $BusinessStakeHolderLastName != '' || $BusinessStakeHolderSuffix != '')
 				{
 					$XMLRequest .= '<name xmlns="">';
@@ -2099,12 +2099,12 @@ class Adaptive extends PayPal
 					$XMLRequest .= $BusinessStakeHolderFirstName != '' ? '<firstName xmlns="">' . $BusinessStakeHolderFirstName . '</firstName>' : '';
 					$XMLRequest .= $BusinessStakeHolderMiddleName != '' ? '<middleName xmlns="">' . $BusinessStakeHolderMiddleName . '</middleName>' : '';
 					$XMLRequest .= $BusinessStakeHolderLastName != '' ? '<lastName xmlns="">' . $BusinessStakeHolderLastName . '</lastName>' : '';
-					$XMLRequest .= $BusinessStakeHolderSuffix != '' ? '<suffix xmlns="">' . $BusinessStakeHolderSuffix . '</suffix>' : '';		
+					$XMLRequest .= $BusinessStakeHolderSuffix != '' ? '<suffix xmlns="">' . $BusinessStakeHolderSuffix . '</suffix>' : '';
 					$XMLRequest .= '</name>';
 				}
-				
+
 				$XMLRequest .= $BusinessStakeHolderFullLegalName != '' ? '<fullLegalName xmlns="">' . $BusinessStakeHolderFullLegalName . '</fullLegalName>' : '';
-				
+
 				if(!empty($BusinessStakeHolderAddress))
 				{
 					$XMLRequest .= '<address xmlns="">';
@@ -2113,19 +2113,19 @@ class Adaptive extends PayPal
 					$XMLRequest .= $BusinessStakeHolderAddressCity != '' ? '<city xmlns="">' . $BusinessStakeHolderAddressCity . '</city>' : '';
 					$XMLRequest .= $BusinessStakeHolderAddressState != '' ? '<state xmlns="">' . $BusinessStakeHolderAddressState . '</state>' : '';
 					$XMLRequest .= $BusinessStakeHolderAddressPostalCode != '' ? '<postalCode xmlns="">' . $BusinessStakeHolderAddressPostalCode . '</postalCode>' : '';
-					$XMLRequest .= $BusinessStakeHolderAddressCountryCode != '' ? '<countryCode xmlns="">' . $BusinessStakeHolderAddressCountryCode . '</countryCode>' : '';		
+					$XMLRequest .= $BusinessStakeHolderAddressCountryCode != '' ? '<countryCode xmlns="">' . $BusinessStakeHolderAddressCountryCode . '</countryCode>' : '';
 					$XMLRequest .= '</address>';
 				}
-				
+
 				$XMLRequest .= $BusinessStakeHolderDateOfBirth != '' ? '<dateOfBirth xmlns="">' . $BusinessStakeHolderDateOfBirth . '</dateOfBirth>' : '';
 				$XMLRequest .= '</businessStakeHolder>';
 			}
-			
+
 			$XMLRequest .= '</businessInfo>';
 		}
-		
+
 		$XMLRequest .= '</CreateAccountRequest>';
-				
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptiveAccounts', 'CreateAccount');
 		$DOM = new DOMDocument();
@@ -2133,7 +2133,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2141,29 +2141,29 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$AccountID = $DOM -> getElementsByTagName('accountId') -> length > 0 ? $DOM -> getElementsByTagName('accountId') -> item(0) -> nodeValue : '';
 		$CreateAccountKey = $DOM -> getElementsByTagName('createAccountKey') -> length > 0 ? $DOM -> getElementsByTagName('createAccountKey') -> item(0) -> nodeValue : '';
 		$ExecStatus = $DOM -> getElementsByTagName('execStatus') -> length > 0 ? $DOM -> getElementsByTagName('execStatus') -> item(0) -> nodeValue : '';
 		$RedirectURL = $DOM -> getElementsByTagName('redirectURL') -> length > 0 ? $DOM -> getElementsByTagName('redirectURL') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'AccountID' => $AccountID, 
-								   'CreateAccountKey' => $CreateAccountKey, 
-								   'ExecStatus' => $ExecStatus, 
-								   'RedirectURL' => $RedirectURL, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'AccountID' => $AccountID,
+								   'CreateAccountKey' => $CreateAccountKey,
+								   'ExecStatus' => $ExecStatus,
+								   'RedirectURL' => $RedirectURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	}
-	
+
 	/**
 	 * Submit AddBankAccount API request to PayPal.
 	 *
@@ -2204,7 +2204,7 @@ class Adaptive extends PayPal
 		$CancelURL = isset($WebOptions['CancelURL']) ? $WebOptions['CancelURL'] : '';
 		$ReturnURLDescription = isset($WebOptions['ReturnURLDescription']) ? $WebOptions['ReturnURLDescription'] : '';
 		$CancelURLDescription = isset($WebOptions['CancelURLDescription']) ? $WebOptions['CancelURLDescription'] : '';
-	
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<AddBankAccountRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -2233,19 +2233,19 @@ class Adaptive extends PayPal
 		$XMLRequest .= $TaxIDNumber != '' ? '<taxIdNumber xmlns="">' . $TaxIDNumber . '</taxIdNumber>' : '';
 		$XMLRequest .= $AccountHolderDateOfBirth != '' ? '<accountHolderDateOfBirth xmlns="">' . $AccountHolderDateOfBirth . '</accountHolderDateOfBirth>' : '';
 		$XMLRequest .= $ConfirmationType != '' ? '<confirmationType xmlns="">' . $ConfirmationType . '</confirmationType>' : '';
-		
+
 		if(!empty($WebOptions))
 		{
 			$XMLRequest .= '<webOptions xmlns="">';
 			$XMLRequest .= $ReturnURL != '' ? '<returnUrl xmlns="">' . $ReturnURL . '</returnUrl>' : '';
 			$XMLRequest .= $CancelURL != '' ? '<cancelUrl xmlns="">' . $CancelURL . '</cancelUrl>' : '';
 			$XMLRequest .= $ReturnURLDescription != '' ? '<returnUrlDescription xmlns="">' . $ReturnURLDescription . '</returnUrlDescription>' : '';
-			$XMLRequest .= $CancelURLDescription != '' ? '<cancelUrlDescription xmlns="">' . $CancelURLDescription . '</cancelUrlDescription>' : '';	
+			$XMLRequest .= $CancelURLDescription != '' ? '<cancelUrlDescription xmlns="">' . $CancelURLDescription . '</cancelUrlDescription>' : '';
 			$XMLRequest .= '</webOptions>';
 		}
-		
+
 		$XMLRequest .= '</AddBankAccountRequest>';
-		 
+
 		 // Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptiveAccounts', 'AddBankAccount', $this->PrintHeaders);
 		$DOM = new DOMDocument();
@@ -2253,7 +2253,7 @@ class Adaptive extends PayPal
 
          $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
          $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2261,27 +2261,27 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ExecStatus = $DOM -> getElementsByTagName('execStatus') -> length > 0 ? $DOM -> getElementsByTagName('execStatus') -> item(0) -> nodeValue : '';
 		$FundingSourceKey = $DOM -> getElementsByTagName('fundingSourceKey') -> length > 0 ? $DOM -> getElementsByTagName('fundingSourceKey') -> item(0) -> nodeValue : '';
 		$RedirectURL = $DOM -> getElementsByTagName('redirectURL') -> length > 0 ? $DOM -> getElementsByTagName('redirectURL') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'ExecStatus' => $ExecStatus, 
-								   'FundingSourceKey' => $FundingSourceKey, 
-								   'RedirectURL' => $RedirectURL, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'ExecStatus' => $ExecStatus,
+								   'FundingSourceKey' => $FundingSourceKey,
+								   'RedirectURL' => $RedirectURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
+
 	 /**
 	 * Submit AddPaymentCard API request to PayPal.
 	 *
@@ -2309,7 +2309,7 @@ class Adaptive extends PayPal
 		$MiddleName = isset($NameOnCard['MiddleName']) ? $NameOnCard['MiddleName'] : '';
 		$LastName = isset($NameOnCard['LastName']) ? $NameOnCard['LastName'] : '';
 		$Suffix = isset($NameOnCard['Suffix']) ? $NameOnCard['Suffix'] : '';
-		
+
 		$BillingAddress = isset($DataArray['BillingAddress']) ? $DataArray['BillingAddress'] : array();
 		$Line1 = isset($BillingAddress['Line1']) ? $BillingAddress['Line1'] : '';
 		$Line2 = isset($BillingAddress['Line2']) ? $BillingAddress['Line2'] : '';
@@ -2317,17 +2317,17 @@ class Adaptive extends PayPal
 		$State = isset($BillingAddress['State']) ? $BillingAddress['State'] : '';
 		$PostalCode = isset($BillingAddress['PostalCode']) ? $BillingAddress['PostalCode'] : '';
 		$CountryCode = isset($BillingAddress['CountryCode']) ? $BillingAddress['CountryCode'] : '';
-		
+
 		$ExpirationDate = isset($DataArray['ExpirationDate']) ? $DataArray['ExpirationDate'] : array();
 		$Month = isset($ExpirationDate['Month']) ? $ExpirationDate['Month'] : '';
 		$Year = isset($ExpirationDate['Year']) ? $ExpirationDate['Year'] : '';
-		
+
 		$WebOptions = isset($DataArray['WebOptions']) ? $DataArray['WebOptions'] : array();
 		$ReturnURL = isset($WebOptions['ReturnURL']) ? $WebOptions['ReturnURL'] : '';
 		$CancelURL = isset($WebOptions['CancelURL']) ? $WebOptions['CancelURL'] : '';
 		$ReturnURLDescription = isset($WebOptions['ReturnURLDescription']) ? $WebOptions['ReturnURLDescription'] : '';
 		$CancelURLDescription = isset($WebOptions['CancelURLDescription']) ? $WebOptions['CancelURLDescription'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<AddPaymentCardRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -2335,7 +2335,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $EmailAddress != '' ? '<emailAddress xmlns="">' . $EmailAddress . '</emailAddress>' : '';
 		$XMLRequest .= $AccountID != '' ? '<accountId xmlns="">' . $AccountID . '</accountId>' : '';
 		$XMLRequest .= $CreateAccountKey != '' ? '<createAccountKey xmlns="">' . $CreateAccountKey . '</createAccountKey>' : '';
-	
+
 		if(!empty($NameOnCard))
 		{
 			$XMLRequest .= '<nameOnCard xmlns="">';
@@ -2346,7 +2346,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $Suffix != '' ? '<suffix xmlns="">' . $Suffix . '</suffix>' : '';
 			$XMLRequest .= '</nameOnCard>';
 		}
-		
+
 		if(!empty($BillingAddress))
 		{
 			$XMLRequest .= '<billingAddress xmlns="">';
@@ -2355,10 +2355,10 @@ class Adaptive extends PayPal
 			$XMLRequest .= $City != '' ? '<city xmlns="">' . $City . '</city>' : '';
 			$XMLRequest .= $State != '' ? '<state xmlns="">' . $State . '</state>' : '';
 			$XMLRequest .= $PostalCode != '' ? '<postalCode xmlns="">' . $PostalCode . '</postalCode>' : '';
-			$XMLRequest .= $CountryCode != '' ? '<countryCode xmlns="">' . $CountryCode . '</countryCode>' : '';			
-			$XMLRequest .= '</billingAddress>';	
+			$XMLRequest .= $CountryCode != '' ? '<countryCode xmlns="">' . $CountryCode . '</countryCode>' : '';
+			$XMLRequest .= '</billingAddress>';
 		}
-		
+
 		$XMLRequest .= $CardOwnerDateOfBirth != '' ? '<cardOwnerDateOfBirth xmlns="">' . $CardOwnerDateOfBirth . '</cardOwnerDateOfBirth>' : '';
 		$XMLRequest .= $CardNumber != '' ? '<cardNumber xmlns="">' . $CardNumber . '</cardNumber>' : '';
 		$XMLRequest .= $CardType != '' ? '<cardType xmlns="">' . $CardType . '</cardType>' : '';
@@ -2367,27 +2367,27 @@ class Adaptive extends PayPal
 		{
 			$XMLRequest .= '<expirationDate xmlns="">';
 			$XMLRequest .= $Month != '' ? '<month xmlns="">' . $Month . '</month>' : '';
-			$XMLRequest .= $Year != '' ? '<year xmlns="">' . $Year . '</year>' : '';			
-			$XMLRequest .= '</expirationDate>';	
+			$XMLRequest .= $Year != '' ? '<year xmlns="">' . $Year . '</year>' : '';
+			$XMLRequest .= '</expirationDate>';
 		}
 
 		$XMLRequest .= $CardVerificationNumber != '' ? '<cardVerificationNumber xmlns="">' . $CardVerificationNumber . '</cardVerificationNumber>' : '';
 		$XMLRequest .= $StartDate != '' ? '<startDate xmlns="">' . $StartDate . '</startDate>' : '';
 		$XMLRequest .= $IssueNumber != '' ? '<issueNumber xmlns="">' . $IssueNumber . '</issueNumber>' : '';
 		$XMLRequest .= $ConfirmationType != '' ? '<confirmationType xmlns="">' . $ConfirmationType . '</confirmationType>' : '';
-		
+
 		if(!empty($WebOptions))
 		{
 			$XMLRequest .= '<webOptions xmlns="">';
 			$XMLRequest .= $ReturnURL != '' ? '<returnUrl xmlns="">' . $ReturnURL . '</returnUrl>' : '';
 			$XMLRequest .= $CancelURL != '' ? '<cancelUrl xmlns="">' . $CancelURL . '</cancelUrl>' : '';
 			$XMLRequest .= $ReturnURLDescription != '' ? '<returnUrlDescription xmlns="">' . $ReturnURLDescription . '</returnUrlDescription>' : '';
-			$XMLRequest .= $CancelURLDescription != '' ? '<cancelUrlDescription xmlns="">' . $CancelURLDescription . '</cancelUrlDescription>' : '';	
+			$XMLRequest .= $CancelURLDescription != '' ? '<cancelUrlDescription xmlns="">' . $CancelURLDescription . '</cancelUrlDescription>' : '';
 			$XMLRequest .= '</webOptions>';
 		}
-	
+
 		$XMLRequest .= '</AddPaymentCardRequest>';
-				 
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptiveAccounts', 'AddPaymentCard');
 		$DOM = new DOMDocument();
@@ -2395,7 +2395,7 @@ class Adaptive extends PayPal
 
          $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
          $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2403,28 +2403,28 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ExecStatus = $DOM -> getElementsByTagName('execStatus') -> length > 0 ? $DOM -> getElementsByTagName('execStatus') -> item(0) -> nodeValue : '';
 		$FundingSourceKey = $DOM -> getElementsByTagName('fundingSourceKey') -> length > 0 ? $DOM -> getElementsByTagName('fundingSourceKey') -> item(0) -> nodeValue : '';
 		$RedirectURL = $DOM -> getElementsByTagName('redirectURL') -> length > 0 ? $DOM -> getElementsByTagName('redirectURL') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'ExecStatus' => $ExecStatus, 
-								   'FundingSourceKey' => $FundingSourceKey, 
-								   'RedirectURL' => $RedirectURL, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'ExecStatus' => $ExecStatus,
+								   'FundingSourceKey' => $FundingSourceKey,
+								   'RedirectURL' => $RedirectURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit SetFundingSourceConfirmed API request to PayPal.
 	 *
@@ -2438,16 +2438,16 @@ class Adaptive extends PayPal
 		$EmailAddress = isset($SetFundingSourceConfirmedFields['EmailAddress']) ? $SetFundingSourceConfirmedFields['EmailAddress'] : '';
 		$AccountID = isset($SetFundingSourceConfirmedFields['AccountID']) ? $SetFundingSourceConfirmedFields['AccountID'] : '';
 		$FundingSourceKey = isset($SetFundingSourceConfirmedFields['FundingSourceKey']) ? $SetFundingSourceConfirmedFields['FundingSourceKey'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<SetFundingSourceConfirmedRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $EmailAddress != '' ? '<emailAddress xmlns="">' . $EmailAddress . '</emailAddress>' : '';
 		$XMLRequest .= $AccountID != '' ? '<accountId xmlns="">' . $AccountID . '</accountId>' : '';
-		$XMLRequest .= $FundingSourceKey != '' ? '<fundingSourceKey xmlns="">' . $FundingSourceKey . '</fundingSourceKey>' : '';		
+		$XMLRequest .= $FundingSourceKey != '' ? '<fundingSourceKey xmlns="">' . $FundingSourceKey . '</fundingSourceKey>' : '';
 		$XMLRequest .= '</SetFundingSourceConfirmedRequest>';
-		 
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptiveAccounts', 'SetFundingSourceConfirmed');
 		$DOM = new DOMDocument();
@@ -2455,7 +2455,7 @@ class Adaptive extends PayPal
 
          $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
          $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2463,21 +2463,21 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetVerifiedStatus API request to PayPal.
 	 *
@@ -2492,7 +2492,7 @@ class Adaptive extends PayPal
 		$MatchCriteria = isset($GetVerifiedStatusFields['MatchCriteria']) ? $GetVerifiedStatusFields['MatchCriteria'] : '';
 		$FirstName = isset($GetVerifiedStatusFields['FirstName']) ? $GetVerifiedStatusFields['FirstName'] : '';
 		$LastName = isset($GetVerifiedStatusFields['LastName']) ? $GetVerifiedStatusFields['LastName'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<GetVerifiedStatusRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -2510,7 +2510,7 @@ class Adaptive extends PayPal
 
          $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
          $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2530,7 +2530,7 @@ class Adaptive extends PayPal
 		$MiddleName = $DOM -> getElementsByTagName('middleName') -> length > 0 ? $DOM -> getElementsByTagName('middleName') -> item(0) -> nodeValue : '';
 		$LastName = $DOM -> getElementsByTagName('lastName') -> length > 0 ? $DOM -> getElementsByTagName('lastName') -> item(0) -> nodeValue : '';
 		$Suffix = $DOM -> getElementsByTagName('suffix') -> length > 0 ? $DOM -> getElementsByTagName('suffix') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
            'Errors' => $Errors,
            'Ack' => $Ack,
@@ -2551,11 +2551,11 @@ class Adaptive extends PayPal
            'XMLRequest' => $XMLRequest,
            'XMLResponse' => $XMLResponse
         );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * GetUserAgreement.
 	 *
@@ -2571,7 +2571,7 @@ class Adaptive extends PayPal
 		$CountryCode = isset($GetUserAgreementFields['CountryCode']) ? $GetUserAgreementFields['CountryCode'] : '';
 		$CreateAccountKey = isset($GetUserAgreementFields['CreateAccountKey']) ? $GetUserAgreementFields['CreateAccountKey'] : '';
 		$LanguageCode = isset($GetUserAgreementFields['LanguageCode']) ? $GetUserAgreementFields['LanguageCode'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<GetUserAgreementRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -2588,7 +2588,7 @@ class Adaptive extends PayPal
 
          $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
          $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2598,22 +2598,22 @@ class Adaptive extends PayPal
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 
 		$Agreement = $DOM -> getElementsByTagName('agreement') -> length > 0 ? $DOM -> getElementsByTagName('agreement') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'Agreement' => $Agreement, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'Agreement' => $Agreement,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetFundingPlans API request to PayPal.
 	 *
@@ -2625,7 +2625,7 @@ class Adaptive extends PayPal
 	 {
 		$GetFundingPlansFields = isset($DataArray['GetFundingPlansFields']) ? $DataArray['GetFundingPlansFields'] : array();
 		$PayKey = isset($GetFundingPlansFields['PayKey']) ? $GetFundingPlansFields['PayKey'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<GetFundingPlansRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -2640,7 +2640,7 @@ class Adaptive extends PayPal
 
          $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
          $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2648,19 +2648,19 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$FundingPlanType = $DOM -> getElementsByTagName('fundingPlan') -> length > 0 ? $DOM -> getElementsByTagName('fundingPlan') : array();
 		foreach($FundingPlanType as $FundingPlan)
 		{
 			$FundingPlanID = $FundingPlan -> getElementsByTagName('fundingPlanId') -> length > 0 ? $FundingPlan -> getElementsByTagName('fundingPlanId') -> item(0) -> nodeValue : '';
 			$FundingAmountType = $FundingPlan -> getElementsByTagName('fundingAmount') -> length > 0 ? $FundingPlan -> getElementsByTagName('fundingAmount') : array();
-			
+
 			foreach($FundingAmountType as $FundingAmount)
 			{
 				$FundingAmountCode = $FundingAmount -> getElementsByTagName('code') -> length > 0 ? $FundingAmount -> getElementsByTagName('code') -> item(0) -> nodeValue : '';
 				$FundingAmountAmount = $FundingAmount -> getElementsByTagName('amount') -> length > 0 ? $FundingAmount -> getElementsByTagName('amount') -> item(0) -> nodeValue : '';
 			}
-			
+
 			$BackupFundingSourceType = $FundingPlan -> getElementsByTagName('backupFundingSource') -> length > 0 ? $FundingPlan -> getElementsByTagName('backupFundingSource') : array();
 			foreach($BackupFundingSourceType as $BackupFundingSource)
 			{
@@ -2670,14 +2670,14 @@ class Adaptive extends PayPal
 				$BackupFundingSource_FundingSourceID = $BackupFundingSource -> getElementsByTagName('fundingSourceId') -> length > 0 ? $BackupFundingSource -> getElementsByTagName('fundingSourceId') -> item(0) -> nodeValue : '';
 				$BackupFundingSource_Allowed = $BackupFundingSource -> getElementsByTagName('allowed') -> length > 0 ? $BackupFundingSource -> getElementsByTagName('allowed') -> item(0) -> nodeValue : '';
 			}
-			
+
 			$SenderFeesType = $FundingPlan -> getElementsByTagName('senderFees') -> length > 0 ? $FundingPlan -> getElementsByTagName('senderFees') : array();
 			foreach($SenderFeesType as $SenderFees)
 			{
 				$SenderFeesCode = $SenderFees -> getElementsByTagName('code') -> length > 0 ? $SenderFees -> getElementsByTagName('code') -> item(0) -> nodeValue : '';
 				$SenderFeesAmount = $SenderFees -> getElementsByTagName('amount') -> length > 0 ? $SenderFees -> getElementsByTagName('amount') -> item(0) -> nodeValue : '';
 			}
-			
+
 			$CurrencyConversionType = $FundingPlan -> getElementsByTagName('currencyConversion') -> length > 0 ? $FundingPlan -> getElementsByTagName('currencyConversion') : array();
 			foreach($CurrencyConversionType as $CurrencyConversion)
 			{
@@ -2685,7 +2685,7 @@ class Adaptive extends PayPal
 				$CurrencyConversion_To = $CurrencyConversion -> getElementsByTagName('to') -> length > 0 ? $CurrencyConversion -> getElementsByTagName('to') -> item(0) -> nodeValue : '';
 				$CurrencyConversion_ExchangeRate = $CurrencyConversion -> getElementsByTagName('exchangeRate') -> length > 0 ? $CurrencyConversion -> getElementsByTagName('exchangeRate') -> item(0) -> nodeValue : '';
 			}
-			
+
 			$FundingPlanChargeType = $FundingPlan -> getElementsByTagName('charge') -> length > 0 ? $FundingPlan -> getElementsByTagName('charge') : array();
 			foreach($FundingPlanChargeType as $FundingPlanCharge)
 			{
@@ -2698,45 +2698,45 @@ class Adaptive extends PayPal
 					$FundingPlanChargeFundingSource_Type = $FundingPlanChargeFundingSource -> getElementsByTagName('type') -> length > 0 ? $FundingPlanChargeFundingSource -> getElementsByTagName('type') -> item(0) -> nodeValue : '';
 					$FundingPlanChargeFundingSource_DisplayName = $FundingPlanChargeFundingSource -> getElementsByTagName('displayName') -> length > 0 ? $FundingPlanChargeFundingSource -> getElementsByTagName('displayName') -> item(0) -> nodeValue : '';
 					$FundingPlanChargeFundingSource_FundingSourceID = $FundingPlanChargeFundingSource -> getElementsByTagName('fundingSourceId') -> length > 0 ? $FundingPlanChargeFundingSource -> getElementsByTagName('fundingSourceId') -> item(0) -> nodeValue : '';
-					$FundingPlanChargeFundingSource_Allowed = $FundingPlanChargeFundingSource -> getElementsByTagName('allowed') -> length > 0 ? $FundingPlanChargeFundingSource -> getElementsByTagName('allowed') -> item(0) -> nodeValue : '';			
+					$FundingPlanChargeFundingSource_Allowed = $FundingPlanChargeFundingSource -> getElementsByTagName('allowed') -> length > 0 ? $FundingPlanChargeFundingSource -> getElementsByTagName('allowed') -> item(0) -> nodeValue : '';
 				}
-			}			
+			}
 		}
-						
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'FundingPlanID' => isset($FundingPlanID) ? $FundingPlanID : '', 
-								   'FundingAmountCode' => isset($FundingAmountCode) ? $FundingAmountCode : '', 
-								   'FundingAmountAmount' => isset($FundingAmountAmount) ? $FundingAmountAmount : '', 
-								   'SenderFeesCode' => isset($SenderFeesCode) ? $SenderFeesCode : '', 
-								   'SenderFeesAmount' => isset($SenderFeesAmount) ? $SenderFeesAmount : '', 
-								   'BackupFundingSource_LastFourOfAccountNumber' => isset($BackupFundingSource_LastFourOfAccountNumber) ? $BackupFundingSource_LastFourOfAccountNumber : '', 
-								   'BackupFundingSource_Type' => isset($BackupFundingSource_Type) ? $BackupFundingSource_Type : '', 
-								   'BackupFundingSource_DisplayName' => isset($BackupFundingSource_DisplayName) ? $BackupFundingSource_DisplayName : '', 
-								   'BackupFundingSource_FundingSourceID' => isset($BackupFundingSource_FundingSourceID) ? $BackupFundingSource_FundingSourceID : '', 
-								   'BackupFundingSource_Allowed' => isset($BackupFundingSource_Allowed) ? $BackupFundingSource_Allowed : '', 
-								   'CurrencyConversion_From' => isset($CurrencyConversion_From) ? $CurrencyConversion_From : '', 
-								   'CurrencyConversion_To' => isset($CurrencyConversion_To) ? $CurrencyConversion_To : '', 
-								   'CurrencyConversion_ExchangeRate' => isset($CurrencyConversion_ExchangeRate) ? $CurrencyConversion_ExchangeRate : '', 
-								   'FundingPlanChargeCode' => isset($FundingPlanChargeCode) ? $FundingPlanChargeCode : '', 
-								   'FundingPlanChargeAmount' => isset($FundingPlanChargeAmount) ? $FundingPlanChargeAmount : '', 
-								   'FundingPlanChargeFundingSource_LastFourOfAccountNumber' => isset($FundingPlanChargeFundingSource_LastFourOfAccountNumber) ? $FundingPlanChargeFundingSource_LastFourOfAccountNumber : '', 
-								   'FundingPlanChargeFundingSource_Type' => isset($FundingPlanChargeFundingSource_Type) ? $FundingPlanChargeFundingSource_Type : '', 
-								   'FundingPlanChargeFundingSource_DisplayName' => isset($FundingPlanChargeFundingSource_DisplayName) ? $FundingPlanChargeFundingSource_DisplayName : '', 
-								   'FundingPlanChargeFundingSource_FundingSourceID' => isset($FundingPlanChargeFundingSource_FundingSourceID) ? $FundingPlanChargeFundingSource_FundingSourceID : '', 
-								   'FundingPlanChargeFundingSource_Allowed' => isset($FundingPlanChargeFundingSource_Allowed) ? $FundingPlanChargeFundingSource_Allowed : '', 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'FundingPlanID' => isset($FundingPlanID) ? $FundingPlanID : '',
+								   'FundingAmountCode' => isset($FundingAmountCode) ? $FundingAmountCode : '',
+								   'FundingAmountAmount' => isset($FundingAmountAmount) ? $FundingAmountAmount : '',
+								   'SenderFeesCode' => isset($SenderFeesCode) ? $SenderFeesCode : '',
+								   'SenderFeesAmount' => isset($SenderFeesAmount) ? $SenderFeesAmount : '',
+								   'BackupFundingSource_LastFourOfAccountNumber' => isset($BackupFundingSource_LastFourOfAccountNumber) ? $BackupFundingSource_LastFourOfAccountNumber : '',
+								   'BackupFundingSource_Type' => isset($BackupFundingSource_Type) ? $BackupFundingSource_Type : '',
+								   'BackupFundingSource_DisplayName' => isset($BackupFundingSource_DisplayName) ? $BackupFundingSource_DisplayName : '',
+								   'BackupFundingSource_FundingSourceID' => isset($BackupFundingSource_FundingSourceID) ? $BackupFundingSource_FundingSourceID : '',
+								   'BackupFundingSource_Allowed' => isset($BackupFundingSource_Allowed) ? $BackupFundingSource_Allowed : '',
+								   'CurrencyConversion_From' => isset($CurrencyConversion_From) ? $CurrencyConversion_From : '',
+								   'CurrencyConversion_To' => isset($CurrencyConversion_To) ? $CurrencyConversion_To : '',
+								   'CurrencyConversion_ExchangeRate' => isset($CurrencyConversion_ExchangeRate) ? $CurrencyConversion_ExchangeRate : '',
+								   'FundingPlanChargeCode' => isset($FundingPlanChargeCode) ? $FundingPlanChargeCode : '',
+								   'FundingPlanChargeAmount' => isset($FundingPlanChargeAmount) ? $FundingPlanChargeAmount : '',
+								   'FundingPlanChargeFundingSource_LastFourOfAccountNumber' => isset($FundingPlanChargeFundingSource_LastFourOfAccountNumber) ? $FundingPlanChargeFundingSource_LastFourOfAccountNumber : '',
+								   'FundingPlanChargeFundingSource_Type' => isset($FundingPlanChargeFundingSource_Type) ? $FundingPlanChargeFundingSource_Type : '',
+								   'FundingPlanChargeFundingSource_DisplayName' => isset($FundingPlanChargeFundingSource_DisplayName) ? $FundingPlanChargeFundingSource_DisplayName : '',
+								   'FundingPlanChargeFundingSource_FundingSourceID' => isset($FundingPlanChargeFundingSource_FundingSourceID) ? $FundingPlanChargeFundingSource_FundingSourceID : '',
+								   'FundingPlanChargeFundingSource_Allowed' => isset($FundingPlanChargeFundingSource_Allowed) ? $FundingPlanChargeFundingSource_Allowed : '',
 								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetShippingAddresses API request to PayPal.
 	 *
@@ -2752,16 +2752,16 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $PayKey != '' ? '<key xmlns="">' . $PayKey . '</key>' : '';
 		$XMLRequest .= '</GetShippingAddressesRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'AdaptivePayments', 'GetShippingAddresses');
-		
+
 		$DOM = new DOMDocument();
 		$DOM -> loadXML($XMLResponse);
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -2769,7 +2769,7 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$AddresseeName = $DOM -> getElementsByTagName('addresseeName') -> length > 0 ? $DOM -> getElementsByTagName('addresseeName') -> item(0) -> nodeValue : '';
 		$AddressID = $DOM -> getElementsByTagName('addressId') -> length > 0 ? $DOM -> getElementsByTagName('addressId') -> item(0) -> nodeValue : '';
 		$Line1 = $DOM -> getElementsByTagName('line1') -> length > 0 ? $DOM -> getElementsByTagName('line1') -> item(0) -> nodeValue : '';
@@ -2779,30 +2779,30 @@ class Adaptive extends PayPal
 		$PostalCode = $DOM -> getElementsByTagName('postalCode') -> length > 0 ? $DOM -> getElementsByTagName('postalCode') -> item(0) -> nodeValue : '';
 		$CountryCode = $DOM -> getElementsByTagName('countryCode') -> length > 0 ? $DOM -> getElementsByTagName('countryCode') -> item(0) -> nodeValue : '';
 		$Type = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
-				
+
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'AddresseeName' => $AddresseeName, 
-								   'AddressID' => $AddressID, 
-								   'Line1' => $Line1, 
-								   'Line2' => $Line2, 
-								   'City' => $City, 
-								   'State' => $State, 
-								   'PostalCode' => $PostalCode, 
-								   'CountryCode' => $CountryCode, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'AddresseeName' => $AddresseeName,
+								   'AddressID' => $AddressID,
+								   'Line1' => $Line1,
+								   'Line2' => $Line2,
+								   'City' => $City,
+								   'State' => $State,
+								   'PostalCode' => $PostalCode,
+								   'CountryCode' => $CountryCode,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit CreateInvoice API request to PayPal.
 	 *
@@ -2829,7 +2829,7 @@ class Adaptive extends PayPal
 		$ShippingTaxName = isset($CreateInvoiceFields['ShippingTaxName']) ? $CreateInvoiceFields['ShippingTaxName'] : '';
 		$ShippingTaxRate = isset($CreateInvoiceFields['ShippingTaxRate']) ? $CreateInvoiceFields['ShippingTaxRate'] : '';
 		$LogoURL = isset($CreateInvoiceFields['LogoURL']) ? $CreateInvoiceFields['LogoURL'] : '';
-		
+
 		$BusinessInfo = isset($DataArray['BusinessInfo']) ? $DataArray['BusinessInfo'] : array();
 		$BusinessFirstName = isset($BusinessInfo['FirstName']) ? $BusinessInfo['FirstName'] : '';
 		$BusinessLastName = isset($BusinessInfo['LastName']) ? $BusinessInfo['LastName'] : '';
@@ -2838,7 +2838,7 @@ class Adaptive extends PayPal
 		$BusinessFax = isset($BusinessInfo['Fax']) ? $BusinessInfo['Fax'] : '';
 		$BusinessWebsite = isset($BusinessInfo['Website']) ? $BusinessInfo['Website'] : '';
 		$BusinessCustom = isset($BusinessInfo['Custom']) ? $BusinessInfo['Custom'] : '';
-		
+
 		$BusinessInfoAddress = isset($DataArray['BusinessInfoAddress']) ? $DataArray['BusinessInfoAddress'] : array();
 		$BusinessInfoAddressLine1 = isset($BusinessInfoAddress['Line1']) ? $BusinessInfoAddress['Line1'] : '';
 		$BusinessInfoAddressLine2 = isset($BusinessInfoAddress['Line2']) ? $BusinessInfoAddress['Line2'] : '';
@@ -2847,7 +2847,7 @@ class Adaptive extends PayPal
 		$BusinessInfoAddressPostalCode = isset($BusinessInfoAddress['PostalCode']) ? $BusinessInfoAddress['PostalCode'] : '';
 		$BusinessInfoAddressCountryCode = isset($BusinessInfoAddress['CountryCode']) ? $BusinessInfoAddress['CountryCode'] : '';
 		$BusinessInfoAddressType = isset($BusinessInfoAddress['AddressType']) ? $BusinessInfoAddress['AddressType'] : '';
-		
+
 		$BillingInfo = isset($DataArray['BillingInfo']) ? $DataArray['BillingInfo'] : array();
 		$BillingFirstName = isset($BillingInfo['FirstName']) ? $BillingInfo['FirstName'] : '';
 		$BillingLastName = isset($BillingInfo['LastName']) ? $BillingInfo['LastName'] : '';
@@ -2856,7 +2856,7 @@ class Adaptive extends PayPal
 		$BillingFax = isset($BillingInfo['Fax']) ? $BillingInfo['Fax'] : '';
 		$BillingWebsite = isset($BillingInfo['Website']) ? $BillingInfo['Website'] : '';
 		$BillingCustom = isset($BillingInfo['Custom']) ? $BillingInfo['Custom'] : '';
-		
+
 		$BillingInfoAddress = isset($DataArray['BillingInfoAddress']) ? $DataArray['BillingInfoAddress'] : array();
 		$BillingInfoAddressLine1 = isset($BillingInfoAddress['Line1']) ? $BillingInfoAddress['Line1'] : '';
 		$BillingInfoAddressLine2 = isset($BillingInfoAddress['Line2']) ? $BillingInfoAddress['Line2'] : '';
@@ -2865,7 +2865,7 @@ class Adaptive extends PayPal
 		$BillingInfoAddressPostalCode = isset($BillingInfoAddress['PostalCode']) ? $BillingInfoAddress['PostalCode'] : '';
 		$BillingInfoAddressCountryCode = isset($BillingInfoAddress['CountryCode']) ? $BillingInfoAddress['CountryCode'] : '';
 		$BillingInfoAddressType = isset($BillingInfoAddress['AddressType']) ? $BillingInfoAddress['AddressType'] : '';
-		
+
 		$ShippingInfo = isset($DataArray['ShippingInfo']) ? $DataArray['ShippingInfo'] : array();
 		$ShippingFirstName = isset($ShippingInfo['FirstName']) ? $ShippingInfo['FirstName'] : '';
 		$ShippingLastName = isset($ShippingInfo['LastName']) ? $ShippingInfo['LastName'] : '';
@@ -2874,7 +2874,7 @@ class Adaptive extends PayPal
 		$ShippingFax = isset($ShippingInfo['Fax']) ? $ShippingInfo['Fax'] : '';
 		$ShippingWebsite = isset($ShippingInfo['Website']) ? $ShippingInfo['Website'] : '';
 		$ShippingCustom = isset($ShippingInfo['Custom']) ? $ShippingInfo['Custom'] : '';
-		
+
 		$ShippingInfoAddress = isset($DataArray['ShippingInfoAddress']) ? $DataArray['ShippingInfoAddress'] : array();
 		$ShippingInfoAddressLine1 = isset($ShippingInfoAddress['Line1']) ? $ShippingInfoAddress['Line1'] : '';
 		$ShippingInfoAddressLine2 = isset($ShippingInfoAddress['Line2']) ? $ShippingInfoAddress['Line2'] : '';
@@ -2883,9 +2883,9 @@ class Adaptive extends PayPal
 		$ShippingInfoAddressPostalCode = isset($ShippingInfoAddress['PostalCode']) ? $ShippingInfoAddress['PostalCode'] : '';
 		$ShippingInfoAddressCountryCode = isset($ShippingInfoAddress['CountryCode']) ? $ShippingInfoAddress['CountryCode'] : '';
 		$ShippingInfoAddressType = isset($ShippingInfoAddress['AddressType']) ? $ShippingInfoAddress['AddressType'] : '';
-				
+
 		$InvoiceItems = isset($DataArray['InvoiceItems']) ? $DataArray['InvoiceItems'] : array();
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<CreateInvoiceRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -2894,7 +2894,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $MerchantEmail != '' ? '<merchantEmail xmlns="">' . $MerchantEmail . '</merchantEmail>' : '';
 		$XMLRequest .= $PayerEmail != '' ? '<payerEmail xmlns="">' . $PayerEmail . '</payerEmail>' : '';
 		$XMLRequest .= $Number != '' ? '<number xmlns="">' . $Number . '</number>' : '';
-		
+
 		if(!empty($BusinessInfo))
 		{
 			$XMLRequest .= '<merchantInfo xmlns="">';
@@ -2905,7 +2905,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $BusinessFax != '' ? '<fax xmlns="">' . $BusinessFax . '</fax>' : '';
 			$XMLRequest .= $BusinessWebsite != '' ? '<website xmlns="">' . $BusinessWebsite . '</website>' : '';
 			$XMLRequest .= $BusinessCustom != '' ? '<customValue xmlns="">' . $BusinessCustom . '</customValue>' : '';
-			
+
 			if(!empty($BusinessInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -2920,7 +2920,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</merchantInfo>';
 		}
-		
+
 		if(!empty($InvoiceItems))
 		{
 			$XMLRequest .= '<itemList xmlns="">';
@@ -2934,11 +2934,11 @@ class Adaptive extends PayPal
 				$XMLRequest .= $InvoiceItem['UnitPrice'] != '' ? '<unitPrice xmlns="">' . $InvoiceItem['UnitPrice'] . '</unitPrice>' : '';
 				$XMLRequest .= $InvoiceItem['TaxName'] != '' ? '<taxName xmlns="">' . $InvoiceItem['TaxName'] . '</taxName>' : '';
 				$XMLRequest .= $InvoiceItem['TaxRate'] != '' ? '<taxRate xmlns="">' . $InvoiceItem['TaxRate'] . '</taxRate>' : '';
-				$XMLRequest .= '</item>';	
+				$XMLRequest .= '</item>';
 			}
 			$XMLRequest .= '</itemList>';
 		}
-		
+
 		$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 		$XMLRequest .= $InvoiceDate != '' ? '<invoiceDate xmlns="">' . $InvoiceDate . '</invoiceDate>' : '';
 		$XMLRequest .= $DueDate != '' ? '<dueDate xmlns="">' . $DueDate . '</dueDate>' : '';
@@ -2948,7 +2948,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $Terms != '' ? '<terms xmlns="">' . $Terms . '</terms>' : '';
 		$XMLRequest .= $Note != '' ? '<note xmlns="">' . $Note . '</note>' : '';
 		$XMLRequest .= $MerchantMemo != '' ? '<merchantMemo xmlns="">' . $MerchantMemo . '</merchantMemo>' : '';
-		
+
 		if(!empty($BillingInfo))
 		{
 			$XMLRequest .= '<billingInfo xmlns="">';
@@ -2959,7 +2959,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $BillingFax != '' ? '<fax xmlns="">' . $BillingFax . '</fax>' : '';
 			$XMLRequest .= $BillingWebsite != '' ? '<website xmlns="">' . $BillingWebsite . '</website>' : '';
 			$XMLRequest .= $BillingCustom != '' ? '<customValue xmlns="">' . $BillingCustom . '</customValue>' : '';
-			
+
 			if(!empty($BillingInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -2974,7 +2974,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</billingInfo>';
 		}
-		
+
 		if(!empty($ShippingInfo))
 		{
 			$XMLRequest .= '<shippingInfo xmlns="">';
@@ -2985,7 +2985,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $ShippingFax != '' ? '<fax xmlns="">' . $ShippingFax . '</fax>' : '';
 			$XMLRequest .= $ShippingWebsite != '' ? '<website xmlns="">' . $ShippingWebsite . '</website>' : '';
 			$XMLRequest .= $ShippingCustom != '' ? '<customValue xmlns="">' . $ShippingCustom . '</customValue>' : '';
-			
+
 			if(!empty($ShippingInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3000,7 +3000,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</shippingInfo>';
 		}
-		
+
 		$XMLRequest .= $ShippingAmount != '' ? '<shippingAmount xmlns="">' . $ShippingAmount . '</shippingAmount>' : '';
 		$XMLRequest .= $ShippingTaxName != '' ? '<shippingTaxName xmlns="">' . $ShippingTaxName . '</shippingTaxName>' : '';
 		$XMLRequest .= $ShippingTaxRate != '' ? '<shippingTaxRate xmlns="">' . $ShippingTaxRate . '</shippingTaxRate>' : '';
@@ -3008,7 +3008,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= '<referrerCode xmlns="">'.$this->APIButtonSource.'</referrerCode>';
 		$XMLRequest .= '</invoice>';
 		$XMLRequest .= '</CreateInvoiceRequest>';
-		 
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'CreateInvoice');
 		$DOM = new DOMDocument();
@@ -3016,7 +3016,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3028,24 +3028,24 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit SendInvoice API request to PayPal.
 	 *
@@ -3061,7 +3061,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $InvoiceID != '' ? '<invoiceID xmlns="">' . $InvoiceID . '</invoiceID>' : '';
 		$XMLRequest .= '</SendInvoiceRequest>';
-		
+
 		 // Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'SendInvoice');
 		$DOM = new DOMDocument();
@@ -3069,7 +3069,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3077,26 +3077,26 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-				
+
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-				
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit CreateAndSendInvoice API request to PayPal.
 	 *
@@ -3123,7 +3123,7 @@ class Adaptive extends PayPal
 		$ShippingTaxName = isset($CreateInvoiceFields['ShippingTaxName']) ? $CreateInvoiceFields['ShippingTaxName'] : '';
 		$ShippingTaxRate = isset($CreateInvoiceFields['ShippingTaxRate']) ? $CreateInvoiceFields['ShippingTaxRate'] : '';
 		$LogoURL = isset($CreateInvoiceFields['LogoURL']) ? $CreateInvoiceFields['LogoURL'] : '';
-		
+
 		$BusinessInfo = isset($DataArray['BusinessInfo']) ? $DataArray['BusinessInfo'] : array();
 		$BusinessFirstName = isset($BusinessInfo['FirstName']) ? $BusinessInfo['FirstName'] : '';
 		$BusinessLastName = isset($BusinessInfo['LastName']) ? $BusinessInfo['LastName'] : '';
@@ -3132,7 +3132,7 @@ class Adaptive extends PayPal
 		$BusinessFax = isset($BusinessInfo['Fax']) ? $BusinessInfo['Fax'] : '';
 		$BusinessWebsite = isset($BusinessInfo['Website']) ? $BusinessInfo['Website'] : '';
 		$BusinessCustom = isset($BusinessInfo['Custom']) ? $BusinessInfo['Custom'] : '';
-		
+
 		$BusinessInfoAddress = isset($DataArray['BusinessInfoAddress']) ? $DataArray['BusinessInfoAddress'] : array();
 		$BusinessInfoAddressLine1 = isset($BusinessInfoAddress['Line1']) ? $BusinessInfoAddress['Line1'] : '';
 		$BusinessInfoAddressLine2 = isset($BusinessInfoAddress['Line2']) ? $BusinessInfoAddress['Line2'] : '';
@@ -3141,7 +3141,7 @@ class Adaptive extends PayPal
 		$BusinessInfoAddressPostalCode = isset($BusinessInfoAddress['PostalCode']) ? $BusinessInfoAddress['PostalCode'] : '';
 		$BusinessInfoAddressCountryCode = isset($BusinessInfoAddress['CountryCode']) ? $BusinessInfoAddress['CountryCode'] : '';
 		$BusinessInfoAddressType = isset($BusinessInfoAddress['AddressType']) ? $BusinessInfoAddress['AddressType'] : '';
-		
+
 		$BillingInfo = isset($DataArray['BillingInfo']) ? $DataArray['BillingInfo'] : array();
 		$BillingFirstName = isset($BillingInfo['FirstName']) ? $BillingInfo['FirstName'] : '';
 		$BillingLastName = isset($BillingInfo['LastName']) ? $BillingInfo['LastName'] : '';
@@ -3150,7 +3150,7 @@ class Adaptive extends PayPal
 		$BillingFax = isset($BillingInfo['Fax']) ? $BillingInfo['Fax'] : '';
 		$BillingWebsite = isset($BillingInfo['Website']) ? $BillingInfo['Website'] : '';
 		$BillingCustom = isset($BillingInfo['Custom']) ? $BillingInfo['Custom'] : '';
-		
+
 		$BillingInfoAddress = isset($DataArray['BillingInfoAddress']) ? $DataArray['BillingInfoAddress'] : array();
 		$BillingInfoAddressLine1 = isset($BillingInfoAddress['Line1']) ? $BillingInfoAddress['Line1'] : '';
 		$BillingInfoAddressLine2 = isset($BillingInfoAddress['Line2']) ? $BillingInfoAddress['Line2'] : '';
@@ -3159,7 +3159,7 @@ class Adaptive extends PayPal
 		$BillingInfoAddressPostalCode = isset($BillingInfoAddress['PostalCode']) ? $BillingInfoAddress['PostalCode'] : '';
 		$BillingInfoAddressCountryCode = isset($BillingInfoAddress['CountryCode']) ? $BillingInfoAddress['CountryCode'] : '';
 		$BillingInfoAddressType = isset($BillingInfoAddress['AddressType']) ? $BillingInfoAddress['AddressType'] : '';
-		
+
 		$ShippingInfo = isset($DataArray['ShippingInfo']) ? $DataArray['ShippingInfo'] : array();
 		$ShippingFirstName = isset($ShippingInfo['FirstName']) ? $ShippingInfo['FirstName'] : '';
 		$ShippingLastName = isset($ShippingInfo['LastName']) ? $ShippingInfo['LastName'] : '';
@@ -3168,7 +3168,7 @@ class Adaptive extends PayPal
 		$ShippingFax = isset($ShippingInfo['Fax']) ? $ShippingInfo['Fax'] : '';
 		$ShippingWebsite = isset($ShippingInfo['Website']) ? $ShippingInfo['Website'] : '';
 		$ShippingCustom = isset($ShippingInfo['Custom']) ? $ShippingInfo['Custom'] : '';
-		
+
 		$ShippingInfoAddress = isset($DataArray['ShippingInfoAddress']) ? $DataArray['ShippingInfoAddress'] : array();
 		$ShippingInfoAddressLine1 = isset($ShippingInfoAddress['Line1']) ? $ShippingInfoAddress['Line1'] : '';
 		$ShippingInfoAddressLine2 = isset($ShippingInfoAddress['Line2']) ? $ShippingInfoAddress['Line2'] : '';
@@ -3177,9 +3177,9 @@ class Adaptive extends PayPal
 		$ShippingInfoAddressPostalCode = isset($ShippingInfoAddress['PostalCode']) ? $ShippingInfoAddress['PostalCode'] : '';
 		$ShippingInfoAddressCountryCode = isset($ShippingInfoAddress['CountryCode']) ? $ShippingInfoAddress['CountryCode'] : '';
 		$ShippingInfoAddressType = isset($ShippingInfoAddress['AddressType']) ? $ShippingInfoAddress['AddressType'] : '';
-				
+
 		$InvoiceItems = isset($DataArray['InvoiceItems']) ? $DataArray['InvoiceItems'] : array();
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<CreateAndSendInvoiceRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -3188,7 +3188,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $MerchantEmail != '' ? '<merchantEmail xmlns="">' . $MerchantEmail . '</merchantEmail>' : '';
 		$XMLRequest .= $PayerEmail != '' ? '<payerEmail xmlns="">' . $PayerEmail . '</payerEmail>' : '';
 		$XMLRequest .= $Number != '' ? '<number xmlns="">' . $Number . '</number>' : '';
-		
+
 		if(!empty($BusinessInfo))
 		{
 			$XMLRequest .= '<merchantInfo xmlns="">';
@@ -3199,7 +3199,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $BusinessFax != '' ? '<fax xmlns="">' . $BusinessFax . '</fax>' : '';
 			$XMLRequest .= $BusinessWebsite != '' ? '<website xmlns="">' . $BusinessWebsite . '</website>' : '';
 			$XMLRequest .= $BusinessCustom != '' ? '<customValue xmlns="">' . $BusinessCustom . '</customValue>' : '';
-			
+
 			if(!empty($BusinessInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3214,7 +3214,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</merchantInfo>';
 		}
-		
+
 		if(!empty($InvoiceItems))
 		{
 			$XMLRequest .= '<itemList xmlns="">';
@@ -3228,11 +3228,11 @@ class Adaptive extends PayPal
 				$XMLRequest .= $InvoiceItem['UnitPrice'] != '' ? '<unitPrice xmlns="">' . $InvoiceItem['UnitPrice'] . '</unitPrice>' : '';
 				$XMLRequest .= $InvoiceItem['TaxName'] != '' ? '<taxName xmlns="">' . $InvoiceItem['TaxName'] . '</taxName>' : '';
 				$XMLRequest .= $InvoiceItem['TaxRate'] != '' ? '<taxRate xmlns="">' . $InvoiceItem['TaxRate'] . '</taxRate>' : '';
-				$XMLRequest .= '</item>';	
+				$XMLRequest .= '</item>';
 			}
 			$XMLRequest .= '</itemList>';
 		}
-		
+
 		$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 		$XMLRequest .= $InvoiceDate != '' ? '<invoiceDate xmlns="">' . $InvoiceDate . '</invoiceDate>' : '';
 		$XMLRequest .= $DueDate != '' ? '<dueDate xmlns="">' . $DueDate . '</dueDate>' : '';
@@ -3242,7 +3242,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $Terms != '' ? '<terms xmlns="">' . $Terms . '</terms>' : '';
 		$XMLRequest .= $Note != '' ? '<note xmlns="">' . $Note . '</note>' : '';
 		$XMLRequest .= $MerchantMemo != '' ? '<merchantMemo xmlns="">' . $MerchantMemo . '</merchantMemo>' : '';
-		
+
 		if(!empty($BillingInfo))
 		{
 			$XMLRequest .= '<billingInfo xmlns="">';
@@ -3253,7 +3253,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $BillingFax != '' ? '<fax xmlns="">' . $BillingFax . '</fax>' : '';
 			$XMLRequest .= $BillingWebsite != '' ? '<website xmlns="">' . $BillingWebsite . '</website>' : '';
 			$XMLRequest .= $BillingCustom != '' ? '<customValue xmlns="">' . $BillingCustom . '</customValue>' : '';
-			
+
 			if(!empty($BillingInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3268,7 +3268,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</billingInfo>';
 		}
-		
+
 		if(!empty($ShippingInfo))
 		{
 			$XMLRequest .= '<shippingInfo xmlns="">';
@@ -3279,7 +3279,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $ShippingFax != '' ? '<fax xmlns="">' . $ShippingFax . '</fax>' : '';
 			$XMLRequest .= $ShippingWebsite != '' ? '<website xmlns="">' . $ShippingWebsite . '</website>' : '';
 			$XMLRequest .= $ShippingCustom != '' ? '<customValue xmlns="">' . $ShippingCustom . '</customValue>' : '';
-			
+
 			if(!empty($ShippingInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3294,7 +3294,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</shippingInfo>';
 		}
-		
+
 		$XMLRequest .= $ShippingAmount != '' ? '<shippingAmount xmlns="">' . $ShippingAmount . '</shippingAmount>' : '';
 		$XMLRequest .= $ShippingTaxName != '' ? '<shippingTaxName xmlns="">' . $ShippingTaxName . '</shippingTaxName>' : '';
 		$XMLRequest .= $ShippingTaxRate != '' ? '<shippingTaxRate xmlns="">' . $ShippingTaxRate . '</shippingTaxRate>' : '';
@@ -3302,7 +3302,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= '<referrerCode xmlns="">'.$this->APIButtonSource.'</referrerCode>';
 		$XMLRequest .= '</invoice>';
 		$XMLRequest .= '</CreateAndSendInvoiceRequest>';
-		 
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'CreateAndSendInvoice');
 		$DOM = new DOMDocument();
@@ -3310,7 +3310,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3322,24 +3322,24 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit UpdateInvoice API request to PayPal.
 	 *
@@ -3367,7 +3367,7 @@ class Adaptive extends PayPal
 		$ShippingTaxName = isset($UpdateInvoiceFields['ShippingTaxName']) ? $UpdateInvoiceFields['ShippingTaxName'] : '';
 		$ShippingTaxRate = isset($UpdateInvoiceFields['ShippingTaxRate']) ? $UpdateInvoiceFields['ShippingTaxRate'] : '';
 		$LogoURL = isset($UpdateInvoiceFields['LogoURL']) ? $UpdateInvoiceFields['LogoURL'] : '';
-		
+
 		$BusinessInfo = isset($DataArray['BusinessInfo']) ? $DataArray['BusinessInfo'] : array();
 		$BusinessFirstName = isset($BusinessInfo['FirstName']) ? $BusinessInfo['FirstName'] : '';
 		$BusinessLastName = isset($BusinessInfo['LastName']) ? $BusinessInfo['LastName'] : '';
@@ -3376,7 +3376,7 @@ class Adaptive extends PayPal
 		$BusinessFax = isset($BusinessInfo['Fax']) ? $BusinessInfo['Fax'] : '';
 		$BusinessWebsite = isset($BusinessInfo['Website']) ? $BusinessInfo['Website'] : '';
 		$BusinessCustom = isset($BusinessInfo['Custom']) ? $BusinessInfo['Custom'] : '';
-		
+
 		$BusinessInfoAddress = isset($DataArray['BusinessInfoAddress']) ? $DataArray['BusinessInfoAddress'] : array();
 		$BusinessInfoAddressLine1 = isset($BusinessInfoAddress['Line1']) ? $BusinessInfoAddress['Line1'] : '';
 		$BusinessInfoAddressLine2 = isset($BusinessInfoAddress['Line2']) ? $BusinessInfoAddress['Line2'] : '';
@@ -3385,7 +3385,7 @@ class Adaptive extends PayPal
 		$BusinessInfoAddressPostalCode = isset($BusinessInfoAddress['PostalCode']) ? $BusinessInfoAddress['PostalCode'] : '';
 		$BusinessInfoAddressCountryCode = isset($BusinessInfoAddress['CountryCode']) ? $BusinessInfoAddress['CountryCode'] : '';
 		$BusinessInfoAddressType = isset($BusinessInfoAddress['AddressType']) ? $BusinessInfoAddress['AddressType'] : '';
-		
+
 		$BillingInfo = isset($DataArray['BillingInfo']) ? $DataArray['BillingInfo'] : array();
 		$BillingFirstName = isset($BillingInfo['FirstName']) ? $BillingInfo['FirstName'] : '';
 		$BillingLastName = isset($BillingInfo['LastName']) ? $BillingInfo['LastName'] : '';
@@ -3394,7 +3394,7 @@ class Adaptive extends PayPal
 		$BillingFax = isset($BillingInfo['Fax']) ? $BillingInfo['Fax'] : '';
 		$BillingWebsite = isset($BillingInfo['Website']) ? $BillingInfo['Website'] : '';
 		$BillingCustom = isset($BillingInfo['Custom']) ? $BillingInfo['Custom'] : '';
-		
+
 		$BillingInfoAddress = isset($DataArray['BillingInfoAddress']) ? $DataArray['BillingInfoAddress'] : array();
 		$BillingInfoAddressLine1 = isset($BillingInfoAddress['Line1']) ? $BillingInfoAddress['Line1'] : '';
 		$BillingInfoAddressLine2 = isset($BillingInfoAddress['Line2']) ? $BillingInfoAddress['Line2'] : '';
@@ -3403,7 +3403,7 @@ class Adaptive extends PayPal
 		$BillingInfoAddressPostalCode = isset($BillingInfoAddress['PostalCode']) ? $BillingInfoAddress['PostalCode'] : '';
 		$BillingInfoAddressCountryCode = isset($BillingInfoAddress['CountryCode']) ? $BillingInfoAddress['CountryCode'] : '';
 		$BillingInfoAddressType = isset($BillingInfoAddress['AddressType']) ? $BillingInfoAddress['AddressType'] : '';
-		
+
 		$ShippingInfo = isset($DataArray['ShippingInfo']) ? $DataArray['ShippingInfo'] : array();
 		$ShippingFirstName = isset($ShippingInfo['FirstName']) ? $ShippingInfo['FirstName'] : '';
 		$ShippingLastName = isset($ShippingInfo['LastName']) ? $ShippingInfo['LastName'] : '';
@@ -3412,7 +3412,7 @@ class Adaptive extends PayPal
 		$ShippingFax = isset($ShippingInfo['Fax']) ? $ShippingInfo['Fax'] : '';
 		$ShippingWebsite = isset($ShippingInfo['Website']) ? $ShippingInfo['Website'] : '';
 		$ShippingCustom = isset($ShippingInfo['Custom']) ? $ShippingInfo['Custom'] : '';
-		
+
 		$ShippingInfoAddress = isset($DataArray['ShippingInfoAddress']) ? $DataArray['ShippingInfoAddress'] : array();
 		$ShippingInfoAddressLine1 = isset($ShippingInfoAddress['Line1']) ? $ShippingInfoAddress['Line1'] : '';
 		$ShippingInfoAddressLine2 = isset($ShippingInfoAddress['Line2']) ? $ShippingInfoAddress['Line2'] : '';
@@ -3421,9 +3421,9 @@ class Adaptive extends PayPal
 		$ShippingInfoAddressPostalCode = isset($ShippingInfoAddress['PostalCode']) ? $ShippingInfoAddress['PostalCode'] : '';
 		$ShippingInfoAddressCountryCode = isset($ShippingInfoAddress['CountryCode']) ? $ShippingInfoAddress['CountryCode'] : '';
 		$ShippingInfoAddressType = isset($ShippingInfoAddress['AddressType']) ? $ShippingInfoAddress['AddressType'] : '';
-				
+
 		$InvoiceItems = isset($DataArray['InvoiceItems']) ? $DataArray['InvoiceItems'] : array();
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<UpdateInvoiceRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -3433,7 +3433,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $MerchantEmail != '' ? '<merchantEmail xmlns="">' . $MerchantEmail . '</merchantEmail>' : '';
 		$XMLRequest .= $PayerEmail != '' ? '<payerEmail xmlns="">' . $PayerEmail . '</payerEmail>' : '';
 		$XMLRequest .= $Number != '' ? '<number xmlns="">' . $Number . '</number>' : '';
-		
+
 		if(!empty($BusinessInfo))
 		{
 			$XMLRequest .= '<merchantInfo xmlns="">';
@@ -3444,7 +3444,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $BusinessFax != '' ? '<fax xmlns="">' . $BusinessFax . '</fax>' : '';
 			$XMLRequest .= $BusinessWebsite != '' ? '<website xmlns="">' . $BusinessWebsite . '</website>' : '';
 			$XMLRequest .= $BusinessCustom != '' ? '<customValue xmlns="">' . $BusinessCustom . '</customValue>' : '';
-			
+
 			if(!empty($BusinessInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3459,7 +3459,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</merchantInfo>';
 		}
-		
+
 		if(!empty($InvoiceItems))
 		{
 			$XMLRequest .= '<itemList xmlns="">';
@@ -3473,11 +3473,11 @@ class Adaptive extends PayPal
 				$XMLRequest .= $InvoiceItem['UnitPrice'] != '' ? '<unitPrice xmlns="">' . $InvoiceItem['UnitPrice'] . '</unitPrice>' : '';
 				$XMLRequest .= $InvoiceItem['TaxName'] != '' ? '<taxName xmlns="">' . $InvoiceItem['TaxName'] . '</taxName>' : '';
 				$XMLRequest .= $InvoiceItem['TaxRate'] != '' ? '<taxRate xmlns="">' . $InvoiceItem['TaxRate'] . '</taxRate>' : '';
-				$XMLRequest .= '</item>';	
+				$XMLRequest .= '</item>';
 			}
 			$XMLRequest .= '</itemList>';
 		}
-		
+
 		$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 		$XMLRequest .= $InvoiceDate != '' ? '<invoiceDate xmlns="">' . $InvoiceDate . '</invoiceDate>' : '';
 		$XMLRequest .= $DueDate != '' ? '<dueDate xmlns="">' . $DueDate . '</dueDate>' : '';
@@ -3487,7 +3487,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $Terms != '' ? '<terms xmlns="">' . $Terms . '</terms>' : '';
 		$XMLRequest .= $Note != '' ? '<note xmlns="">' . $Note . '</note>' : '';
 		$XMLRequest .= $MerchantMemo != '' ? '<merchantMemo xmlns="">' . $MerchantMemo . '</merchantMemo>' : '';
-		
+
 		if(!empty($BillingInfo))
 		{
 			$XMLRequest .= '<billingInfo xmlns="">';
@@ -3498,7 +3498,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $BillingFax != '' ? '<fax xmlns="">' . $BillingFax . '</fax>' : '';
 			$XMLRequest .= $BillingWebsite != '' ? '<website xmlns="">' . $BillingWebsite . '</website>' : '';
 			$XMLRequest .= $BillingCustom != '' ? '<customValue xmlns="">' . $BillingCustom . '</customValue>' : '';
-			
+
 			if(!empty($BillingInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3513,7 +3513,7 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</billingInfo>';
 		}
-		
+
 		if(!empty($ShippingInfo))
 		{
 			$XMLRequest .= '<shippingInfo xmlns="">';
@@ -3524,7 +3524,7 @@ class Adaptive extends PayPal
 			$XMLRequest .= $ShippingFax != '' ? '<fax xmlns="">' . $ShippingFax . '</fax>' : '';
 			$XMLRequest .= $ShippingWebsite != '' ? '<website xmlns="">' . $ShippingWebsite . '</website>' : '';
 			$XMLRequest .= $ShippingCustom != '' ? '<customValue xmlns="">' . $ShippingCustom . '</customValue>' : '';
-			
+
 			if(!empty($ShippingInfoAddress))
 			{
 				$XMLRequest .= '<address xmlns="">';
@@ -3539,14 +3539,14 @@ class Adaptive extends PayPal
 			}
 			$XMLRequest .= '</shippingInfo>';
 		}
-		
+
 		$XMLRequest .= $ShippingAmount != '' ? '<shippingAmount xmlns="">' . $ShippingAmount . '</shippingAmount>' : '';
 		$XMLRequest .= $ShippingTaxName != '' ? '<shippingTaxName xmlns="">' . $ShippingTaxName . '</shippingTaxName>' : '';
 		$XMLRequest .= $ShippingTaxRate != '' ? '<shippingTaxRate xmlns="">' . $ShippingTaxRate . '</shippingTaxRate>' : '';
 		$XMLRequest .= $LogoURL != '' ? '<logoUrl xmlns="">' . $LogoURL . '</logoUrl>' : '';
 		$XMLRequest .= '</invoice>';
 		$XMLRequest .= '</UpdateInvoiceRequest>';
-		 
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'UpdateInvoice');
 		$DOM = new DOMDocument();
@@ -3554,7 +3554,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3566,24 +3566,24 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit UpdateInvoice API request to PayPal.
 	 *
@@ -3599,7 +3599,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $InvoiceID != '' ? '<invoiceID xmlns="">' . $InvoiceID . '</invoiceID>' : '';
 		$XMLRequest .= '</GetInvoiceDetailsRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'GetInvoiceDetails');
 		$DOM = new DOMDocument();
@@ -3607,7 +3607,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3615,7 +3615,7 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-				
+
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
 
 		$InvoiceType = $DOM -> getElementsByTagName('invoice') -> length > 0 ? $DOM -> getElementsByTagName('invoice') : array();
@@ -3638,7 +3638,7 @@ class Adaptive extends PayPal
 			$ShippingTaxRate = $Invoice -> getElementsByTagName('shippingTaxRate') -> length > 0 ? $Invoice -> getElementsByTagName('shippingTaxRate') -> item(0) -> nodeValue : '';
 			$LogoURL = $Invoice -> getElementsByTagName('logoUrl') -> length > 0 ? $Invoice -> getElementsByTagName('logoUrl') -> item(0) -> nodeValue : '';
 		}
-		
+
 		$InvoiceDetailsType = $DOM -> getElementsByTagName('invoiceDetails') -> length > 0 ? $DOM -> getElementsByTagName('invoiceDetails') : array();
 		foreach($InvoiceDetailsType as $InvoiceDetails)
 		{
@@ -3657,7 +3657,7 @@ class Adaptive extends PayPal
 			$LastSentBy = $InvoiceDetails -> getElementsByTagName('lastSentBy') -> length > 0 ? $InvoiceDetails -> getElementsByTagName('lastSentBy') -> item(0) -> nodeValue : '';
 			$PaidDate = $InvoiceDetails -> getElementsByTagName('paidDate') -> length > 0 ? $InvoiceDetails -> getElementsByTagName('paidDate') -> item(0) -> nodeValue : '';
 		}
-		
+
 		$InvoiceItems = array();
 		$InvoiceItemsType = $DOM -> getElementsByTagName('item') -> length > 0 ? $DOM -> getElementsByTagName('item') : array();
 		foreach($InvoiceItemsType as $InvoiceItem)
@@ -3670,17 +3670,17 @@ class Adaptive extends PayPal
 			$ItemTaxName = $InvoiceItem -> getElementsByTagName('taxName') -> length > 0 ? $InvoiceItem -> getElementsByTagName('taxName') -> item(0) -> nodeValue : '';
 			$ItemTaxRate = $InvoiceItem -> getElementsByTagName('taxRate') -> length > 0 ? $InvoiceItem -> getElementsByTagName('taxRate') -> item(0) -> nodeValue : '';
 			$InvoiceItemArray = array(
-									'Name' => $ItemName, 
-									'Description' => $ItemDescription, 
-									'Date' => $ItemDate, 
-									'Quantity' => $ItemQuantity, 
-									'UnitPrice' => $ItemUnitPrice, 
-									'TaxName' => $ItemTaxName, 
+									'Name' => $ItemName,
+									'Description' => $ItemDescription,
+									'Date' => $ItemDate,
+									'Quantity' => $ItemQuantity,
+									'UnitPrice' => $ItemUnitPrice,
+									'TaxName' => $ItemTaxName,
 									'TaxRate' => $ItemTaxRate
 									);
 			array_push($InvoiceItems,$InvoiceItemArray);
 		}
-		
+
 		$MerchantInfoType = $DOM -> getElementsByTagName('merchantInfo') -> length > 0 ? $DOM -> getElementsByTagName('merchantInfo') : array();
 		foreach($MerchantInfoType as $MerchantInfo)
 		{
@@ -3691,7 +3691,7 @@ class Adaptive extends PayPal
 			$MerchantFax = $MerchantInfo -> getElementsByTagName('fax') -> length > 0 ? $MerchantInfo -> getElementsByTagName('fax') -> item(0) -> nodeValue : '';
 			$MerchantWebsite = $MerchantInfo -> getElementsByTagName('website') -> length > 0 ? $MerchantInfo -> getElementsByTagName('website') -> item(0) -> nodeValue : '';
 			$MerchantCustom = $MerchantInfo -> getElementsByTagName('customValue') -> length > 0 ? $MerchantInfo -> getElementsByTagName('customValue') -> item(0) -> nodeValue : '';
-		
+
 			$MerchantInfoAddressType = $MerchantInfo -> getElementsByTagName('address') -> length > 0 ? $MerchantInfo -> getElementsByTagName('address') : array();
 			foreach($MerchantInfoAddressType as $MerchantInfoAddress)
 			{
@@ -3704,7 +3704,7 @@ class Adaptive extends PayPal
 				$MerchantAddressType = $MerchantInfoAddress -> getElementsByTagName('type') -> length > 0 ? $MerchantInfoAddress -> getElementsByTagName('type') -> item(0) -> nodeValue : '';
 			}
 		}
-		
+
 		$BillingInfoType = $DOM -> getElementsByTagName('billingInfo') -> length > 0 ? $DOM -> getElementsByTagName('billingInfo') : array();
 		foreach($BillingInfoType as $BillingInfo)
 		{
@@ -3715,7 +3715,7 @@ class Adaptive extends PayPal
 			$BillingFax = $BillingInfo -> getElementsByTagName('fax') -> length > 0 ? $BillingInfo -> getElementsByTagName('fax') -> item(0) -> nodeValue : '';
 			$BillingWebsite = $BillingInfo -> getElementsByTagName('website') -> length > 0 ? $BillingInfo -> getElementsByTagName('website') -> item(0) -> nodeValue : '';
 			$BillingCustom = $BillingInfo -> getElementsByTagName('customValue') -> length > 0 ? $BillingInfo -> getElementsByTagName('customValue') -> item(0) -> nodeValue : '';
-		
+
 			$BillingInfoAddressType = $BillingInfo -> getElementsByTagName('address') -> length > 0 ? $BillingInfo -> getElementsByTagName('address') : array();
 			foreach($BillingInfoAddressType as $BillingInfoAddress)
 			{
@@ -3728,7 +3728,7 @@ class Adaptive extends PayPal
 				$BillingAddressType = $BillingInfoAddress -> getElementsByTagName('type') -> length > 0 ? $BillingInfoAddress -> getElementsByTagName('type') -> item(0) -> nodeValue : '';
 			}
 		}
-		
+
 		$ShippingInfoType = $DOM -> getElementsByTagName('shippingInfo') -> length > 0 ? $DOM -> getElementsByTagName('shippingInfo') : array();
 		foreach($ShippingInfoType as $ShippingInfo)
 		{
@@ -3739,7 +3739,7 @@ class Adaptive extends PayPal
 			$ShippingFax = $ShippingInfo -> getElementsByTagName('fax') -> length > 0 ? $ShippingInfo -> getElementsByTagName('fax') -> item(0) -> nodeValue : '';
 			$ShippingWebsite = $ShippingInfo -> getElementsByTagName('website') -> length > 0 ? $ShippingInfo -> getElementsByTagName('website') -> item(0) -> nodeValue : '';
 			$ShippingCustom = $ShippingInfo -> getElementsByTagName('customValue') -> length > 0 ? $ShippingInfo -> getElementsByTagName('customValue') -> item(0) -> nodeValue : '';
-		
+
 			$ShippingInfoAddressType = $ShippingInfo -> getElementsByTagName('address') -> length > 0 ? $ShippingInfo -> getElementsByTagName('address') : array();
 			foreach($ShippingInfoAddressType as $ShippingInfoAddress)
 			{
@@ -3752,7 +3752,7 @@ class Adaptive extends PayPal
 				$ShippingAddressType = $ShippingInfoAddress -> getElementsByTagName('type') -> length > 0 ? $ShippingInfoAddress -> getElementsByTagName('type') -> item(0) -> nodeValue : '';
 			}
 		}
-		
+
 		$ViaPayPal = $DOM -> getElementsByTagName('viaPayPal') -> length > 0 ? $DOM -> getElementsByTagName('viaPayPal') -> item(0) -> nodeValue : '';
 		$PayPalPaymentDetailsType = $DOM -> getElementsByTagName('paypalPayment') -> length > 0 ? $DOM -> getElementsByTagName('paypalPayment') : array();
 		foreach($PayPalPaymentDetailsType as $PayPalPaymentDetails)
@@ -3760,7 +3760,7 @@ class Adaptive extends PayPal
 			$PayPalTransactionID = $PayPalPaymentDetails -> getElementsByTagName('transactionID') -> length > 0 ? $PayPalPaymentDetails -> getElementsByTagName('transactionID') -> item(0) -> nodeValue : '';
 			$PayPalTransactionDate = $PayPalPaymentDetails -> getElementsByTagName('date') -> length > 0 ? $PayPalPaymentDetails -> getElementsByTagName('date') -> item(0) -> nodeValue : '';
 		}
-		
+
 		$OtherPaymentDetailsType = $DOM -> getElementsByTagName('otherPayment') -> length > 0 ? $DOM -> getElementsByTagName('otherPayment') : array();
 		foreach($OtherPaymentDetailsType as $OtherPaymentDetails)
 		{
@@ -3768,101 +3768,101 @@ class Adaptive extends PayPal
 			$PaymentMethodNote = $OtherPaymentDetails -> getElementsByTagName('note') -> length > 0 ? $OtherPaymentDetails -> getElementsByTagName('note') -> item(0) -> nodeValue : '';
 			$PaymentMethodDate = $OtherPaymentDetails -> getElementsByTagName('date') -> length > 0 ? $OtherPaymentDetails -> getElementsByTagName('date') -> item(0) -> nodeValue : '';
 		}
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceURL' => $InvoiceURL, 
-								   'MerchantEmail' => isset($MerchantEmail) ? $MerchantEmail : '', 
-								   'PayerEmail' => isset($PayerEmail) ? $PayerEmail : '', 
-								   'Number' => isset($Number) ? $Number : '', 
-								   'CurrencyCode' => isset($CurrencyCode) ? $CurrencyCode : '', 
-								   'InvoiceDate' => isset($InvoiceDate) ? $InvoiceDate : '', 
-								   'DueDate' => isset($DueDate) ? $DueDate : '', 
-								   'PaymentTerms' => isset($PaymentTerms) ? $PaymentTerms : '', 
-								   'DiscountPercent' => isset($DiscountPercent) ? $DiscountPercent : '', 
-								   'DiscountAmount' => isset($DiscountAmount) ? $DiscountAmount : '', 
-								   'Terms' => isset($Terms) ? $Terms : '', 
-								   'InvoiceNote' => isset($InvoiceNote) ? $InvoiceNote : '', 
-								   'MerchantMemo' => isset($MerchantMemo) ? $MerchantMemo : '', 
-								   'ShippingAmount' => isset($ShippingAmount) ? $ShippingAmount : '', 
-								   'ShippingTaxName' => isset($ShippingTaxName) ? $ShippingTaxName : '', 
-								   'ShippingTaxRate' => isset($ShippingTaxRate) ? $ShippingTaxRate : '', 
-								   'LogoURL' => isset($LogoURL) ? $LogoURL : '', 
-								   'Status' => isset($Status) ? $Status : '', 
-								   'TotalAmount' => isset($TotalAmount) ? $TotalAmount : '', 
-								   'Origin' => isset($Origin) ? $Origin : '', 
-								   'CreatedDate' => isset($CreatedDate) ? $CreatedDate : '', 
-								   'CreatedBy' => isset($CreatedBy) ? $CreatedBy : '', 
-								   'CanceledDate' => isset($CanceledDate) ? $CanceledDate : '', 
-								   'CanceledByActor' => isset($CanceledByActor) ? $CanceledByActor : '', 
-								   'CanceledBy' => isset($CanceledBy) ? $CanceledBy : '', 
-								   'LastUpdatedDate' => isset($LastUpdatedDate) ? $LastUpdatedDate : '', 
-								   'LastUpdatedBy' => isset($LastUpdatedBy) ? $LastUpdatedBy : '', 
-								   'FistSentDate' => isset($FirstSentDate) ? $FirstSentDate : '', 
-								   'LastSentDate' => isset($LastSentDate) ? $LastSentDate : '', 
-								   'LastSentBy' => isset($LastSentBy) ? $LastSentBy : '', 
-								   'PaidDate' => isset($PaidDate) ? $PaidDate : '', 
-								   'InvoiceItems' => isset($InvoiceItems) ? $InvoiceItems : '', 
-								   'MerchantFirstName' => isset($MerchantFirstName) ? $MerchantFirstName : '', 
-								   'MerchantLastName' => isset($MerchantLastName) ? $MerchantLastName : '', 
-								   'MerchantBusinessName' => isset($MerchantBusinessName) ? $MerchantBusinessName : '', 
-								   'MerchantPhone' => isset($MerchantPhone) ? $MerchantPhone : '', 
-								   'MerchantFax' => isset($MerchantFax) ? $MerchantFax : '', 
-								   'MerchantWebsite' => isset($MerchantWebsite) ? $MerchantWebsite : '', 
-								   'MerchantCustom' => isset($MerchantCustom) ? $MerchantCustom : '', 
-								   'MerchantAddressLine1' => isset($MerchantAddressLine1) ? $MerchantAddressLine1 : '', 
-								   'MerchantAddressLine2' => isset($MerchantAddressLine2) ? $MerchantAddressLine2 : '', 
-								   'MerchantAddressCity' => isset($MerchantAddressCity) ? $MerchantAddressCity : '', 
-								   'MerchantAddressState' => isset($MerchantAddressState) ? $MerchantAddressState : '', 
-								   'MerchantAddressPostalCode' => isset($MerchantAddressPostalCode) ? $MerchantAddressPostalCode : '', 
-								   'MerchantAddressCountryCode' => isset($MerchantAddressCountryCode) ? $MerchantAddressCountryCode : '', 
+								   'InvoiceURL' => $InvoiceURL,
+								   'MerchantEmail' => isset($MerchantEmail) ? $MerchantEmail : '',
+								   'PayerEmail' => isset($PayerEmail) ? $PayerEmail : '',
+								   'Number' => isset($Number) ? $Number : '',
+								   'CurrencyCode' => isset($CurrencyCode) ? $CurrencyCode : '',
+								   'InvoiceDate' => isset($InvoiceDate) ? $InvoiceDate : '',
+								   'DueDate' => isset($DueDate) ? $DueDate : '',
+								   'PaymentTerms' => isset($PaymentTerms) ? $PaymentTerms : '',
+								   'DiscountPercent' => isset($DiscountPercent) ? $DiscountPercent : '',
+								   'DiscountAmount' => isset($DiscountAmount) ? $DiscountAmount : '',
+								   'Terms' => isset($Terms) ? $Terms : '',
+								   'InvoiceNote' => isset($InvoiceNote) ? $InvoiceNote : '',
+								   'MerchantMemo' => isset($MerchantMemo) ? $MerchantMemo : '',
+								   'ShippingAmount' => isset($ShippingAmount) ? $ShippingAmount : '',
+								   'ShippingTaxName' => isset($ShippingTaxName) ? $ShippingTaxName : '',
+								   'ShippingTaxRate' => isset($ShippingTaxRate) ? $ShippingTaxRate : '',
+								   'LogoURL' => isset($LogoURL) ? $LogoURL : '',
+								   'Status' => isset($Status) ? $Status : '',
+								   'TotalAmount' => isset($TotalAmount) ? $TotalAmount : '',
+								   'Origin' => isset($Origin) ? $Origin : '',
+								   'CreatedDate' => isset($CreatedDate) ? $CreatedDate : '',
+								   'CreatedBy' => isset($CreatedBy) ? $CreatedBy : '',
+								   'CanceledDate' => isset($CanceledDate) ? $CanceledDate : '',
+								   'CanceledByActor' => isset($CanceledByActor) ? $CanceledByActor : '',
+								   'CanceledBy' => isset($CanceledBy) ? $CanceledBy : '',
+								   'LastUpdatedDate' => isset($LastUpdatedDate) ? $LastUpdatedDate : '',
+								   'LastUpdatedBy' => isset($LastUpdatedBy) ? $LastUpdatedBy : '',
+								   'FistSentDate' => isset($FirstSentDate) ? $FirstSentDate : '',
+								   'LastSentDate' => isset($LastSentDate) ? $LastSentDate : '',
+								   'LastSentBy' => isset($LastSentBy) ? $LastSentBy : '',
+								   'PaidDate' => isset($PaidDate) ? $PaidDate : '',
+								   'InvoiceItems' => isset($InvoiceItems) ? $InvoiceItems : '',
+								   'MerchantFirstName' => isset($MerchantFirstName) ? $MerchantFirstName : '',
+								   'MerchantLastName' => isset($MerchantLastName) ? $MerchantLastName : '',
+								   'MerchantBusinessName' => isset($MerchantBusinessName) ? $MerchantBusinessName : '',
+								   'MerchantPhone' => isset($MerchantPhone) ? $MerchantPhone : '',
+								   'MerchantFax' => isset($MerchantFax) ? $MerchantFax : '',
+								   'MerchantWebsite' => isset($MerchantWebsite) ? $MerchantWebsite : '',
+								   'MerchantCustom' => isset($MerchantCustom) ? $MerchantCustom : '',
+								   'MerchantAddressLine1' => isset($MerchantAddressLine1) ? $MerchantAddressLine1 : '',
+								   'MerchantAddressLine2' => isset($MerchantAddressLine2) ? $MerchantAddressLine2 : '',
+								   'MerchantAddressCity' => isset($MerchantAddressCity) ? $MerchantAddressCity : '',
+								   'MerchantAddressState' => isset($MerchantAddressState) ? $MerchantAddressState : '',
+								   'MerchantAddressPostalCode' => isset($MerchantAddressPostalCode) ? $MerchantAddressPostalCode : '',
+								   'MerchantAddressCountryCode' => isset($MerchantAddressCountryCode) ? $MerchantAddressCountryCode : '',
 								   'MerchantAddressType' => isset($MerchantAddressType) ? $MerchantAddressType : '',
-								   'BillingFirstName' => isset($BillingFirstName) ? $BillingFirstName : '', 
-								   'BillingLastName' => isset($BillingLastName) ? $BillingLastName : '', 
-								   'BillingBusinessName' => isset($BillingBusinessName) ? $BillingBusinessName : '', 
-								   'BillingPhone' => isset($BillingPhone) ? $BillingPhone : '', 
-								   'BillingFax' => isset($BillingFax) ? $BillingFax : '', 
-								   'BillingWebsite' => isset($BillingWebsite) ? $BillingWebsite : '', 
-								   'BillingCustom' => isset($BillingCustom) ? $BillingCustom : '', 
-								   'BillingAddressLine1' => isset($BillingAddressLine1) ? $BillingAddressLine1 : '', 
-								   'BillingAddressLine2' => isset($BillingAddressLine2) ? $BillingAddressLine2 : '', 
-								   'BillingAddressCity' => isset($BillingAddressCity) ? $BillingAddressCity : '', 
-								   'BillingAddressState' => isset($BillingAddressState) ? $BillingAddressState : '', 
-								   'BillingAddressPostalCode' => isset($BillingAddressPostalCode) ? $BillingAddressPostalCode : '', 
-								   'BillingAddressCountryCode' => isset($BillingAddressCountryCode) ? $BillingAddressCountryCode : '', 
+								   'BillingFirstName' => isset($BillingFirstName) ? $BillingFirstName : '',
+								   'BillingLastName' => isset($BillingLastName) ? $BillingLastName : '',
+								   'BillingBusinessName' => isset($BillingBusinessName) ? $BillingBusinessName : '',
+								   'BillingPhone' => isset($BillingPhone) ? $BillingPhone : '',
+								   'BillingFax' => isset($BillingFax) ? $BillingFax : '',
+								   'BillingWebsite' => isset($BillingWebsite) ? $BillingWebsite : '',
+								   'BillingCustom' => isset($BillingCustom) ? $BillingCustom : '',
+								   'BillingAddressLine1' => isset($BillingAddressLine1) ? $BillingAddressLine1 : '',
+								   'BillingAddressLine2' => isset($BillingAddressLine2) ? $BillingAddressLine2 : '',
+								   'BillingAddressCity' => isset($BillingAddressCity) ? $BillingAddressCity : '',
+								   'BillingAddressState' => isset($BillingAddressState) ? $BillingAddressState : '',
+								   'BillingAddressPostalCode' => isset($BillingAddressPostalCode) ? $BillingAddressPostalCode : '',
+								   'BillingAddressCountryCode' => isset($BillingAddressCountryCode) ? $BillingAddressCountryCode : '',
 								   'BillingAddressType' => isset($BillingAddressType) ? $BillingAddressType : '',
-								   'ShippingFirstName' => isset($ShippingFirstName) ? $ShippingFirstName : '', 
-								   'ShippingLastName' => isset($ShippingLastName) ? $ShippingLastName : '', 
-								   'ShippingBusinessName' => isset($ShippingBusinessName) ? $ShippingBusinessName : '', 
-								   'ShippingPhone' => isset($ShippingPhone) ? $ShippingPhone : '', 
-								   'ShippingFax' => isset($ShippingFax) ? $ShippingFax : '', 
-								   'ShippingWebsite' => isset($ShippingWebsite) ? $ShippingWebsite : '', 
-								   'ShippingCustom' => isset($ShippingCustom) ? $ShippingCustom : '', 
-								   'ShippingAddressLine1' => isset($ShippingAddressLine1) ? $ShippingAddressLine1 : '', 
-								   'ShippingAddressLine2' => isset($ShippingAddressLine2) ? $ShippingAddressLine2 : '', 
-								   'ShippingAddressCity' => isset($ShippingAddressCity) ? $ShippingAddressCity : '', 
-								   'ShippingAddressState' => isset($ShippingAddressState) ? $ShippingAddressState : '', 
-								   'ShippingAddressPostalCode' => isset($ShippingAddressPostalCode) ? $ShippingAddressPostalCode : '', 
-								   'ShippingAddressCountryCode' => isset($ShippingAddressCountryCode) ? $ShippingAddressCountryCode : '', 
-								   'ShippingAddressType' => isset($ShippingAddressType) ? $ShippingAddressType : '', 
-								   'ViaPayPal' => isset($ViaPayPal) ? $ViaPayPal : '', 
-								   'PayPalTransactionID' => isset($PayPalTransactionID) ? $PayPalTransactionID : '', 
-								   'PayPalTransactionDate' => isset($PayPalTransactionDate) ? $PayPalTransactionDate : '', 
-								   'PaymentMethod' => isset($PaymentMethod) ? $PaymentMethod : '', 
-								   'PaymentMethodNote' => isset($PaymentMethodNote) ? $PaymentMethodNote : '', 
-								   'PaymentMethodDate' => isset($PaymentMethodDate) ? $PaymentMethodDate : '', 
-								   'XMLRequest' => $XMLRequest, 
+								   'ShippingFirstName' => isset($ShippingFirstName) ? $ShippingFirstName : '',
+								   'ShippingLastName' => isset($ShippingLastName) ? $ShippingLastName : '',
+								   'ShippingBusinessName' => isset($ShippingBusinessName) ? $ShippingBusinessName : '',
+								   'ShippingPhone' => isset($ShippingPhone) ? $ShippingPhone : '',
+								   'ShippingFax' => isset($ShippingFax) ? $ShippingFax : '',
+								   'ShippingWebsite' => isset($ShippingWebsite) ? $ShippingWebsite : '',
+								   'ShippingCustom' => isset($ShippingCustom) ? $ShippingCustom : '',
+								   'ShippingAddressLine1' => isset($ShippingAddressLine1) ? $ShippingAddressLine1 : '',
+								   'ShippingAddressLine2' => isset($ShippingAddressLine2) ? $ShippingAddressLine2 : '',
+								   'ShippingAddressCity' => isset($ShippingAddressCity) ? $ShippingAddressCity : '',
+								   'ShippingAddressState' => isset($ShippingAddressState) ? $ShippingAddressState : '',
+								   'ShippingAddressPostalCode' => isset($ShippingAddressPostalCode) ? $ShippingAddressPostalCode : '',
+								   'ShippingAddressCountryCode' => isset($ShippingAddressCountryCode) ? $ShippingAddressCountryCode : '',
+								   'ShippingAddressType' => isset($ShippingAddressType) ? $ShippingAddressType : '',
+								   'ViaPayPal' => isset($ViaPayPal) ? $ViaPayPal : '',
+								   'PayPalTransactionID' => isset($PayPalTransactionID) ? $PayPalTransactionID : '',
+								   'PayPalTransactionDate' => isset($PayPalTransactionDate) ? $PayPalTransactionDate : '',
+								   'PaymentMethod' => isset($PaymentMethod) ? $PaymentMethod : '',
+								   'PaymentMethodNote' => isset($PaymentMethodNote) ? $PaymentMethodNote : '',
+								   'PaymentMethodDate' => isset($PaymentMethodDate) ? $PaymentMethodDate : '',
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-				
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit CancelInvoice API request to PayPal.
 	 *
@@ -3877,7 +3877,7 @@ class Adaptive extends PayPal
 		$Subject = isset($CancelInvoiceFields['Subject']) ? $CancelInvoiceFields['Subject'] : '';
 		$NoteForPayer = isset($CancelInvoiceFields['NoteForPayer']) ? $CancelInvoiceFields['NoteForPayer'] : '';
 		$SendCopyToMerchant = isset($CancelInvoiceFields['SendCopyToMerchant']) ? $CancelInvoiceFields['SendCopyToMerchant'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<CancelInvoiceRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -3887,7 +3887,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $NoteForPayer != '' ? '<noteForPayer xmlns="">' . $NoteForPayer . '</noteForPayer>' : '';
 		$XMLRequest .= $SendCopyToMerchant != '' ? '<sendCopyToMerchant xmlns="">' . $SendCopyToMerchant . '</sendCopyToMerchant>' : '';
 		$XMLRequest .= '</CancelInvoiceRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'CancelInvoice');
 		$DOM = new DOMDocument();
@@ -3895,7 +3895,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3907,23 +3907,23 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
+
 	 /**
 	 * Submit DeleteInvoice API request to PayPal.
 	 *
@@ -3939,7 +3939,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $InvoiceID != '' ? '<invoiceID xmlns="">' . $InvoiceID . '</invoiceID>' : '';
 		$XMLRequest .= '</DeleteInvoiceRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'DeleteInvoice');
 		$DOM = new DOMDocument();
@@ -3947,7 +3947,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3955,21 +3955,21 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'XMLRequest' => $XMLRequest, 
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GenerateInvoiceNumber API request to PayPal.
 	 *
@@ -3977,13 +3977,13 @@ class Adaptive extends PayPal
 	 * @return	mixed[] $ResponseDataArray	Returns XML result parsed as an array.
 	 */
 	 function GenerateInvoiceNumber()
-	 {		
+	 {
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<GenerateInvoiceNumberRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= '</GenerateInvoiceNumberRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'GenerateInvoiceNumber');
 		$DOM = new DOMDocument();
@@ -3991,7 +3991,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -3999,24 +3999,24 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit SearchInvoices API request to PayPal.
 	 *
@@ -4029,8 +4029,8 @@ class Adaptive extends PayPal
 		$SearchInvoicesFields = isset($DataArray['SearchInvoicesFields']) ? $DataArray['SearchInvoicesFields'] : array();
 		$MerchantEmail = isset($SearchInvoicesFields['MerchantEmail']) ? $SearchInvoicesFields['MerchantEmail'] : '';
 		$Page = isset($SearchInvoicesFields['Page']) ? $SearchInvoicesFields['Page'] : '';
-		$PageSize = isset($SearchInvoicesFields['PageSize']) ? $SearchInvoicesFields['PageSize'] : '';		
-		
+		$PageSize = isset($SearchInvoicesFields['PageSize']) ? $SearchInvoicesFields['PageSize'] : '';
+
 		$Parameters = isset($DataArray['Parameters']) ? $DataArray['Parameters'] : array();
 		$Email = isset($Parameters['Email']) ? $Parameters['Email'] : '';
 		$RecipientName = isset($Parameters['RecipientName']) ? $Parameters['RecipientName'] : '';
@@ -4046,7 +4046,7 @@ class Adaptive extends PayPal
 		$DueDate = isset($Parameters['DueDate']) ? $Parameters['DueDate'] : array();
 		$PaymentDate = isset($Parameters['PaymentDate']) ? $Parameters['PaymentDate'] : array();
 		$CreationDate = isset($Parameters['CreationDate']) ? $Parameters['CreationDate'] : array();
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<SearchInvoicesRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -4054,7 +4054,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $MerchantEmail != '' ? '<merchantEmail xmlns="">' . $MerchantEmail . '</merchantEmail>' : '';
 		$XMLRequest .= $Page != '' ? '<page xmlns="">' . $Page . '</page>' : '';
 		$XMLRequest .= $PageSize != '' ? '<pageSize xmlns="">' . $PageSize . '</pageSize>' : '';
-		
+
 		if(!empty($Parameters))
 		{
 			$XMLRequest .= '<parameters xmlns="">';
@@ -4068,44 +4068,44 @@ class Adaptive extends PayPal
 			$XMLRequest .= $CurrencyCode != '' ? '<currencyCode xmlns="">' . $CurrencyCode . '</currencyCode>' : '';
 			$XMLRequest .= $Memo != '' ? '<memo xmlns="">' . $Memo . '</memo>' : '';
 			$XMLRequest .= $Origin != '' ? '<origin xmlns="">' . $Origin . '</origin>' : '';
-			
+
 			if(!empty($InvoiceDate))
 			{
 				$XMLRequest .= '<invoiceDate xmlns="">';
 				$XMLRequest .= '<startDate xmlns="">' . $InvoiceDate['StartDate'] . '</startDate>';
 				$XMLRequest .= '<endDate xmlns="">' . $InvoiceDate['EndDate'] . '</endDate>';
-				$XMLRequest .= '</invoiceDate>';	
+				$XMLRequest .= '</invoiceDate>';
 			}
-			
+
 			if(!empty($DueDate))
 			{
 				$XMLRequest .= '<dueDate xmlns="">';
 				$XMLRequest .= '<startDate xmlns="">' . $DueDate['StartDate'] . '</startDate>';
 				$XMLRequest .= '<endDate xmlns="">' . $DueDate['EndDate'] . '</endDate>';
-				$XMLRequest .= '</dueDate>';	
+				$XMLRequest .= '</dueDate>';
 			}
-			
+
 			if(!empty($PaymentDate))
 			{
 				$XMLRequest .= '<paymentDate xmlns="">';
 				$XMLRequest .= '<startDate xmlns="">' . $PaymentDate['StartDate'] . '</startDate>';
 				$XMLRequest .= '<endDate xmlns="">' . $PaymentDate['EndDate'] . '</endDate>';
-				$XMLRequest .= '</paymentDate>';	
+				$XMLRequest .= '</paymentDate>';
 			}
-			
+
 			if(!empty($CreationDate))
 			{
 				$XMLRequest .= '<creationDate xmlns="">';
 				$XMLRequest .= '<startDate xmlns="">' . $CreationDate['StartDate'] . '</startDate>';
 				$XMLRequest .= '<endDate xmlns="">' . $CreationDate['EndDate'] . '</endDate>';
-				$XMLRequest .= '</creationDate>';	
+				$XMLRequest .= '</creationDate>';
 			}
-			
-			$XMLRequest .= '</parameters>';	
+
+			$XMLRequest .= '</parameters>';
 		}
-		
+
 		$XMLRequest .= '</SearchInvoicesRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'SearchInvoices');
 		$DOM = new DOMDocument();
@@ -4113,7 +4113,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4127,68 +4127,68 @@ class Adaptive extends PayPal
 		$HasNextPage = $DOM -> getElementsByTagName('hasNextPage') -> length > 0 ? $DOM -> getElementsByTagName('hasNextPage') -> item(0) -> nodeValue : '';
 		$HasPreviousPage = $DOM -> getElementsByTagName('hasPreviousPage') -> length > 0 ? $DOM -> getElementsByTagName('hasPreviousPage') -> item(0) -> nodeValue : '';
 		$InvoicesType = $DOM -> getElementsByTagName('invoice') -> length > 0 ? $DOM -> getElementsByTagName('invoice') : array();
-		
+
 		$Invoices = array();
 		foreach($InvoicesType as $Invoice)
 		{
-			$InvoiceID = $Invoice -> getElementsByTagName('invoiceID') -> length > 0 ? $Invoice -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';		
-			$MerchantEmail = $Invoice -> getElementsByTagName('merchantEmail') -> length > 0 ? $Invoice -> getElementsByTagName('merchantEmail') -> item(0) -> nodeValue : '';		
-			$PayerEmail = $Invoice -> getElementsByTagName('payerEmail') -> length > 0 ? $Invoice -> getElementsByTagName('payerEmail') -> item(0) -> nodeValue : '';		
-			$Number = $Invoice -> getElementsByTagName('number') -> length > 0 ? $Invoice -> getElementsByTagName('number') -> item(0) -> nodeValue : '';		
-			$BillingBusinessName = $Invoice -> getElementsByTagName('billingBusinessName') -> length > 0 ? $Invoice -> getElementsByTagName('billingBusinessName') -> item(0) -> nodeValue : '';		
-			$BillingFirstName = $Invoice -> getElementsByTagName('billingFirstName') -> length > 0 ? $Invoice -> getElementsByTagName('billingFirstName') -> item(0) -> nodeValue : '';		
-			$BillingLastName = $Invoice -> getElementsByTagName('billingLastName') -> length > 0 ? $Invoice -> getElementsByTagName('billingLastName') -> item(0) -> nodeValue : '';		
-			$ShippingBusinessName = $Invoice -> getElementsByTagName('shippingBusinessName') -> length > 0 ? $Invoice -> getElementsByTagName('shippingBusinessName') -> item(0) -> nodeValue : '';		
-			$ShippingFirstName = $Invoice -> getElementsByTagName('shippingFirstName') -> length > 0 ? $Invoice -> getElementsByTagName('shippingFirstName') -> item(0) -> nodeValue : '';		
-			$ShippingLastName = $Invoice -> getElementsByTagName('shippingLastName') -> length > 0 ? $Invoice -> getElementsByTagName('shippingLastName') -> item(0) -> nodeValue : '';		
-			$TotalAmount = $Invoice -> getElementsByTagName('totalAmount') -> length > 0 ? $Invoice -> getElementsByTagName('totalAmount') -> item(0) -> nodeValue : '';		
-			$CurrencyCode = $Invoice -> getElementsByTagName('currencyCode') -> length > 0 ? $Invoice -> getElementsByTagName('currencyCode') -> item(0) -> nodeValue : '';		
-			$InvoiceDate = $Invoice -> getElementsByTagName('invoiceDate') -> length > 0 ? $Invoice -> getElementsByTagName('invoiceDate') -> item(0) -> nodeValue : '';		
-			$DueDate = $Invoice -> getElementsByTagName('dueDate') -> length > 0 ? $Invoice -> getElementsByTagName('dueDate') -> item(0) -> nodeValue : '';		
-			$Status = $Invoice -> getElementsByTagName('status') -> length > 0 ? $Invoice -> getElementsByTagName('status') -> item(0) -> nodeValue : '';		
-			$Origin = $Invoice -> getElementsByTagName('origin') -> length > 0 ? $Invoice -> getElementsByTagName('origin') -> item(0) -> nodeValue : '';		
-			
+			$InvoiceID = $Invoice -> getElementsByTagName('invoiceID') -> length > 0 ? $Invoice -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
+			$MerchantEmail = $Invoice -> getElementsByTagName('merchantEmail') -> length > 0 ? $Invoice -> getElementsByTagName('merchantEmail') -> item(0) -> nodeValue : '';
+			$PayerEmail = $Invoice -> getElementsByTagName('payerEmail') -> length > 0 ? $Invoice -> getElementsByTagName('payerEmail') -> item(0) -> nodeValue : '';
+			$Number = $Invoice -> getElementsByTagName('number') -> length > 0 ? $Invoice -> getElementsByTagName('number') -> item(0) -> nodeValue : '';
+			$BillingBusinessName = $Invoice -> getElementsByTagName('billingBusinessName') -> length > 0 ? $Invoice -> getElementsByTagName('billingBusinessName') -> item(0) -> nodeValue : '';
+			$BillingFirstName = $Invoice -> getElementsByTagName('billingFirstName') -> length > 0 ? $Invoice -> getElementsByTagName('billingFirstName') -> item(0) -> nodeValue : '';
+			$BillingLastName = $Invoice -> getElementsByTagName('billingLastName') -> length > 0 ? $Invoice -> getElementsByTagName('billingLastName') -> item(0) -> nodeValue : '';
+			$ShippingBusinessName = $Invoice -> getElementsByTagName('shippingBusinessName') -> length > 0 ? $Invoice -> getElementsByTagName('shippingBusinessName') -> item(0) -> nodeValue : '';
+			$ShippingFirstName = $Invoice -> getElementsByTagName('shippingFirstName') -> length > 0 ? $Invoice -> getElementsByTagName('shippingFirstName') -> item(0) -> nodeValue : '';
+			$ShippingLastName = $Invoice -> getElementsByTagName('shippingLastName') -> length > 0 ? $Invoice -> getElementsByTagName('shippingLastName') -> item(0) -> nodeValue : '';
+			$TotalAmount = $Invoice -> getElementsByTagName('totalAmount') -> length > 0 ? $Invoice -> getElementsByTagName('totalAmount') -> item(0) -> nodeValue : '';
+			$CurrencyCode = $Invoice -> getElementsByTagName('currencyCode') -> length > 0 ? $Invoice -> getElementsByTagName('currencyCode') -> item(0) -> nodeValue : '';
+			$InvoiceDate = $Invoice -> getElementsByTagName('invoiceDate') -> length > 0 ? $Invoice -> getElementsByTagName('invoiceDate') -> item(0) -> nodeValue : '';
+			$DueDate = $Invoice -> getElementsByTagName('dueDate') -> length > 0 ? $Invoice -> getElementsByTagName('dueDate') -> item(0) -> nodeValue : '';
+			$Status = $Invoice -> getElementsByTagName('status') -> length > 0 ? $Invoice -> getElementsByTagName('status') -> item(0) -> nodeValue : '';
+			$Origin = $Invoice -> getElementsByTagName('origin') -> length > 0 ? $Invoice -> getElementsByTagName('origin') -> item(0) -> nodeValue : '';
+
 			$InvoiceItem = array(
-								'InvoiceID' => $InvoiceID, 
-								'MerchantEmail' => $MerchantEmail, 
-								'PayerEmail' => $PayerEmail, 
-								'Number' => $Number, 
-								'BillingBusinessName' => $BillingBusinessName, 
-								'BillingFirstName' => $BillingFirstName, 
-								'BillingLastName' => $BillingLastName, 
-								'ShippingBusinessName' => $ShippingBusinessName, 
-								'ShippingFirstName' => $ShippingFirstName, 
-								'ShippingLastName' => $ShippingLastName, 
-								'TotalAmount' => $TotalAmount, 
-								'CurrencyCode' => $CurrencyCode, 
-								'InvoiceDate' => $InvoiceDate, 
-								'DueDate' => $DueDate, 
-								'Status' => $Status, 
+								'InvoiceID' => $InvoiceID,
+								'MerchantEmail' => $MerchantEmail,
+								'PayerEmail' => $PayerEmail,
+								'Number' => $Number,
+								'BillingBusinessName' => $BillingBusinessName,
+								'BillingFirstName' => $BillingFirstName,
+								'BillingLastName' => $BillingLastName,
+								'ShippingBusinessName' => $ShippingBusinessName,
+								'ShippingFirstName' => $ShippingFirstName,
+								'ShippingLastName' => $ShippingLastName,
+								'TotalAmount' => $TotalAmount,
+								'CurrencyCode' => $CurrencyCode,
+								'InvoiceDate' => $InvoiceDate,
+								'DueDate' => $DueDate,
+								'Status' => $Status,
 								'Origin' => $Origin
 								);
 			array_push($Invoices, $InvoiceItem);
 		}
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'Count' => $Count, 
-								   'Page' => $Page, 
-								   'HasNextPage' => $HasNextPage, 
-								   'HasPreviousPage' => $HasPreviousPage, 
-								   'Invoices' => $Invoices, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'Count' => $Count,
+								   'Page' => $Page,
+								   'HasNextPage' => $HasNextPage,
+								   'HasPreviousPage' => $HasPreviousPage,
+								   'Invoices' => $Invoices,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
-	 
+
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit MarkInvoiceAsPaid API request to PayPal.
 	 *
@@ -4203,21 +4203,21 @@ class Adaptive extends PayPal
 		$Method = isset($MarkInvoiceAsPaidFields['Method']) ? $MarkInvoiceAsPaidFields['Method'] : '';
 		$Note = isset($MarkInvoiceAsPaidFields['Note']) ? $MarkInvoiceAsPaidFields['Note'] : '';
 		$Date = isset($MarkInvoiceAsPaidFields['Date']) ? $MarkInvoiceAsPaidFields['Date'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<MarkInvoiceAsPaidRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $InvoiceID != '' ? '<invoiceID xmlns="">' . $InvoiceID . '</invoiceID>' : '';
-		
+
 		$XMLRequest .= '<payment xmlns="">';
 		$XMLRequest .= $Method != '' ? '<method xmlns="">' . $Method . '</method>' : '';
 		$XMLRequest .= $Note != '' ? '<note xmlns="">' . $Note . '</note>' : '';
-		$XMLRequest .= $Date != '' ? '<date xmlns="">' . $Date . '</date>' : '';		
+		$XMLRequest .= $Date != '' ? '<date xmlns="">' . $Date . '</date>' : '';
 		$XMLRequest .= '</payment>';
-		
+
 		$XMLRequest .= '</MarkInvoiceAsPaidRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'MarkInvoiceAsPaid');
 		$DOM = new DOMDocument();
@@ -4225,7 +4225,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4237,24 +4237,24 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
- 
+
 	 }
-	 
+
 	 /**
 	 * Submit MarkInvoiceAsUnpaid API request to PayPal.
 	 *
@@ -4270,7 +4270,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $InvoiceID != '' ? '<invoiceID xmlns="">' . $InvoiceID . '</invoiceID>' : '';
 		$XMLRequest .= '</MarkInvoiceAsUnpaidRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'MarkInvoiceAsUnpaid');
 		$DOM = new DOMDocument();
@@ -4278,7 +4278,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4290,25 +4290,25 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
- 
+
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit MarkInvoiceAsRefunded API request to PayPal.
 	 *
@@ -4322,20 +4322,20 @@ class Adaptive extends PayPal
 		$InvoiceID = isset($MarkInvoiceAsRefundedFields['InvoiceID']) ? $MarkInvoiceAsRefundedFields['InvoiceID'] : '';
 		$Note = isset($MarkInvoiceAsRefundedFields['Note']) ? $MarkInvoiceAsRefundedFields['Note'] : '';
 		$Date = isset($MarkInvoiceAsRefundedFields['Date']) ? $MarkInvoiceAsRefundedFields['Date'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<MarkInvoiceAsRefundedRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $InvoiceID != '' ? '<invoiceID xmlns="">' . $InvoiceID . '</invoiceID>' : '';
-		
+
 		$XMLRequest .= '<refundDetail xmlns="">';
 		$XMLRequest .= $Note != '' ? '<note xmlns="">' . $Note . '</note>' : '';
-		$XMLRequest .= $Date != '' ? '<date xmlns="">' . $Date . '</date>' : '';		
+		$XMLRequest .= $Date != '' ? '<date xmlns="">' . $Date . '</date>' : '';
 		$XMLRequest .= '</refundDetail>';
-		
+
 		$XMLRequest .= '</MarkInvoiceAsRefundedRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'MarkInvoiceAsRefunded');
 		$DOM = new DOMDocument();
@@ -4343,7 +4343,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4355,25 +4355,25 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceNumber' => $InvoiceNumber, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceNumber' => $InvoiceNumber,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
- 
+
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit RemindInvoice API request to PayPal.
 	 *
@@ -4396,7 +4396,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $Subject != '' ? '<subject xmlns="">' . $Subject . '</subject>' : '';
 		$XMLRequest .= $NoteForPayer != '' ? '<noteForPayer xmlns="">' . $NoteForPayer . '</noteForPayer>' : '';
 		$XMLRequest .= '</RemindInvoiceRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Invoice', 'RemindInvoice');
 		$DOM = new DOMDocument();
@@ -4404,7 +4404,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4416,23 +4416,23 @@ class Adaptive extends PayPal
 		$InvoiceID = $DOM -> getElementsByTagName('invoiceID') -> length > 0 ? $DOM -> getElementsByTagName('invoiceID') -> item(0) -> nodeValue : '';
 		$InvoiceNumber = $DOM -> getElementsByTagName('invoiceNumber') -> length > 0 ? $DOM -> getElementsByTagName('invoiceNumber') -> item(0) -> nodeValue : '';
 		$InvoiceURL = $DOM -> getElementsByTagName('invoiceURL') -> length > 0 ? $DOM -> getElementsByTagName('invoiceURL') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'InvoiceID' => $InvoiceID, 
-								   'InvoiceURL' => $InvoiceURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'InvoiceID' => $InvoiceID,
+								   'InvoiceURL' => $InvoiceURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
- 
+
 	 }
-	 
+
 	 /**
 	 * Submit RequestPermissions API request to PayPal.
 	 *
@@ -4445,20 +4445,20 @@ class Adaptive extends PayPal
 		$RequestPermissionsFields = isset($DataArray['RequestPermissionsFields']) ? $DataArray['RequestPermissionsFields'] : array();
 		$Scope = isset($RequestPermissionsFields['Scope']) ? $RequestPermissionsFields['Scope'] : array();
 		$Callback = isset($RequestPermissionsFields['Callback']) ? $RequestPermissionsFields['Callback'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<RequestPermissionsRequest xmlns="' . $this -> XMLNamespace . '">';
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
-		
+
 		foreach($Scope as $Value)
 		{
 			$XMLRequest .= $Scope != '' ? '<scope xmlns="">' . $Value . '</scope>' : '';
 		}
-		
+
 		$XMLRequest .= $Callback != '' ? '<callback xmlns="">' . $Callback . '</callback>' : '';
 		$XMLRequest .= '</RequestPermissionsRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Permissions', 'RequestPermissions');
 		$DOM = new DOMDocument();
@@ -4466,7 +4466,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4477,23 +4477,23 @@ class Adaptive extends PayPal
 
 		$Token = $DOM -> getElementsByTagName('token') -> length > 0 ? $DOM -> getElementsByTagName('token') -> item(0) -> nodeValue : '';
 		$RedirectURL = $this->Sandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_grant-permission&request_token=' . $Token : 'https://www.paypal.com/cgi-bin/webscr?cmd=_grant-permission&request_token=' . $Token;
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
-								   'Timestamp' => $Timestamp, 
-								   'Token' => $Token, 
-								   'RedirectURL' => $RedirectURL,  
-								   'XMLRequest' => $XMLRequest, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
+								   'Timestamp' => $Timestamp,
+								   'Token' => $Token,
+								   'RedirectURL' => $RedirectURL,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
-		return $ResponseDataArray; 
+
+		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetAccessToken API request to PayPal.
 	 *
@@ -4507,7 +4507,7 @@ class Adaptive extends PayPal
 		$Token = isset($GetAccessTokenFields['Token']) ? $GetAccessTokenFields['Token'] : '';
 		$Verifier = isset($GetAccessTokenFields['Verifier']) ? $GetAccessTokenFields['Verifier'] : '';
 		$SubjectAlias = isset($GetAccessTokenFields['SubjectAlias']) ? $GetAccessTokenFields['SubjectAlias'] : '';
-		
+
 		// Generate XML Request
 		$XMLRequest = '<?xml version="1.0" encoding="utf-8"?>';
 		$XMLRequest .= '<GetAccessTokenRequest xmlns="' . $this -> XMLNamespace . '">';
@@ -4524,7 +4524,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4532,34 +4532,34 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$Scope = array();
 		$Scopes = $DOM -> getElementsByTagName('scope') -> length > 0 ? $DOM -> getElementsByTagName('scope') : array();
 		foreach($Scopes as $ScopeType)
 		{
 			array_push($Scope,$ScopeType->nodeValue);
 		}
-	
+
 		$Token = $DOM -> getElementsByTagName('token') -> length > 0 ? $DOM -> getElementsByTagName('token') -> item(0) -> nodeValue : '';
 		$TokenSecret = $DOM -> getElementsByTagName('tokenSecret') -> length > 0 ? $DOM -> getElementsByTagName('tokenSecret') -> item(0) -> nodeValue : '';
-				
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'Scope' => $Scope,  
-								   'Token' => $Token, 
-								   'TokenSecret' => $TokenSecret, 
-								   'XMLRequest' => $XMLRequest, 
+								   'Scope' => $Scope,
+								   'Token' => $Token,
+								   'TokenSecret' => $TokenSecret,
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
-		return $ResponseDataArray;  
+
+		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetPermissions API request to PayPal.
 	 *
@@ -4583,7 +4583,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4591,7 +4591,7 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$Scope = array();
 		$Scopes = $DOM -> getElementsByTagName('scope') -> length > 0 ? $DOM -> getElementsByTagName('scope') : array();
 		foreach($Scopes as $ScopeType)
@@ -4599,22 +4599,22 @@ class Adaptive extends PayPal
 			array_push($Scope,$ScopeType->nodeValue);
 		}
 
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
 								   'Scope' => $Scope,
-								   'XMLRequest' => $XMLRequest, 
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
-		return $ResponseDataArray; 
+
+		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit CancelPermissions API request to PayPal.
 	 *
@@ -4630,7 +4630,7 @@ class Adaptive extends PayPal
 		$XMLRequest .= $this -> GetXMLRequestEnvelope();
 		$XMLRequest .= $Token != '' ? '<token xmlns="">' . $Token . '</token>' : '';
 		$XMLRequest .= '</CancelPermissionsRequest>';
-		
+
 		 // Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Permissions', 'CancelPermissions');
 		$DOM = new DOMDocument();
@@ -4638,7 +4638,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4646,21 +4646,21 @@ class Adaptive extends PayPal
 		$Build = $DOM -> getElementsByTagName('build') -> length > 0 ? $DOM -> getElementsByTagName('build') -> item(0) -> nodeValue : '';
 		$CorrelationID = $DOM -> getElementsByTagName('correlationId') -> length > 0 ? $DOM -> getElementsByTagName('correlationId') -> item(0) -> nodeValue : '';
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
-								   'XMLRequest' => $XMLRequest, 
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
-		return $ResponseDataArray; 
+
+		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetBasicPersonalData API request to PayPal.
 	 *
@@ -4681,7 +4681,7 @@ class Adaptive extends PayPal
 		}
 		$XMLRequest .= '</attributeList>';
 		$XMLRequest .= '</GetBasicPersonalDataRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Permissions', 'GetBasicPersonalData');
 		$DOM = new DOMDocument();
@@ -4689,7 +4689,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4699,35 +4699,35 @@ class Adaptive extends PayPal
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 
 		$PersonalDataList = $DOM -> getElementsByTagName('personalData') -> length > 0 ? $DOM -> getElementsByTagName('personalData') : array();
-		
+
 		$PersonalData = array();
 		foreach($PersonalDataList as $PersonalDataType)
 		{
 			$PersonalDataKey = $PersonalDataType -> getElementsByTagName('personalDataKey') -> length > 0 ? $PersonalDataType -> getElementsByTagName('personalDataKey') -> item(0) -> nodeValue : '';
 			$PersonalDataValue = $PersonalDataType -> getElementsByTagName('personalDataValue') -> length > 0 ? $PersonalDataType -> getElementsByTagName('personalDataValue') -> item(0) -> nodeValue : '';
-		
+
 			$PersonalDataItem = array('PersonalDataKey' => $PersonalDataKey, 'PersonalDataValue' => $PersonalDataValue);
 			array_push($PersonalData,$PersonalDataItem);
 		}
-		
+
 		$PersonalDataKey = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 		$PersonalDataValue = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
 								   'PersonalData' => $PersonalData,
-								   'XMLRequest' => $XMLRequest, 
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
-		return $ResponseDataArray; 
+
+		return $ResponseDataArray;
 	 }
-	 
-	 
+
+
 	 /**
 	 * Submit GetAdvancedPersonalData API request to PayPal.
 	 *
@@ -4748,7 +4748,7 @@ class Adaptive extends PayPal
 		}
 		$XMLRequest .= '</attributeList>';
 		$XMLRequest .= '</GetAdvancedPersonalDataRequest>';
-		
+
 		// Call the API and load XML response into DOM
 		$XMLResponse = $this -> CURLRequest($XMLRequest, 'Permissions', 'GetAdvancedPersonalData');
 		$DOM = new DOMDocument();
@@ -4756,7 +4756,7 @@ class Adaptive extends PayPal
 
         $this->Logger($this->LogPath, __FUNCTION__.'Request', $XMLRequest);
         $this->Logger($this->LogPath, __FUNCTION__.'Response', $XMLResponse);
-		
+
 		// Parse XML values
 		$Fault = $DOM -> getElementsByTagName('FaultMessage') -> length > 0 ? true : false;
 		$Errors = $this -> GetErrors($XMLResponse);
@@ -4766,31 +4766,31 @@ class Adaptive extends PayPal
 		$Timestamp = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 
 		$PersonalDataList = $DOM -> getElementsByTagName('personalData') -> length > 0 ? $DOM -> getElementsByTagName('personalData') : array();
-		
+
 		$PersonalData = array();
 		foreach($PersonalDataList as $PersonalDataType)
 		{
 			$PersonalDataKey = $PersonalDataType -> getElementsByTagName('personalDataKey') -> length > 0 ? $PersonalDataType -> getElementsByTagName('personalDataKey') -> item(0) -> nodeValue : '';
 			$PersonalDataValue = $PersonalDataType -> getElementsByTagName('personalDataValue') -> length > 0 ? $PersonalDataType -> getElementsByTagName('personalDataValue') -> item(0) -> nodeValue : '';
-		
+
 			$PersonalDataItem = array('PersonalDataKey' => $PersonalDataKey, 'PersonalDataValue' => $PersonalDataValue);
 			array_push($PersonalData,$PersonalDataItem);
 		}
-		
+
 		$PersonalDataKey = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
 		$PersonalDataValue = $DOM -> getElementsByTagName('timestamp') -> length > 0 ? $DOM -> getElementsByTagName('timestamp') -> item(0) -> nodeValue : '';
-		
+
 		$ResponseDataArray = array(
-								   'Errors' => $Errors, 
-								   'Ack' => $Ack, 
-								   'Build' => $Build, 
-								   'CorrelationID' => $CorrelationID, 
+								   'Errors' => $Errors,
+								   'Ack' => $Ack,
+								   'Build' => $Build,
+								   'CorrelationID' => $CorrelationID,
 								   'Timestamp' => $Timestamp,
 								   'PersonalData' => $PersonalData,
-								   'XMLRequest' => $XMLRequest, 
+								   'XMLRequest' => $XMLRequest,
 								   'XMLResponse' => $XMLResponse
 								   );
-		
+
 		return $ResponseDataArray;
 	 }
 

@@ -81,10 +81,10 @@ class OAuthTokenCredential extends PayPalResourceModel
      * @param string $clientId     client id obtained from the developer portal
      * @param string $clientSecret client secret obtained from the developer portal
      */
-    public function __construct($clientId, $clientSecret)
+    public function __construct()
     {
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
+        $this->clientId = config('paypal.clientId');
+        $this->clientSecret = config('paypal.clientSecret');
         $this->cipher = new Cipher($this->clientSecret);
     }
 

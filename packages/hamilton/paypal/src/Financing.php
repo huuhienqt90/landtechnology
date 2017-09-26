@@ -1,7 +1,7 @@
-<?php namespace App\PaymentMethod\PayPal;
+<?php namespace Hamilton\PayPal;
 /**
  *	An open source PHP library written to easily work with PayPal's Financing API
- *	
+ *
  *	Email:  service@angelleye.com
  *  Facebook: angelleyeconsulting
  *  Twitter: angelleye
@@ -30,7 +30,7 @@
 /**
  * PayPal Financing API Wrapper
  *
- * This is a wrapper to the PayPal Financing API.  
+ * This is a wrapper to the PayPal Financing API.
  *
  * @package 		paypal-php-library
  * @author			Andrew Angell <service@angelleye.com>
@@ -40,7 +40,7 @@ class Financing extends PayPal
 {
 	var $AccessKey = '';
 	var $ClientSecret = '';
-	
+
 	/**
 	 * Constructor
 	 *
@@ -51,10 +51,10 @@ class Financing extends PayPal
 	function __construct($DataArray)
 	{
 		parent::__construct($DataArray);
-		
+
 		$this->AccessKey = isset($DataArray['AccessKey']) ? $DataArray['AccessKey'] : '';
 		$this->ClientSecret = isset($DataArray['ClientSecret']) && $DataArray['ClientSecret'] != '' ? $DataArray['ClientSecret'] : '';
-		
+
 		if($this->Sandbox)
 		{
 			$this->EndPointURL = isset($DataArray['EndPointURL']) && $DataArray['EndPointURL'] != '' ? $DataArray['EndPointURL'] : 'https://api.financing-mint.paypal.com/finapi/v1/publishers/';
@@ -64,7 +64,7 @@ class Financing extends PayPal
 			$this->EndPointURL = isset($DataArray['EndPointURL']) && $DataArray['EndPointURL'] != '' ? $DataArray['EndPointURL'] : 'https://api.financing.paypal.com/finapi/v1/publishers/';
 		}
 	}
-	
+
 	/**
 	 * Builds all HTTP headers required for the API call.
 	 *
@@ -79,19 +79,19 @@ class Financing extends PayPal
 
 		$headers = array(
 			"AUTHORIZATION: FPA ".$this->AccessKey.":".$token.":".$timestamp,
-			"CONTENT-TYPE: application/json", 
+			"CONTENT-TYPE: application/json",
 			"ACCEPT: application/json"
 		);
-		
+
 		if($PrintHeaders)
 		{
 			echo '<pre />';
 			print_r($headers);
 		}
-		
+
 		return $headers;
 	}
-	 
+
 	/**
 	 * Sends the API request to PayPal using CURL.
 	 *
@@ -113,12 +113,12 @@ class Financing extends PayPal
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $Request);
 				curl_setopt($curl, CURLOPT_HTTPHEADER, $this->BuildHeaders($this->PrintHeaders));
-		
-		$Response = curl_exec($curl);		
+
+		$Response = curl_exec($curl);
 		curl_close($curl);
-		return $Response;	
+		return $Response;
 	}
-	
+
 	/**
 	 * Parses all errors returned from PayPal
 	 *
@@ -130,10 +130,10 @@ class Financing extends PayPal
 	{
 		$JSONResponse = json_decode($JSONResponse);
 		$Errors = isset($JSONResponse->errors) ? $JSONResponse->errors : array();
-		
+
 		return $Errors;
 	}
-	
+
 	/**
 	 * Enrolls a user in the financing banner system.
 	 *
@@ -144,39 +144,39 @@ class Financing extends PayPal
 	function BannerEnrollment($DataArray)
 	{
 		$PayPalRequest['bnCode'] = $this->APIButtonSource;
-		
+
 		if(isset($DataArray['PayerID']))
 		{
-			$PayPalRequest['payerId'] = $DataArray['PayerID'];	
+			$PayPalRequest['payerId'] = $DataArray['PayerID'];
 		}
-		
+
 		if(isset($DataArray['SellerName']))
 		{
-			$PayPalRequest['sellerName'] = $DataArray['SellerName'];	
+			$PayPalRequest['sellerName'] = $DataArray['SellerName'];
 		}
-		
+
 		if(isset($DataArray['EmailAddress']))
 		{
-			$PayPalRequest['emailAddress'] = $DataArray['EmailAddress'];	
+			$PayPalRequest['emailAddress'] = $DataArray['EmailAddress'];
 		}
-		
-		$JSONRequest = json_encode($PayPalRequest);		
+
+		$JSONRequest = json_encode($PayPalRequest);
 		$JSONResponse = $this->CURLRequest($JSONRequest,"","");
 		$ResponseArray = json_decode($JSONResponse);
-		
+
 		$Errors = $this->GetErrors($JSONResponse);
 		$PayerID = isset($ResponseArray->payerId) ? $ResponseArray->payerId : '';
 		$PublisherID = isset($ResponseArray->publisherId) ? $ResponseArray->publisherId : '';
-		
-		
+
+
 		$ResultArray = array(
-			'RawRequest' => $JSONRequest, 
-			'RawResponse' => $JSONResponse, 
-			'PayerID' => $PayerID, 
-			'PublisherID' => $PublisherID, 
+			'RawRequest' => $JSONRequest,
+			'RawResponse' => $JSONResponse,
+			'PayerID' => $PayerID,
+			'PublisherID' => $PublisherID,
 			'Errors' => $Errors
 		);
-		
+
 		return $ResultArray;
 	}
 }
