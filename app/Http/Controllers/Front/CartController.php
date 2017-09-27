@@ -8,7 +8,7 @@ use App\Http\Requests\PostToCartRequest;
 use App\Http\Controllers\Controller;
 use Cart;
 use Auth;
-use App\PaymentMethod\PayPal\PayPal;
+use Hamilton\PayPal\PayPal;
 use App\Repositories\SettingRepository;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\OrderResponsitory;
@@ -30,10 +30,10 @@ class CartController extends Controller
     private $orderProductResponsitory;
     private $paymentHistoryResponsitory;
 
-    public function __construct(ProductResponsitory $productRepository, 
+    public function __construct(ProductResponsitory $productRepository,
                                 SettingRepository $settingRepository,
-                                OrderResponsitory $orderResponsitory, 
-                                OrderMetaResponsitory $orderMetaResponsitory, 
+                                OrderResponsitory $orderResponsitory,
+                                OrderMetaResponsitory $orderMetaResponsitory,
                                 OrderProductResponsitory $orderProductResponsitory,
                                 PaymentHistoryResponsitory $paymentHistoryResponsitory)
     {
@@ -45,10 +45,10 @@ class CartController extends Controller
         $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
 
         $PayPalConfig = array(
-            'Sandbox' =>  true,
-            'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
-            'APIPassword' => !empty( $this->settingRepository->getValueByKey('APIPassword') ) ? $this->settingRepository->getValueByKey('APIPassword') : 'JHYYGJPYCJFQ8AWF',
-            'APISignature' => !empty( $this->settingRepository->getValueByKey('APISignature') ) ? $this->settingRepository->getValueByKey('APISignature') : 'AFcWxV21C7fd0v3bYYYRCpSSRl31A0apSfDtZpJ.RN-aXkvaXdGhAanx'
+            'Sandbox' =>  config('paypal.Sandbox'),
+            'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : config('paypal.APIUsername'),
+            'APIPassword' => !empty( $this->settingRepository->getValueByKey('APIPassword') ) ? $this->settingRepository->getValueByKey('APIPassword') : config('paypal.APIPassword'),
+            'APISignature' => !empty( $this->settingRepository->getValueByKey('APISignature') ) ? $this->settingRepository->getValueByKey('APISignature') : config('paypal.APISignature')
         );
         $this->PayPal = new PayPal($PayPalConfig);
     }
@@ -132,10 +132,10 @@ class CartController extends Controller
     public function postCheckout(PostCheckoutRequest $request){
         if( isset($request->paymentMethod) && $request->paymentMethod == 'paypal' ){
             $SECFields = array(
-                'token' => '',                              // A timestamped token, the value of which was returned by a previous SetExpressCheckout call.
-                'maxamt' => Cart::total(),                      // The expected maximum total amount the order will be, including S&H and sales tax.
-                'returnurl' => route('front.checkout.thankYou'),                            // Required.  URL to which the customer will be returned after returning from PayPal.  2048 char max.
-                'cancelurl' => route('front.checkout.fail'),                            // Required.  URL to which the customer will be returned if they cancel payment on PayPal's site.
+                'token' => '',
+                'maxamt' => Cart::total(),
+                'returnurl' => route('front.checkout.thankYou'),
+                'cancelurl' => route('front.checkout.fail'),
             );
 
             // Basic array of survey choices.  Nothing but the values should go in here.
@@ -172,10 +172,10 @@ class CartController extends Controller
             $PaymentOrderItems = array();
             foreach(Cart::content() as $row):
                 $Item = array(
-                    'name' => $row->name,                           // Item name. 127 char max.
-                    'desc' => $row->name,                           // Item description. 127 char max.
-                    'amt' => $row->price,                               // Cost of item.
-                    'number' => $row->id,                           // Item number.  127 char max.
+                    'name' => $row->name,
+                    'desc' => $row->name,
+                    'amt' => $row->price,
+                    'number' => $row->id,
                     'qty' => $row->qty,
                 );
                 array_push($PaymentOrderItems, $Item);
@@ -217,11 +217,14 @@ class CartController extends Controller
             );
 
             $data = $this->PayPal->SetExpressCheckout($PayPalRequest);
-            $request->session('SetExpressCheckoutResult', $data);
+            if( $data['ACK'] == 'Success'){
+                $request->session('SetExpressCheckoutResult', $data);
+                $this->addOrder($request);
+                return redirect($data['REDIRECTURL']);
+            }else{
+                return redirect()->back()->withInput($request->all())->with('alert-danger', $data['L_LONGMESSAGE0']);
+            }
 
-            $this->addOrder($request);
-
-            return redirect($data['REDIRECTURL']);
         }elseif( isset($request->paymentMethod) && $request->paymentMethod == 'stripe' ) {
             // Payment method stripe
             $secret = !empty( $this->settingRepository->getValueByKey('stripe_secret') ) ? $this->settingRepository->getValueByKey('stripe_secret') : 'sk_test_NZVqZ3MEZvrySS5CEEHJkiO4';

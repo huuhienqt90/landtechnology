@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\PaymentMethod\PayPal\PayPal;
+use Hamilton\PayPal\PayPal;
 use App\Repositories\SettingRepository;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\OrderResponsitory;
@@ -28,10 +28,10 @@ class OrderController extends Controller
         $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
         $this->orderProductResponsitory = $orderProductResponsitory;
         $PayPalConfig = array(
-            'Sandbox' =>  true,
-            'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : 'abcabcaaa_api1.gmail.com',
-            'APIPassword' => !empty( $this->settingRepository->getValueByKey('APIPassword') ) ? $this->settingRepository->getValueByKey('APIPassword') : 'JHYYGJPYCJFQ8AWF',
-            'APISignature' => !empty( $this->settingRepository->getValueByKey('APISignature') ) ? $this->settingRepository->getValueByKey('APISignature') : 'AFcWxV21C7fd0v3bYYYRCpSSRl31A0apSfDtZpJ.RN-aXkvaXdGhAanx'
+            'Sandbox' =>  config('paypal.Sandbox'),
+            'APIUsername' => !empty( $this->settingRepository->getValueByKey('APIUsername') ) ? $this->settingRepository->getValueByKey('APIUsername') : config('paypal.APIUsername'),
+            'APIPassword' => !empty( $this->settingRepository->getValueByKey('APIPassword') ) ? $this->settingRepository->getValueByKey('APIPassword') : config('paypal.APIPassword'),
+            'APISignature' => !empty( $this->settingRepository->getValueByKey('APISignature') ) ? $this->settingRepository->getValueByKey('APISignature') : config('paypal.APISignature')
         );
         $this->PayPal = new PayPal($PayPalConfig);
     }
@@ -101,17 +101,12 @@ class OrderController extends Controller
             // Create payment history
             $orders = $this->orderProductResponsitory->findALlBy('order_id', \Session::get('orderId'));
             foreach($orders as $order) {
-                $price = $order->product->sale_price?$order->product->sale_price:$order->product->original_price;
+                $price = $order->product->sale_price ? $order->product->sale_price : $order->product->original_price;
                 $fee = 0;
-                $commission = $this->paymentHistoryResponsitory->getCostCommission($order->product->category->category_id, 'seller');
-                if( $commission->type == 'percent' ) {
-                    $fee = ($price*$commission->cost)/100;
-                    if( $fee > $commission->maximum ) {
-                        $fee = $commission->maximum;
-                    }
-                }else{
-                    $fee = $commission->cost;
+                if( !$order->product->seller->isSuperUser() ){
+                    $fee = $this->paymentHistoryResponsitory->getCostCommission($order->product->category->category_id, $price, 'seller');
                 }
+
                 $param = [
                     'seller_id' => $order->product->seller_id,
                     'order_id' => \Session::get('orderId'),

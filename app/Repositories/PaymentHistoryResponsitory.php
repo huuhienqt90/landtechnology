@@ -14,7 +14,20 @@ class PaymentHistoryResponsitory extends Repository {
         return 'App\Models\PaymentHistory';
     }
 
-    public function getCostCommission($cate, $product_type = 'seller') {
-    	return Commissions::where('category_id', $cate)->where('product_type', $product_type)->first();
+    public function getCostCommission($cate, $price = 0, $product_type = 'seller') {
+        $commission = Commissions::where('category_id', $cate)->where('product_type', $product_type);
+        if( $commission != null && $commission->count() ){
+            if( $commission->first()->type == 'percent' ) {
+                $fee = ($price * $commission->cost) / 100;
+                if( $fee > $commission->maximum ) {
+                    $fee = $commission->maximum;
+                }
+            }else{
+                $fee = $commission->cost;
+            }
+        }else{
+            $fee = 0;
+        }
+    	return $fee;
     }
 }

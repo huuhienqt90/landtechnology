@@ -4,6 +4,7 @@ namespace Hamilton\PayPal\Rest;
 
 use Hamilton\PayPal\Core\PayPalConfigManager;
 use Hamilton\PayPal\Core\PayPalCredentialManager;
+use Hamilton\PayPal\Auth\OAuthTokenCredential;
 
 /**
  * Class ApiContext
@@ -41,8 +42,18 @@ class ApiContext
      */
     public function __construct($credential = null, $requestId = null)
     {
+        $credential = new OAuthTokenCredential();
         $this->requestId = $requestId;
         $this->credential = $credential;
+        $this->setConfig(
+            array(
+                'mode' => config('paypal.Sandbox') ? 'sandbox' : 'sandbox',
+                'log.LogEnabled' => config('paypal.log.LogEnabled'),
+                'log.FileName' => config('paypal.log.FileName'),
+                'log.LogLevel' => config('paypal.log.LogLevel'),
+                'cache.enabled' => config('paypal.cache.enabled'),
+            )
+        );
     }
 
     /**

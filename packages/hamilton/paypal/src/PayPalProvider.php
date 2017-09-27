@@ -12,7 +12,9 @@ class PayPalProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__.'/config/paypal.php' => config_path('paypal.php'),
+        ]);
     }
 
     /**
@@ -22,6 +24,8 @@ class PayPalProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__.'/config/paypal.php', 'paypal'
+        );
     }
 }
