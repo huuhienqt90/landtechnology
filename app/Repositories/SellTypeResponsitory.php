@@ -15,7 +15,7 @@ class SellTypeResponsitory extends Repository {
 
     public function getArrayNameSellTypes(){
     	$sellTypes = SellType::all();
-        $sellTypeArr = ['' => 'Select a seller'];
+        $sellTypeArr = ['' => 'Select a sell type'];
         if( $sellTypes && $sellTypes->count() ){
             foreach ($sellTypes as $sellType) {
                 $sellTypeArr[$sellType->id] = $sellType->name;

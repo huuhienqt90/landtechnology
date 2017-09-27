@@ -54,15 +54,6 @@ class Product extends Model
     }
 
     /**
-     * Get product brands
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function brand(){
-        return $this->hasOne('App\Models\Brand', 'id', 'product_brand');
-    }
-
-    /**
      * Get sell type product
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

@@ -50,14 +50,21 @@
                                                 {{ Form::label(null, $errors->has('slug')? $errors->first('slug') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('product_type')? 'has-error' : '' }}">
+                                            {{ Form::label('product_type', 'Product Type', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('product_type', setProductType(), null, ['class' => 'form-control', 'id' => 'product_type']) }}
+                                                {{ Form::label(null, $errors->has('product_type')? $errors->first('product_type') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('product_brand')? 'has-error' : '' }}" id="form_product_brand">
                                             {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::select('product_brand', $brands, null, ['class' => 'form-control']) }}
                                                 {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('category')? 'has-error' : '' }}" id="form_category">
                                             <label for="category" class="col-sm-3 control-label">Category</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control select2" name="category">
@@ -102,14 +109,14 @@
                                                 });
                                             </script>
                                         @endif
-                                        <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('original_price')? 'has-error' : '' }}" id="form_original_price">
                                             {{ Form::label('original_price', 'Price', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::text('original_price', old('original_price'), ['placeholder' => 'Price', 'class' => 'form-control', 'id' => 'original_price']) }}
                                                 {{ Form::label(null, $errors->has('original_price')? $errors->first('original_price') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('sale_price')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('sale_price')? 'has-error' : '' }}" id="form_sale_price">
                                             {{ Form::label('sale_price', 'Sale Price', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::text('sale_price', old('sale_price'), ['placeholder' => 'Sale Price', 'class' => 'form-control', 'id' => 'sale_price']) }}
@@ -149,7 +156,7 @@
                                                 });
                                             </script>
                                         @endif
-                                        <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}" id="form_feature_image">
                                             <label for="feature_image" class="col-sm-3 control-label">Feature Image</label>
                                             <div class="col-sm-9">
                                                 {!! Form::file('feature_image',['id'=>'feature_image', 'class' => 'file', 'data-upload-url' => '#', 'name' => 'feature_image']) !!}
@@ -164,7 +171,7 @@
                                                 showUpload: false,
                                             });
                                         </script>
-                                        <div class="form-group {{ $errors->has('product_images') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('product_images') ? ' has-error' : '' }}" id="form_product_images">
                                             <label for="product_images" class="col-sm-3 control-label">Product Images</label>
                                             <div class="col-sm-9">
                                                 {!! Form::file('product_images',['id'=>'product_images', 'class' => 'file', 'data-upload-url' => '#', 'multiple' => 'true', 'name' => 'product_images'.'[]']) !!}
@@ -179,49 +186,64 @@
                                                 showUpload: false,
                                             });
                                         </script>
-                                        <div class="form-group {{ $errors->has('description_short')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('description_short')? 'has-error' : '' }}" id="form_description_short">
                                             {{ Form::label('description_short', 'Description short', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 <textarea class="textarea" id="description_short" name="description_short" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ Form::getValueAttribute('description_short') }}</textarea>
                                                 {{ Form::label(null, $errors->has('description_short')? $errors->first('description_short') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('description')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('description')? 'has-error' : '' }}" id="form_description">
                                             {{ Form::label('description', 'Description', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 <textarea class="textarea" id="description" name="description" placeholder="Place some text here"style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ Form::getValueAttribute('description') }}</textarea>
                                                 {{ Form::label(null, $errors->has('description')? $errors->first('description') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('start_date')? 'has-error' : '' }}" id="form_start_date">
+                                            {{ Form::label('start_date', 'Pick time', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::date('start_date', \Carbon\Carbon::now(), ['class' => 'form-control']) }}
+                                                {{ Form::label(null, $errors->has('start_date')? $errors->first('start_date') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group {{ $errors->has('end_date')? 'has-error' : '' }}" id="form_end_date">
+                                            {{ Form::label('end_date', 'End date', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::date('end_date', \Carbon\Carbon::now(), ['class' => 'form-control']) }}
+                                                {{ Form::label(null, $errors->has('end_date')? $errors->first('end_date') : '', ['class' => 'help-block']) }}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group {{ $errors->has('key_words')? 'has-error' : '' }}" id="form_key_words">
                                             {{ Form::label('key_words', 'Key words', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::text('key_words', old('key_words'), ['placeholder' => 'Key words', 'class' => 'form-control', 'id' => 'key_words']) }}
                                                 {{ Form::label(null, $errors->has('key_words')? $errors->first('key_words') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('sell_type_id')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('sell_type_id')? 'has-error' : '' }}" id="form_sell_type_id">
                                             {{ Form::label('sell_type_id', 'Sell Type', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::select('sell_type_id', $selltypes, null, ['class' => 'form-control']) }}
                                                 {{ Form::label(null, $errors->has('sell_type_id')? $errors->first('sell_type_id') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('weight')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('weight')? 'has-error' : '' }}" id="form_weight">
                                             {{ Form::label('weight', 'Weight', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::text('weight', old('weight'), ['placeholder' => 'Weight', 'class' => 'form-control', 'id' => 'weight']) }}
                                                 {{ Form::label(null, $errors->has('weight')? $errors->first('weight') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('location')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('location')? 'has-error' : '' }}" id="form_location">
                                             {{ Form::label('location', 'location', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::text('location', old('location'), ['placeholder' => 'Location', 'class' => 'form-control', 'id' => 'location']) }}
                                                 {{ Form::label(null, $errors->has('location')? $errors->first('location') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('stock')? 'has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('stock')? 'has-error' : '' }}" id="form_stock">
                                             {{ Form::label('stock', 'Stock', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::text('stock', old('stock'), ['placeholder' => 'Stock', 'class' => 'form-control', 'id' => 'stock']) }}
@@ -328,4 +350,47 @@
           <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            $("#form_start_date").addClass('hidden');
+            $("#form_end_date").addClass('hidden');
+            if( $("#product_type").val() == 'booking' ) {
+                $("#form_product_brand").addClass('hidden');
+                $("#form_key_words").addClass('hidden');
+                $("#form_weight").addClass('hidden');
+                $("#form_location").addClass('hidden');
+                $("#form_stock").addClass('hidden');
+                $("#form_start_date").removeClass('hidden');
+                $("#form_end_date").removeClass('hidden');
+            }else if( $("#product_type").val() == 'simple' ) {
+                $("#form_product_brand").removeClass('hidden');
+                $("#form_key_words").removeClass('hidden');
+                $("#form_weight").removeClass('hidden');
+                $("#form_location").removeClass('hidden');
+                $("#form_stock").removeClass('hidden');
+                $("#form_start_date").addClass('hidden');
+                $("#form_end_date").addClass('hidden');
+            }
+            $("#product_type").on('change', function() {
+                if( $(this).val() == 'booking' ) {
+                    $("#form_product_brand").addClass('hidden');
+                    $("#form_key_words").addClass('hidden');
+                    $("#form_weight").addClass('hidden');
+                    $("#form_location").addClass('hidden');
+                    $("#form_stock").addClass('hidden');
+                    $("#form_start_date").removeClass('hidden');
+                    $("#form_end_date").removeClass('hidden');
+                }
+                if( $(this).val() == 'simple' ) {
+                    $("#form_product_brand").removeClass('hidden');
+                    $("#form_key_words").removeClass('hidden');
+                    $("#form_weight").removeClass('hidden');
+                    $("#form_location").removeClass('hidden');
+                    $("#form_stock").removeClass('hidden');
+                    $("#form_start_date").addClass('hidden');
+                    $("#form_end_date").addClass('hidden');
+                }
+            });
+        });
+    </script>
 @stop
