@@ -1,0 +1,58 @@
+[23-09-2017 10:28:58] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/oauth2/token
+[23-09-2017 10:29:00] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Headers 	: POST /v1/oauth2/token HTTP/1.1, Host: api.sandbox.paypal.com, User-Agent: PayPalSDK/PayPal-PHP-SDK 1.12.0 (platform-ver=7.1.8; bit=64; os=Darwin_16.7.0; machine=x86_64; crypto-lib-ver=1.0.2l; curl=7.45.0), Authorization: Basic QWJGZV9ZTERMRjZWblJTRnREMGZaSEk5WXVOTldNWTNlT3g2RGczTE5Yd3VzTFp5STdXanBpU3FUQmM5S2swcnI2eGlsX3UxV3QwWTQ5U1A6RUFib2IyVnBUY2swUDJ3SE5KYXJ6eGZMODJta1VjVFlobm9mM2JMUlRkNDNVTTdGZmlxenI3Qkw4Vlp5OFctTHktWFBaLXp4ZXl2Wi1rZmc=, Accept: */*, Content-Length: 29, Content-Type: application/x-www-form-urlencoded, , 
+[23-09-2017 10:29:00] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Data		: grant_type=client_credentials
+--------------------------------------------------------------------------------------------------------------------------------
+
+[23-09-2017 10:29:00] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 200
+[23-09-2017 10:29:00] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Headers	: Date: Sat, 23 Sep 2017 10:28:59 GMT, Server: Apache, paypal-debug-id: 83c55a56ef55f, X-PAYPAL-TOKEN-SERVICE: IAAS, HTTP_X_PP_AZ_LOCATOR: sandbox.slc, Paypal-Debug-Id: 83c55a56ef55f, Set-Cookie: X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT, Vary: Authorization, Content-Length: 550, Connection: close, Content-Type: application/json, 
+[23-09-2017 10:29:00] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Data 	: {"scope":"https://uri.paypal.com/services/subscriptions https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card https://uri.paypal.com/services/applications/webhooks openid https://uri.paypal.com/payments/payouts https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-23T10:12:06ZbZZT5GmpVxXWNDS8bm9uHMIxfLv5O30BMkL4qQCKOLQ","access_token":"A21AAEZLL4ms6OYT2y82CSyLwRmAWxBGU2aOuyCQcDgABf8nj0i7KpIFbNrlt-SF-nKOoTyH3KrIERz2LqiE53EoWIqN0xDPA","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":31386}
+
+================================================================================================================================
+
+[23-09-2017 10:42:29] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/payments/payouts?sync_mode=true
+[23-09-2017 10:42:33] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Headers 	: POST /v1/payments/payouts?sync_mode=true HTTP/1.1, Host: api.sandbox.paypal.com, Accept: */*, Content-Type: application/json, User-Agent: PayPalSDK/PayPal-PHP-SDK 1.12.0 (platform-ver=7.1.8; bit=64; os=Darwin_16.7.0; machine=x86_64; crypto-lib-ver=1.0.2l; curl=7.45.0), Authorization: Bearer A21AAEZLL4ms6OYT2y82CSyLwRmAWxBGU2aOuyCQcDgABf8nj0i7KpIFbNrlt-SF-nKOoTyH3KrIERz2LqiE53EoWIqN0xDPA, Content-Length: 273, , 
+[23-09-2017 10:42:33] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Data		: {"sender_batch_header":{"sender_batch_id":"59c63a959f211","email_subject":"You have a Payout!"},"items":[{"recipient_type":"Email","note":"Thanks for your patronage!","receiver":"huuhientq90sandbox@gmail.com","sender_item_id":30,"amount":{"value":"242","currency":"USD"}}]}
+--------------------------------------------------------------------------------------------------------------------------------
+
+[23-09-2017 10:42:33] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 422
+[23-09-2017 10:42:33] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Headers	: Date: Sat, 23 Sep 2017 10:42:30 GMT, Server: Apache, paypal-debug-id: b4e93cd16c2b7, Content-Language: *, HTTP_X_PP_AZ_LOCATOR: sandbox.slc, Paypal-Debug-Id: b4e93cd16c2b7, Set-Cookie: X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT, Vary: Authorization, Content-Length: 198, Connection: close, Content-Type: application/json, 
+[23-09-2017 10:42:33] Hamilton\PayPal\Core\PayPalHttpConnection : ERROR: Got Http response code 422 when accessing https://api.sandbox.paypal.com/v1/payments/payouts?sync_mode=true. {"name":"INSUFFICIENT_FUNDS","message":"An internal service error has occurred.","debug_id":"b4e93cd16c2b7","information_link":"https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"}
+[23-09-2017 10:42:33] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: 
+
+================================================================================================================================
+
+[23-09-2017 10:43:24] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/payments/payouts?sync_mode=true
+[23-09-2017 10:43:26] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Headers 	: POST /v1/payments/payouts?sync_mode=true HTTP/1.1, Host: api.sandbox.paypal.com, Accept: */*, Content-Type: application/json, User-Agent: PayPalSDK/PayPal-PHP-SDK 1.12.0 (platform-ver=7.1.8; bit=64; os=Darwin_16.7.0; machine=x86_64; crypto-lib-ver=1.0.2l; curl=7.45.0), Authorization: Bearer A21AAEZLL4ms6OYT2y82CSyLwRmAWxBGU2aOuyCQcDgABf8nj0i7KpIFbNrlt-SF-nKOoTyH3KrIERz2LqiE53EoWIqN0xDPA, Content-Length: 273, , 
+[23-09-2017 10:43:26] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Data		: {"sender_batch_header":{"sender_batch_id":"59c63accde986","email_subject":"You have a Payout!"},"items":[{"recipient_type":"Email","note":"Thanks for your patronage!","receiver":"huuhientq90sandbox@gmail.com","sender_item_id":30,"amount":{"value":"242","currency":"USD"}}]}
+--------------------------------------------------------------------------------------------------------------------------------
+
+[23-09-2017 10:43:26] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 422
+[23-09-2017 10:43:26] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Headers	: Date: Sat, 23 Sep 2017 10:43:25 GMT, Server: Apache, paypal-debug-id: d8db031db0e72, Content-Language: *, HTTP_X_PP_AZ_LOCATOR: sandbox.slc, Paypal-Debug-Id: d8db031db0e72, Set-Cookie: X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT, Vary: Authorization, Content-Length: 198, Connection: close, Content-Type: application/json, 
+[23-09-2017 10:43:26] Hamilton\PayPal\Core\PayPalHttpConnection : ERROR: Got Http response code 422 when accessing https://api.sandbox.paypal.com/v1/payments/payouts?sync_mode=true. {"name":"INSUFFICIENT_FUNDS","message":"An internal service error has occurred.","debug_id":"d8db031db0e72","information_link":"https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"}
+[23-09-2017 10:43:26] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: 
+
+================================================================================================================================
+
+[25-09-2017 02:18:41] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/oauth2/token
+[25-09-2017 02:18:43] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Headers 	: POST /v1/oauth2/token HTTP/1.1, Host: api.sandbox.paypal.com, User-Agent: PayPalSDK/PayPal-PHP-SDK 1.12.0 (platform-ver=7.1.8; bit=64; os=Darwin_16.7.0; machine=x86_64; crypto-lib-ver=1.0.2l; curl=7.45.0), Authorization: Basic QWJGZV9ZTERMRjZWblJTRnREMGZaSEk5WXVOTldNWTNlT3g2RGczTE5Yd3VzTFp5STdXanBpU3FUQmM5S2swcnI2eGlsX3UxV3QwWTQ5U1A6RUFib2IyVnBUY2swUDJ3SE5KYXJ6eGZMODJta1VjVFlobm9mM2JMUlRkNDNVTTdGZmlxenI3Qkw4Vlp5OFctTHktWFBaLXp4ZXl2Wi1rZmc=, Accept: */*, Content-Length: 29, Content-Type: application/x-www-form-urlencoded, , 
+[25-09-2017 02:18:43] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Data		: grant_type=client_credentials
+--------------------------------------------------------------------------------------------------------------------------------
+
+[25-09-2017 02:18:43] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 200
+[25-09-2017 02:18:43] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Headers	: Date: Mon, 25 Sep 2017 02:18:42 GMT, Server: Apache, paypal-debug-id: 5c0d36caa8191, X-PAYPAL-TOKEN-SERVICE: IAAS, HTTP_X_PP_AZ_LOCATOR: sandbox.slc, Paypal-Debug-Id: 5c0d36caa8191, Set-Cookie: X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT, Vary: Authorization, Content-Length: 550, Connection: close, Content-Type: application/json, 
+[25-09-2017 02:18:43] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Data 	: {"scope":"https://uri.paypal.com/services/subscriptions https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card https://uri.paypal.com/services/applications/webhooks openid https://uri.paypal.com/payments/payouts https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-25T02:18:42ZwJuS92KzpQs01zS2wdA80d5XwhEzumPiRNp-SGlupaQ","access_token":"A21AAGxVRqTkkuWYkWMsol984MsUc6ii8oK4gno_r07FAM9muigOafpVUHPJk_vB0KCIEKIgz1FydGU3RBef_MCRUV44rc9Fw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":32399}
+
+================================================================================================================================
+
+[25-09-2017 02:18:43] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/payments/payouts?sync_mode=true
+[25-09-2017 02:18:44] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Headers 	: POST /v1/payments/payouts?sync_mode=true HTTP/1.1, Host: api.sandbox.paypal.com, Accept: */*, Content-Type: application/json, User-Agent: PayPalSDK/PayPal-PHP-SDK 1.12.0 (platform-ver=7.1.8; bit=64; os=Darwin_16.7.0; machine=x86_64; crypto-lib-ver=1.0.2l; curl=7.45.0), Authorization: Bearer A21AAGxVRqTkkuWYkWMsol984MsUc6ii8oK4gno_r07FAM9muigOafpVUHPJk_vB0KCIEKIgz1FydGU3RBef_MCRUV44rc9Fw, Content-Length: 273, , 
+[25-09-2017 02:18:44] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Request Data		: {"sender_batch_header":{"sender_batch_id":"59c867817e9c1","email_subject":"You have a Payout!"},"items":[{"recipient_type":"Email","note":"Thanks for your patronage!","receiver":"huuhientq90sandbox@gmail.com","sender_item_id":30,"amount":{"value":"242","currency":"USD"}}]}
+--------------------------------------------------------------------------------------------------------------------------------
+
+[25-09-2017 02:18:44] Hamilton\PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 422
+[25-09-2017 02:18:44] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: Response Headers	: Date: Mon, 25 Sep 2017 02:18:44 GMT, Server: Apache, paypal-debug-id: 6c29caaa26248, Content-Language: *, HTTP_X_PP_AZ_LOCATOR: sandbox.slc, Paypal-Debug-Id: 6c29caaa26248, Set-Cookie: X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT, Vary: Authorization, Content-Length: 198, Connection: close, Content-Type: application/json, 
+[25-09-2017 02:18:44] Hamilton\PayPal\Core\PayPalHttpConnection : ERROR: Got Http response code 422 when accessing https://api.sandbox.paypal.com/v1/payments/payouts?sync_mode=true. {"name":"INSUFFICIENT_FUNDS","message":"An internal service error has occurred.","debug_id":"6c29caaa26248","information_link":"https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"}
+[25-09-2017 02:18:44] Hamilton\PayPal\Core\PayPalHttpConnection : DEBUG: 
+
+================================================================================================================================
+

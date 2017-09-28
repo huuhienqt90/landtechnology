@@ -27,7 +27,7 @@ use App\Mail\AcceptSwap;
 use App\Mail\HuntingSuccess;
 use Illuminate\Support\Facades\Mail;
 
-use App\PaymentMethod\PayPal\PayPal;
+use Hamilton\PayPal\PayPal;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Session;
 
@@ -398,9 +398,9 @@ class ProductController extends Controller
             );
 
             $data = $this->PayPal->SetExpressCheckout($PayPalRequest);
-            
+
             $request->session('SetExpressCheckoutResult', $data);
-            
+
             Session::put('offer_id',$id);
 
             return redirect($data['REDIRECTURL']);
@@ -428,12 +428,12 @@ class ProductController extends Controller
                     'description' => 'Add in wallet',
                 ]);
                 if($charge['status'] == 'succeeded') {
-                    
+
                     $param['status'] = 'accept';
                     $this->productOfferResponsitory->update($param, $offer->id);
                     $this->huntingResponsitory->update($param, $offer->hunting_id);
                     Mail::to($offer->user->email)->send(new HuntingSuccess());
-                    
+
                     return view('front.ecommerce.hunting-thankyou');
                 } else {
                     \Session::put('error','Money not add in wallet!!');

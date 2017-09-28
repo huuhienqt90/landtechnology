@@ -67,6 +67,13 @@ function setOrderStatus(){
 	];
 }
 
+function setProductType() {
+	return $array = [
+		'simple' => 'Simple',
+		'booking' => 'Booking'
+	];
+}
+
 function getProductAttr($productId, $column){
     $product = Product::find($productId);
     if( isset( $product ) && $product->{$column} ){

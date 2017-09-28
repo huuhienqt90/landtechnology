@@ -14,6 +14,7 @@ use App\Repositories\AttributeResponsitory;
 use App\Repositories\ProductCategoryResponsitory;
 use App\Repositories\ProductImageResponsitory;
 use App\Repositories\ProductAttributeResponsitory;
+use App\Repositories\ProductBrandResponsitory;
 use App\Http\Requests\SellerRequest;
 
 use Auth;
@@ -29,6 +30,7 @@ class SellerController extends Controller
     protected $productCategoryResponsitory;
     protected $productImageResponsitory;
     protected $productAttributeResponsitory;
+    protected $productBrandResponsitory;
 
     public function __construct(CategoryResponsitory $categoryResponsitory,
                                 BrandResponsitory $brandResponsitory,
@@ -39,7 +41,8 @@ class SellerController extends Controller
                                 ProductCategoryResponsitory $productCategoryResponsitory,
                                 ProductImageResponsitory $productImageResponsitory,
                                 AttributeResponsitory $attributeResponsitory,
-                                ProductAttributeResponsitory $productAttributeResponsitory)
+                                ProductAttributeResponsitory $productAttributeResponsitory,
+                                ProductBrandResponsitory $productBrandResponsitory)
     {
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
@@ -51,6 +54,7 @@ class SellerController extends Controller
         $this->productImageResponsitory     = $productImageResponsitory;
         $this->attributeResponsitory        = $attributeResponsitory;
         $this->productAttributeResponsitory = $productAttributeResponsitory;
+        $this->ProductBrandResponsitory     = $productBrandResponsitory;
         $this->middleware('check.auth:seller');
     }
     /**
@@ -92,7 +96,7 @@ class SellerController extends Controller
      */
     public function store(SellerRequest $request)
     {
-        $param = $request->only(['name','slug','original_price','sale_price','description','description_short','product_brand','key_words','sell_type_id','weight','location','stock']);
+        $param = $request->only(['name','slug','original_price','sale_price','description','description_short','key_words','sell_type_id','weight','location','stock']);
         $param['sold_units'] = 0;
         $param['seller_id'] = Auth::user()->id;
         $param['status'] = 'Pending';
@@ -101,8 +105,10 @@ class SellerController extends Controller
             $path = $request->file('feature_image')->store('sellproduct/features');
             $param['feature_image'] = $path;
         }
-
+        // Create product
         $result = $this->productResponsitory->create($param);
+        // Create brand product
+        $this->productBrandResponsitory->create(['product_id' => $result->id, 'brand_id' => $request->product_brand]);
 
         // Create category product
         $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
@@ -218,7 +224,6 @@ class SellerController extends Controller
             'location' => $request->location,
             'seller_id' => Auth::user()->id,
             'sell_type_id' => $request->sell_type_id,
-            'product_brand' => $request->product_brand,
         ];
 
         // Update feature image
@@ -226,8 +231,11 @@ class SellerController extends Controller
             $path = $request->file('feature_image')->store('sellproduct/features');
             $update['feature_image'] = $path;
         }
+        // Update product
         $this->productResponsitory->update($update, $id);
-
+        // Update brand product
+        $this->productBrandResponsitory->deleteProductBrand($id);
+        $this->productBrandResponsitory->create(['product_id' => $id, 'brand_id' => $request->product_brand]);
         // Update product category
         $this->productCategoryResponsitory->deleteProductCategory($id);
         $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $request->category]);

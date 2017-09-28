@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Models\ProductOffer;
+use Carbon\Carbon;
 
 class Hunting extends Model
 {
@@ -100,6 +101,13 @@ class Hunting extends Model
 
     public function isActive() {
         if( $this->status == 'active' ) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getLabelNewProduct($created_at) {
+        if( Carbon::now()->subDays(7) <= $created_at ) {
             return true;
         }
         return false;

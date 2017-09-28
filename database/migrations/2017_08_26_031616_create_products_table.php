@@ -28,7 +28,6 @@ class CreateProductsTable extends Migration
             $table->string('feature_image')->nullable();
             $table->longText('description_short')->nullable();
             $table->longText('description')->nullable();
-            $table->integer('product_brand')->unsigned();
             $table->string('key_words')->nullable();
             $table->integer('sell_type_id')->unsigned();
             // $table->float('discount')->default(0);
@@ -46,9 +45,6 @@ class CreateProductsTable extends Migration
                 ->onDelete('cascade');
             $table->foreign('sell_type_id')
                 ->references('id')->on('sell_types')
-                ->onDelete('cascade');
-            $table->foreign('product_brand')
-                ->references('id')->on('brands')
                 ->onDelete('cascade');
             $table->timestamps();
         });
