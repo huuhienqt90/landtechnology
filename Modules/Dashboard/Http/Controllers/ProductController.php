@@ -62,7 +62,7 @@ class ProductController extends Controller
     public function create()
     {
         $product = $this->productResponsitory;
-        $categories = $this->categoryResponsitory->all();
+        $categories = $this->categoryResponsitory->findAllBy('parent_id', 0);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
@@ -132,7 +132,7 @@ class ProductController extends Controller
             $create['feature_image'] = $path;
         }
         $result = $this->productResponsitory->create($create);
-        
+
         // Create category product
         $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
 
@@ -152,7 +152,7 @@ class ProductController extends Controller
                     $this->productAttributeResponsitory->create(['product_id' => $result->id, 'attribute_id' => $key, 'value' => $item]);
                 }
             }
-        }        
+        }
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Create product sucess!');
     }
 
@@ -263,7 +263,7 @@ class ProductController extends Controller
             'sell_type_id' => $request->sell_type_id,
             'product_brand' => $request->product_brand,
         ];
-        
+
         // Update feature image
         if( $request->hasFile('feature_image') ){
             $path = $request->file('feature_image')->store('products/features');
@@ -292,7 +292,7 @@ class ProductController extends Controller
                     $this->productAttributeResponsitory->create(['product_id' => $id, 'attribute_id' => $key, 'value' => $item]);
                 }
             }
-        } 
+        }
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product success!');
     }
 

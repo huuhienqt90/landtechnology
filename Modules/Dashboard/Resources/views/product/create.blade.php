@@ -2,78 +2,139 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
 @section('content')
+    {!! Form::model($product, ['route' => ['dashboard.product.store'], 'class' => 'form', 'files' => true]) !!}
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-8 col-lg-9">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Create category</h3>
+                        <h3 class="box-title">Create product</h3>
                     </div>
-                    {!! Form::model($product, ['route' => ['dashboard.product.store'], 'class' => 'form-horizontal', 'files' => true]) !!}
                     <div class="box-body">
-                        @include('dashboard::partials.select', ['field' => 'status', 'label' => 'Status', 'options' => setActiveProduct()])
-                        @include('dashboard::partials.input', ['field' => 'name', 'label' => 'Name', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field'=>'slug', 'label' => 'Slug', 'options' => ['class'=>'form-control', 'readonly' => 'true']])
-                        @include('dashboard::partials.input', ['field' => 'original_price', 'label' => 'Price', 'options' => ['class'=>'form-control']])
-                        <!-- @include('dashboard::partials.input', ['field' => 'discount', 'label' => 'Discount', 'options' => ['class'=>'form-control']]) -->
-                        <!-- @include('dashboard::partials.input', ['field' => 'price_after_discount', 'label' => 'Price after discount', 'options' => ['class'=>'form-control']]) -->
-                        @include('dashboard::partials.input', ['field' => 'sale_price', 'label' => 'Sale Price', 'options' => ['class'=>'form-control']])
-                        <!-- @include('dashboard::partials.input', ['field' => 'display_price', 'label' => 'Display Price', 'options' => ['class'=>'form-control']]) -->
-                        @include('dashboard::partials.file-bootstrap', ['field' => 'feature_image', 'label' => 'Feature Image', 'url' => '#'])
-                        @include('dashboard::partials.file-multiple-bootstrap', ['field' => 'product_images', 'label' => 'Product Images', 'url' => '#'])
-                        @include('dashboard::partials.text-editor', ['field' => 'description_short', 'label' => 'Description short', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.text-editor', ['field' => 'description', 'label' => 'Description', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.select', ['field' => 'product_brand', 'label' => 'Product Brand', 'options' => $brandArr])<!-- 
-                        @include('dashboard::partials.select-multiple', ['field' => 'category', 'placeholder' => 'Please select category', 'label' => 'Category', 'options' => $cateArr]) -->
-                        <div class="form-group {{ $errors->has('category') ? ' has-error' : ''}}">
-                           <label for="category" class="col-sm-2 control-label">Category</label>
-                            <div class="col-sm-4">
-                                <select class="form-control select2" name="category">
-                                    <option value="">Please select a category</option>
-                                    @foreach($categories as $category)
-                                        @if( $category->getChildren()->count() )
-                                            <optgroup label="{{ $category->name }}">
-                                                @foreach($category->getChildren() as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        @endif
-                                    @endforeach
-                                </select>
-                                @include('dashboard::partials.error', ['field' => 'category'])
-                            </div>
+                        <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+                            {!! Form::text('name', old('name'), ['class' => 'form-control input-lg', 'placeholder' => 'Product name']) !!}
+                            @include('dashboard::partials.error', ['field' => 'name'])
                         </div>
-                        @include('dashboard::partials.select', ['field' => 'seller_id', 'label' => 'Seller', 'options' => $sellerArr])
-                        @include('dashboard::partials.input', ['field' => 'key_words', 'label' => 'Key Words', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.select', ['field' => 'sell_type_id', 'label' => 'Sell Type', 'options' => $sellTypeArr])
-                        @include('dashboard::partials.input', ['field' => 'weight', 'label' => 'Weight', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'location', 'label' => 'Location', 'options' => ['class'=>'form-control']])
-                        @include('dashboard::partials.input', ['field' => 'stock', 'label' => 'Stock', 'options' => ['class'=>'form-control']])
-                        <div class="form-group">
-                           <label for="{{ 'attribute' }}" class="col-sm-2 control-label">Attributes</label>
-                           <div class="col-sm-4">
-                                {!! Form::select('attribute'.'[]', $attrArr, Form::getValueAttribute('attribute'), ['class' => 'form-control select2', 'multiple' => true, 'data-placeholder' => 'Please select attribute', 'id' => 'attribute']) !!}
-                                @include('dashboard::partials.error', ['field' => 'attribute'])
-                            </div>
-                            <div class="col-sm-2">
-                                <a class="btn btn-primary" id="addAttr">+</a>
-                            </div>
+                        <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
+                            <label for="description" class="control-label">Description</label>
+                            <textarea class="textarea" id="description" name="description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
+                            @include('dashboard::partials.error', ['field' => 'description'])
                         </div>
-                        <div id="attributes"></div>
-                        <div class="buttons">
-                            <input type="submit" class="btn btn-primary" value="Save changes" />
+                        <div class="form-group {{ $errors->has('short_description') ? ' has-error' : '' }}">
+                            <label for="short_description" class="control-label">Excerpt</label>
+                            <textarea class="textarea" id="short_description" name="short_description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
+                            @include('dashboard::partials.error', ['field' => 'short_description'])
+                        </div>
+                        <div class="form-group {{ $errors->has('short_description') ? ' has-error' : '' }}">
+                            <label for="short_description" class="control-label">Excerpt</label>
+
                         </div>
                     </div>
-                    {!! Form::close() !!}
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Publish</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group {{ $errors->has('status') ? ' has-error' : '' }}">
+                            <label for="status" class="control-label">Status</label>
+                            {!! Form::select('status', setActiveProduct(), old('status'), ['class' => 'form-control']) !!}
+                            @include('dashboard::partials.error', ['field' => 'status'])
+                        </div>
+                        <div class="form-group text-right">
+                            <input type="submit" class="btn btn-success" value="Save" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Categories</h3>
+                    </div>
+                    <div class="box-body">
+                        @if( isset( $categories ) && $categories->count() )
+                            <ul class="nav nav-pills nav-stacked">
+                            @foreach($categories as $category)
+                                <li><label><input type="checkbox" class="minimal" name="categories[]"> {{ $category->name }}</label>
+                                @if( $category->getChildren()->count() )
+                                    <ul class="sub-nav" style="list-style: none;">
+                                    @foreach($category->getChildren() as $subCategory)
+                                        <li><label><input type="checkbox" class="minimal" name="categories[]"> {{ $subCategory->name }}</label></li>
+                                    @endforeach
+                                    </ul>
+                                @endif
+                                </li>
+                            @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Product image</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
+                            {!! Form::file('feature_image',['id'=> 'feature_image', 'class' => 'file', 'data-upload-url' => '#', 'name' => 'feature_image']) !!}
+                            @include('dashboard::partials.error', ['field' => 'feature_image'])
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Product gallery</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group {{ $errors->has('product_images') ? ' has-error' : '' }}">
+                            {!! Form::file('product_images[]',['id'=> 'product_images', 'class' => 'file', 'multiple' => 'true', 'data-upload-url' => '#', 'name' => 'product_images']) !!}
+                            @include('dashboard::partials.error', ['field' => 'product_images'])
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    {!! Form::close() !!}
     <!-- /.content -->
+    <style type="text/css">
+        .kv-file-upload{
+            display: none;
+        }
+        .file-preview-image {
+            width: 100% !important;
+            height: auto !important;
+        }
+        .krajee-default.file-preview-frame {
+            overflow: hidden;
+        }
+    </style>
     <script src="{{ asset('themes/dashboard/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($){
+
+            //iCheck for checkbox and radio inputs
+            $('input[type="checkbox"], input[type="radio"]').iCheck({
+              checkboxClass: 'icheckbox_minimal-blue',
+              radioClass   : 'iradio_minimal-blue'
+            });
+            $("#feature_image").fileinput({
+                uploadUrl: '#',
+                uploadAsync: false,
+                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
+                showUpload: false,
+            });
+
+            $("#product_images").fileinput({
+                uploadUrl: '#',
+                uploadAsync: false,
+                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
+                showUpload: false,
+            });
 
             $("#addAttr").click(function(e) {
                 e.preventDefault();
@@ -98,7 +159,7 @@
                                 e.preventDefault();
                                 $("#textAttr").html('');
                                 $("#textAttr").append('<input type="text" class="form-control" placeholder="Enter value of attribute" id="otherVal'+idAtt+'"/>');
-                                $('#modal-default').modal('show'); 
+                                $('#modal-default').modal('show');
                             });
 
                             $("#saveAttr").on('click',function(e){

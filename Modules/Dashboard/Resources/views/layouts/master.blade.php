@@ -19,7 +19,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/AdminLTE.min.css') }}">
     <!-- iCheck -->
+    <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/iCheck/square/blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/iCheck/all.css') }}">
     <!-- File Input -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/fileinput.min.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -121,6 +123,8 @@
     <script src="{{ asset('themes/dashboard/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('themes/dashboard/dist/js/pages/dashboard.js') }}"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{{ asset('themes/dashboard/plugins/iCheck/icheck.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('themes/dashboard/dist/js/demo.js') }}"></script>
     <script type="text/javascript">
