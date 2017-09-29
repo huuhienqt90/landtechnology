@@ -18,17 +18,59 @@
                         </div>
                         <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="control-label">Description</label>
-                            <textarea class="textarea" id="description" name="description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
+                            <textarea id="description" name="description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
                             @include('dashboard::partials.error', ['field' => 'description'])
                         </div>
                         <div class="form-group {{ $errors->has('short_description') ? ' has-error' : '' }}">
-                            <label for="short_description" class="control-label">Excerpt</label>
+                            <label for="short_description" class="control-label">Product short description</label>
                             <textarea class="textarea" id="short_description" name="short_description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
                             @include('dashboard::partials.error', ['field' => 'short_description'])
                         </div>
-                        <div class="form-group {{ $errors->has('short_description') ? ' has-error' : '' }}">
-                            <label for="short_description" class="control-label">Excerpt</label>
+                    </div>
+                </div>
 
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="form-inline">
+                            <label class="control-label">Product Data — </label>
+                            <select class="form-control product-type" name="product_type">
+                                <optgroup label="Product Type">
+                                    <option value="simple">Simple</option>
+                                    <option value="booking">Booking</option>
+                                    <option value="variable">Variable</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <ul class="nav nav-tabs list-product-type-navs" role="tablist">
+                            <li role="presentation" class="active show-if-simple"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
+                            <li role="presentation" class="show-if-simple show-if-variable"><a href="#inventory" aria-controls="inventory" role="tab" data-toggle="tab">Inventory</a></li>
+                            <li role="presentation" class="show-if-simple show-if-variable"><a href="#shipping" aria-controls="shipping" role="tab" data-toggle="tab">Shipping</a></li>
+                            <li role="presentation" class="show-if-booking show-if-variable"><a href="#booking" aria-controls="booking" role="tab" data-toggle="tab">Booking</a></li>
+                            <li role="presentation" class="show-if-simple show-if-variable"><a href="#attribute" aria-controls="attribute" role="tab" data-toggle="tab">Attributes</a></li>
+                            <li role="presentation" class="show-if-variable"><a href="#variation" aria-controls="variation" role="tab" data-toggle="tab">Variations</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content list-product-type-contents">
+                            <div role="tabpanel" class="tab-pane active" id="general">
+                                @include('dashboard::product.tabs.general')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="inventory">
+                                @include('dashboard::product.tabs.inventory')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="shipping">
+                                @include('dashboard::product.tabs.shipping')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="attribute">
+                                @include('dashboard::product.tabs.attribute')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="variation">
+                                @include('dashboard::product.tabs.variation')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="booking">
+                                @include('dashboard::product.tabs.booking')
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -49,7 +91,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Categories</h3>
@@ -116,7 +157,22 @@
     <script src="{{ asset('themes/dashboard/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($){
-
+            changeProductType();
+            function changeProductType(){
+                var productType = $('.product-type').val();
+                $('.list-product-type-navs li').addClass('hidden');
+                $('.show-if-' + productType).removeClass('hidden');
+                $('.list-product-type-navs li').removeClass('active');
+                $('.list-product-type-contents div').removeClass('active');
+                $('.list-product-type-navs li:not(.hidden):first').addClass('active');
+                var id = $('.list-product-type-navs li:not(.hidden):first').find('a').attr('href');
+                $(id).addClass('active');
+            }
+            $('.product-type').change(function(){
+                changeProductType();
+                return false;
+            });
+            CKEDITOR.replace('description');
             //iCheck for checkbox and radio inputs
             $('input[type="checkbox"], input[type="radio"]').iCheck({
               checkboxClass: 'icheckbox_minimal-blue',

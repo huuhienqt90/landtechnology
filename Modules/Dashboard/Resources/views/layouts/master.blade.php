@@ -56,7 +56,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     <!-- jQuery 3 -->
-    <script src="{{ asset('themes/dashboard/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- File Input -->
     <script src="{{ asset('themes/dashboard/dist/js/fileinput.min.js') }}"></script>
     <script type="text/javascript">
@@ -98,9 +98,6 @@
     <script>
       $.widget.bridge('uibutton', $.ui.button);
     </script>
-    <!-- Morris.js charts -->
-    <script src="{{ asset('themes/dashboard/bower_components/raphael/raphael.min.js') }}"></script>
-    <script src="{{ asset('themes/dashboard/bower_components/morris.js/morris.min.js') }}"></script>
     <!-- Sparkline -->
     <script src="{{ asset('themes/dashboard/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
     <!-- jvectormap -->
@@ -119,10 +116,10 @@
     <script src="{{ asset('themes/dashboard/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ asset('themes/dashboard/bower_components/fastclick/lib/fastclick.js') }}"></script>
+    <!-- CK Editor -->
+    <script src="{{ asset('themes/dashboard/bower_components/ckeditor/ckeditor.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('themes/dashboard/dist/js/adminlte.min.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('themes/dashboard/dist/js/pages/dashboard.js') }}"></script>
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('themes/dashboard/plugins/iCheck/icheck.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
