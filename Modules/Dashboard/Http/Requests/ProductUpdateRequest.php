@@ -15,19 +15,13 @@ class ProductUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'slug' => 'required',
             'status' => 'required',
             'original_price' => 'required|numeric',
             'sale_price' => 'required|numeric',
-            'stock' => 'required|numeric',
+            'description_short' => 'required',
             'description' => 'required',
-            'key_words' => 'required',
-            'weight' => 'required',
-            'location' => 'required',
-            'seller_id' => 'required',
-            'sell_type_id' => 'required',
-            'product_brand' => 'required',
-            'category' => 'required'
+            'sell_type' => 'required',
+            'product_brand' => 'required'
         ];
     }
 
@@ -39,5 +33,10 @@ class ProductUpdateRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    private function getSegmentFromEnd($position_from_end = 1) {
+        $segments =$this->segments();
+        return $segments[sizeof($segments) - $position_from_end];
     }
 }

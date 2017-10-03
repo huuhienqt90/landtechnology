@@ -18,13 +18,13 @@
                         </div>
                         <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="control-label">Description</label>
-                            <textarea id="description" name="description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
+                            <textarea id="description" name="description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{!! old('description') !!}</textarea>
                             @include('dashboard::partials.error', ['field' => 'description'])
                         </div>
-                        <div class="form-group {{ $errors->has('short_description') ? ' has-error' : '' }}">
-                            <label for="short_description" class="control-label">Product short description</label>
-                            <textarea class="textarea" id="short_description" name="short_description" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description') }}</textarea>
-                            @include('dashboard::partials.error', ['field' => 'short_description'])
+                        <div class="form-group {{ $errors->has('description_short') ? ' has-error' : '' }}">
+                            <label for="description_short" class="control-label">Product short description</label>
+                            <textarea class="textarea" id="description_short" name="description_short" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ old('description_short') }}</textarea>
+                            @include('dashboard::partials.error', ['field' => 'description_short'])
                         </div>
                     </div>
                 </div>
@@ -99,11 +99,11 @@
                         @if( isset( $categories ) && $categories->count() )
                             <ul class="nav nav-pills nav-stacked">
                             @foreach($categories as $category)
-                                <li><label><input type="checkbox" class="minimal" name="categories[]"> {{ $category->name }}</label>
+                                <li><label><input type="checkbox" class="minimal" value="{{ $category->id }}" name="categories[]"> {{ $category->name }}</label>
                                 @if( $category->getChildren()->count() )
                                     <ul class="sub-nav" style="list-style: none;">
                                     @foreach($category->getChildren() as $subCategory)
-                                        <li><label><input type="checkbox" class="minimal" name="categories[]"> {{ $subCategory->name }}</label></li>
+                                        <li><label><input type="checkbox" class="minimal" value="{{ $subCategory->id }}" name="categories[]"> {{ $subCategory->name }}</label></li>
                                     @endforeach
                                     </ul>
                                 @endif
@@ -113,7 +113,30 @@
                         @endif
                     </div>
                 </div>
-
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Brands</h3>
+                    </div>
+                    <div class="box-body">
+                        {{ Form::select('product_brand', $brandArr, old('product_brand'), ['class' => 'form-control']) }}
+                    </div>
+                </div>
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Sell Type</h3>
+                    </div>
+                    <div class="box-body">
+                        {{ Form::select('sell_type', $sellTypeArr, old('sell_type'), ['class' => 'form-control']) }}
+                    </div>
+                </div>
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Key words</h3>
+                    </div>
+                    <div class="box-body">
+                        {{ Form::text('key_words', old('key_words'), ['class' => 'form-control']) }}
+                    </div>
+                </div>
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Product image</h3>
@@ -125,18 +148,33 @@
                         </div>
                     </div>
                 </div>
-
+                <script type="text/javascript">
+                    $("#feature_image").fileinput({
+                        uploadUrl: '#',
+                        uploadAsync: false,
+                        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
+                        showUpload: false,
+                    });
+                </script>
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Product gallery</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group {{ $errors->has('product_images') ? ' has-error' : '' }}">
-                            {!! Form::file('product_images[]',['id'=> 'product_images', 'class' => 'file', 'multiple' => 'true', 'data-upload-url' => '#', 'name' => 'product_images']) !!}
+                            {!! Form::file('product_images[]',['id'=> 'product_images', 'class' => 'file', 'multiple' => 'true', 'data-upload-url' => '#', 'name' => 'product_images[]']) !!}
                             @include('dashboard::partials.error', ['field' => 'product_images'])
                         </div>
                     </div>
                 </div>
+                <script type="text/javascript">
+                    $("#product_images").fileinput({
+                        uploadUrl: '#',
+                        uploadAsync: false,
+                        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
+                        showUpload: false,
+                    });
+                </script>
             </div>
         </div>
     </section>
@@ -152,6 +190,9 @@
         }
         .krajee-default.file-preview-frame {
             overflow: hidden;
+        }
+        .set-value {
+            margin-top: 10px;
         }
     </style>
     <script src="{{ asset('themes/dashboard/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
@@ -177,19 +218,6 @@
             $('input[type="checkbox"], input[type="radio"]').iCheck({
               checkboxClass: 'icheckbox_minimal-blue',
               radioClass   : 'iradio_minimal-blue'
-            });
-            $("#feature_image").fileinput({
-                uploadUrl: '#',
-                uploadAsync: false,
-                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
-                showUpload: false,
-            });
-
-            $("#product_images").fileinput({
-                uploadUrl: '#',
-                uploadAsync: false,
-                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
-                showUpload: false,
             });
 
             $("#addAttr").click(function(e) {
