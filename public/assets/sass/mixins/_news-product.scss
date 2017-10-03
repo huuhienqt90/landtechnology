@@ -2,7 +2,7 @@
 @mixin news-product() {
 	position: absolute;
     z-index: 1;
-    width: 20%;
+    width: 20.2%;
     transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
@@ -11,7 +11,7 @@
 	    content: '';
 	    border-bottom: 18px solid $bg-color-main;
 	    border-top: 18px solid $bg-color-main;
-	    border-left: 20px solid transparent;
+	    border-left: 18px solid transparent;
 	    display: block;
 	    position: absolute;
 	    top: 0em;
