@@ -97,6 +97,13 @@
         </div>
     </div>
 </p>
+<p>
+    <div class="row hidden show-if-variable">
+        <div class="col-sm-6">
+            <a href="#" class="btn btn-primary">Save Attributes</a>
+        </div>
+    </div>
+</p>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         $("#addEventAttr").on('click', function(e) {

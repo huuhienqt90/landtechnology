@@ -220,56 +220,6 @@
               radioClass   : 'iradio_minimal-blue'
             });
 
-            $("#addAttr").click(function(e) {
-                e.preventDefault();
-                var id = $('#attribute').val();
-                $.ajax({
-                    url: "{{ route('dashboard.getattr') }}",
-                    type: "GET",
-                    data: {id: id},
-                    success: function(results) {
-                        $.each(results, function(){
-                            var arOptions = this.options.split(",");
-                            var htmlOptions;
-                            $.each(arOptions, function(k,v){
-                                htmlOptions += '<option value="'+v+'">'+v+'</option>';
-                            });
-                            if( $("#"+this.name).length <= 0 ){
-                                $("#attributes").append('<div class="form-group"><label for="'+this.name+'" class="col-sm-2 control-label">'+this.name+'</label><div class="col-sm-4"><select class="form-control select2" multiple data-placeholder="Please select '+this.name+'" id="'+this.name+'" name="prattr['+this.id+'][]">'+htmlOptions+'</select></div><div class="col-sm-2"><a class="btn btn-warning" id="btnAddAttr'+this.id+'">+</a></div>');
-                            }
-                            $('.select2').select2();
-                            var idAtt = this.id;
-                            $('#btnAddAttr'+idAtt+'').on('click',function(e){
-                                e.preventDefault();
-                                $("#textAttr").html('');
-                                $("#textAttr").append('<input type="text" class="form-control" placeholder="Enter value of attribute" id="otherVal'+idAtt+'"/>');
-                                $('#modal-default').modal('show');
-                            });
-
-                            $("#saveAttr").on('click',function(e){
-                                e.preventDefault();
-                                $('#modal-default').modal('hide');
-                                if( $('#otherVal'+idAtt).length > 0 ){
-                                    var val = $('#otherVal'+idAtt).val();
-                                    $('select[name="prattr['+idAtt+'][]"]').append('<option value="'+val+'">'+val+'</option>');
-                                }
-                                $.ajax({
-                                    url: "{{ route('dashboard.addfast') }}",
-                                    type: "POST",
-                                    data: {id: idAtt,val: val},
-                                    success: function(rs) {
-                                        console.log(rs);
-                                    }
-                                });
-                            });
-                        });
-                    },
-                    error: function(data){
-                        console.log(data);
-                    },
-                });
-            });
-
             $('.select2').select2();
         });
     </script>

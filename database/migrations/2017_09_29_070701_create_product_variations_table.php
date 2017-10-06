@@ -21,6 +21,9 @@ class CreateProductVariationsTable extends Migration
             $table->string('status')->default('active');
             $table->string('feature_image')->nullable();
             $table->string('sku')->nullable();
+            $table->foreign('product_id')
+                ->references('id')->on('products')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
