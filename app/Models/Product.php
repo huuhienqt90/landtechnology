@@ -87,6 +87,10 @@ class Product extends Model
         return $this->belongsTo('App\Models\ProductCategory', 'id', 'product_id');
     }
 
+    public function meta() {
+        return $this->belongsTo('App\Models\ProductMeta', 'id', 'product_id');
+    }
+
     /**
      * Get product images
      *

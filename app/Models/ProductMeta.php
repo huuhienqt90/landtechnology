@@ -15,4 +15,16 @@ class ProductMeta extends Model
         'key',
         'value'
     ];
+
+    public function product(){
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+    }
+
+    public function getValue($key) {
+        $meta = static::where('product_id', $this->product_id)->where('key', $key)->first();
+        if( isset($meta) && count($meta) > 0 ) {
+            return $meta->value;
+        }
+        return null;
+    }
 }
