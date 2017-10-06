@@ -47,7 +47,7 @@
                             <li role="presentation" class="active show-if-simple"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#inventory" aria-controls="inventory" role="tab" data-toggle="tab">Inventory</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#shipping" aria-controls="shipping" role="tab" data-toggle="tab">Shipping</a></li>
-                            <li role="presentation" class="show-if-booking show-if-variable"><a href="#booking" aria-controls="booking" role="tab" data-toggle="tab">Booking</a></li>
+                            <li role="presentation" class="show-if-booking"><a href="#booking" aria-controls="booking" role="tab" data-toggle="tab">Booking</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#attribute" aria-controls="attribute" role="tab" data-toggle="tab">Attributes</a></li>
                             <li role="presentation" class="show-if-variable"><a href="#variation" aria-controls="variation" role="tab" data-toggle="tab">Variations</a></li>
                         </ul>
