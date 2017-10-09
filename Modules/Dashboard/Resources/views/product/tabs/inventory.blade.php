@@ -6,7 +6,7 @@
                     SKU
                 </label>
                 <div class="col-sm-6">
-                    <input type="text" id="sku" class="form-control" name="sku" value="{{ isset($product->meta) ? $product->meta->getValue('sku') : '' }}">
+                    <input type="text" id="sku" class="form-control" name="sku" value="{{ isset($product->meta) ? $product->meta->getValue('sku') : old('sku') }}">
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     Stock quantity
                 </label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="stock" value="{{ isset($product->stock) ? $product->stock : old('stock') }}" name="stock" placeholder="0" />
+                    <input type="text" class="form-control" id="stock" value="{{ isset($product->stock) && $product->stock > 0 ? $product->stock : old('stock') }}" name="stock" placeholder="0" />
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 <?php
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Attribute;
 /**
  * Show selected or not
  * @param $pr1
@@ -94,5 +95,18 @@ function getFeatureImage($productId = 0){
         return asset('storage/'.$product->feature_image);
     }else{
         return asset('assets/images/img-hv-cart.png');
+    }
+}
+
+function getAttrName($attrId = 0){
+    if( $attrId ){
+        $attr = Attribute::find($attrId);
+        if( isset($attr->name) && !empty($attr->name) ){
+            return $attr->name;
+        }else{
+            return null;
+        }
+    }else{
+        return null;
     }
 }

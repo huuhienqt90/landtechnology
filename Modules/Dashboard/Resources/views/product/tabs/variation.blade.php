@@ -15,6 +15,7 @@
 <!-- Start old items -->
 <p>&nbsp;</p>
 <div class="box-group" id="old-item">
+    @foreach($product->variations as $variation)
     <div class="panel box box-default">
         <div class="box-header with-border">
             <div class="box-title pull-left">
@@ -77,6 +78,7 @@
             </div>
         </div>
     </div>
+    @endforeach
 </div>
 <!-- End old item box -->
 @endif

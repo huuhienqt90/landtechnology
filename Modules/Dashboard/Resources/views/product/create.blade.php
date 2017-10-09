@@ -2,6 +2,10 @@
     <!-- Select2 -->
 <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
 @section('content')
+<script>
+    var count = 0;
+    var productAttrs = [];
+</script>
     {!! Form::model($product, ['route' => ['dashboard.product.store'], 'class' => 'form', 'files' => true]) !!}
     <!-- Main content -->
     <section class="content">
@@ -207,8 +211,6 @@
     <script src="{{ asset('themes/dashboard/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($){
-            var count = 0;
-            var productAttrs = [];
             changeProductType();
             function changeProductType(){
                 var productType = $('.product-type').val();
