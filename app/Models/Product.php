@@ -26,7 +26,6 @@ class Product extends Model
         'feature_image',
         'description_short',
         'description',
-        'product_brand',
         'key_words',
         'sell_type_id',
         'status',

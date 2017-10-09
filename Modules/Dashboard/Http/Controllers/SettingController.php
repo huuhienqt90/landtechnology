@@ -28,7 +28,12 @@ class SettingController extends Controller
         $oldCommissionSwap = $this->settingRepository->getValueByKey('commission_swap');
         $oldCommissionHunting = $this->settingRepository->getValueByKey('commission_hunting');
         $oldPayPal = $this->settingRepository->getValueByKey('admin_paypal');
-        return view('dashboard::setting.index', compact('oldPayPal','oldCommissionSwap','oldCommissionHunting'));
+        $APIUsername = $this->settingRepository->getValueByKey('APIUsername');
+        $APIPassword = $this->settingRepository->getValueByKey('APIPassword');
+        $APISignature = $this->settingRepository->getValueByKey('APISignature');
+        $stripe_key = $this->settingRepository->getValueByKey('stripe_key');
+        $stripe_secret = $this->settingRepository->getValueByKey('stripe_secret');
+        return view('dashboard::setting.index', compact('oldPayPal','oldCommissionSwap','oldCommissionHunting', 'APIUsername', 'APIPassword', 'APISignature', 'stripe_key', 'stripe_secret'));
     }
 
     /**

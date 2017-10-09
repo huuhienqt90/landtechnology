@@ -1,6 +1,6 @@
 @extends('dashboard::layouts.master')
     <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
 @section('content')
     {!! Form::model($product, ['route' => ['dashboard.product.store'], 'class' => 'form', 'files' => true]) !!}
     <!-- Main content -->
@@ -12,6 +12,15 @@
                         <h3 class="box-title">Create product</h3>
                     </div>
                     <div class="box-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                             {!! Form::text('name', old('name'), ['class' => 'form-control input-lg', 'placeholder' => 'Product name']) !!}
                             @include('dashboard::partials.error', ['field' => 'name'])
@@ -198,6 +207,8 @@
     <script src="{{ asset('themes/dashboard/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($){
+            var count = 0;
+            var productAttrs = [];
             changeProductType();
             function changeProductType(){
                 var productType = $('.product-type').val();
@@ -219,8 +230,138 @@
               checkboxClass: 'icheckbox_minimal-blue',
               radioClass   : 'iradio_minimal-blue'
             });
-
             $('.select2').select2();
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var dis = $(e.target);
+                if( dis.attr('href') == '#variation' ){
+                    $('#new-item .product-variation-item').each(function(){
+                        var attr = '<label>Attributes </label>';
+                        $.each(productAttrs, function(index, value){
+                            if( typeof value != "undefined" && typeof value.name != "undefined" ){
+                                attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                                attr += '<option value="0">Any '+value.name+' ...</option>';
+                                $.each(value.attrs, function(subIndex, subValue){
+                                    attr += '<option value="'+subValue+'">'+subValue+'</option>';
+                                });
+                                attr += '</select></div>';
+                            }
+                        });
+                        $(this).find('.form-inline').html(attr);
+                    });
+                }
+            });
+
+            $("#addEventAttr").on('click', function(e) {
+                e.preventDefault();
+                var attr = $("select[name=attributes]").val();
+                if( attr !== null ) {
+                    $.ajax({
+                        url: "{{ route('dashboard.getattr') }}",
+                        type: "GET",
+                        data: {id: attr},
+                        success: function(results) {
+                            productAttrs[results.id] = {name: results.name, attrs: []};
+                            var arOptions = results.options.split(",");
+                            var htmlOptions;
+                            $.each(arOptions, function(k,v){
+                                htmlOptions += '<option value="'+v+'">'+v+'</option>';
+                            });
+                            if( !$("#attr"+results.id).length ){
+                                $("#appendAttr").append('<div class="box-group" id="attr'+results.id+'"><div class="panel box box-default"><div class="box-header with-border"><h4 class="box-title"><a data-toggle="collapse" data-parent="#attr'+results.id+'" href="#collapseOne'+results.id+'">'+results.name+'</a></h4><a href="javascript:void(0)" class="pull-right text-danger" id="rmAttr'+results.id+'">Remove</a></div><div id="collapseOne'+results.id+'" class="panel-collapse collapse in"><div class="box-body"><div class="col-md-4"><p>Name:</p><span>'+results.name+'</span></div><div class="col-md-8"><p>Values:</p><select class="form-control select2" multiple="multiple" name="arrAttributes['+results.id+'][]" id="arrAttributes'+results.id+'" data-placeholder="Select values..." style="width: 100%;">'+htmlOptions+'</select><div class="set-value"><a href="javascript:void(0)" class="btn btn-default" id="selectAll'+results.id+'">Select all</a><a href="javascript:void(0)" class="btn btn-default" id="selectNone'+results.id+'">Select none</a><a href="javascript:void(0)" class="btn btn-default pull-right" id="addNewAttr'+results.id+'">Add new</a></div></div></div></div></div></div>');
+                            }
+                            $("#selectAll"+results.id).on('click', function() {
+                                $("#arrAttributes"+results.id+" option").prop('selected', true);
+                                $("#arrAttributes"+results.id).trigger("change");
+                            });
+                            $("#selectNone"+results.id).on('click', function() {
+                                $("#arrAttributes"+results.id+" option").prop('selected', false);
+                                $("#arrAttributes"+results.id).trigger("change");
+                            });
+                            $("#rmAttr"+results.id).on('click', function() {
+                                productAttrs.splice(results.id, 1);
+                                setCookie('productAttrs', productAttrs, 1);
+                                $("#attr"+results.id).remove();
+                            });
+                            $("#arrAttributes"+results.id).on('change', function(){
+                                productAttrs[results.id].attrs = $(this).val();
+                            });
+                            $('#addNewAttr'+results.id).on('click',function(e){
+                                e.preventDefault();
+                                $("#textAttr").html('');
+                                $("#textAttr").append('<input type="text" class="form-control" placeholder="Enter value of attribute" id="otherVal'+results.id+'"/>');
+                                $('#modal-default').modal('show');
+                            });
+
+                            $("#saveAttr").on('click',function(e){
+                                e.preventDefault();
+                                $('#modal-default').modal('hide');
+                                if( $('#otherVal'+results.id).length > 0 ){
+                                    var val = $('#otherVal'+results.id).val();
+                                    $('select[name="arrAttributes['+results.id+'][]"]').append('<option value="'+val+'" selected="selected">'+val+'</option>');
+                                    $("#arrAttributes"+results.id).trigger("change");
+                                }
+                                $.ajax({
+                                    url: "{{ route('dashboard.addfast') }}",
+                                    type: "POST",
+                                    data: {id: results.id,val: val},
+                                    success: function(rs) {
+                                        console.log(rs);
+                                    }
+                                });
+                            });
+                            $('.select2').select2();
+                        },
+                        error: function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+            $('#add-new-variation').click(function(){
+                if( productAttrs.length <= 0 ){
+                    alert('Please add some product attributes first');
+                }else{
+                    var html = $('#clone > div').clone().html();
+                    var text = html.replace(new RegExp('!#name#!', 'g'), count);
+                    var attr = '';
+                    $.each(productAttrs, function(index, value){
+                        if( typeof value != "undefined" && typeof value.name != "undefined" ){
+                            attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                            attr += '<option value="0">Any '+value.name+' ...</option>';
+                            $.each(value.attrs, function(subIndex, subValue){
+                                attr += '<option value="'+subValue+'">'+subValue+'</option>';
+                            });
+                            attr += '</select></div>';
+                        }
+                    });
+                    text = text.replace(new RegExp('!#attrs#!', 'g'), attr);
+                    $('#new-item').append(text);
+                    count++;
+                }
+                return false;
+            });
+            $('#new-item').on('click', '.remove-product-variation-item', function(e){
+                e.preventDefault();
+                var id = $(this).data('id');
+                $('#product-variation-item-'+id).remove();
+                return false;
+            });
+
+            function readURL(input) {
+                console.log(input);
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(input).prev('.variation-image-prev').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $('#new-item').on('change', '.variation_image', function(){
+                readURL(this);
+            });
         });
     </script>
     <div class="modal fade" id="modal-default">

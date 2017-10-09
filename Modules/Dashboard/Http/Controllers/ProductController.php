@@ -125,7 +125,6 @@ class ProductController extends Controller
             'kind' => 'selling',
             'description_short' => $request->description_short,
             'description' => $request->description,
-            'product_brand' => $request->product_brand,
             'key_words' => $request->key_words,
             'sell_type_id' => $request->sell_type,
             'sold_units' => 0

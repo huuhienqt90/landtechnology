@@ -21,7 +21,7 @@ class ProductStoreRequest extends FormRequest
             'description_short' => 'required',
             'description' => 'required',
             'sell_type' => 'required',
-            'product_brand' => 'required'
+            'feature_image' => 'required|image'
         ];
     }
 

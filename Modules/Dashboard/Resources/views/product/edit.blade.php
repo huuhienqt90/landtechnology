@@ -154,7 +154,7 @@
                         uploadAsync: false,
                         allowedFileExtensions: ['jpg', 'png', 'gif', 'jpge'],
                         showUpload: false,
-                        
+
                         initialPreviewAsData: true,
                         initialPreview: [
                             "{{ asset('storage/'.Form::getValueAttribute('feature_image')) }}"
