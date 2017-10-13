@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ProductUpdateRequest extends FormRequest
 {
@@ -11,18 +12,28 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
+        $product_type = $request->product_type;
+        $rules = [
             'name' => 'required',
             'status' => 'required',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
             'description_short' => 'required',
             'description' => 'required',
             'sell_type' => 'required',
-            'feature_image' => 'required|image'
         ];
+        if( $product_type == 'simple' ) {
+            $rules['original_price'] = 'required|numeric';
+            $rules['sale_price'] = 'required|numeric';
+        }elseif( $product_type == 'variable' ) {
+            $variations = $request->variation;
+            foreach($variations as $keys => $items) {
+                $rules['variation.'.$keys.'.original_price'] = 'required|numeric';
+                $rules['variation.'.$keys.'.sale_price'] = 'required|numeric';
+            }
+        }
+        
+        return $rules;
     }
 
     /**

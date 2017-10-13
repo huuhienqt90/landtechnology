@@ -2,6 +2,10 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
 @section('content')
+<script>
+    var count = <?php echo count($product->variations); ?>;
+    var productAttrs = [];
+</script>
     {!! Form::model($product, ['route' => ['dashboard.product.update', $product->id], 'method' => 'PUT', 'class' => 'form', 'files' => true]) !!}
     <!-- Main content -->
     <section class="content">
@@ -35,9 +39,9 @@
                             <label class="control-label">Product Data — </label>
                             <select class="form-control product-type" name="product_type">
                                 <optgroup label="Product Type">
-                                    <option value="simple">Simple</option>
-                                    <option value="booking">Booking</option>
-                                    <option value="variable">Variable</option>
+                                    <option value="simple" {{ $product->product_type == 'simple' ? 'selected="selected"' : '' }}>Simple</option>
+                                    <option value="booking" {{ $product->product_type == 'booking' ? 'selected="selected"' : '' }}>Booking</option>
+                                    <option value="variable" {{ $product->product_type == 'variable' ? 'selected="selected"' : '' }}>Variable</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -47,7 +51,7 @@
                             <li role="presentation" class="active show-if-simple"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#inventory" aria-controls="inventory" role="tab" data-toggle="tab">Inventory</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#shipping" aria-controls="shipping" role="tab" data-toggle="tab">Shipping</a></li>
-                            <li role="presentation" class="show-if-booking show-if-variable"><a href="#booking" aria-controls="booking" role="tab" data-toggle="tab">Booking</a></li>
+                            <li role="presentation" class="show-if-booking"><a href="#booking" aria-controls="booking" role="tab" data-toggle="tab">Booking</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#attribute" aria-controls="attribute" role="tab" data-toggle="tab">Attributes</a></li>
                             <li role="presentation" class="show-if-variable"><a href="#variation" aria-controls="variation" role="tab" data-toggle="tab">Variations</a></li>
                         </ul>
@@ -218,8 +222,6 @@
     <script src="{{ asset('themes/dashboard/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($){
-            var count = 0;
-            var productAttrs = [];
             changeProductType();
             function changeProductType(){
                 var productType = $('.product-type').val();
@@ -242,26 +244,6 @@
               radioClass   : 'iradio_minimal-blue'
             });
             $('.select2').select2();
-
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                var dis = $(e.target);
-                if( dis.attr('href') == '#variation' ){
-                    $('#new-item .product-variation-item').each(function(){
-                        var attr = '<label>Attributes </label>';
-                        $.each(productAttrs, function(index, value){
-                            if( typeof value != "undefined" && typeof value.name != "undefined" ){
-                                attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
-                                attr += '<option value="0">Any '+value.name+' ...</option>';
-                                $.each(value.attrs, function(subIndex, subValue){
-                                    attr += '<option value="'+subValue+'">'+subValue+'</option>';
-                                });
-                                attr += '</select></div>';
-                            }
-                        });
-                        $(this).find('.form-inline').html(attr);
-                    });
-                }
-            });
 
             $("#addEventAttr").on('click', function(e) {
                 e.preventDefault();
@@ -291,7 +273,6 @@
                             });
                             $("#rmAttr"+results.id).on('click', function() {
                                 productAttrs.splice(results.id, 1);
-                                setCookie('productAttrs', productAttrs, 1);
                                 $("#attr"+results.id).remove();
                             });
                             $("#arrAttributes"+results.id).on('change', function(){
@@ -328,6 +309,53 @@
                         }
                     });
                 }
+
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    var dis = $(e.target);
+                    if( dis.attr('href') == '#variation' ){
+                        $('#old-item .product-variation-item').each(function(){
+                            var attr = '<label>Attributes </label>';
+                            var id = $(this).find('.form-inline').data('id');
+                            var type = $(this).find('.form-inline').data('type');
+                            $.each(productAttrs, function(index, value){
+                                if( typeof value != "undefined" && typeof value.name != "undefined" ){
+                                    if( type == "edit" ) {
+                                        attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+id+'][attr]['+index+']">';
+                                        attr += '<option value="0">Any '+value.name+' ...</option>';
+                                        $.each(value.attrs, function(subIndex, subValue){
+                                            attr += '<option value="'+subValue+'">'+subValue+'</option>';
+                                        });
+                                        attr += '</select></div>';
+                                    }else{
+                                        attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                                        attr += '<option value="0">Any '+value.name+' ...</option>';
+                                        $.each(value.attrs, function(subIndex, subValue){
+                                            attr += '<option value="'+subValue+'">'+subValue+'</option>';
+                                        });
+                                        attr += '</select></div>';
+                                    }
+                                }
+                            });
+                            count++;
+                            $(this).find('.form-inline').html(attr);
+                        });
+                        $('#new-item .product-variation-item').each(function(){
+                            var attr = '<label>Attributes </label>';
+                            $.each(productAttrs, function(index, value){
+                                if( typeof value != "undefined" && typeof value.name != "undefined" ){
+                                    attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                                    attr += '<option value="0">Any '+value.name+' ...</option>';
+                                    $.each(value.attrs, function(subIndex, subValue){
+                                        attr += '<option value="'+subValue+'">'+subValue+'</option>';
+                                    });
+                                    attr += '</select></div>';
+                                }
+                            });
+                            $(this).find('.form-inline').html(attr);
+                            count++;
+                        });
+                    }
+                });
             });
             $('#add-new-variation').click(function(){
                 if( productAttrs.length <= 0 ){
@@ -338,8 +366,9 @@
                     var attr = '';
                     $.each(productAttrs, function(index, value){
                         if( typeof value != "undefined" && typeof value.name != "undefined" ){
-                            attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                            attr += '<div class="form-group"><select class="form-control attr-item" name="variationNew['+count+'][attr]['+index+']">';
                             attr += '<option value="0">Any '+value.name+' ...</option>';
+                            console.log(productAttrs);
                             $.each(value.attrs, function(subIndex, subValue){
                                 attr += '<option value="'+subValue+'">'+subValue+'</option>';
                             });
@@ -370,7 +399,7 @@
                 }
             }
 
-            $('#new-item').on('change', '.variation_image', function(){
+            $('#old-item').on('change', '.variation_image', function(){
                 readURL(this);
             });
 

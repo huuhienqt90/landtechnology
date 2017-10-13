@@ -12,4 +12,8 @@ class ProductVariationResponsitory extends Repository {
     public function model() {
         return 'App\Models\ProductVariation';
     }
+
+    public function deleteByProductID($id) {
+    	return ProductVariation::where('product_id', $id)->delete();
+    }
 }

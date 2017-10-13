@@ -46,13 +46,7 @@
                     <div class="box-header with-border">
                         <div class="form-inline">
                             <label class="control-label">Product Data — </label>
-                            <select class="form-control product-type" name="product_type">
-                                <optgroup label="Product Type">
-                                    <option value="simple">Simple</option>
-                                    <option value="booking">Booking</option>
-                                    <option value="variable">Variable</option>
-                                </optgroup>
-                            </select>
+                            {!! Form::select('product_type', ['simple' => 'Simple', 'booking' => 'Booking', 'variable' => 'Variable'], old('product_type'), ['class' => 'form-control product-type']) !!}
                         </div>
                     </div>
                     <div class="box-body">
@@ -282,7 +276,6 @@
                             });
                             $("#rmAttr"+results.id).on('click', function() {
                                 productAttrs.splice(results.id, 1);
-                                setCookie('productAttrs', productAttrs, 1);
                                 $("#attr"+results.id).remove();
                             });
                             $("#arrAttributes"+results.id).on('change', function(){
