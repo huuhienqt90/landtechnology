@@ -13,7 +13,19 @@ class ProductVariationResponsitory extends Repository {
         return 'App\Models\ProductVariation';
     }
 
+    /**
+     * Delete all variations by product id
+     * @author Tong
+     */
     public function deleteByProductID($id) {
     	return ProductVariation::where('product_id', $id)->delete();
+    }
+
+    /**
+     * Delete variations by product id and not in ids
+     * @author Hien
+     */
+    public function deleteProductVariation($id, $arrs = []){
+        return ProductVariation::where('product_id', $id)->whereNotIn('id', $arrs)->delete();
     }
 }

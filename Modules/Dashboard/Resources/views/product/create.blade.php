@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
 @section('content')
 <script>
-    var count = 0;
+    var count = 1;
     var productAttrs = [];
 </script>
     {!! Form::model($product, ['route' => ['dashboard.product.store'], 'class' => 'form', 'files' => true]) !!}

@@ -403,7 +403,7 @@ class ProductController extends Controller
                 foreach($product_variations as $item) {
                     $this->variationAttributeResponsitory->deleteByProductVariationId($item->id);
                 }
-                
+                $editVariationIds = [];
                 foreach($request->variation as $keys => $items) {
                     if( is_numeric($keys) ) {
                         $param = [
@@ -427,11 +427,16 @@ class ProductController extends Controller
                             }
                         }
                         $this->productVariationResponsitory->update($param, $items['variation_id']);
+                        $editVariationIds[] = $items['variation_id'];
                         foreach( $items['attr'] as $key => $item ) {
                             $this->variationAttributeResponsitory->create(['attribute_id' => $key, 'product_variation_id' => $items['variation_id'], 'value' => $item]);
                         }
+
                     }
                 }
+                $this->productVariationResponsitory->deleteProductVariation($id, $editVariationIds);
+            }else{
+                $this->productVariationResponsitory->deleteByProductID($id);
             }
             if( $request->variationNew != null ) {
                 foreach($request->variationNew as $keys => $items) {
@@ -490,7 +495,7 @@ class ProductController extends Controller
             }
             $this->productVariationResponsitory->deleteByProductID($id);
         }
-        
+
         $product = $this->productResponsitory->find($id);
         \Storage::delete($product->feature_image);
         $this->productResponsitory->delete($id);

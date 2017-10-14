@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/select2/dist/css/select2.min.css') }}">
 @section('content')
 <script>
-    var count = <?php echo count($product->variations); ?>;
+    var count = 1;
     var productAttrs = [];
 </script>
     {!! Form::model($product, ['route' => ['dashboard.product.update', $product->id], 'method' => 'PUT', 'class' => 'form', 'files' => true]) !!}
@@ -16,6 +16,15 @@
                         <h3 class="box-title">Create product</h3>
                     </div>
                     <div class="box-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                             {!! Form::text('name', old('name'), ['class' => 'form-control input-lg', 'placeholder' => 'Product name']) !!}
                             @include('dashboard::partials.error', ['field' => 'name'])

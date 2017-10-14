@@ -27,14 +27,15 @@ class ProductStoreRequest extends FormRequest
             $rules['original_price'] = 'required';
             $rules['sale_price'] = 'required';
         }elseif( $product_type == 'variable' ) {
-            $variations = $request->variation;
+            $variations = $request->variationNew;
             if( isset($variations) && count($variations) > 0 )
             foreach($variations as $keys => $items) {
-                $rules['variation.'.$keys.'.original_price'] = 'required|numeric';
-                $rules['variation.'.$keys.'.sale_price'] = 'numeric';
+                if($keys == '!#name#!') continue;
+                $rules['variationNew.'.$keys.'.original_price'] = 'required|numeric';
+                $rules['variationNew.'.$keys.'.sale_price'] = 'numeric';
             }
         }
-        
+
         return $rules;
     }
 

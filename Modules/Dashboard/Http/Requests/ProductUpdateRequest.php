@@ -27,12 +27,22 @@ class ProductUpdateRequest extends FormRequest
             $rules['sale_price'] = 'required|numeric';
         }elseif( $product_type == 'variable' ) {
             $variations = $request->variation;
+            if( isset($variations) && count($variations) > 0 )
             foreach($variations as $keys => $items) {
+                if($keys == '!#name#!') continue;
                 $rules['variation.'.$keys.'.original_price'] = 'required|numeric';
                 $rules['variation.'.$keys.'.sale_price'] = 'required|numeric';
             }
+
+            $variationNew = $request->variationNew;
+            if( isset($variationNew) && count($variationNew) > 0 )
+            foreach($variationNew as $keys => $items) {
+                if($keys == '!#name#!') continue;
+                $rules['variationNew.'.$keys.'.original_price'] = 'required|numeric';
+                $rules['variationNew.'.$keys.'.sale_price'] = 'required|numeric';
+            }
         }
-        
+
         return $rules;
     }
 
