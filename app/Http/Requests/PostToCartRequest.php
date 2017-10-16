@@ -26,8 +26,9 @@ class PostToCartRequest extends FormRequest
     {
         $product = Product::find($this->getSegmentFromEnd());
         $rules = [];
+        $stock = !$product->stock ? 100000 : $product->stock;
         if( isset($product->id) && $product->id > 0 ){
-            $rules['quantity'] = 'required|integer|between:1,'.$product->stock;
+            $rules['quantity'] = 'required|integer|between:1,'.$stock;
             if($product->attributes->groupBy('attribute_id')->count()):
                 foreach($product->attributes->groupBy('attribute_id')->all() as $attr):
                     $rules['attrs.'.$attr->first()->attribute->id] = 'required';

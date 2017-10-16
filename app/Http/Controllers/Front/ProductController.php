@@ -17,6 +17,7 @@ use App\Repositories\ProductOfferResponsitory;
 use App\Repositories\HuntingImageResponsitory;
 use App\Repositories\ProductOfferMetaResponsitory;
 use App\Repositories\PaymentHistoryResponsitory;
+use App\Repositories\ProductVariationResponsitory;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,8 +47,9 @@ class ProductController extends Controller
     private $PayPal;
     private $productOfferMetaResponsitory;
     private $paymentHistoryResponsitory;
+    private $productVariationResponsitory;
 
-    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory, CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SettingRepository $settingRepository, SwapItemResponsitory $swapItemResponsitory, UserResponsitory $userResponsitory, HuntingResponsitory $huntingResponsitory, ProductOfferResponsitory $productOfferResponsitory, HuntingImageResponsitory $huntingImageResponsitory, ProductOfferMetaResponsitory $productOfferMetaResponsitory, PaymentHistoryResponsitory $paymentHistoryResponsitory){
+    public function __construct(ProductResponsitory $productRepository, ProductReviewResponsitory $productReviewResponsitory, CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SettingRepository $settingRepository, SwapItemResponsitory $swapItemResponsitory, UserResponsitory $userResponsitory, HuntingResponsitory $huntingResponsitory, ProductOfferResponsitory $productOfferResponsitory, HuntingImageResponsitory $huntingImageResponsitory, ProductOfferMetaResponsitory $productOfferMetaResponsitory, PaymentHistoryResponsitory $paymentHistoryResponsitory, ProductVariationResponsitory $productVariationResponsitory){
         $this->productRepository = $productRepository;
         $this->productReviewResponsitory = $productReviewResponsitory;
         $this->categoryResponsitory = $categoryResponsitory;
@@ -59,6 +61,7 @@ class ProductController extends Controller
         $this->productOfferResponsitory = $productOfferResponsitory;
         $this->huntingImageResponsitory = $huntingImageResponsitory;
         $this->productOfferMetaResponsitory = $productOfferMetaResponsitory;
+        $this->productVariationResponsitory = $productVariationResponsitory;
 
         $PayPalConfig = array(
             'Sandbox' =>  true,
@@ -112,6 +115,8 @@ class ProductController extends Controller
         if( !empty($slug) && isset($product->id) && $product->id){
             if( $product->kind == 'hunting'){
                 return view('front.product.detail-hunting', compact('product', 'productReview'));
+            }else if( $product->product_type == "variable" ){
+                return view('front.product.detail-variable', compact('product', 'productReview'));
             }else{
                 return view('front.product.detail', compact('product', 'productReview'));
             }
@@ -601,5 +606,13 @@ class ProductController extends Controller
     public function deniCounter(Request $request, $id) {
         $this->productOfferMetaResponsitory->deleteProductOfferMetaById($id);
         return redirect()->back()->with('alert-success', 'Deni price counter success');
+    }
+
+    public function getProductVariation(Request $request) {
+        if( $request->ajax() ) {
+            $id = $request->id;
+            $product_variation = $this->productVariationResponsitory->find($id);
+            return response()->json($product_variation);
+        }
     }
 }

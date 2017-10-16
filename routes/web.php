@@ -50,10 +50,13 @@ Route::group(['namespace' => 'Front'], function() {
         Route::get('brand/{slug?}', 'ProductController@productBrand')->name('front.product.brand');
         Route::get('list', 'ProductController@showList')->name('front.product.list');
         Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
+        // Variation
+        Route::get('getVariation', 'ProductController@getProductVariation')->name('front.product.getProductVariation');
     });
 
     // Routes for cart and order page
     Route::get('add-to-cart/{id?}/{quantity?}', 'CartController@addToCart')->name('front.product.addToCart');
+    Route::get('add-to-cart-by-ajax', 'CartController@addToCartAjax')->name('front.product.addToCartAjax');
     Route::post('add-to-cart/{id?}', 'CartController@postToCart')->name('front.product.postToCart');
     Route::post('store-review/{id?}', 'ProductController@storeReview')->name('front.product.storeReview');
     Route::get('add-to-favorite/{id?}', 'CartController@addToFavorite')->name('front.product.addToFavorite');

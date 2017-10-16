@@ -20,7 +20,7 @@
                     {{ Breadcrumbs::render('product_detail', $product) }}
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-6 col-sm-6" id="image_feature">
                 <!--Gallery Hero-->
                 <div class="gallery__hero">
                     <img src="{{ $product->getFeatureImage() }}" class="img-responsive">
@@ -72,16 +72,27 @@
                         <li class="breadcrumb-item"><a href="#review">{{ $product->reviews->count() }} review(s)</a></li>
                         <li class="breadcrumb-item">Add your review</li>
                     </ol>
-                    <div class="single-product-price">{!! $product->getPrice() !!}</div>
+                    <div class="single-product-price" id="price">{!! $product->getPriceMinMax() !!}</div>
                 </div> <!-- .detail-content -->
                 <form action="{{ route('front.product.postToCart', $product->id, 1) }}" method="post">
                     {{ csrf_field() }}
                     <div class="add-to-cart">
-                        @if($product->attributes->groupBy('attribute_id')->count())
-                            @foreach($product->attributes->groupBy('attribute_id')->all() as $attr)
-                                @include('partials.'.$attr->first()->attribute->group->type, ['field' => 'attrs['.$attr->first()->attribute->id.']', 'label' => $attr->first()->attribute->name, 'options' => $attr->toArray()])
+                        @if( $product->product_variations()->where('product_id', $product->id)->count() )
+                            <?php $tmp = array(); ?>
+                            @foreach($product->product_variations()->where('product_id', $product->id)->get() as $var)
+                                @foreach($var->variations()->get() as $key => $item)
+                                    <?php $tmp[$item->product_variation_id][] = '- '. $item->attribute->name . ': ' . $item->value .'' ?>
+                                @endforeach
                             @endforeach
+                            <h4>Choose an option</h4>
+                            <select name="variation" id="variation" class="form-control">
+                                <option value="">Choose an option</option>
+                                @foreach($tmp as $key => $item)
+                                    <option value="{{ $key }}">@foreach($item as $option) {{ $option }} @endforeach</option>
+                                @endforeach
+                            </select>
                         @endif
+                        
                         <p class="required">Required Field *</p>
                         <div class="quantity">
                             <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
@@ -93,7 +104,7 @@
                                             <span class="glyphicon glyphicon-minus"></span>
                                         </button>
                                     </span>
-                                    <input type="text" name="quantity" class="form-control input-number" value="1" min="1" {{ !$product->stock ? 'max=100000' : 'max='.$product->stock.'' }}>
+                                    <input type="text" name="quantity" class="form-control input-number" value="1" min="1" {{ $product->stock > 0 ? 'max='.$product->stock.'' : 'max=1000000000000' }}>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quantity">
                                             <span class="glyphicon glyphicon-plus"></span>
@@ -103,11 +114,14 @@
                                 @include('partials.error', ['field' => 'quantity'])
                             </div>
                         </div> <!-- .quanty -->
+                        <!-- SKU & Category -->
+                        <div id="sku">
+                        </div>
                     </div> <!-- .add-to-cart -->
                     <ul class="btn-add-to-cart">
                         <li class="cover-btn-glyph">
                             <div class="glyph">
-                                <button class="fs1 btn text-uppercase" type="submit" aria-hidden="true" data-icon="&#xe013;">Add to cart</button>
+                                <button class="fs1 btn text-uppercase disabled" type="submit" aria-hidden="true" data-icon="&#xe013;">Add to cart</button>
                             </div>
                         </li> <!-- .cover-btn-glyph -->
                         <li class="heart">
@@ -256,4 +270,62 @@
         width: 170px;
     }
 </style>
+<script type="text/javascript">
+    (function() {
+        $("button[type=submit]").on('click', function() {
+            if( $(this).hasClass('disabled') ) {
+                alert('PLease choose an option');
+                return false;
+            }
+        });
+        var qty = $("input[name=quantity]").val();
+        $("input[name=quantity]").on('change paste keyup', function() {
+            qty = $(this).val();
+        });
+        $("#variation").on('change', function() {
+            var id = $(this).val();
+            if( typeof(id) !== "undefined" && id !== null && id > 0 ) {
+                $("button[type=submit]").removeClass("disabled");
+                $.ajax({
+                    url: "{{ route('front.product.getProductVariation') }}",
+                    type: "GET",
+                    data: {id:id},
+                    success: function(result) {
+                        $("#image_feature").html('<div class="gallery__hero"><img src="{{ asset("storage") }}/'+result.feature_image+'"</div>');
+                        if( !result.sale_price ) {
+                            $("#price").html('<span class="product-price tx-sp-cl">$'+result.price+'</span>');
+                        }else{
+                            $("#price").html('<span class="tx-sp-line-through">$'+result.price+'</span> <span class="product-price tx-sp-cl">$'+result.sale_price+'</span>')
+                        }
+                        if( result.sku !== null ) {
+                            $("#sku").html('<div class="form-group"><label class="label-control">SKU:</label><span> '+result.sku+'</span></div>');
+                        }else{
+                            $("#sku").html('');
+                        }
+                        $("button[type=submit]").on('click', function() {
+                            if( $(this).hasClass('disabled') ) {
+                                return false;
+                            }else{
+                                $.ajax({
+                                    url: "{{ route('front.product.addToCartAjax') }}",
+                                    type: "get",
+                                    data: {id:{{$product->id}}, idVar:id, qty:qty},
+                                    success: function(resultVar) {
+                                        console.log(resultVar);
+                                        if(resultVar) {
+                                            alert('Add to cart success');
+                                        }
+                                    }
+                                });
+                                return false;
+                            }
+                        });
+                    }
+                });
+            }else{
+                $("button[type=submit]").addClass("disabled");
+            }
+        });
+    }() );
+</script>
 @stop

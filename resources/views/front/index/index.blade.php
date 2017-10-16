@@ -134,16 +134,18 @@
                     @foreach($featureNewArrivalProducts as $product)
                         <div class="item">
                             <div class="slider-item">
-                                <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt=""/></a>
+                                <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"/></a>
                                 @if($product->getLabelNewProduct($product->created_at))
                                     <div class="news-product-slider">
                                         <p>NEW</p>
                                     </div> <!-- .news-product -->
                                 @endif
-                                @if($product->sale_price)
-                                    <div class="sale-product-slider">
-                                        <p>-&nbsp;{{ round(100 - ($product->sale_price * 100)/$product->original_price, 1) }}%</p>
-                                    </div> <!-- .news-product -->
+                                @if( $product->product_type == 'simple' )
+                                    @if($product->sale_price)
+                                        <div class="sale-product-slider">
+                                            <p>-&nbsp;{{ round(100 - ($product->sale_price * 100)/$product->original_price, 1) }}%</p>
+                                        </div> <!-- .news-product -->
+                                    @endif
                                 @endif
                                 <div class="overlay">
                                     <a href="#" class="text mg-top-40"><i class="fa fa-compress" aria-hidden="true"></i></a>
@@ -152,7 +154,11 @@
                                 <ul class="tetx">
                                     <li class="text-detail">
                                         <h4><a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}">{{ $product->name }}</a></h4>
-                                        {!! $product->getPrice() !!}
+                                        @if( $product->product_type == 'simple' )
+                                            {!! $product->getPrice() !!}
+                                        @elseif( $product->product_type == 'variable' )
+                                            {!! $product->getPriceMinMax() !!}
+                                        @endif
                                     </li> <!-- .text-detail -->
                                     <li class="lock">
                                         <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="lock">
