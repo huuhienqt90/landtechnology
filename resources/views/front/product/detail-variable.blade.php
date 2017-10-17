@@ -92,7 +92,6 @@
                                 @endforeach
                             </select>
                         @endif
-                        
                         <p class="required">Required Field *</p>
                         <div class="quantity">
                             <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
