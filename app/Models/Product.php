@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Carbon\Carbon;
+use App\Models\ProductVariation;
 
 class Product extends Model
 {
@@ -26,7 +27,6 @@ class Product extends Model
         'feature_image',
         'description_short',
         'description',
-        'product_brand',
         'key_words',
         'sell_type_id',
         'status',
@@ -87,6 +87,10 @@ class Product extends Model
         return $this->belongsTo('App\Models\ProductCategory', 'id', 'product_id');
     }
 
+    public function meta() {
+        return $this->belongsTo('App\Models\ProductMeta', 'id', 'product_id');
+    }
+
     /**
      * Get product images
      *
@@ -103,6 +107,10 @@ class Product extends Model
      */
     public function reviews(){
         return $this->hasMany('App\Models\ProductReview', 'product_id', 'id');
+    }
+
+    public function product_variations() {
+        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id');
     }
 
     /**
@@ -166,5 +174,11 @@ class Product extends Model
             return true;
         }
         return false;
+    }
+
+    public function getPriceMinMax() {
+        $min = ProductVariation::where('product_id', $this->id)->min('price');
+        $max = ProductVariation::where('product_id', $this->id)->max('price');
+        return '<span class="product-price tx-sp-cl">$'.number_format($min, 2).' - $'.number_format($max, 2).'</span>';
     }
 }

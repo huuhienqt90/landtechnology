@@ -25,3 +25,6 @@
     padding: 5px;
     outline: none;
 }
+select.form-control.attr-item {
+    margin-right: 10px;
+}

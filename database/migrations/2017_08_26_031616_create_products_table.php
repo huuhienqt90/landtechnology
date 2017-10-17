@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->string('product_type')->default('simple');
             $table->float('original_price')->default(0);
             $table->float('sale_price')->default(0);
-            // $table->float('display_price')->default(0);
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->integer('seller_id')->unsigned();
@@ -30,8 +29,6 @@ class CreateProductsTable extends Migration
             $table->longText('description')->nullable();
             $table->string('key_words')->nullable();
             $table->integer('sell_type_id')->unsigned();
-            // $table->float('discount')->default(0);
-            // $table->float('price_after_discount')->default(0);
             $table->string('status')->default('active');
             $table->float('weight')->default(0);
             $table->string('location')->nullable();

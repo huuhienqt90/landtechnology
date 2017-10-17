@@ -23,7 +23,7 @@ class Attribute extends Model
     public static function getValuesById($id = 0){
         if( $id ){
             $attrs = static::find($id);
-            if($attrs->options){
+            if( isset($attrs->options) && $attrs->options ){
                 return explode(',', $attrs->options);
             }else{
                 return null;

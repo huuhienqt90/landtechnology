@@ -12,4 +12,8 @@ class ProductMetaResponsitory extends Repository {
     public function model() {
         return 'App\Models\ProductMeta';
     }
+
+    public function deleteProductMeta($id, $key) {
+    	return ProductMeta::where('product_id', $id)->where('key', $key)->delete();
+    }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ProductStoreRequest extends FormRequest
 {
@@ -11,26 +12,31 @@ class ProductStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
+        $product_type = $request->product_type;
+        $rules = [
             'name' => 'required',
-            'slug' => 'required',
             'status' => 'required',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'sold_units' => 'numeric',
             'description_short' => 'required',
             'description' => 'required',
-            'key_words' => 'required',
-            'weight' => 'required',
-            'location' => 'required',
-            'seller_id' => 'required',
-            'sell_type_id' => 'required',
-            'product_brand' => 'required',
-            'category' => 'required'
+            'sell_type' => 'required',
+            'feature_image' => 'required|image'
         ];
+        if( $product_type == 'simple' ) {
+            $rules['original_price'] = 'required';
+            $rules['sale_price'] = 'required';
+        }elseif( $product_type == 'variable' ) {
+            $variations = $request->variationNew;
+            if( isset($variations) && count($variations) > 0 )
+            foreach($variations as $keys => $items) {
+                if($keys == '!#name#!') continue;
+                $rules['variationNew.'.$keys.'.original_price'] = 'required|numeric';
+                $rules['variationNew.'.$keys.'.sale_price'] = 'numeric';
+            }
+        }
+
+        return $rules;
     }
 
     /**

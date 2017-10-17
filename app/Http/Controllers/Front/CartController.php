@@ -15,6 +15,7 @@ use App\Repositories\OrderResponsitory;
 use App\Repositories\OrderMetaResponsitory;
 use App\Repositories\OrderProductResponsitory;
 use App\Repositories\PaymentHistoryResponsitory;
+use App\Repositories\ProductVariationResponsitory;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Stripe\Error\Card;
 use Illuminate\Support\Facades\Mail;
@@ -29,13 +30,15 @@ class CartController extends Controller
     private $orderMetaResponsitory;
     private $orderProductResponsitory;
     private $paymentHistoryResponsitory;
+    private $productVariationResponsitory;
 
     public function __construct(ProductResponsitory $productRepository,
                                 SettingRepository $settingRepository,
                                 OrderResponsitory $orderResponsitory,
                                 OrderMetaResponsitory $orderMetaResponsitory,
                                 OrderProductResponsitory $orderProductResponsitory,
-                                PaymentHistoryResponsitory $paymentHistoryResponsitory)
+                                PaymentHistoryResponsitory $paymentHistoryResponsitory,
+                                ProductVariationResponsitory $productVariationResponsitory)
     {
         $this->productRepository = $productRepository;
         $this->settingRepository = $settingRepository;
@@ -43,6 +46,7 @@ class CartController extends Controller
         $this->orderMetaResponsitory = $orderMetaResponsitory;
         $this->orderProductResponsitory = $orderProductResponsitory;
         $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
+        $this->productVariationResponsitory = $productVariationResponsitory;
 
         $PayPalConfig = array(
             'Sandbox' =>  config('paypal.Sandbox'),
@@ -72,6 +76,22 @@ class CartController extends Controller
         $product = $this->productRepository->find($id);
         Cart::add($id, $product->name, $request->quantity, $product->getPriceNumber());
         return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+    }
+
+    /**
+     * Add a product to cart in product detail page by ajax
+     */
+    public function addToCartAjax(Request $request){
+        if( $request->ajax() ) {
+            $idVar = $request->idVar;
+            $qty = $request->qty;
+            $id = $request->id;
+            $product_variation = $this->productVariationResponsitory->find($idVar);
+            $product = $this->productRepository->find($id);
+            $price = !$product_variation->sale_price ? $product_variation->sale_price : $product_variation->price;
+            Cart::add($id, $product->name, $qty, $price);
+            return response()->json(true);
+        }
     }
 
     /**

@@ -375,7 +375,7 @@ body{
             @include news-product();
             top: 1em;
             &:before {
-                left: 3.8em;
+                left: 3.74em;
             }
             p{
                 color: $bg-color-white;
@@ -438,7 +438,7 @@ body{
         left: 14em;
         padding: 0;
         &:before{
-            left: 3.74em;
+            left: 3.83em;
         }
         p{
             color: $bg-color-white;

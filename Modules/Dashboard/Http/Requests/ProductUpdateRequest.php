@@ -3,6 +3,7 @@
 namespace Modules\Dashboard\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ProductUpdateRequest extends FormRequest
 {
@@ -11,24 +12,38 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
+        $product_type = $request->product_type;
+        $rules = [
             'name' => 'required',
-            'slug' => 'required',
             'status' => 'required',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'required|numeric',
-            'stock' => 'required|numeric',
+            'description_short' => 'required',
             'description' => 'required',
-            'key_words' => 'required',
-            'weight' => 'required',
-            'location' => 'required',
-            'seller_id' => 'required',
-            'sell_type_id' => 'required',
-            'product_brand' => 'required',
-            'category' => 'required'
+            'sell_type' => 'required',
         ];
+        if( $product_type == 'simple' ) {
+            $rules['original_price'] = 'required|numeric';
+            $rules['sale_price'] = 'required|numeric';
+        }elseif( $product_type == 'variable' ) {
+            $variations = $request->variation;
+            if( isset($variations) && count($variations) > 0 )
+            foreach($variations as $keys => $items) {
+                if($keys == '!#name#!') continue;
+                $rules['variation.'.$keys.'.original_price'] = 'required|numeric';
+                $rules['variation.'.$keys.'.sale_price'] = 'required|numeric';
+            }
+
+            $variationNew = $request->variationNew;
+            if( isset($variationNew) && count($variationNew) > 0 )
+            foreach($variationNew as $keys => $items) {
+                if($keys == '!#name#!') continue;
+                $rules['variationNew.'.$keys.'.original_price'] = 'required|numeric';
+                $rules['variationNew.'.$keys.'.sale_price'] = 'required|numeric';
+            }
+        }
+
+        return $rules;
     }
 
     /**
@@ -39,5 +54,10 @@ class ProductUpdateRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    private function getSegmentFromEnd($position_from_end = 1) {
+        $segments =$this->segments();
+        return $segments[sizeof($segments) - $position_from_end];
     }
 }

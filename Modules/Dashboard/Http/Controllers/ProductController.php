@@ -16,6 +16,9 @@ use App\Repositories\ProductAttributeResponsitory;
 use App\Repositories\ProductImageResponsitory;
 use App\Repositories\AttributeResponsitory;
 use App\Repositories\AttributeGroupResponsitory;
+use App\Repositories\ProductMetaResponsitory;
+use App\Repositories\ProductVariationResponsitory;
+use App\Repositories\VariationAttributeResponsitory;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
@@ -31,8 +34,11 @@ class ProductController extends Controller
     protected $productImageResponsitory;
     protected $attributeGroupResponsitory;
     protected $productAttributeResponsitory;
+    protected $productMetaResponsitory;
+    protected $productVariationResponsitory;
+    protected $variationAttributeResponsitory;
 
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory){
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory, ProductMetaResponsitory $productMetaResponsitory, ProductVariationResponsitory $productVariationResponsitory, VariationAttributeResponsitory $variationAttributeResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
@@ -44,6 +50,9 @@ class ProductController extends Controller
         $this->attributeResponsitory        = $attributeResponsitory;
         $this->attributeGroupResponsitory   = $attributeGroupResponsitory;
         $this->productAttributeResponsitory = $productAttributeResponsitory;
+        $this->productMetaResponsitory      = $productMetaResponsitory;
+        $this->productVariationResponsitory = $productVariationResponsitory;
+        $this->variationAttributeResponsitory = $variationAttributeResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -62,7 +71,7 @@ class ProductController extends Controller
     public function create()
     {
         $product = $this->productResponsitory;
-        $categories = $this->categoryResponsitory->all();
+        $categories = $this->categoryResponsitory->findAllBy('parent_id', 0);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
@@ -99,7 +108,9 @@ class ProductController extends Controller
                 $sellTypeArr[$sellType->id] = $sellType->name;
             }
         }
-        return view('dashboard::product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr'));
+
+        $shippings = $this->sellerShippingResponsitory->findWhere(['seller_id' => auth()->user()->id]);
+        return view('dashboard::product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','shippings'));
     }
 
     /**
@@ -111,30 +122,41 @@ class ProductController extends Controller
     {
         $create = [
             'status' => $request->status,
-            'slug' => $request->slug,
             'name' => $request->name,
-            'original_price' => $request->original_price,
-            'sale_price' => $request->sale_price,
-            'stock' => $request->stock,
-            'sold_units' => 0,
+            'slug' => str_slug($request->name),
+            'product_type' => $request->product_type,
+            'seller_id' => auth()->user()->id,
+            'kind' => 'selling',
             'description_short' => $request->description_short,
             'description' => $request->description,
             'key_words' => $request->key_words,
-            'weight' => $request->weight,
-            'location' => $request->location,
-            'seller_id' => $request->seller_id,
-            'sell_type_id' => $request->sell_type_id,
-            'product_brand' => $request->product_brand,
+            'sell_type_id' => $request->sell_type,
+            'sold_units' => 0
         ];
+
+        if( $request->product_type == 'simple' ) {
+            $create['original_price'] = $request->original_price;
+            $create['sale_price'] = $request->sale_price;
+        }
+
+        if( $request->stock == null ) {
+            $create['stock'] = 0;
+        }else{
+            $create['stock'] = $request->stock;
+        }
 
         if( $request->hasFile('feature_image') ){
             $path = $request->file('feature_image')->store('products/features');
             $create['feature_image'] = $path;
         }
         $result = $this->productResponsitory->create($create);
-        
+
         // Create category product
-        $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
+        if( $request->categories != null ) {
+            foreach($request->categories as $category) {
+                $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $category]);
+            }
+        }
 
         // Create Product Images
         if( $request->hasFile('product_images') ){
@@ -145,14 +167,53 @@ class ProductController extends Controller
             }
         }
 
-        if( $request->input('prattr') != null ){
-            $paramAttrs = $request->input('prattr');
+        // Create Product Meta
+        if( $request->sku != null ) {
+            $this->productMetaResponsitory->create(['product_id' => $result->id, 'key' => 'sku', 'value' => $request->sku]);
+        }
+
+        if( $request->stock_status != null ) {
+            $this->productMetaResponsitory->create(['product_id' => $result->id, 'key' => 'stockStatus', 'value' => $request->stock_status]);
+        }
+
+        if( $request->input('arrAttributes') != null ){
+            $paramAttrs = $request->input('arrAttributes');
             foreach($paramAttrs as $key => $paramAttr){
                 foreach($paramAttr as $item){
                     $this->productAttributeResponsitory->create(['product_id' => $result->id, 'attribute_id' => $key, 'value' => $item]);
                 }
             }
-        }        
+        }
+
+        if( $request->product_type == 'variable' ) {
+            if( $request->variation != null ) {
+                foreach($request->variation as $keys => $items) {
+                    if( is_numeric($keys) ) {
+                        $param = [
+                            'product_id' => $result->id,
+                            'price' => $items['original_price']
+                        ];
+                        if($items['sku'] != null) {
+                            $param['sku'] = $items['sku'];
+                        }
+                        if($items['sale_price'] != null) {
+                            $param['sale_price'] = $items['sale_price'];
+                        }
+                        if( isset($items['image']) ) {
+                            if( $items['image'] != null ) {
+                                $path = $request->file('image')->store('products/variation/features');
+                                $param['image'] = $path;
+                            }
+                        }
+                        $resultVar = $this->productVariationResponsitory->create($param);
+                        foreach( $items['attr'] as $key => $item ) {
+                            $this->variationAttributeResponsitory->create(['attribute_id' => $key, 'product_variation_id' => $resultVar->id, 'value' => $item]);
+                        }
+                    }
+                }
+            }
+        }
+
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Create product sucess!');
     }
 
@@ -172,7 +233,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = $this->productResponsitory->find($id);
-        $categories = $this->categoryResponsitory->all();
+        $categories = $this->categoryResponsitory->findAllBy('parent_id', 0);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
@@ -231,13 +292,24 @@ class ProductController extends Controller
             }
         }
 
+        $product_variations = $this->productVariationResponsitory->findWhere(['product_id' => $id]);
+
+        $product->variations = $product_variations;
+
         $product->attribute = $productAttributesArr;
 
-        $attrArr = $this->attributeResponsitory->all();
+        $product->productAttributes = $productAttributes;
+
+        $attrs = $this->attributeResponsitory->all();
+        $attrArr = [];
+        foreach($attrs as $attr){
+            $attrArr[$attr->id] = $attr->name;
+        }
 
         $product->product_images = $productImageArr;
+        $shippings = $this->sellerShippingResponsitory->findWhere(['seller_id' => auth()->user()->id]);
 
-        return view('dashboard::product.edit', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages'));
+        return view('dashboard::product.edit', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages','shippings'));
     }
 
     /**
@@ -247,33 +319,49 @@ class ProductController extends Controller
      */
     public function update(ProductUpdateRequest $request, $id)
     {
+        $product = $this->productResponsitory->find($id);
         $update = [
             'status' => $request->status,
-            'slug' => $request->slug,
             'name' => $request->name,
-            'original_price' => $request->original_price,
-            'sale_price' => $request->sale_price,
-            'stock' => $request->stock,
+            'slug' => str_slug($request->name),
+            'product_type' => $request->product_type,
+            'seller_id' => auth()->user()->id,
+            'kind' => 'selling',
             'description_short' => $request->description_short,
             'description' => $request->description,
             'key_words' => $request->key_words,
-            'weight' => $request->weight,
-            'location' => $request->location,
-            'seller_id' => $request->seller_id,
-            'sell_type_id' => $request->sell_type_id,
-            'product_brand' => $request->product_brand,
+            'sell_type_id' => $request->sell_type,
+            'sold_units' => 0
         ];
-        
+
+        if( $request->product_type == 'simple' ) {
+            $update['original_price'] = $request->original_price;
+            $update['sale_price'] = $request->sale_price;
+        }
+
+        if( $request->stock == null ) {
+            $update['stock'] = 0;
+        }else{
+            $update['stock'] = $request->stock;
+        }
+
         // Update feature image
         if( $request->hasFile('feature_image') ){
             $path = $request->file('feature_image')->store('products/features');
             $update['feature_image'] = $path;
         }
+        if( $product->slug != str_slug($request->name) ) {
+            $update['slug'] = str_slug($request->name);
+        }
         $this->productResponsitory->update($update, $id);
 
         // Update product category
         $this->productCategoryResponsitory->deleteProductCategory($id);
-        $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $request->category]);
+        if( $request->categories != null ) {
+            foreach($request->categories as $category) {
+                $this->productCategoryResponsitory->create(['product_id' =>$id, 'category_id' => $category]);
+            }
+        }
 
         // Update product images
         if( $request->hasFile('product_images') ){
@@ -284,15 +372,102 @@ class ProductController extends Controller
             }
         }
 
-        if( $request->input('prattr') != null ){
-            $paramAttrs = $request->input('prattr');
+        // Create Product Meta
+        if( $request->sku != null ) {
+            $this->productMetaResponsitory->deleteProductMeta($id, 'sku');
+            $this->productMetaResponsitory->create(['product_id' => $id, 'key' => 'sku', 'value' => $request->sku]);
+        }
+
+        if( $request->stock_status != null ) {
+            $this->productMetaResponsitory->deleteProductMeta($id, 'stockStatus');
+            $this->productMetaResponsitory->create(['product_id' => $id, 'key' => 'stockStatus', 'value' => $request->stock_status]);
+        }
+
+        if( $request->input('arrAttributes') != null ){
+            $paramAttrs = $request->input('arrAttributes');
             $this->productAttributeResponsitory->deleteProductAttribute($id);
             foreach($paramAttrs as $key => $paramAttr){
                 foreach($paramAttr as $item){
                     $this->productAttributeResponsitory->create(['product_id' => $id, 'attribute_id' => $key, 'value' => $item]);
                 }
             }
-        } 
+        }else{
+            $this->productAttributeResponsitory->deleteProductAttribute($id);
+        }
+
+        $temp = 0;
+        if( $request->product_type == 'variable' ) {
+            if( $request->variation != null ) {
+                // Remove all product variations
+                $product_variations = $this->productVariationResponsitory->findAllBy('product_id', $id);
+                foreach($product_variations as $item) {
+                    $this->variationAttributeResponsitory->deleteByProductVariationId($item->id);
+                }
+                $editVariationIds = [];
+                foreach($request->variation as $keys => $items) {
+                    if( is_numeric($keys) ) {
+                        $param = [
+                            'product_id' => $id,
+                            'price' => $items['original_price']
+                        ];
+                        if($items['sku'] != null) {
+                            $param['sku'] = $items['sku'];
+                        }
+                        if($items['sale_price'] != null) {
+                            $param['sale_price'] = $items['sale_price'];
+                        }
+                        if( isset($items['image']) ) {
+                            if( $items['image'] != null ) {
+                                $image = $this->productVariationResponsitory->find($items['variation_id'])->feature_image;
+                                if($image != null) {
+                                    \Storage::delete($image);
+                                }
+                                $path = $items['image']->store('products/variation/features');
+                                $param['feature_image'] = $path;
+                            }
+                        }
+                        $this->productVariationResponsitory->update($param, $items['variation_id']);
+                        $editVariationIds[] = $items['variation_id'];
+                        foreach( $items['attr'] as $key => $item ) {
+                            $this->variationAttributeResponsitory->create(['attribute_id' => $key, 'product_variation_id' => $items['variation_id'], 'value' => $item]);
+                        }
+
+                    }
+                }
+                $this->productVariationResponsitory->deleteProductVariation($id, $editVariationIds);
+            }else{
+                $this->productVariationResponsitory->deleteByProductID($id);
+            }
+            if( $request->variationNew != null ) {
+                foreach($request->variationNew as $keys => $items) {
+                    if( is_numeric($keys) ) {
+                        // Create all product variation
+                        $param = [
+                            'product_id' => $id,
+                            'price' => $items['original_price']
+                        ];
+                        if($items['sku'] != null) {
+                            $param['sku'] = $items['sku'];
+                        }
+                        if($items['sale_price'] != null) {
+                            $param['sale_price'] = $items['sale_price'];
+                        }
+                        if( isset($items['image']) ) {
+                            if( $items['image'] != null ) {
+                                $path = $items['image']->store('products/variation/features');
+                                $param['feature_image'] = $path;
+                            }
+                        }
+                        $resultVar = $this->productVariationResponsitory->create($param);
+                        foreach( $items['attr'] as $key => $item ) {
+                            $this->variationAttributeResponsitory->create(['attribute_id' => $key, 'product_variation_id' => $resultVar->id, 'value' => $item]);
+                        }
+                    }
+                }
+            }
+
+        }
+
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product success!');
     }
 
@@ -309,6 +484,18 @@ class ProductController extends Controller
                 $this->productImageResponsitory->delete($id);
             }
         }
+
+        $product_variations = $this->productVariationResponsitory->findAllBy('product_id', $id);
+        if( isset($product_variations) && count($product_variations) > 0 ) {
+            foreach($product_variations as $item) {
+                $this->variationAttributeResponsitory->deleteByProductVariationId($item->id);
+                if( $item->feature_image != null ) {
+                    \Storage::delete($item->feature_image);
+                }
+            }
+            $this->productVariationResponsitory->deleteByProductID($id);
+        }
+
         $product = $this->productResponsitory->find($id);
         \Storage::delete($product->feature_image);
         $this->productResponsitory->delete($id);
@@ -317,11 +504,9 @@ class ProductController extends Controller
 
     public function getAttribute(Request $request){
         if( $request->ajax() ){
-            $ids = $request->id;
-            if( !empty($ids) ){
-                foreach($ids as $key => $id){
-                    $data[$key] = $this->attributeResponsitory->find($id);
-                }
+            $id = $request->id;
+            if( !empty($id) ){
+                $data = $this->attributeResponsitory->find($id);
                 return response()->json($data);
             }
             return null;
@@ -402,7 +587,7 @@ class ProductController extends Controller
 
     public function getProductById(Request $request)
     {
-        if($request->ajax()){
+        if( $request->ajax() ) {
 
             $id = trim($request->id);
 
@@ -421,6 +606,22 @@ class ProductController extends Controller
             }
 
             return response()->json($price);
+        }
+    }
+
+    public function delAttributeVariation(Request $request)
+    {
+        if( $request->ajax() ) {
+            $id = $request->id;
+            $variation = $this->productVariationResponsitory->find($id);
+            $product_variations = $this->productVariationResponsitory->findAllBy('product_id', $variation->id);
+                foreach($product_variations as $item) {
+                    $this->variationAttributeResponsitory->deleteByProductVariationId($item->id);
+                }
+            if( $variation->feature_image != null ) {
+                \Storage::delete($variation->feature_image);
+            }
+            return $this->productVariationResponsitory->delete($id);
         }
     }
 }

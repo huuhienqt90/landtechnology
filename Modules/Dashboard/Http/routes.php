@@ -60,6 +60,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         // Payment history
         Route::resource('payment-history','PaymentHistoryController');
         Route::get('paid/{id?}','PaymentHistoryController@paid')->name('paid');
+        Route::get('deleteAttributeVariation','ProductController@delAttributeVariation')->name('delAttributeVariation');
     });
 
 });
