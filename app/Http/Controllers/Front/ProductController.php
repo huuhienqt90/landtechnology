@@ -541,7 +541,7 @@ class ProductController extends Controller
         );
 
         $data = $this->PayPal->DoExpressCheckoutPayment($PayPalRequest);
-        if($data['ACK'] == 'Success') {
+        if(isset($data['ACK']) && $data['ACK'] == 'Success') {
             $param['status'] = 'accept';
             $this->productOfferResponsitory->update($param, $offer->id);
             $this->huntingResponsitory->update($param, $offer->hunting_id);

@@ -237,7 +237,7 @@ class CartController extends Controller
             );
 
             $data = $this->PayPal->SetExpressCheckout($PayPalRequest);
-            if( $data['ACK'] == 'Success'){
+            if(isset($data['ACK']) && $data['ACK'] == 'Success'){
                 $request->session('SetExpressCheckoutResult', $data);
                 $this->addOrder($request);
                 return redirect($data['REDIRECTURL']);
