@@ -615,4 +615,13 @@ class ProductController extends Controller
             return response()->json($product_variation);
         }
     }
+
+    public function postProductVariationInfo(Request $request, $product_id = 0){
+        if( isset( $request->attrs ) ){
+            $product = $this->productVariationResponsitory->getProductAttribute($product_id, $request->attrs);
+            return response()->json($product, 200);
+        }else{
+            return response()->json(['id' => 0, 'data' => null], 404);
+        }
+    }
 }

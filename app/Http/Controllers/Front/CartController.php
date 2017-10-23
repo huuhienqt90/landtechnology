@@ -74,8 +74,30 @@ class CartController extends Controller
      */
     public function postToCart(PostToCartRequest $request, $id = 0){
         $product = $this->productRepository->find($id);
-        Cart::add($id, $product->name, $request->quantity, $product->getPriceNumber());
-        return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+        $options = ['product_slug' => $product->slug, 'image' => $product->feature_image];
+        if( $product->product_type == 'variable'){
+            if( isset( $request->attrs ) ){
+                $productAttr = $this->productVariationResponsitory->getProductAttribute($id, $request->attrs);
+                if($productAttr['id']){
+                    $price = $productAttr['data']['sale_price'] > 0 ? $productAttr['data']['sale_price'] : $productAttr['data']['price'];
+                    foreach ($request->attrs as $key => $value) {
+                        $options[getAttrName($key)] = $value;
+                    }
+                    if( !empty($productAttr['data']['feature_image'])){
+                        $options['image'] = $productAttr['data']['feature_image'];
+                    }
+                    Cart::add($productAttr['id'], $product->name, $request->quantity, $price, $options);
+                    return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+                }else{
+                    return redirect()->back()->with('alert-danger', 'This option does not allowed to add to cart!');
+                }
+            }else{
+                return redirect()->back()->with('alert-danger', 'This option does not allowed to add to cart!');
+            }
+        }else{
+            Cart::add($id, $product->name, $request->quantity, $product->getPriceNumber(), $options);
+            return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+        }
     }
 
     /**
@@ -89,7 +111,8 @@ class CartController extends Controller
             $product_variation = $this->productVariationResponsitory->find($idVar);
             $product = $this->productRepository->find($id);
             $price = !$product_variation->sale_price ? $product_variation->sale_price : $product_variation->price;
-            Cart::add($id, $product->name, $qty, $price);
+            $options = ['product_slug' => $product->slug, 'image' => $product->feature_image];
+            Cart::add($id, $product->name, $qty, $price, $options);
             return response()->json(true);
         }
     }
@@ -107,6 +130,7 @@ class CartController extends Controller
      */
     public function addToFavorite($id = 0, $quantity = 1, $options = [], $type = 'redirect'){
         $product = $this->productRepository->find($id);
+        $options = ['product_slug' => $product->slug, 'image' => $product->feature_image];
         Cart::instance('wishlist')->add($id, $product->name, $quantity, $product->getPriceNumber(), $options);
         return redirect()->back()->with('alert-success', 'Add product to wish list success');
     }

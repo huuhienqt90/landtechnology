@@ -52,6 +52,7 @@ Route::group(['namespace' => 'Front'], function() {
         Route::get('grid', 'ProductController@showGrid')->name('front.product.grid');
         // Variation
         Route::get('getVariation', 'ProductController@getProductVariation')->name('front.product.getProductVariation');
+        Route::post('variation/{product_id}', 'ProductController@postProductVariationInfo')->name('front.product.postProductVariationInfo');
     });
 
     // Routes for cart and order page

@@ -28,4 +28,23 @@ class ProductVariationResponsitory extends Repository {
     public function deleteProductVariation($id, $arrs = []){
         return ProductVariation::where('product_id', $id)->whereNotIn('id', $arrs)->delete();
     }
+
+    public function getProductAttribute($id, $attrs){
+        $prdt = 0;
+        $productVariationData = null;
+        foreach ($attrs as $key => $value) {
+            $productVariation = ProductVariation::where('product_id', $id)->whereHas('attributes', function($query) use($key, $value){
+                $query->where('attribute_id', $key)->where('value', $value);
+            })->first();
+            if( isset($productVariation->id) && ($prdt == 0 || $prdt == $productVariation->id) ){
+                $prdt = $productVariation->id;
+                $productVariationData = $productVariation->toArray();
+            }else{
+                $prdt = 0;
+                $productVariationData = null;
+            }
+        }
+
+        return ['id' => $prdt, 'data' => $productVariationData];
+    }
 }
