@@ -80,6 +80,15 @@ class Product extends Model
     }
 
     /**
+     * Belong to brands
+     *
+     * @return [type] [description]
+     */
+    public function brands() {
+        return $this->belongsToMany('App\Models\Brand', 'product_brands', 'product_id', 'brand_id');
+    }
+
+    /**
      * [category description]
      * @return [type] [description]
      */

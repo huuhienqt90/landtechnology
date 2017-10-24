@@ -22,7 +22,9 @@ function selected($pr1, $pr2){
 function getProductCountByBrand($brandId = 0 )
 {
     if ($brandId) {
-        return Product::where('product_brand', $brandId)->count();
+        return Product::whereHas('brands', function($query) use($brandId) {
+            $query->where('id', $brandId);
+        })->count();
     } else {
         return 0;
     }
