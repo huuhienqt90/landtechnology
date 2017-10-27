@@ -63,11 +63,13 @@
             <div class="demo">
                 <span class="text-uppercase title-prince">Price</span>
                 <div id="slider-range" class="range-style"></div>
+                <input type="hidden" name="priceMin" value="{{ $priceMin or 0 }}" />
+                <input type="hidden" name="priceMax" value="{{ $priceMax or 500 }}" />
                 <p>
-                    <!-- <label for="amount"></label> -->
-                    <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+                    <span class="span6 price-min">$0</span>
+                    <span class="">-</span>
+                    <span class="span6 price-max">$0</span>
                 </p>
-                <a href="#" title="btn search price">Search</a>
             </div>
 
         </div> <!-- .shop-by -->

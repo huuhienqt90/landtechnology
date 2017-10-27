@@ -20,7 +20,7 @@ class ProductStoreRequest extends FormRequest
             'status' => 'required',
             'description_short' => 'required',
             'description' => 'required',
-            'sell_type' => 'required',
+            'sell_type' => 'required|numeric|min:1',
             'feature_image' => 'required|image'
         ];
         if( $product_type == 'simple' ) {

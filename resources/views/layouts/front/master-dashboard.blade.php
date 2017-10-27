@@ -22,7 +22,7 @@
         <!-- Style custom -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style-dashboard.css') }}">
-        
+
         <!-- File Input -->
         <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
         <script src="{{ asset('themes/dashboard/dist/js/fileinput.min.js') }}"></script>
@@ -43,6 +43,8 @@
         <!-- Header -->
         @include('layouts.front.commons.header')
         <!-- End header -->
+
+        @include('front.messages')
 
         <!-- Content -->
         <div class="container">
@@ -72,7 +74,7 @@
         <!-- Footer -->
         @include('layouts.front.commons.footer')
         <!-- End footer -->
-        
+
         <!-- Script -->
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <!-- Bootstrap WYSIHTML5 -->

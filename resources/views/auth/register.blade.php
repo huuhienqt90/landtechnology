@@ -61,7 +61,7 @@
                                                 {{ Form::label(null, $errors->has('last_name')? $errors->first('last_name') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <div class="form-group {{ $errors->has('email')? 'has-error' : '' }}">
+                                        <div class="form-group{{ $errors->has('email')? 'has-error' : '' }}">
                                             {{ Form::label('input-email', 'E-Mail', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::text('email', old('email'), ['placeholder' => 'E-Mail', 'class' => 'form-control', 'id' => 'input-email']) }}
@@ -69,8 +69,7 @@
                                                 {{ Form::label(null, $errors->has('email')? $errors->first('email') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
-                                        <!--
-                                        <div class="form-group">
+                                        <!-- <div class="form-group{{ $errors->has('email')? 'has-error' : '' }}">
                                             {{ Form::label('input-telephone', 'Mobile Number', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
                                                 {{ Form::text('mobilenumber', old('mobilenumber'), ['placeholder' => 'Mobile Number', 'class' => 'form-control', 'id' => 'input-telephone', 'required' => 'required', 'pattern' => '[\+]\d{8,20}']) }}
@@ -96,7 +95,7 @@
                                         <div class="form-group {{ $errors->has('country')? 'has-error' : '' }}">
                                             {{ Form::label('country', 'Country', ['class' => 'col-sm-2 control-label']) }}
                                             <div class="col-sm-10">
-                                                {{ Form::select('country', ['L' => 'Large', 'S' => 'Small'], old('country'), ['placeholder' => 'Select Country', 'class' => 'form-control']) }}
+                                                {{ Form::select('country', $countries, old('country'), ['placeholder' => 'Select Country', 'class' => 'form-control']) }}
                                                 {{ Form::label(null, $errors->has('country')? $errors->first('country') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>

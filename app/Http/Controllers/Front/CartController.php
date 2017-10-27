@@ -16,6 +16,9 @@ use App\Repositories\OrderMetaResponsitory;
 use App\Repositories\OrderProductResponsitory;
 use App\Repositories\PaymentHistoryResponsitory;
 use App\Repositories\ProductVariationResponsitory;
+use App\Repositories\CountryResponsitory;
+use App\Repositories\UserResponsitory;
+use App\Repositories\UserMetaRepository;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Stripe\Error\Card;
 use Illuminate\Support\Facades\Mail;
@@ -31,12 +34,18 @@ class CartController extends Controller
     private $orderProductResponsitory;
     private $paymentHistoryResponsitory;
     private $productVariationResponsitory;
+    private $userResponsitory;
+    private $userMetaRepository;
+    private $countryResponsitory;
 
     public function __construct(ProductResponsitory $productRepository,
                                 SettingRepository $settingRepository,
                                 OrderResponsitory $orderResponsitory,
                                 OrderMetaResponsitory $orderMetaResponsitory,
                                 OrderProductResponsitory $orderProductResponsitory,
+                                UserResponsitory $userResponsitory,
+                                UserMetaRepository $userMetaRepository,
+                                CountryResponsitory $countryResponsitory,
                                 PaymentHistoryResponsitory $paymentHistoryResponsitory,
                                 ProductVariationResponsitory $productVariationResponsitory)
     {
@@ -45,6 +54,9 @@ class CartController extends Controller
         $this->orderResponsitory = $orderResponsitory;
         $this->orderMetaResponsitory = $orderMetaResponsitory;
         $this->orderProductResponsitory = $orderProductResponsitory;
+        $this->userResponsitory = $userResponsitory;
+        $this->userMetaRepository = $userMetaRepository;
+        $this->countryResponsitory = $countryResponsitory;
         $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
         $this->productVariationResponsitory = $productVariationResponsitory;
 
@@ -146,7 +158,62 @@ class CartController extends Controller
      * Show checkout page
      */
     public function showCheckout(){
-        return view('front.ecommerce.checkout');
+        $checkout = $this->userResponsitory;
+        $countries = [];
+        $countryList = $this->countryResponsitory->all();
+        if( $countryList->count() ){
+            foreach ($countryList as $country) {
+                $countries[$country->id] = $country->name;
+            }
+        }
+        if( auth()->check() ){
+            $checkout = $this->userResponsitory->find(auth()->user()->id);
+            $userMeta = $this->userMetaRepository->findAllBy('user_id', auth()->user()->id);
+            if( $userMeta->count() ){
+                foreach ($userMeta as $meta) {
+                    $checkout->{$meta->key} = $meta->value;
+                }
+            }
+            if( (!isset( $checkout->billingFirstName ) || empty($checkout->billingFirstName)) && !empty($checkout->first_name)){
+                $checkout->billingFirstName = $checkout->first_name;
+            }
+            if( (!isset( $checkout->billingLastName ) || empty($checkout->billingLastName)) && !empty($checkout->last_name)){
+                $checkout->billingLastName = $checkout->last_name;
+            }
+            if( (!isset( $checkout->shippingFirstName ) || empty($checkout->shippingFirstName)) && !empty($checkout->first_name)){
+                $checkout->shippingFirstName = $checkout->first_name;
+            }
+            if( (!isset( $checkout->shippingLastName ) || empty($checkout->shippingLastName)) && !empty($checkout->last_name)){
+                $checkout->shippingLastName = $checkout->last_name;
+            }
+            if( (!isset( $checkout->billingAddress1 ) || empty($checkout->billingAddress1)) && !empty($checkout->address1)){
+                $checkout->billingAddress1 = $checkout->address1;
+            }
+            if( (!isset( $checkout->shippingAddress1 ) || empty($checkout->shippingAddress1)) && !empty($checkout->address1)){
+                $checkout->shippingAddress1 = $checkout->address1;
+            }
+            if( (!isset( $checkout->billingAddress2 ) || empty($checkout->billingAddress2)) && !empty($checkout->address2)){
+                $checkout->billingAddress2 = $checkout->address2;
+            }
+            if( (!isset( $checkout->shippingAddress2 ) || empty($checkout->shippingAddress2)) && !empty($checkout->address2)){
+                $checkout->shippingAddress1 = $checkout->address1;
+            }
+            if( (!isset( $checkout->billingPostCode ) || empty($checkout->billingPostCode)) && !empty($checkout->postal_code)){
+                $checkout->billingPostCode = $checkout->postal_code;
+            }
+            if( (!isset( $checkout->shippingPostCode ) || empty($checkout->shippingPostCode)) && !empty($checkout->postal_code)){
+                $checkout->shippingPostCode = $checkout->postal_code;
+            }
+            if( (!isset( $checkout->billingEmail ) || empty($checkout->billingEmail)) && !empty($checkout->email)){
+                $checkout->billingEmail = $checkout->email;
+            }
+            if( (!isset( $checkout->shippingEmail ) || empty($checkout->shippingEmail)) && !empty($checkout->email)){
+                $checkout->shippingEmail = $checkout->email;
+            }
+        }
+
+
+        return view('front.ecommerce.checkout', compact('checkout', 'countries'));
     }
 
     /**
@@ -174,6 +241,16 @@ class CartController extends Controller
      * Processing order
      */
     public function postCheckout(PostCheckoutRequest $request){
+        if( auth()->check() ){
+            $data = $request->except(['_token', 'orderNote', 'paymentMethod', 'card_no', 'ccExpiryMonth', 'ccExpiryYear', 'cvvNumber', 'amount']);
+            foreach ($data as $k=>$v) {
+                if( $this->userMetaRepository->findWhere(['user_id' => auth()->user()->id, 'key' => $k])->count() ){
+                    $this->userMetaRepository->update(['value' => $v], $this->userMetaRepository->findWhere(['user_id' => auth()->user()->id, 'key' => $k])->first()->id);
+                }else{
+                    $this->userMetaRepository->create(['user_id' => auth()->user()->id, 'value' => $v, 'key' => $k]);
+                }
+            }
+        }
         if( isset($request->paymentMethod) && $request->paymentMethod == 'paypal' ){
             $SECFields = array(
                 'token' => '',

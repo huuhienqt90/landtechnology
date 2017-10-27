@@ -30,7 +30,11 @@
                     <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Dashboard</a></li>
                 </ul>
             </li>
+            @if( Request::url() == route('dashboard.product.index') || Request::url() == route('dashboard.attribute-group.index') || Request::url() == route('dashboard.attribute.index') || Request::url() == route('dashboard.brand.index') || Request::url() == route('dashboard.category.index') || Request::url() == route('dashboard.sell-type.index') || Request::url() == route('dashboard.seller-shipping.index') )
+            <li class="active treeview">
+            @else
             <li class="treeview">
+            @endif
                 <a href="#">
                     <i class="fa fa-cubes"></i>
                     <span>Products</span>
@@ -45,7 +49,11 @@
                     <li><a href="{{ route('dashboard.seller-shipping.index') }}"><i class="fa fa-circle-o"></i> Seller Shippings</a></li>
                 </ul>
             </li>
+            @if( Request::url() == route('dashboard.order.index') || Request::url() == route('dashboard.coupon.index') || Request::url() == route('dashboard.setting.index') || Request::url() == route('dashboard.commission.index') || Request::url() == route('dashboard.payment-history.index'))
+            <li class="active treeview">
+            @else
             <li class="treeview">
+            @endif
                 <a href="#">
                     <i class="fa fa-shopping-basket"></i>
                     <span>E-Commerce</span>
@@ -53,13 +61,16 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ route('dashboard.order.index') }}"><i class="fa fa-circle-o"></i> Orders</a></li>
                     <li><a href="{{ route('dashboard.coupon.index') }}"><i class="fa fa-circle-o"></i> Coupons</a></li>
-                    <li><a href="{{ url('dashboard') }}"><i class="fa fa-circle-o"></i> Reviews</a></li>
                     <li><a href="{{ route('dashboard.setting.index') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
                     <li><a href="{{ route('dashboard.commission.index') }}"><i class="fa fa-circle-o"></i> Commissions</a></li>
                     <li><a href="{{ route('dashboard.payment-history.index') }}"><i class="fa fa-circle-o"></i> Payment Histories</a></li>
                 </ul>
             </li>
+            @if( Request::url() == route('dashboard.user.index') || Request::url() == route('dashboard.role.index'))
+            <li class="active treeview">
+            @else
             <li class="treeview">
+            @endif
                 <a href="#">
                     <i class="fa fa-users"></i>
                     <span>Users</span>

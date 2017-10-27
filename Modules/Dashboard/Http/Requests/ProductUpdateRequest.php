@@ -20,7 +20,7 @@ class ProductUpdateRequest extends FormRequest
             'status' => 'required',
             'description_short' => 'required',
             'description' => 'required',
-            'sell_type' => 'required',
+            'sell_type' => 'required|numeric|min:1',
         ];
         if( $product_type == 'simple' ) {
             $rules['original_price'] = 'required|numeric';

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Register;
+use App\Repositories\CountryResponsitory;
 
 class RegisterController extends Controller
 {
@@ -24,21 +25,24 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    protected $countryResponsitory;
+
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CountryResponsitory $countryResponsitory)
     {
         $this->middleware('guest');
+        $this->countryResponsitory = $countryResponsitory;
     }
 
     /**
@@ -93,5 +97,22 @@ class RegisterController extends Controller
             Session::flash('msgEr', 'Create user fail');
             return redirect()->route('front.user.login');
         }
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        $countries = [];
+        $countryList = $this->countryResponsitory->all();
+        if( $countryList->count() ){
+            foreach ($countryList as $country) {
+                $countries[$country->id] = $country->name;
+            }
+        }
+        return view('auth.register', compact('countries'));
     }
 }

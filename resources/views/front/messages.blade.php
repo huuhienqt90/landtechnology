@@ -1,10 +1,14 @@
 @if (session('alert-danger'))
-    <script type="application/javascript">
-        $.notify('{{ session('alert-danger') }}', "danger");
-    </script>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-danger" style="margin-top: 20px;" role="alert">{{ session('alert-danger') }}</div>
+        </div>
+    </div>
 @endif
 @if (session('alert-success'))
-    <script type="application/javascript">
-        $.notify('{{ session('alert-success') }}', "success");
-    </script>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-success" style="margin-top: 20px;" role="alert">{{ session('alert-success') }}</div>
+        </div>
+    </div>
 @endif

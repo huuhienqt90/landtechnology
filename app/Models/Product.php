@@ -163,6 +163,9 @@ class Product extends Model
      * @return mixed
      */
     public function getPriceNumber(){
+        if( $this->product_type == 'variable' ){
+            return ProductVariation::where('product_id', $this->id)->max('price');
+        }
         if( $this->sale_price > 0 && $this->original_price > $this->sale_price){
             return $this->sale_price;
         }else{
@@ -189,5 +192,9 @@ class Product extends Model
         $min = ProductVariation::where('product_id', $this->id)->min('price');
         $max = ProductVariation::where('product_id', $this->id)->max('price');
         return '<span class="product-price tx-sp-cl">$'.number_format($min, 2).' - $'.number_format($max, 2).'</span>';
+    }
+    public function getMinPrice(){
+        $min = ProductVariation::where('product_id', $this->id)->min('price');
+        return $min ? $min : 0;
     }
 }

@@ -22,9 +22,11 @@ class AttributeGroupResponsitory extends Repository {
 
     public function listTypes(){
         return $arrTypes = [
-            'select' => 'Select',
-            'text' => 'Text',
-            'color' => 'Color',
+            'select'    => 'Select',
+            'text'      => 'Text',
+            'color'     => 'Color',
+            'checkbox'  => 'Checkbox',
+            'radio'     => 'Radiobox'
         ];
     }
 }

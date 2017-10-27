@@ -79,7 +79,7 @@
                     <div class="add-to-cart">
                         @if($product->attributes->groupBy('attribute_id')->count())
                             @foreach($product->attributes->groupBy('attribute_id')->all() as $attr)
-                                @include('partials.'.$attr->first()->attribute->group->type, ['field' => 'attrs['.$attr->first()->attribute->id.']', 'label' => $attr->first()->attribute->name, 'options' => $attr->toArray()])
+                                @include('partials.products.'.$attr->first()->attribute->group->type, ['field' => 'attrs['.$attr->first()->attribute->id.']', 'label' => $attr->first()->attribute->name, 'options' => $attr->toArray()])
                             @endforeach
                         @endif
                         <p class="required">Required Field *</p>
