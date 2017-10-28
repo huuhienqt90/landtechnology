@@ -191,8 +191,8 @@ class ProductController extends Controller
         }
 
         if( $request->product_type == 'variable' ) {
-            if( $request->variation != null ) {
-                foreach($request->variation as $keys => $items) {
+            if( $request->variationNew != null ) {
+                foreach($request->variationNew as $keys => $items) {
                     if( is_numeric($keys) ) {
                         $param = [
                             'product_id' => $result->id,
