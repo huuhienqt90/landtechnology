@@ -4,13 +4,15 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\CategoryResponsitory;
 use Modules\Dashboard\Http\Requests\CategoryUpdateRequest;
 use Modules\Dashboard\Http\Requests\CategoryStoreRequest;
 
-class CategoryController extends Controller
+class CategoryController extends DashboardController
 {
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'category';
+
     protected $categoryResponsitory;
     public function __construct(CategoryResponsitory $categoryResponsitory){
         $this->categoryResponsitory = $categoryResponsitory;
@@ -22,7 +24,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryResponsitory->all();
-        return view('dashboard::category.index', compact('categories'));
+        return $this->viewDashboard('category.index', compact('categories'));
     }
 
     /**
@@ -39,7 +41,7 @@ class CategoryController extends Controller
                 $cateArr[$cat->id] = $cat->name;
             }
         }
-        return view('dashboard::category.create', compact('category', 'cateArr'));
+        return $this->viewDashboard('category.create', compact('category', 'cateArr'));
     }
 
     /**
@@ -67,7 +69,7 @@ class CategoryController extends Controller
      */
     public function show()
     {
-        return view('dashboard::index');
+        return $this->viewDashboard('index');
     }
 
     /**
@@ -84,7 +86,7 @@ class CategoryController extends Controller
                 $cateArr[$cat->id] = $cat->name;
             }
         }
-        return view('dashboard::category.edit', compact('category', 'cateArr'));
+        return $this->viewDashboard('category.edit', compact('category', 'cateArr'));
     }
 
     /**

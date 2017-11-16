@@ -4,14 +4,15 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\UserResponsitory;
 use Modules\Dashboard\Http\Requests\AttributeGroupRequest;
 use Auth;
 
-class AttributeGroupController extends Controller
+class AttributeGroupController extends DashboardController
 {
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'attribute-group';
     protected $attrGroupResponsitory;
     protected $userResponsitory;
     public function __construct(AttributeGroupResponsitory $attrGroupResponsitory, UserResponsitory $userResponsitory){
@@ -26,7 +27,7 @@ class AttributeGroupController extends Controller
     public function index()
     {
         $attributeGroups = $this->attrGroupResponsitory->all();
-        return view('dashboard::attribute-group.index', compact('attributeGroups'));
+        return $this->viewDashboard('attribute-group.index', compact('attributeGroups'));
     }
 
     /**
@@ -53,7 +54,7 @@ class AttributeGroupController extends Controller
         }
 
         $listTypes = $this->attrGroupResponsitory->listTypes();
-        return view('dashboard::attribute-group.create', compact('attributeGroup', 'sellerArr', 'attributesGroupArr', 'listTypes'));
+        return $this->viewDashboard('attribute-group.create', compact('attributeGroup', 'sellerArr', 'attributesGroupArr', 'listTypes'));
     }
 
     /**
@@ -78,7 +79,7 @@ class AttributeGroupController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -105,7 +106,7 @@ class AttributeGroupController extends Controller
 
         $listTypes = $this->attrGroupResponsitory->listTypes();
         $attributeGroup = $this->attrGroupResponsitory->find($id);
-        return view('dashboard::attribute-group.edit', compact('attributeGroup','sellerArr','attributesGroupArr','listTypes'));
+        return $this->viewDashboard('attribute-group.edit', compact('attributeGroup','sellerArr','attributesGroupArr','listTypes'));
     }
 
     /**

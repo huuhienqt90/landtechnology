@@ -23,8 +23,11 @@ use App\Models\ProductBrand;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
-class ProductController extends Controller
+class ProductController extends DashboardController
 {
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'product';
+
     protected $categoryResponsitory;
     protected $brandResponsitory;
     protected $sellerShippingResponsitory;
@@ -62,7 +65,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->productResponsitory->all();
-        return view('dashboard::product.index', compact('products'));
+        return $this->viewDashboard('product.index', compact('products'));
     }
 
     /**
@@ -111,7 +114,7 @@ class ProductController extends Controller
         }
 
         $shippings = $this->sellerShippingResponsitory->findWhere(['seller_id' => auth()->user()->id]);
-        return view('dashboard::product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','shippings'));
+        return $this->viewDashboard('product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','shippings'));
     }
 
     /**
@@ -228,7 +231,7 @@ class ProductController extends Controller
      */
     public function show()
     {
-        // return view('dashboard::show');
+        // return $this->viewDashboard('show');
     }
 
     /**
@@ -318,7 +321,7 @@ class ProductController extends Controller
         $product->product_images = $productImageArr;
         $shippings = $this->sellerShippingResponsitory->findWhere(['seller_id' => auth()->user()->id]);
 
-        return view('dashboard::product.edit', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages','shippings'));
+        return $this->viewDashboard('product.edit', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages','shippings'));
     }
 
     /**

@@ -4,19 +4,19 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\AttributeResponsitory;
 use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\UserResponsitory;
 use Modules\Dashboard\Http\Requests\AttributeRequest;
 
-class AttributeController extends Controller
+class AttributeController extends DashboardController
 {
     protected $attributeResponsitory;
     protected $attributeGroupResponsitory;
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'attribute';
 
-    public function __construct(AttributeResponsitory $attributeResponsitory,
-                                AttributeGroupResponsitory $attributeGroupResponsitory)
+    public function __construct(AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory)
     {
         $this->attributeResponsitory = $attributeResponsitory;
         $this->attributeGroupResponsitory = $attributeGroupResponsitory;
@@ -28,7 +28,7 @@ class AttributeController extends Controller
     public function index()
     {
         $attributes = $this->attributeResponsitory->all();
-        return view('dashboard::attribute.index', compact('attributes'));
+        return $this->viewDashboard('attribute.index', compact('attributes'));
     }
 
     /**
@@ -43,7 +43,7 @@ class AttributeController extends Controller
         foreach($attrGroups as $item){
             $arrAttrGroups[$item->id] = $item->name;
         }
-        return view('dashboard::attribute.create', compact('arrAttrGroups','attribute'));
+        return $this->viewDashboard('attribute.create', compact('arrAttrGroups','attribute'));
     }
 
     /**
@@ -66,7 +66,7 @@ class AttributeController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -74,14 +74,14 @@ class AttributeController extends Controller
      * @return Response
      */
     public function edit($id)
-    {   
+    {
         $attribute = $this->attributeResponsitory->find($id);
         $attrGroups = $this->attributeGroupResponsitory->all();
         $arrAttrGroups = ['' => 'Select a attribute group'];
         foreach($attrGroups as $item){
             $arrAttrGroups[$item->id] = $item->name;
         }
-        return view('dashboard::attribute.edit', compact('arrAttrGroups','attribute'));
+        return $this->viewDashboard('attribute.edit', compact('arrAttrGroups','attribute'));
     }
 
     /**

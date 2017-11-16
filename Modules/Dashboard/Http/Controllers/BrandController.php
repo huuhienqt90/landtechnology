@@ -4,13 +4,14 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\BrandResponsitory;
 use Modules\Dashboard\Http\Requests\BrandUpdateRequest;
 use Modules\Dashboard\Http\Requests\BrandStoreRequest;
 
-class BrandController extends Controller
+class BrandController extends DashboardController
 {
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'brand';
     protected $brandResponsitory;
     public function __construct(BrandResponsitory $brandResponsitory){
         $this->brandResponsitory = $brandResponsitory;
@@ -22,7 +23,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = $this->brandResponsitory->all();
-        return view('dashboard::brand.index', compact('brands'));
+        return $this->viewDashboard('brand.index', compact('brands'));
     }
 
     /**
@@ -32,7 +33,7 @@ class BrandController extends Controller
     public function create()
     {
         $brand = $this->brandResponsitory;
-        return view('dashboard::brand.create', compact('brand'));
+        return $this->viewDashboard('brand.create', compact('brand'));
     }
 
     /**
@@ -57,7 +58,7 @@ class BrandController extends Controller
      */
     public function show()
     {
-        return view('dashboard::index');
+        return $this->viewDashboard('index');
     }
 
     /**
@@ -67,7 +68,7 @@ class BrandController extends Controller
     public function edit($id)
     {
         $brand = $this->brandResponsitory->find($id);
-        return view('dashboard::brand.edit', compact('brand'));
+        return $this->viewDashboard('brand.edit', compact('brand'));
     }
 
     /**
