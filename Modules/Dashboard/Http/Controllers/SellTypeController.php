@@ -23,7 +23,7 @@ class SellTypeController extends DashboardController
      */
     public function index()
     {
-        $sellTypes = $this->sellTypeResponsitory->all();
+        $sellTypes = $this->sellTypeResponsitory->getSellTypesByUser(auth()->user()->id, 20);
         return $this->viewDashboard('sell-type.index', compact('sellTypes'));
     }
 
@@ -77,8 +77,8 @@ class SellTypeController extends DashboardController
     {
         $update = [
             'name' => $request->name,
-            'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id
+            'updated_by' => auth()->user()->id,
+            'slug' => $request->slug
         ];
         $this->sellTypeResponsitory->update($update, $id);
         return redirect(route('dashboard.sell-type.index'))->with('alert-success', 'Update sell type sucess!');

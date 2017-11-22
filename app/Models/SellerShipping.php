@@ -20,4 +20,5 @@ class SellerShipping extends Model
     public function user(){
         return $this->hasOne('App\Models\User', 'id', 'seller_id');
     }
+
 }

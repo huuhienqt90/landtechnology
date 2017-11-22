@@ -12,4 +12,12 @@ class SellerShippingResponsitory extends Repository {
     public function model() {
         return 'App\Models\SellerShipping';
     }
+
+    public function getSellerShippingsByUser($user_id, $take = 20)
+    {
+        $attrs = SellerShipping::whereHas('user', function($query){
+            $query->where('is_admin', 1);
+        })->orWhere('seller_id', $user_id)->paginate($take);
+        return $attrs;
+    }
 }

@@ -47,4 +47,12 @@ class CategoryResponsitory extends Repository {
     public function getParent(){
         return Category::where('parent_id', 0)->get();
     }
+
+    public function getCategoriesByUser($user_id, $take = 20)
+    {
+        $attrs = Category::whereHas('author', function($query){
+            $query->where('is_admin', 1);
+        })->orWhere('created_by', $user_id)->paginate($take);
+        return $attrs;
+    }
 }

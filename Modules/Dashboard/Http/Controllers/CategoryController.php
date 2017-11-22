@@ -23,7 +23,7 @@ class CategoryController extends DashboardController
      */
     public function index()
     {
-        $categories = $this->categoryResponsitory->all();
+        $categories = $this->categoryResponsitory->getCategoriesByUser(auth()->user()->id, 20);
         return $this->viewDashboard('category.index', compact('categories'));
     }
 
@@ -99,7 +99,6 @@ class CategoryController extends DashboardController
         $update = [
             'name' => $request->name,
             'status' => $request->status,
-            'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id
         ];
         if( $request->hasFile('image') ){

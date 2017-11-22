@@ -27,7 +27,7 @@ class AttributeController extends DashboardController
      */
     public function index()
     {
-        $attributes = $this->attributeResponsitory->all();
+        $attributes = $this->attributeResponsitory->findAllByUsers(auth()->user()->id);
         return $this->viewDashboard('attribute.index', compact('attributes'));
     }
 
@@ -56,6 +56,7 @@ class AttributeController extends DashboardController
         $param = $request->all();
         $param['options'] = trim($request->input('options'));
         $param['options'] = str_replace(' ', '', $param['options']);
+        $param['seller_id'] = auth()->user()->id;
         $this->attributeResponsitory->create($param);
         return redirect(route('dashboard.attribute.index'))->with('alert-success', 'Create attribute sucess!');
     }
@@ -94,6 +95,7 @@ class AttributeController extends DashboardController
         $param = $request->only(['group_id','name']);
         $param['options'] = trim( $request->input('options') );
         $param['options'] = str_replace(' ', '', $param['options']);
+        $param['seller_id'] = auth()->user()->id;
         $this->attributeResponsitory->update($param, $id);
         return redirect(route('dashboard.attribute.index'))->with('alert-success', 'Update attribute sucess!');
     }

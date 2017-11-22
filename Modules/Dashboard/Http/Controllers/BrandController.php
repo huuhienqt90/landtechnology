@@ -22,7 +22,7 @@ class BrandController extends DashboardController
      */
     public function index()
     {
-        $brands = $this->brandResponsitory->all();
+        $brands = $this->brandResponsitory->getBrandsByUser(auth()->user()->id, 20);
         return $this->viewDashboard('brand.index', compact('brands'));
     }
 
@@ -80,8 +80,8 @@ class BrandController extends DashboardController
     {
         $update = [
             'name' => $request->name,
-            'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
+            'slug' => $request->slug
         ];
         if( $request->hasFile('image') ){
             $path = $request->file('image')->store('brands');

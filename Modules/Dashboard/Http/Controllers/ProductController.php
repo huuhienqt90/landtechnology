@@ -64,7 +64,12 @@ class ProductController extends DashboardController
      */
     public function index()
     {
-        $products = $this->productResponsitory->all();
+        if( auth()->user()->isSuperUser() ){
+            $products = $this->productResponsitory->paginate(20);
+        }else{
+            $products = $this->productResponsitory->getSellingProducts(auth()->user()->id);
+        }
+
         return $this->viewDashboard('product.index', compact('products'));
     }
 

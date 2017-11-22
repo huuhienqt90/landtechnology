@@ -24,7 +24,7 @@ class SellerShippingController extends DashboardController
      */
     public function index()
     {
-        $sellerShippings = $this->sellerShippingResponsitory->all();
+        $sellerShippings = $this->sellerShippingResponsitory->getSellerShippingsByUser(auth()->user()->id, 20);
         return $this->viewDashboard('seller-shipping.index', compact('sellerShippings'));
     }
 
@@ -76,7 +76,7 @@ class SellerShippingController extends DashboardController
      */
     public function update(SellerShippingUpdateRequest $request, $id)
     {
-        $update = ['seller_id' => auth()->user()->id, 'from_country' => $request->from_country, 'to_country' => $request->to_country, 'cost' => $request->cost];
+        $update = ['from_country' => $request->from_country, 'to_country' => $request->to_country, 'cost' => $request->cost];
         $this->sellerShippingResponsitory->update($update, $id);
         return redirect(route('dashboard.seller-shipping.index'))->with('alert-success', 'Update seller shipping sucess!');
     }
