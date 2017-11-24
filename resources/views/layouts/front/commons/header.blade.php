@@ -78,11 +78,21 @@
                                             <ul class="mini-cart-items">
                                                 @foreach(Cart::content() as $row)
                                                 <li class="list-mini-cart-item row">
-                                                    <div class="col-md-3"><a href="{{ route('front.product.detail', getProductAttr($row->id, 'slug')) }}" title="{{ $row->name }}" class="img-responsive thumbnail"><img src="{{ getFeatureImage($row->id) }}" alt="images img hover cart img-responsive"></a></div>
+                                                    <div class="col-md-3"><a href="{{ route('front.product.detail', $row->options->product_slug) }}" title="{{ $row->name }}" class="img-responsive thumbnail"><img src="{{ asset('storage/'.$row->options->image) }}" alt="images img hover cart img-responsive"></a></div>
                                                     <div class="col-md-7">
                                                         <p>{{ $row->name }}</p>
-                                                        <p>Qty: {{ $row->qty }}</p>
-                                                        <span>${{ $row->price }}</span>
+                                                        <p>
+                                                            <strong>Qty</strong>: {{ $row->qty }}<br />
+                                                            <strong>Price</strong>: <span>${{ number_format($row->price, 2) }}</span><br />
+                                                            @if( count($row->options) )
+                                                                @foreach($row->options as $k=>$v)
+                                                                @if($k == 'product_slug' || $k == 'image')
+                                                                @continue
+                                                                @endif
+                                                                <strong>{{ $k }}</strong>: <span>{{ $v }}</span> <br />
+                                                                @endforeach
+                                                            @endif
+                                                        </p>
                                                     </div>
                                                     <div class="col-md-2"><a href="{{ route('front.product.removeFromCart', $row->rowId) }}" title="icon close" class="img-icon-close"><i class="fa fa-times" aria-hidden="true"></i></a></div>
                                                 </li>

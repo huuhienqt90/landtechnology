@@ -44,7 +44,7 @@
                 <!--Gallery Thumbs-->
             </div>
 
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-6 col-sm-6" style="position: relative;">
                 <div class="detail-content">
                     <h4>{{ $product->name }}</h4>
                     <p>{!! $product->description_short !!}</p>
@@ -74,25 +74,14 @@
                     </ol>
                     <div class="single-product-price" id="price">{!! $product->getPriceMinMax() !!}</div>
                 </div> <!-- .detail-content -->
-                <form action="{{ route('front.product.postToCart', $product->id, 1) }}" method="post">
+                <form action="{{ route('front.product.postToCart', $product->id, 1) }}" id="form-add-to-cart" method="post">
                     {{ csrf_field() }}
                     <div class="add-to-cart">
-                        @if( $product->product_variations()->where('product_id', $product->id)->count() )
-                            <?php $tmp = array(); ?>
-                            @foreach($product->product_variations()->where('product_id', $product->id)->get() as $var)
-                                @foreach($var->variations()->get() as $key => $item)
-                                    <?php $tmp[$item->product_variation_id][] = '- '. $item->attribute->name . ': ' . $item->value .'' ?>
-                                @endforeach
+                        @if($product->attributes->groupBy('attribute_id')->count())
+                            @foreach($product->attributes->groupBy('attribute_id')->all() as $attr)
+                                @include('partials.products.'.$attr->first()->attribute->group->type, ['field' => 'attrs['.$attr->first()->attribute->id.']', 'label' => $attr->first()->attribute->name, 'options' => $attr->toArray()])
                             @endforeach
-                            <h4>Choose an option</h4>
-                            <select name="variation" id="variation" class="form-control">
-                                <option value="">Choose an option</option>
-                                @foreach($tmp as $key => $item)
-                                    <option value="{{ $key }}">@foreach($item as $option) {{ $option }} @endforeach</option>
-                                @endforeach
-                            </select>
                         @endif
-                        
                         <p class="required">Required Field *</p>
                         <div class="quantity">
                             <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
@@ -131,6 +120,9 @@
                 </form>
                 <div class="list">
                     <img src="{{ asset('assets/images/list-add-to-cart-product.png') }}" title="images list">
+                </div>
+                <div class="product-overlay">
+                    <div class="loading"><h3>Loading...</h3></div>
                 </div>
             </div>
         </div> <!-- .row -->
@@ -272,6 +264,8 @@
 </style>
 <script type="text/javascript">
     (function() {
+        var originalPrice = $('#price').html();
+        var processingStatus = false;
         $("button[type=submit]").on('click', function() {
             if( $(this).hasClass('disabled') ) {
                 alert('PLease choose an option');
@@ -282,49 +276,47 @@
         $("input[name=quantity]").on('change paste keyup', function() {
             qty = $(this).val();
         });
-        $("#variation").on('change', function() {
-            var id = $(this).val();
-            if( typeof(id) !== "undefined" && id !== null && id > 0 ) {
-                $("button[type=submit]").removeClass("disabled");
-                $.ajax({
-                    url: "{{ route('front.product.getProductVariation') }}",
-                    type: "GET",
-                    data: {id:id},
-                    success: function(result) {
-                        $("#image_feature").html('<div class="gallery__hero"><img src="{{ asset("storage") }}/'+result.feature_image+'"</div>');
-                        if( !result.sale_price ) {
-                            $("#price").html('<span class="product-price tx-sp-cl">$'+result.price+'</span>');
-                        }else{
-                            $("#price").html('<span class="tx-sp-line-through">$'+result.price+'</span> <span class="product-price tx-sp-cl">$'+result.sale_price+'</span>')
-                        }
-                        if( result.sku !== null ) {
-                            $("#sku").html('<div class="form-group"><label class="label-control">SKU:</label><span> '+result.sku+'</span></div>');
-                        }else{
-                            $("#sku").html('');
-                        }
-                        $("button[type=submit]").on('click', function() {
-                            if( $(this).hasClass('disabled') ) {
-                                return false;
-                            }else{
-                                $.ajax({
-                                    url: "{{ route('front.product.addToCartAjax') }}",
-                                    type: "get",
-                                    data: {id:{{$product->id}}, idVar:id, qty:qty},
-                                    success: function(resultVar) {
-                                        console.log(resultVar);
-                                        if(resultVar) {
-                                            alert('Add to cart success');
-                                        }
-                                    }
-                                });
-                                return false;
-                            }
-                        });
+        $('.attr-item').on('change', function(){
+            if(!processingStatus){
+                processingStatus = true;
+                $('.product-overlay').css('display', 'flex');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-            }else{
-                $("button[type=submit]").addClass("disabled");
+                $.ajax({
+                    type: "POST",
+                    url: '{{ route('front.product.postProductVariationInfo', $product->id) }}',
+                    data: $('#form-add-to-cart').serialize(),
+                    success: function (data) {
+                        console.log(data);
+                        processingStatus = false;
+                        $('.product-overlay').css('display', 'none');
+                        if( data.id ){
+                            $("button[type=submit]").removeClass('disabled').removeAttr('disabled');
+                            if(data.data.sale_price > 0){
+                                $('#price span').text('$'+data.data.sale_price.toFixed(2));
+                            }else{
+                                $('#price span').text('$'+data.data.price.toFixed(2));
+                            }
+                            if(data.data.feature_image){
+                                $('.gallery__hero img').attr('src', '{{ url('storage') }}/'+data.data.feature_image);
+                            }else{
+                                $('.gallery__thumbs a:first').trigger('click');
+                            }
+                        }else{
+                            $("button[type=submit]").addClass('disabled').attr('disabled', true);
+                            $('.gallery__thumbs a:first').trigger('click');
+                            $('#price').html(originalPrice);
+                        }
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+                });
             }
+            return false;
         });
     }() );
 </script>

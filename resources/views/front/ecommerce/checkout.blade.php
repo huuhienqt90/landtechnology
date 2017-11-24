@@ -24,7 +24,8 @@
     <!-- START #show-list-infomation -->
     <section id="show-list-infomation">
         <div class="container">
-            {!! Form::open(['route' => 'front.checkout.post', 'class' => 'form', 'method' => 'POST']) !!}
+            {!! Form::model($checkout, ['route' => 'front.checkout.post', 'class' => 'form', 'method' => 'POST']) !!}
+            {{ old('billingFirstName') }}
             <div class="row">
                 <h1 class="text-uppercase">Checkout</h1>
                     @if ($message = Session::get('success'))
@@ -61,6 +62,7 @@
                                             @include('partials.input-text', ['field' => 'billingAddress1', 'label' => 'Address 1'])
                                             @include('partials.input-text', ['field' => 'billingAddress2', 'label' => 'Address 2'])
                                             @include('partials.input-text', ['field' => 'billingPostCode', 'label' => 'Postcode / ZIP'])
+                                            @include('partials.dropdown-field', ['field' => 'billingCountry', 'options' => $countries, 'label' => 'Country'])
                                             @include('partials.input-text', ['field' => 'billingCity', 'label' => 'Town / City'])
                                             @include('partials.input-text', ['field' => 'billingPhone', 'label' => 'Phone'])
                                             @include('partials.input-text', ['field' => 'billingEmail', 'label' => 'Email'])
@@ -74,6 +76,7 @@
                                             @include('partials.input-text', ['field' => 'shippingAddress1', 'label' => 'Address 1'])
                                             @include('partials.input-text', ['field' => 'shippingAddress2', 'label' => 'Address 2'])
                                             @include('partials.input-text', ['field' => 'shippingPostCode', 'label' => 'Postcode / ZIP'])
+                                            @include('partials.dropdown-field', ['field' => 'shippingCountry', 'options' => $countries, 'label' => 'Country'])
                                             @include('partials.input-text', ['field' => 'shippingCity', 'label' => 'Town / City'])
                                             @include('partials.input-text', ['field' => 'shippingPhone', 'label' => 'Phone'])
                                             @include('partials.input-text', ['field' => 'shippingEmail', 'label' => 'Email'])

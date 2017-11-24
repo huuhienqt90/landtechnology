@@ -19,6 +19,7 @@ use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\ProductMetaResponsitory;
 use App\Repositories\ProductVariationResponsitory;
 use App\Repositories\VariationAttributeResponsitory;
+use App\Models\ProductBrand;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
@@ -102,7 +103,7 @@ class ProductController extends Controller
         }
 
         $sellTypes = $this->sellTypeResponsitory->all();
-        $sellTypeArr = ['' => 'Select a seller'];
+        $sellTypeArr = ['' => 'Select a sell type'];
         if( $sellTypes && $sellTypes->count() ){
             foreach ($sellTypes as $sellType) {
                 $sellTypeArr[$sellType->id] = $sellType->name;
@@ -151,6 +152,10 @@ class ProductController extends Controller
         }
         $result = $this->productResponsitory->create($create);
 
+        if( isset( $request->product_brand ) && $request->product_brand){
+            ProductBrand::create(['product_id' => $result->id, 'brand_id' => $request->product_brand]);
+        }
+
         // Create category product
         if( $request->categories != null ) {
             foreach($request->categories as $category) {
@@ -186,8 +191,8 @@ class ProductController extends Controller
         }
 
         if( $request->product_type == 'variable' ) {
-            if( $request->variation != null ) {
-                foreach($request->variation as $keys => $items) {
+            if( $request->variationNew != null ) {
+                foreach($request->variationNew as $keys => $items) {
                     if( is_numeric($keys) ) {
                         $param = [
                             'product_id' => $result->id,
@@ -247,6 +252,10 @@ class ProductController extends Controller
             foreach ($brands as $brand) {
                 $brandArr[$brand->id] = $brand->name;
             }
+        }
+        $product->product_brand = 0;
+        if( $product->brands()->count() ){
+            $product->product_brand = $product->brands()->first()->id;
         }
 
         $sellers = $this->userResponsitory->all();
@@ -354,6 +363,11 @@ class ProductController extends Controller
             $update['slug'] = str_slug($request->name);
         }
         $this->productResponsitory->update($update, $id);
+
+        ProductBrand::where('product_id', $id)->delete();
+        if( isset( $request->product_brand ) && $request->product_brand){
+            ProductBrand::create(['product_id' => $id, 'brand_id' => $request->product_brand]);
+        }
 
         // Update product category
         $this->productCategoryResponsitory->deleteProductCategory($id);

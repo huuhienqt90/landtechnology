@@ -235,7 +235,7 @@
                         var attr = '<label>Attributes </label>';
                         $.each(productAttrs, function(index, value){
                             if( typeof value != "undefined" && typeof value.name != "undefined" ){
-                                attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                                attr += '<div class="form-group"><select class="form-control attr-item" name="variationNew['+count+'][attr]['+index+']">';
                                 attr += '<option value="0">Any '+value.name+' ...</option>';
                                 $.each(value.attrs, function(subIndex, subValue){
                                     attr += '<option value="'+subValue+'">'+subValue+'</option>';
@@ -322,7 +322,7 @@
                     var attr = '';
                     $.each(productAttrs, function(index, value){
                         if( typeof value != "undefined" && typeof value.name != "undefined" ){
-                            attr += '<div class="form-group"><select class="form-control attr-item" name="variation['+count+'][attr]['+index+']">';
+                            attr += '<div class="form-group"><select class="form-control attr-item" name="variationNew['+count+'][attr]['+index+']">';
                             attr += '<option value="0">Any '+value.name+' ...</option>';
                             $.each(value.attrs, function(subIndex, subValue){
                                 attr += '<option value="'+subValue+'">'+subValue+'</option>';

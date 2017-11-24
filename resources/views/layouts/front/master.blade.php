@@ -29,6 +29,8 @@
         @include('layouts.front.commons.header')
         <!-- End header -->
 
+        @include('front.messages')
+
         <!-- Content -->
         @yield('content')
         <!-- End Content -->
@@ -94,6 +96,7 @@
                     var billingAddress2 = $("input[name=billingAddress2]").val();
                     var billingPostCode = $("input[name=billingPostCode]").val();
                     var billingCity = $("input[name=billingCity]").val();
+                    var billingCountry = $("select[name=billingCountry]").val();
                     var billingPhone = $("input[name=billingPhone]").val();
                     var billingEmail = $("input[name=billingEmail]").val();
                     $("input[name=shippingFirstName]").val(billingFirstName);
@@ -102,6 +105,7 @@
                     $("input[name=shippingAddress1]").val(billingAddress1);
                     $("input[name=shippingAddress2]").val(billingAddress2);
                     $("input[name=shippingPostCode]").val(billingPostCode);
+                    $("select[name=shippingCountry]").val(billingCountry);
                     $("input[name=shippingCity]").val(billingCity);
                     $("input[name=shippingPhone]").val(billingPhone);
                     $("input[name=shippingEmail]").val(billingEmail);
@@ -183,6 +187,5 @@
                 }
             });
         </script>
-        @include('front.messages')
     </body>
 </html>

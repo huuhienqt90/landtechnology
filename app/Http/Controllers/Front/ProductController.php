@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Mail;
 use Hamilton\PayPal\PayPal;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Session;
+use App\Models\ProductVariation;
 
 class ProductController extends Controller
 {
@@ -219,7 +220,22 @@ class ProductController extends Controller
     public function showList()
     {
         $products = $this->productRepository->paginate(9);
-        return view('front.product.list', compact('products'));
+        $priceMin = 0;
+        $priceMax = 0;
+        foreach ($products as $prd) {
+            if( $prd->product_type == 'variable' ){
+                if( ProductVariation::where('product_id', $prd->id)->max('price') > $priceMax ){
+                    $priceMax = ProductVariation::where('product_id', $prd->id)->max('price');
+                    continue;
+                }
+            }
+            if( $prd->sale_price > 0 && $prd->original_price > $prd->sale_price && $priceMax < $prd->sale_price){
+                $priceMax = $prd->sale_price;
+            }elseif($prd->original_price > $priceMax){
+                $priceMax = $prd->original_price;
+            }
+        }
+        return view('front.product.list', compact('products', 'priceMin', 'priceMax'));
     }
 
     /**
@@ -230,7 +246,22 @@ class ProductController extends Controller
     public function showGrid()
     {
         $products = $this->productRepository->paginate(9);
-        return view('front.product.grid', compact('products'));
+        $priceMin = 0;
+        $priceMax = 0;
+        foreach ($products as $prd) {
+            if( $prd->product_type == 'variable' ){
+                if( ProductVariation::where('product_id', $prd->id)->max('price') > $priceMax ){
+                    $priceMax = ProductVariation::where('product_id', $prd->id)->max('price');
+                    continue;
+                }
+            }
+            if( $prd->sale_price > 0 && $prd->original_price > $prd->sale_price && $priceMax < $prd->sale_price){
+                $priceMax = $prd->sale_price;
+            }elseif($prd->original_price > $priceMax){
+                $priceMax = $prd->original_price;
+            }
+        }
+        return view('front.product.grid', compact('products', 'priceMin', 'priceMax'));
     }
 
     /**
@@ -261,8 +292,23 @@ class ProductController extends Controller
      */
     public function productCategory($slug = null){
         $products = $this->productRepository->getProductsByCategory($slug);
+        $priceMin = 0;
+        $priceMax = 0;
+        foreach ($products as $prd) {
+            if( $prd->product_type == 'variable' ){
+                if( ProductVariation::where('product_id', $prd->id)->max('price') > $priceMax ){
+                    $priceMax = ProductVariation::where('product_id', $prd->id)->max('price');
+                    continue;
+                }
+            }
+            if( $prd->sale_price > 0 && $prd->original_price > $prd->sale_price && $priceMax < $prd->sale_price){
+                $priceMax = $prd->sale_price;
+            }elseif($prd->original_price > $priceMax){
+                $priceMax = $prd->original_price;
+            }
+        }
         if( $slug && $products->count() > 0 ){
-            return view('front.product.grid', compact('products'));
+            return view('front.product.grid', compact('products', 'priceMin', 'priceMax'));
         }else{
             return view('front.404');
         }
@@ -273,8 +319,23 @@ class ProductController extends Controller
      */
     public function productBrand($slug = null){
         $products = $this->productRepository->getProductsByBrand($slug);
+        $priceMin = 0;
+        $priceMax = 0;
+        foreach ($products as $prd) {
+            if( $prd->product_type == 'variable' ){
+                if( ProductVariation::where('product_id', $prd->id)->max('price') > $priceMax ){
+                    $priceMax = ProductVariation::where('product_id', $prd->id)->max('price');
+                    continue;
+                }
+            }
+            if( $prd->sale_price > 0 && $prd->original_price > $prd->sale_price && $priceMax < $prd->sale_price){
+                $priceMax = $prd->sale_price;
+            }elseif($prd->original_price > $priceMax){
+                $priceMax = $prd->original_price;
+            }
+        }
         if( $slug && $products->count() ){
-            return view('front.product.grid', compact('products'));
+            return view('front.product.grid', compact('products', 'priceMin', 'priceMax'));
         }else{
             return view('front.404');
         }
@@ -541,7 +602,7 @@ class ProductController extends Controller
         );
 
         $data = $this->PayPal->DoExpressCheckoutPayment($PayPalRequest);
-        if($data['ACK'] == 'Success') {
+        if(isset($data['ACK']) && $data['ACK'] == 'Success') {
             $param['status'] = 'accept';
             $this->productOfferResponsitory->update($param, $offer->id);
             $this->huntingResponsitory->update($param, $offer->hunting_id);
@@ -613,6 +674,15 @@ class ProductController extends Controller
             $id = $request->id;
             $product_variation = $this->productVariationResponsitory->find($id);
             return response()->json($product_variation);
+        }
+    }
+
+    public function postProductVariationInfo(Request $request, $product_id = 0){
+        if( isset( $request->attrs ) ){
+            $product = $this->productVariationResponsitory->getProductAttribute($product_id, $request->attrs);
+            return response()->json($product, 200);
+        }else{
+            return response()->json(['id' => 0, 'data' => null], 404);
         }
     }
 }

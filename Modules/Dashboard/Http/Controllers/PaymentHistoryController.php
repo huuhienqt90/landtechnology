@@ -99,9 +99,14 @@ class PaymentHistoryController extends Controller
     {
         $order = $this->paymentHistoryResponsitory->find($id);
         $user = $this->userResponsitory->find($order->seller_id);
+        if($user->isSuperUser()) {
+            return redirect()->back()->with('alert-danger','This product post by admin so you can not pay for your sefl');
+        }
+
         if($user->email_paypal == null) {
             return redirect()->back()->with('alert-danger','User have not email paypal!');
         }
+
         $senderBatchHeader = new PayoutSenderBatchHeader();
 
         $senderBatchHeader->setSenderBatchId(uniqid())->setEmailSubject("Pay for your product sold!!");

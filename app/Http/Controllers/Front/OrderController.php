@@ -94,7 +94,7 @@ class OrderController extends Controller
            'Payments' => $Payments
         );
         $data = $this->PayPal->DoExpressCheckoutPayment($PayPalRequest);
-        if($data['ACK'] == 'Success') {
+        if(isset($data['ACK']) && $data['ACK'] == 'Success') {
             // Update status Order
             $param['status'] = 'processing';
             $this->orderResponsitory->update($param, \Session::get('orderId'));

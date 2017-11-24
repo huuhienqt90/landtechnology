@@ -46,7 +46,7 @@
                 @if(isset($products) && $products->count() )
                 <div class="slider col-md-12 col-sm-12">
                     @foreach($products as $product)
-                        <div class="item col-md-4 col-sm-4">
+                        <div class="item col-md-4 col-sm-4 product-item" data-minprice="{{ $product->getMinPrice() }}" data-price="{{ $product->getPriceNumber() }}">
                             <div class="slider-item">
                                 <a href="{{ route('front.product.detail', $product->slug) }}" class="product-detail-url"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"/></a>
                                 <div class="overlay">
@@ -56,10 +56,14 @@
                                 <ul class="tetx">
                                     <li class="text-detail">
                                         <h4><a href="{{ route('front.product.detail', $product->slug) }}" title="title product">{{ $product->name }}</a></h4>
-                                        {!! $product->getPrice() !!}
+                                        @if( $product->product_type == 'simple' )
+                                            {!! $product->getPrice() !!}
+                                        @elseif( $product->product_type == 'variable' )
+                                            {!! $product->getPriceMinMax() !!}
+                                        @endif
                                     </li> <!-- .text-detail -->
                                     <li class="lock">
-                                        <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="lock">
+                                        <a href="{{ route('front.product.detail', $product->slug) }}" title="lock">
                                             <div class="glyph">
                                                 <div class="fs1" aria-hidden="true" data-icon="&#xe013;"></div>
                                             </div>

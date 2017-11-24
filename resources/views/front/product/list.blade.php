@@ -48,7 +48,7 @@
                 <div class="list-show-content">
                     <ul>
                         @foreach($products as $product)
-                            <li>
+                            <li class="product-item" data-minprice="{{ $product->getMinPrice() }}" data-price="{{ $product->getPriceNumber() }}">
                                 <div class="col-md-4 col-sm-4 img-list-show">
                                     <a href="{{ route('front.product.detail', $product->slug) }}" title="{{ $product->name }}"><img src="{{ $product->getFeatureImage() }}" class="img-responsive" alt="{{ $product->name }}"></a>
                                 </div>
@@ -80,12 +80,20 @@
                                         <li class="breadcrumb-item"><a href="#">{{ $product->reviews->count() }} review(s)</a></li>
                                         <li class="breadcrumb-item">Add your review</li>
                                     </ol>
-                                    {!! $product->getPrice() !!}
+                                    @if( $product->product_type == 'simple' )
+                                        {!! $product->getPrice() !!}
+                                    @elseif( $product->product_type == 'variable' )
+                                        {!! $product->getPriceMinMax() !!}
+                                    @endif
                                     <ul class="btn-add-to-cart">
                                         <li class="cover-btn-glyph">
                                             <div class="glyph">
                                                 <div class="fs1" aria-hidden="true" data-icon="&#xe013;">
-                                                    <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="btn add to cart" class="text-uppercase">Add to cart</a>
+                                                    @if( $product->product_type == 'simple' )
+                                                        <a href="{{ route('front.product.addToCart', $product->id, 1) }}" title="btn add to cart" class="text-uppercase">Add to cart</a>
+                                                    @elseif( $product->product_type == 'variable' )
+                                                        <a href="{{ route('front.product.detail', $product->slug) }}" title="btn add to cart" class="text-uppercase">View More</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </li> <!-- .cover-btn-glyph -->

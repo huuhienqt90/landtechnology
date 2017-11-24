@@ -26,7 +26,7 @@
                             <tr class="title-table">
                                 <th class="text-uppercase">Product photo</th>
                                 <th class="text-uppercase">Product name</th>
-                                <th class="text-uppercase description">Description</th>
+                                <th class="text-uppercase description">More information</th>
                                 <th class="text-uppercase">Price</th>
                                 <th class="text-uppercase">Quantity</th>
                                 <th class="text-uppercase">Total Price</th>
@@ -35,13 +35,22 @@
                             @foreach(Cart::content() as $row)
                             <tr class="content-table">
                                 <th>
-                                    <a href="{{ route('front.product.detail', \App\Models\Product::find($row->id)->slug) }}" title="{{ $row->name }}"><img src="{{ asset('storage/'. \App\Models\Product::find($row->id)->feature_image) }}" class="img-responsive" alt="images shooping cart"></a>
+                                    <a href="{{ route('front.product.detail', $row->options->product_slug) }}" title="{{ $row->name }}"><img src="{{ asset('storage/'.$row->options->image) }}" class="img-responsive" alt="images shooping cart"></a>
                                 </th>
                                 <th>
-                                    <a href="#" title="title product shopping cart">{{ $row->name }}</a>
+                                    <a href="{{ route('front.product.detail', $row->options->product_slug) }}" title="title product shopping cart">{{ $row->name }}</a>
                                 </th>
                                 <th>
-                                    <p>{{ $row->name }}</p>
+                                    @if( count($row->options) )
+                                        <p>
+                                        @foreach($row->options as $k=>$v)
+                                        @if($k == 'product_slug' || $k == 'image')
+                                        @continue
+                                        @endif
+                                        <strong>{{ $k }}</strong>: <span>{{ $v }}</span> <br />
+                                        @endforeach
+                                        </p>
+                                    @endif
                                 </th>
                                 <th>
                                     <span>${{ number_format($row->price, 2) }}</span>
@@ -50,7 +59,7 @@
                                     <input type="number" name="quantity[{{ $row->rowId }}]" placeholder="0" value="{{ $row->qty }}">
                                 </th>
                                 <th>
-                                    <span>${{ number_format($row->price * $row->qty, 2) }}</span>
+                                    <span>${{ number_format($row->total, 2) }}</span>
                                 </th>
                                 <th>
                                     <a href="{{ route('front.product.removeFromCart', $row->rowId) }}" title="close"><i class="fa fa-times" aria-hidden="true"></i></a>

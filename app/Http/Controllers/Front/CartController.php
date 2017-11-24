@@ -16,6 +16,9 @@ use App\Repositories\OrderMetaResponsitory;
 use App\Repositories\OrderProductResponsitory;
 use App\Repositories\PaymentHistoryResponsitory;
 use App\Repositories\ProductVariationResponsitory;
+use App\Repositories\CountryResponsitory;
+use App\Repositories\UserResponsitory;
+use App\Repositories\UserMetaRepository;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Stripe\Error\Card;
 use Illuminate\Support\Facades\Mail;
@@ -31,12 +34,18 @@ class CartController extends Controller
     private $orderProductResponsitory;
     private $paymentHistoryResponsitory;
     private $productVariationResponsitory;
+    private $userResponsitory;
+    private $userMetaRepository;
+    private $countryResponsitory;
 
     public function __construct(ProductResponsitory $productRepository,
                                 SettingRepository $settingRepository,
                                 OrderResponsitory $orderResponsitory,
                                 OrderMetaResponsitory $orderMetaResponsitory,
                                 OrderProductResponsitory $orderProductResponsitory,
+                                UserResponsitory $userResponsitory,
+                                UserMetaRepository $userMetaRepository,
+                                CountryResponsitory $countryResponsitory,
                                 PaymentHistoryResponsitory $paymentHistoryResponsitory,
                                 ProductVariationResponsitory $productVariationResponsitory)
     {
@@ -45,6 +54,9 @@ class CartController extends Controller
         $this->orderResponsitory = $orderResponsitory;
         $this->orderMetaResponsitory = $orderMetaResponsitory;
         $this->orderProductResponsitory = $orderProductResponsitory;
+        $this->userResponsitory = $userResponsitory;
+        $this->userMetaRepository = $userMetaRepository;
+        $this->countryResponsitory = $countryResponsitory;
         $this->paymentHistoryResponsitory = $paymentHistoryResponsitory;
         $this->productVariationResponsitory = $productVariationResponsitory;
 
@@ -74,8 +86,30 @@ class CartController extends Controller
      */
     public function postToCart(PostToCartRequest $request, $id = 0){
         $product = $this->productRepository->find($id);
-        Cart::add($id, $product->name, $request->quantity, $product->getPriceNumber());
-        return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+        $options = ['product_slug' => $product->slug, 'image' => $product->feature_image];
+        if( $product->product_type == 'variable'){
+            if( isset( $request->attrs ) ){
+                $productAttr = $this->productVariationResponsitory->getProductAttribute($id, $request->attrs);
+                if($productAttr['id']){
+                    $price = $productAttr['data']['sale_price'] > 0 ? $productAttr['data']['sale_price'] : $productAttr['data']['price'];
+                    foreach ($request->attrs as $key => $value) {
+                        $options[getAttrName($key)] = $value;
+                    }
+                    if( !empty($productAttr['data']['feature_image'])){
+                        $options['image'] = $productAttr['data']['feature_image'];
+                    }
+                    Cart::add($productAttr['id'], $product->name, $request->quantity, $price, $options);
+                    return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+                }else{
+                    return redirect()->back()->with('alert-danger', 'This option does not allowed to add to cart!');
+                }
+            }else{
+                return redirect()->back()->with('alert-danger', 'This option does not allowed to add to cart!');
+            }
+        }else{
+            Cart::add($id, $product->name, $request->quantity, $product->getPriceNumber(), $options);
+            return redirect()->back()->with('alert-success', 'Add product '.$product->name.' success');
+        }
     }
 
     /**
@@ -89,7 +123,8 @@ class CartController extends Controller
             $product_variation = $this->productVariationResponsitory->find($idVar);
             $product = $this->productRepository->find($id);
             $price = !$product_variation->sale_price ? $product_variation->sale_price : $product_variation->price;
-            Cart::add($id, $product->name, $qty, $price);
+            $options = ['product_slug' => $product->slug, 'image' => $product->feature_image];
+            Cart::add($id, $product->name, $qty, $price, $options);
             return response()->json(true);
         }
     }
@@ -107,6 +142,7 @@ class CartController extends Controller
      */
     public function addToFavorite($id = 0, $quantity = 1, $options = [], $type = 'redirect'){
         $product = $this->productRepository->find($id);
+        $options = ['product_slug' => $product->slug, 'image' => $product->feature_image];
         Cart::instance('wishlist')->add($id, $product->name, $quantity, $product->getPriceNumber(), $options);
         return redirect()->back()->with('alert-success', 'Add product to wish list success');
     }
@@ -122,7 +158,62 @@ class CartController extends Controller
      * Show checkout page
      */
     public function showCheckout(){
-        return view('front.ecommerce.checkout');
+        $checkout = $this->userResponsitory;
+        $countries = [];
+        $countryList = $this->countryResponsitory->all();
+        if( $countryList->count() ){
+            foreach ($countryList as $country) {
+                $countries[$country->id] = $country->name;
+            }
+        }
+        if( auth()->check() ){
+            $checkout = $this->userResponsitory->find(auth()->user()->id);
+            $userMeta = $this->userMetaRepository->findAllBy('user_id', auth()->user()->id);
+            if( $userMeta->count() ){
+                foreach ($userMeta as $meta) {
+                    $checkout->{$meta->key} = $meta->value;
+                }
+            }
+            if( (!isset( $checkout->billingFirstName ) || empty($checkout->billingFirstName)) && !empty($checkout->first_name)){
+                $checkout->billingFirstName = $checkout->first_name;
+            }
+            if( (!isset( $checkout->billingLastName ) || empty($checkout->billingLastName)) && !empty($checkout->last_name)){
+                $checkout->billingLastName = $checkout->last_name;
+            }
+            if( (!isset( $checkout->shippingFirstName ) || empty($checkout->shippingFirstName)) && !empty($checkout->first_name)){
+                $checkout->shippingFirstName = $checkout->first_name;
+            }
+            if( (!isset( $checkout->shippingLastName ) || empty($checkout->shippingLastName)) && !empty($checkout->last_name)){
+                $checkout->shippingLastName = $checkout->last_name;
+            }
+            if( (!isset( $checkout->billingAddress1 ) || empty($checkout->billingAddress1)) && !empty($checkout->address1)){
+                $checkout->billingAddress1 = $checkout->address1;
+            }
+            if( (!isset( $checkout->shippingAddress1 ) || empty($checkout->shippingAddress1)) && !empty($checkout->address1)){
+                $checkout->shippingAddress1 = $checkout->address1;
+            }
+            if( (!isset( $checkout->billingAddress2 ) || empty($checkout->billingAddress2)) && !empty($checkout->address2)){
+                $checkout->billingAddress2 = $checkout->address2;
+            }
+            if( (!isset( $checkout->shippingAddress2 ) || empty($checkout->shippingAddress2)) && !empty($checkout->address2)){
+                $checkout->shippingAddress1 = $checkout->address1;
+            }
+            if( (!isset( $checkout->billingPostCode ) || empty($checkout->billingPostCode)) && !empty($checkout->postal_code)){
+                $checkout->billingPostCode = $checkout->postal_code;
+            }
+            if( (!isset( $checkout->shippingPostCode ) || empty($checkout->shippingPostCode)) && !empty($checkout->postal_code)){
+                $checkout->shippingPostCode = $checkout->postal_code;
+            }
+            if( (!isset( $checkout->billingEmail ) || empty($checkout->billingEmail)) && !empty($checkout->email)){
+                $checkout->billingEmail = $checkout->email;
+            }
+            if( (!isset( $checkout->shippingEmail ) || empty($checkout->shippingEmail)) && !empty($checkout->email)){
+                $checkout->shippingEmail = $checkout->email;
+            }
+        }
+
+
+        return view('front.ecommerce.checkout', compact('checkout', 'countries'));
     }
 
     /**
@@ -150,6 +241,16 @@ class CartController extends Controller
      * Processing order
      */
     public function postCheckout(PostCheckoutRequest $request){
+        if( auth()->check() ){
+            $data = $request->except(['_token', 'orderNote', 'paymentMethod', 'card_no', 'ccExpiryMonth', 'ccExpiryYear', 'cvvNumber', 'amount']);
+            foreach ($data as $k=>$v) {
+                if( $this->userMetaRepository->findWhere(['user_id' => auth()->user()->id, 'key' => $k])->count() ){
+                    $this->userMetaRepository->update(['value' => $v], $this->userMetaRepository->findWhere(['user_id' => auth()->user()->id, 'key' => $k])->first()->id);
+                }else{
+                    $this->userMetaRepository->create(['user_id' => auth()->user()->id, 'value' => $v, 'key' => $k]);
+                }
+            }
+        }
         if( isset($request->paymentMethod) && $request->paymentMethod == 'paypal' ){
             $SECFields = array(
                 'token' => '',
@@ -237,7 +338,7 @@ class CartController extends Controller
             );
 
             $data = $this->PayPal->SetExpressCheckout($PayPalRequest);
-            if( $data['ACK'] == 'Success'){
+            if(isset($data['ACK']) && $data['ACK'] == 'Success'){
                 $request->session('SetExpressCheckoutResult', $data);
                 $this->addOrder($request);
                 return redirect($data['REDIRECTURL']);

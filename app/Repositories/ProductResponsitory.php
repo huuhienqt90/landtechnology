@@ -62,7 +62,7 @@ class ProductResponsitory extends Repository {
      * Get active products by brand slug
      */
     public function getProductsByBrand($slug, $take = 12){
-        return Product::active()->whereHas('brand', function ($query) use ($slug){
+        return Product::active()->whereHas('brands', function ($query) use ($slug){
             $query->where('slug', $slug);
         })->paginate($take);
     }
