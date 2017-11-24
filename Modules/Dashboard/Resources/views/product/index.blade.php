@@ -24,7 +24,7 @@
                                     <th>Price</th>
                                     <th>Stock</th>
                                     <th>Slug</th>
-                                    <th>Active</th>
+                                    <th>Status</th>
                                     <th width="100">Actions</th>
                                 </tr>
                             </thead>

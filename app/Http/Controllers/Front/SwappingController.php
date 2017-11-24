@@ -9,6 +9,7 @@ use App\Repositories\ProductImageResponsitory;
 use App\Repositories\ProductAttributeResponsitory;
 use App\Repositories\ProductResponsitory;
 use App\Repositories\BrandResponsitory;
+use App\Repositories\ProductBrandResponsitory;
 use App\Repositories\CategoryResponsitory;
 use App\Repositories\SellerShippingResponsitory;
 use App\Repositories\SellTypeResponsitory;
@@ -18,7 +19,7 @@ use App\Http\Requests\SwappingRequest;
 use App\Http\Requests\SwappingUpdateRequest;
 use App\Repositories\SettingRepository;
 use App\Repositories\SwapItemResponsitory;
-use App\PaymentMethod\PayPal\PayPal;
+use Hamilton\PayPal\PayPal;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Session;
 
@@ -33,6 +34,7 @@ class SwappingController extends Controller
     protected $attributeResponsitory;
     protected $settingRepository;
     protected $swapItemResponsitory;
+    protected $productBrandResponsitory;
     private $PayPal;
 
     public function __construct(ProductResponsitory $productResponsitory,
@@ -46,7 +48,8 @@ class SwappingController extends Controller
                                 BrandResponsitory $brandResponsitory,
                                 AttributeResponsitory $attributeResponsitory,
                                 SettingRepository $settingRepository,
-                                SwapItemResponsitory $swapItemResponsitory)
+                                SwapItemResponsitory $swapItemResponsitory,
+                                ProductBrandResponsitory $productBrandResponsitory)
     {
         $this->productResponsitory = $productResponsitory;
         $this->productAttributeResponsitory = $productAttributeResponsitory;
@@ -60,6 +63,7 @@ class SwappingController extends Controller
         $this->attributeResponsitory        = $attributeResponsitory;
         $this->settingRepository            = $settingRepository;
         $this->swapItemResponsitory         = $swapItemResponsitory;
+        $this->productBrandResponsitory     = $productBrandResponsitory;
         $this->middleware('check.auth:seller');
 
         $PayPalConfig = array(
@@ -179,7 +183,7 @@ class SwappingController extends Controller
     {
         $oldCommissionSwap = $this->settingRepository->getValueByKey('commission_swap');
 
-        $param = $request->only(['name','slug','description','description_short','product_brand','sell_type_id']);
+        $param = $request->only(['name','slug','description','description_short','sell_type_id']);
         $param['sold_units'] = 0;
         $param['seller_id'] = auth()->user()->id;
         $param['status'] = 'Pending';
@@ -194,6 +198,9 @@ class SwappingController extends Controller
 
         // Create category product
         $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
+
+        // Create brand product
+        $this->productBrandResponsitory->create(['product_id' => $result->id, 'brand_id' => $request->product_brand]);
 
         // Create Product Images
         if( $request->hasFile('product_images') ){

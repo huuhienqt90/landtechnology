@@ -98,7 +98,6 @@ class BrandController extends DashboardController
     public function destroy(Request $request, $id)
     {
         $arItem = $this->brandResponsitory->find($id);
-        $this->brandResponsitory->deleteProductsByBrandId($id);
         $arItem->delete();
         return redirect(route('dashboard.brand.index'))->with('alert-success', 'Delete brand success');
     }

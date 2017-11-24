@@ -34,7 +34,7 @@ class CategoryResponsitory extends Repository {
     }
 
     public function getArrayNameCategories(){
-        $categories = Category::all();
+        $categories = Category::where('status','active')->get();
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {

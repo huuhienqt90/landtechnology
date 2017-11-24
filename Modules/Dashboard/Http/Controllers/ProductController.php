@@ -80,7 +80,7 @@ class ProductController extends DashboardController
     public function create()
     {
         $product = $this->productResponsitory;
-        $categories = $this->categoryResponsitory->findAllBy('parent_id', 0);
+        $categories = $this->categoryResponsitory->getCategoriesByUser('create_by', auth()->user()->id);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
@@ -214,8 +214,8 @@ class ProductController extends DashboardController
                         }
                         if( isset($items['image']) ) {
                             if( $items['image'] != null ) {
-                                $path = $request->file('image')->store('products/variation/features');
-                                $param['image'] = $path;
+                                $path = $items['image']->store('products/variation/features');
+                                $param['feature_image'] = $path;
                             }
                         }
                         $resultVar = $this->productVariationResponsitory->create($param);

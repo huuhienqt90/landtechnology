@@ -23,7 +23,7 @@ class CategoryController extends DashboardController
      */
     public function index()
     {
-        $categories = $this->categoryResponsitory->getCategoriesByUser(auth()->user()->id, 20);
+        $categories = $this->categoryResponsitory->findAllBy('parent_id', 0);
         return $this->viewDashboard('category.index', compact('categories'));
     }
 
