@@ -122,6 +122,10 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductAttribute', 'product_id', 'id');
     }
 
+    public function booking(){
+        return $this->belongsTo('App\Models\ProductBooking', 'id', 'product_id');
+    }
+
     /**
      * Get feature image
      * @param int $productId

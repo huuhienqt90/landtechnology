@@ -19,6 +19,7 @@ use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\ProductMetaResponsitory;
 use App\Repositories\ProductVariationResponsitory;
 use App\Repositories\VariationAttributeResponsitory;
+use App\Repositories\ProductBookingResponsitory;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
 
@@ -37,8 +38,9 @@ class ProductController extends Controller
     protected $productMetaResponsitory;
     protected $productVariationResponsitory;
     protected $variationAttributeResponsitory;
+    protected $productBookingResponsitory;
 
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory, ProductMetaResponsitory $productMetaResponsitory, ProductVariationResponsitory $productVariationResponsitory, VariationAttributeResponsitory $variationAttributeResponsitory){
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory, ProductMetaResponsitory $productMetaResponsitory, ProductVariationResponsitory $productVariationResponsitory, VariationAttributeResponsitory $variationAttributeResponsitory, ProductBookingResponsitory $productBookingResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
@@ -53,6 +55,7 @@ class ProductController extends Controller
         $this->productMetaResponsitory      = $productMetaResponsitory;
         $this->productVariationResponsitory = $productVariationResponsitory;
         $this->variationAttributeResponsitory = $variationAttributeResponsitory;
+        $this->productBookingResponsitory   = $productBookingResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -212,6 +215,19 @@ class ProductController extends Controller
                     }
                 }
             }
+        }
+
+        if( $request->product_type == 'booking' ) {
+            $booking['product_id'] = $result->id;
+            $booking['price'] = $request->price_booking;
+            $booking['sale_price'] = $request->sale_price_booking;
+            if( isset($request->date_time_booking) ) {
+                $booking['date_time_booking'] = serialize($request->date_time_booking);
+            }
+            if( isset($request->option_booking) ) {
+                $booking['option_booking'] = serialize($request->option_booking);
+            }
+            $this->productBookingResponsitory->create($booking);
         }
 
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Create product sucess!');
@@ -465,7 +481,20 @@ class ProductController extends Controller
                     }
                 }
             }
+        }
 
+        if( $request->product_type == 'booking' ) {
+            $booking['product_id'] = $id;
+            $booking['price'] = $request->price_booking;
+            $booking['sale_price'] = $request->sale_price_booking;
+            if( isset($request->date_time_booking) ) {
+                $booking['date_time_booking'] = serialize($request->date_time_booking);
+            }
+            if( isset($request->option_booking) ) {
+                $booking['option_booking'] = serialize($request->option_booking);
+            }
+            $bookingID = $this->productBookingResponsitory->findBy('product_id', $id)->id;
+            $this->productBookingResponsitory->update($booking, $bookingID);
         }
 
         return redirect(route('dashboard.product.index'))->with('alert-success', 'Update product success!');

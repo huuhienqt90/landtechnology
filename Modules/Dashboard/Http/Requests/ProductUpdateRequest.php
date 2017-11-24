@@ -41,6 +41,9 @@ class ProductUpdateRequest extends FormRequest
                 $rules['variationNew.'.$keys.'.original_price'] = 'required|numeric';
                 $rules['variationNew.'.$keys.'.sale_price'] = 'required|numeric';
             }
+        }elseif( $product_type == 'booking' ) {
+            $rules['price_booking'] = 'required|numeric';
+            $rules['sale_price_booking'] = 'numeric';
         }
 
         return $rules;

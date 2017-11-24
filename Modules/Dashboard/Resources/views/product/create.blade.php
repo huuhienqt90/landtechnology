@@ -57,6 +57,8 @@
                             <li role="presentation" class="show-if-booking"><a href="#booking" aria-controls="booking" role="tab" data-toggle="tab">Booking</a></li>
                             <li role="presentation" class="show-if-simple show-if-variable"><a href="#attribute" aria-controls="attribute" role="tab" data-toggle="tab">Attributes</a></li>
                             <li role="presentation" class="show-if-variable"><a href="#variation" aria-controls="variation" role="tab" data-toggle="tab">Variations</a></li>
+                            <li role="presentation" class="show-if-booking"><a href="#pick_time" aria-controls="pick_time" role="tab" data-toggle="tab">Pick time</a></li>
+                            <li role="presentation" class="show-if-booking"><a href="#options" aria-controls="options" role="tab" data-toggle="tab">Options</a></li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content list-product-type-contents">
@@ -77,6 +79,12 @@
                             </div>
                             <div role="tabpanel" class="tab-pane" id="booking">
                                 @include('dashboard::product.tabs.booking')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="pick_time">
+                                @include('dashboard::product.tabs.time')
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="options">
+                                @include('dashboard::product.tabs.option')
                             </div>
                         </div>
                     </div>

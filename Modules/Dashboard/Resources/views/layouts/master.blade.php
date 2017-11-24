@@ -22,6 +22,8 @@
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/iCheck/square/blue.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/iCheck/all.css') }}">
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet" href="{{ asset('themes/dashboard/plugins/timepicker/bootstrap-timepicker.min.css') }}">
     <!-- File Input -->
     <link rel="stylesheet" href="{{ asset('themes/dashboard/dist/css/fileinput.min.css') }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -116,6 +118,8 @@
     <script src="{{ asset('themes/dashboard/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ asset('themes/dashboard/bower_components/fastclick/lib/fastclick.js') }}"></script>
+    <!-- bootstrap time picker -->
+    <script src="{{ asset('themes/dashboard/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <!-- CK Editor -->
     <script src="{{ asset('themes/dashboard/bower_components/ckeditor/ckeditor.js') }}"></script>
     <!-- AdminLTE App -->

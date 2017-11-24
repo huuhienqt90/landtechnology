@@ -117,6 +117,8 @@ class ProductController extends Controller
                 return view('front.product.detail-hunting', compact('product', 'productReview'));
             }else if( $product->product_type == "variable" ){
                 return view('front.product.detail-variable', compact('product', 'productReview'));
+            }else if( $product->product_type == "booking" ){
+                return view('front.product.detail-booking', compact('product', 'productReview'));
             }else{
                 return view('front.product.detail', compact('product', 'productReview'));
             }

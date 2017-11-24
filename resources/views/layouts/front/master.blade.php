@@ -14,6 +14,8 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-social.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/font-elegant.css') }}">
         <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        <!-- Date Picker -->
+        <link rel="stylesheet" href="{{ asset('themes/dashboard/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/colorbox.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
 
@@ -41,6 +43,8 @@
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('assets/js/jquery.colorbox-min.js') }}"></script>
         <script src="{{ asset('assets/js/slick.min.js') }}"></script>
+        <!-- datepicker -->
+        <script src="{{ asset('themes/dashboard/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
         <script src="{{ asset('assets/js/price.js') }}"></script>
         <script src="{{ asset('assets/js/grid-list-show.js') }}"></script>
         <!-- Detail product -->
