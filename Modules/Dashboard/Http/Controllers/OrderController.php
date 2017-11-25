@@ -13,8 +13,11 @@ use App\Repositories\UserResponsitory;
 use Modules\Dashboard\Http\Requests\OrderStoreRequest;
 use Modules\Dashboard\Http\Requests\OrderUpdateRequest;
 
-class OrderController extends Controller
+class OrderController extends DashboardController
 {
+    protected $menuActive = 'ecommerce';
+    protected $subMenuActive = 'order';
+
     protected $orderResponsitory;
     protected $orderMetaResponsitory;
     protected $orderProductResponsitory;
@@ -41,7 +44,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->orderResponsitory->all();
-        return view('dashboard::order.index', compact('orders'));
+        return $this->viewDashboard('order.index', compact('orders'));
     }
 
     /**
@@ -51,7 +54,7 @@ class OrderController extends Controller
     public function create()
     {
         $order = $this->orderResponsitory;
-        return view('dashboard::order.create', compact('order'));
+        return $this->viewDashboard('order.create', compact('order'));
     }
 
     /**
@@ -233,7 +236,7 @@ class OrderController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -250,7 +253,7 @@ class OrderController extends Controller
         }
         $orderMetas = $this->orderMetaResponsitory->findAllBy('order_id',$id);
         $order_products = $this->orderProductResponsitory->findALlBy('order_id', $id);
-        return view('dashboard::order.edit', compact('order','arUser','orderMetas','order_products'));
+        return $this->viewDashboard('order.edit', compact('order','arUser','orderMetas','order_products'));
     }
 
     /**

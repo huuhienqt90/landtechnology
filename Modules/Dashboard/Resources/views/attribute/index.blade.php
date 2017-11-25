@@ -32,16 +32,18 @@
                                         <td>{{ $attribute->name }}</td>
                                         <td>{{ $attribute->options }}</td>
                                         <td style="text-align: center;">
-                                                <form method="post" action="{{ route('dashboard.attribute.destroy', $attribute->id) }}">
-                                                    {{ method_field('DELETE') }}
-                                                    <div class="form-group">
+                                            @if( auth()->user()->isSuperUser() || auth()->user()->id == $attribute->seller_id)
+                                            <form method="post" action="{{ route('dashboard.attribute.destroy', $attribute->id) }}">
+                                                {{ method_field('DELETE') }}
+                                                <div class="form-group">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <div class="btn-group">
                                                         <a class="btn btn-info btn-flat" href="{{ route('dashboard.attribute.edit', $attribute->id) }}"><i class="fa fa-pencil-square-o"></i></a>
                                                         <button type="submit" class="btn btn-danger btn-delete-item btn-flat" data-confirm="Are you sure to delete this item?"><i class="fa fa-times"></i></button>
                                                     </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

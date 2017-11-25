@@ -5,10 +5,11 @@ namespace Modules\Dashboard\Http\Controllers;
 use App\Repositories\PaymentMethodResponsitory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 
-class PaymentMethodController extends Controller
+class PaymentMethodController extends DashboardController
 {
+    protected $menuActive = 'ecommerce';
+    protected $subMenuActive = 'payment-method';
     protected $paymentMethodResponsitory;
     public function __construct(PaymentMethodResponsitory $paymentMethodResponsitory)
     {
@@ -20,7 +21,7 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
-        return view('dashboard::index');
+        return $this->viewDashboard('index');
     }
 
     /**
@@ -29,7 +30,7 @@ class PaymentMethodController extends Controller
      */
     public function create()
     {
-        return view('dashboard::create');
+        return $this->viewDashboard('create');
     }
 
     /**
@@ -47,7 +48,7 @@ class PaymentMethodController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -58,7 +59,7 @@ class PaymentMethodController extends Controller
     {
         $paymentMethod = $this->paymentMethodResponsitory->find($id);
         $view = $paymentMethod->slug;
-        return view('dashboard::payment-method.edit-'.$view);
+        return $this->viewDashboard('payment-method.edit-'.$view);
     }
 
     /**

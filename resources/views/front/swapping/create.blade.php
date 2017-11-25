@@ -65,13 +65,15 @@
                                                 <select class="form-control select2" name="category">
                                                     <option value="">Please select a category</option>
                                                     @foreach($allCategories as $category)
-                                                            @if( $category->getChildren()->count() )
-                                                                <optgroup label="{{ $category->name }}">
-                                                                    @foreach($category->getChildren() as $item)
-                                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                                    @endforeach
-                                                                </optgroup>
-                                                            @endif
+                                                        @if( $category->getChildren()->count() )
+                                                            <optgroup label="{{ $category->name }}">
+                                                                @foreach($category->getChildren() as $item)
+                                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                                @endforeach
+                                                            </optgroup>
+                                                        @else
+                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                                 @include('dashboard::partials.error', ['field' => 'category'])

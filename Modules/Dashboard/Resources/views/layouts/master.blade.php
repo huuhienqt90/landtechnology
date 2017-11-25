@@ -70,8 +70,14 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
-        @include('dashboard::commons.header')
-        @include('dashboard::commons.sidebar')
+        @if(auth()->user()->isSuperUser())
+            @include('dashboard::commons.header')
+            @include('dashboard::commons.sidebar')
+        @elseif(auth()->user()->is_seller)
+            @include('dashboard::layouts.commons.header-seller')
+            @include('dashboard::layouts.commons.sidebar-seller')
+        @endif
+
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->

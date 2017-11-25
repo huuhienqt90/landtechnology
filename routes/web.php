@@ -69,6 +69,7 @@ Route::group(['namespace' => 'Front'], function() {
     Route::get('checkout-success', 'OrderController@showCheckoutThankYou')->name('front.checkout.thankYou');
     Route::get('checkout-fail', 'OrderController@showCheckoutFail')->name('front.checkout.fail');
 
+
     Route::group(['middleware' => 'auth', 'prefix' => 'user'], function(){
         // Index dashboard
          Route::get('dashboard', 'DashboardController@index')->name('front.dashboard.index');
@@ -87,6 +88,7 @@ Route::group(['namespace' => 'Front'], function() {
          Route::resource('swapping', 'SwappingController');
          Route::get('swap/list-accept-swap', 'SwappingController@listAccept')->name('front.swapping.listAccept');
     });
+
 });
 // Home
 Breadcrumbs::register('home', function ($breadcrumbs) {

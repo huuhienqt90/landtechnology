@@ -4,13 +4,15 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\SellTypeResponsitory;
 use Modules\Dashboard\Http\Requests\SellTypeUpdateRequest;
 use Modules\Dashboard\Http\Requests\SellTypeStoreRequest;
 
-class SellTypeController extends Controller
+class SellTypeController extends DashboardController
 {
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'sell-type';
+
     protected $sellTypeResponsitory;
     public function __construct(SellTypeResponsitory $sellTypeResponsitory){
         $this->sellTypeResponsitory = $sellTypeResponsitory;
@@ -21,8 +23,8 @@ class SellTypeController extends Controller
      */
     public function index()
     {
-        $sellTypes = $this->sellTypeResponsitory->all();
-        return view('dashboard::sell-type.index', compact('sellTypes'));
+        $sellTypes = $this->sellTypeResponsitory->getSellTypesByUser(auth()->user()->id, 20);
+        return $this->viewDashboard('sell-type.index', compact('sellTypes'));
     }
 
     /**
@@ -32,7 +34,7 @@ class SellTypeController extends Controller
     public function create()
     {
         $sellType = $this->sellTypeResponsitory;
-        return view('dashboard::sell-type.create', compact('sellType'));
+        return $this->viewDashboard('sell-type.create', compact('sellType'));
     }
 
     /**
@@ -53,7 +55,7 @@ class SellTypeController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -63,7 +65,7 @@ class SellTypeController extends Controller
     public function edit($id)
     {
         $sellType = $this->sellTypeResponsitory->find($id);
-        return view('dashboard::sell-type.edit', compact('sellType'));
+        return $this->viewDashboard('sell-type.edit', compact('sellType'));
     }
 
     /**
@@ -75,8 +77,8 @@ class SellTypeController extends Controller
     {
         $update = [
             'name' => $request->name,
-            'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id
+            'updated_by' => auth()->user()->id,
+            'slug' => $request->slug
         ];
         $this->sellTypeResponsitory->update($update, $id);
         return redirect(route('dashboard.sell-type.index'))->with('alert-success', 'Update sell type sucess!');

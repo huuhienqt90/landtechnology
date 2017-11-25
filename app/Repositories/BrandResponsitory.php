@@ -39,4 +39,12 @@ class BrandResponsitory extends Repository {
             return false;
         }
     }
+
+    public function getBrandsByUser($user_id, $take = 20)
+    {
+        $attrs = Brand::whereHas('author', function($query){
+            $query->where('is_admin', 1);
+        })->orWhere('created_by', $user_id)->paginate($take);
+        return $attrs;
+    }
 }
