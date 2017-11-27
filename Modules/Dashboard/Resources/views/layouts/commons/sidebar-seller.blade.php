@@ -33,11 +33,10 @@
                 </a>
                 <ul class="treeview-menu">
                     <li{{ $subMenuActive == 'product' ? ' class=active' : '' }}><a href="{{ route('dashboard.product.index') }}"><i class="fa fa-circle-o"></i> List products</a></li>
-                    <li{{ $subMenuActive == 'group-attribute' ? ' class=active' : '' }}><a href="{{ route('dashboard.attribute-group.index') }}"><i class="fa fa-circle-o"></i> Group Attributes</a></li>
                     <li{{ $subMenuActive == 'attribute' ? ' class=active' : '' }}><a href="{{ route('dashboard.attribute.index') }}"><i class="fa fa-circle-o"></i> Attributes</a></li>
-                    <li{{ $subMenuActive == 'brand' ? ' class=active' : '' }}><a href="{{ route('dashboard.brand.index') }}"><i class="fa fa-circle-o"></i> Brands</a></li>
-                    <li{{ $subMenuActive == 'category' ? ' class=active' : '' }}><a href="{{ route('dashboard.category.index') }}"><i class="fa fa-circle-o"></i> Categories</a></li>
-                    <li{{ $subMenuActive == 'sell-type' ? ' class=active' : '' }}><a href="{{ route('dashboard.sell-type.index') }}"><i class="fa fa-circle-o"></i> Sell Types</a></li>
+                    <!-- <li{{ $subMenuActive == 'brand' ? ' class=active' : '' }}><a href="{{ route('dashboard.brand.index') }}"><i class="fa fa-circle-o"></i> Brands</a></li> -->
+                    <!-- <li{{ $subMenuActive == 'category' ? ' class=active' : '' }}><a href="{{ route('dashboard.category.index') }}"><i class="fa fa-circle-o"></i> Categories</a></li> -->
+                    <!-- <li{{ $subMenuActive == 'sell-type' ? ' class=active' : '' }}><a href="{{ route('dashboard.sell-type.index') }}"><i class="fa fa-circle-o"></i> Sell Types</a></li> -->
                     <li{{ $subMenuActive == 'seller-shipping' ? ' class=active' : '' }}><a href="{{ route('dashboard.seller-shipping.index') }}"><i class="fa fa-circle-o"></i> Seller Shippings</a></li>
                 </ul>
             </li>
@@ -48,20 +47,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ route('dashboard.order.index') }}"><i class="fa fa-circle-o"></i> Orders</a></li>
-                    <li><a href="{{ route('dashboard.coupon.index') }}"><i class="fa fa-circle-o"></i> Coupons</a></li>
                     <li><a href="{{ route('dashboard.setting.index') }}"><i class="fa fa-circle-o"></i> Settings</a></li>
-                    <li><a href="{{ route('dashboard.commission.index') }}"><i class="fa fa-circle-o"></i> Commissions</a></li>
-                    <li><a href="{{ route('dashboard.payment-history.index') }}"><i class="fa fa-circle-o"></i> Payment Histories</a></li>
-                </ul>
-            </li>
-            <li class="treeview{{ $menuActive == 'users' ? ' active' : '' }}">
-                <a href="#">
-                    <i class="fa fa-users"></i>
-                    <span>Users</span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ route('dashboard.user.index') }}"><i class="fa fa-circle-o"></i> Users</a></li>
-                    <li><a href="{{ route('dashboard.role.index') }}"><i class="fa fa-circle-o"></i> Roles</a></li>
                 </ul>
             </li>
         </ul>

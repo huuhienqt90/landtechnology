@@ -4,7 +4,6 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\PaymentHistoryResponsitory;
 use App\Repositories\OrderResponsitory;
 use Hamilton\PayPal\Api\Payout;
@@ -15,8 +14,11 @@ use Hamilton\PayPal\Api\Currency;
 use Hamilton\PayPal\Common\ResultPrinter;
 use App\Repositories\UserResponsitory;
 use Config;
-class PaymentHistoryController extends Controller
+class PaymentHistoryController extends DashboardController
 {
+    protected $menuActive = 'ecommerce';
+    protected $subMenuActive = 'payment-history';
+
     private $paymentHistoryResponsitory;
     private $orderResponsitory;
     private $apiContext;
@@ -38,7 +40,7 @@ class PaymentHistoryController extends Controller
     public function index()
     {
         $histories = $this->orderResponsitory->all();
-        return view('dashboard::payment-history.index', compact('histories'));
+        return $this->viewDashboard('payment-history.index', compact('histories'));
     }
 
     /**
@@ -47,7 +49,7 @@ class PaymentHistoryController extends Controller
      */
     public function create()
     {
-        return view('dashboard::payment-history.create');
+        return $this->viewDashboard('payment-history.create');
     }
 
     /**
@@ -65,7 +67,7 @@ class PaymentHistoryController extends Controller
      */
     public function show()
     {
-        return view('dashboard::payment-history.show');
+        return $this->viewDashboard('payment-history.show');
     }
 
     /**
@@ -75,7 +77,7 @@ class PaymentHistoryController extends Controller
     public function edit($id)
     {
         $payments = $this->paymentHistoryResponsitory->findAllBy('order_id', $id);
-        return view('dashboard::payment-history.edit', compact('payments'));
+        return $this->viewDashboard('payment-history.edit', compact('payments'));
     }
 
     /**

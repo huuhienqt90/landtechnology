@@ -4,7 +4,6 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\CouponResponsitory;
 use App\Repositories\CategoryResponsitory;
 use App\Repositories\ProductResponsitory;
@@ -12,15 +11,15 @@ use Modules\Dashboard\Http\Requests\CouponRequest;
 use Modules\Dashboard\Http\Requests\CouponUpdateRequest;
 use Auth;
 
-class CouponController extends Controller
+class CouponController extends DashboardController
 {
+    protected $menuActive = 'ecommerce';
+    protected $subMenuActive = 'coupon';
     protected $couponResponsitory;
     protected $categoryResponsitory;
     protected $productResponsitory;
 
-    public function __construct(CouponResponsitory $couponResponsitory,
-                                CategoryResponsitory $categoryResponsitory,
-                                ProductResponsitory $productResponsitory)
+    public function __construct(CouponResponsitory $couponResponsitory, CategoryResponsitory $categoryResponsitory, ProductResponsitory $productResponsitory)
     {
         $this->couponResponsitory = $couponResponsitory;
         $this->categoryResponsitory = $categoryResponsitory;
@@ -33,7 +32,7 @@ class CouponController extends Controller
     public function index()
     {
         $coupons = $this->couponResponsitory->all();
-        return view('dashboard::coupons.index', compact('coupons'));
+        return $this->viewDashboard('coupons.index', compact('coupons'));
     }
 
     /**
@@ -44,7 +43,7 @@ class CouponController extends Controller
     {
         $coupon = $this->couponResponsitory;
         $categories = $this->categoryResponsitory->getArrayNameCategories();
-        return view('dashboard::coupons.create', compact('coupon','categories'));
+        return $this->viewDashboard('coupons.create', compact('coupon','categories'));
     }
 
     /**
@@ -90,7 +89,7 @@ class CouponController extends Controller
      */
     public function show()
     {
-        return view('dashboard::coupons.show');
+        return $this->viewDashboard('coupons.show');
     }
 
     /**
@@ -114,7 +113,7 @@ class CouponController extends Controller
             $prodArr[$product->id] = $product->name;
         }
 
-        return view('dashboard::coupons.edit', compact('coupon','categories','cateArr', 'productArr', 'prodArr'));
+        return $this->viewDashboard('coupons.edit', compact('coupon','categories','cateArr', 'productArr', 'prodArr'));
     }
 
     /**

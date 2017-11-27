@@ -13,11 +13,16 @@ class Attribute extends Model
     protected $fillable = [
         'group_id',
         'name',
-        'options'
+        'options',
+        'seller_id'
     ];
 
     public function group(){
         return $this->hasOne('App\Models\AttributeGroup', 'id', 'group_id');
+    }
+
+    public function user(){
+        return $this->hasOne('App\Models\User', 'id', 'seller_id');
     }
 
     public static function getValuesById($id = 0){

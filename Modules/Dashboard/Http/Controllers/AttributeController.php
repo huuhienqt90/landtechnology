@@ -4,19 +4,19 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\AttributeResponsitory;
 use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\UserResponsitory;
 use Modules\Dashboard\Http\Requests\AttributeRequest;
 
-class AttributeController extends Controller
+class AttributeController extends DashboardController
 {
     protected $attributeResponsitory;
     protected $attributeGroupResponsitory;
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'attribute';
 
-    public function __construct(AttributeResponsitory $attributeResponsitory,
-                                AttributeGroupResponsitory $attributeGroupResponsitory)
+    public function __construct(AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory)
     {
         $this->attributeResponsitory = $attributeResponsitory;
         $this->attributeGroupResponsitory = $attributeGroupResponsitory;
@@ -27,8 +27,8 @@ class AttributeController extends Controller
      */
     public function index()
     {
-        $attributes = $this->attributeResponsitory->all();
-        return view('dashboard::attribute.index', compact('attributes'));
+        $attributes = $this->attributeResponsitory->findAllByUsers(auth()->user()->id);
+        return $this->viewDashboard('attribute.index', compact('attributes'));
     }
 
     /**
@@ -43,7 +43,7 @@ class AttributeController extends Controller
         foreach($attrGroups as $item){
             $arrAttrGroups[$item->id] = $item->name;
         }
-        return view('dashboard::attribute.create', compact('arrAttrGroups','attribute'));
+        return $this->viewDashboard('attribute.create', compact('arrAttrGroups','attribute'));
     }
 
     /**
@@ -56,6 +56,7 @@ class AttributeController extends Controller
         $param = $request->all();
         $param['options'] = trim($request->input('options'));
         $param['options'] = str_replace(' ', '', $param['options']);
+        $param['seller_id'] = auth()->user()->id;
         $this->attributeResponsitory->create($param);
         return redirect(route('dashboard.attribute.index'))->with('alert-success', 'Create attribute sucess!');
     }
@@ -66,7 +67,7 @@ class AttributeController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -74,14 +75,14 @@ class AttributeController extends Controller
      * @return Response
      */
     public function edit($id)
-    {   
+    {
         $attribute = $this->attributeResponsitory->find($id);
         $attrGroups = $this->attributeGroupResponsitory->all();
         $arrAttrGroups = ['' => 'Select a attribute group'];
         foreach($attrGroups as $item){
             $arrAttrGroups[$item->id] = $item->name;
         }
-        return view('dashboard::attribute.edit', compact('arrAttrGroups','attribute'));
+        return $this->viewDashboard('attribute.edit', compact('arrAttrGroups','attribute'));
     }
 
     /**
@@ -94,6 +95,7 @@ class AttributeController extends Controller
         $param = $request->only(['group_id','name']);
         $param['options'] = trim( $request->input('options') );
         $param['options'] = str_replace(' ', '', $param['options']);
+        $param['seller_id'] = auth()->user()->id;
         $this->attributeResponsitory->update($param, $id);
         return redirect(route('dashboard.attribute.index'))->with('alert-success', 'Update attribute sucess!');
     }

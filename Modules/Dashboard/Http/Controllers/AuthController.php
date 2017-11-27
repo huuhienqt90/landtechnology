@@ -33,7 +33,7 @@ class AuthController extends Controller
      * Authenticate the user
      */
     public function postLoginForm(LoginRequest $request){
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'is_admin' => 1])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'is_admin' => 1]) || Auth::attempt(['email' => $request->email, 'password' => $request->password, 'is_seller' => 1])) {
             return redirect($this->redirectTo);
         }else{
             return back()->withErrors(['email' => 'Please use admin account to login']);

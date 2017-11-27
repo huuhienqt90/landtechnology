@@ -33,4 +33,12 @@ class SellType extends Model
             ]
         ];
     }
+
+    public function author() {
+        return $this->hasOne('App\Models\User', 'id', 'created_by');
+    }
+
+    public function updator() {
+        return $this->hasOne('App\Models\User', 'id', 'updated_by');
+    }
 }
