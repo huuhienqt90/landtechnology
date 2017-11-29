@@ -21,4 +21,8 @@ class CountryResponsitory extends Repository {
     	}
     	return $arrCountries;
     }
+
+    public function getMaxCode() {
+        return Country::max('code');
+    }
 }

@@ -79,6 +79,12 @@
                                                 @include('dashboard::partials.error', ['field' => 'category'])
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            {{ Form::label('tags', 'Tags', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('tags[]', $arrTags, null, ['class' => 'form-control tags', 'multiple' => true]) }}
+                                            </div>
+                                        </div>
                                         <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">
                                             <label for="feature_image" class="col-sm-3 control-label">Feature Image</label>
                                             <div class="col-sm-9">

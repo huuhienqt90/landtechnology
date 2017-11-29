@@ -79,6 +79,10 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Category', 'product_categories', 'product_id', 'category_id');
     }
 
+    public function tags() {
+        return $this->belongsToMany('App\Models\Tag', 'product_tags');
+    }
+
     /**
      * Belong to brands
      *

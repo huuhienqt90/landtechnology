@@ -19,6 +19,8 @@ use App\Repositories\AttributeGroupResponsitory;
 use App\Repositories\ProductMetaResponsitory;
 use App\Repositories\ProductVariationResponsitory;
 use App\Repositories\VariationAttributeResponsitory;
+use App\Repositories\TagReponsitory;
+use App\Repositories\ProductTagResponsitory;
 use App\Models\ProductBrand;
 use Modules\Dashboard\Http\Requests\ProductUpdateRequest;
 use Modules\Dashboard\Http\Requests\ProductStoreRequest;
@@ -41,8 +43,10 @@ class ProductController extends DashboardController
     protected $productMetaResponsitory;
     protected $productVariationResponsitory;
     protected $variationAttributeResponsitory;
+    protected $tagReponsitory;
+    protected $productTagResponsitory;
 
-    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory, ProductMetaResponsitory $productMetaResponsitory, ProductVariationResponsitory $productVariationResponsitory, VariationAttributeResponsitory $variationAttributeResponsitory){
+    public function __construct(CategoryResponsitory $categoryResponsitory, BrandResponsitory $brandResponsitory, SellerShippingResponsitory $sellerShippingResponsitory, SellTypeResponsitory $sellTypeResponsitory, ProductResponsitory $productResponsitory, UserResponsitory $userResponsitory, ProductCategoryResponsitory $productCategoryResponsitory, ProductImageResponsitory $productImageResponsitory, AttributeResponsitory $attributeResponsitory, AttributeGroupResponsitory $attributeGroupResponsitory, ProductAttributeResponsitory $productAttributeResponsitory, ProductMetaResponsitory $productMetaResponsitory, ProductVariationResponsitory $productVariationResponsitory, VariationAttributeResponsitory $variationAttributeResponsitory, TagReponsitory $tagReponsitory, ProductTagResponsitory $productTagResponsitory){
         $this->categoryResponsitory         = $categoryResponsitory;
         $this->brandResponsitory            = $brandResponsitory;
         $this->sellerShippingResponsitory   = $sellerShippingResponsitory;
@@ -57,6 +61,8 @@ class ProductController extends DashboardController
         $this->productMetaResponsitory      = $productMetaResponsitory;
         $this->productVariationResponsitory = $productVariationResponsitory;
         $this->variationAttributeResponsitory = $variationAttributeResponsitory;
+        $this->tagReponsitory               = $tagReponsitory;
+        $this->productTagResponsitory       = $productTagResponsitory;
     }
     /**
      * Display a listing of the resource.
@@ -86,6 +92,12 @@ class ProductController extends DashboardController
             foreach ($categories as $cat) {
                 $cateArr[$cat->id] = $cat->name;
             }
+        }
+
+        $tags = $this->tagReponsitory->all();
+        $arrTags = [];
+        foreach( $tags as $tag ) {
+            $arrTags[$tag->id] = $tag->name;
         }
 
         $brands = $this->brandResponsitory->all();
@@ -119,7 +131,7 @@ class ProductController extends DashboardController
         }
 
         $shippings = $this->sellerShippingResponsitory->findWhere(['seller_id' => auth()->user()->id]);
-        return $this->viewDashboard('product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','shippings'));
+        return $this->viewDashboard('product.create', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','shippings','arrTags'));
     }
 
     /**
@@ -138,7 +150,6 @@ class ProductController extends DashboardController
             'kind' => 'selling',
             'description_short' => $request->description_short,
             'description' => $request->description,
-            'key_words' => $request->key_words,
             'sell_type_id' => $request->sell_type,
             'sold_units' => 0
         ];
@@ -159,6 +170,17 @@ class ProductController extends DashboardController
             $create['feature_image'] = $path;
         }
         $result = $this->productResponsitory->create($create);
+
+        if( $request->tags != null ) {
+            foreach($request->tags as $tag) {
+                if( !is_numeric($tag) ) {
+                    $tagId = $this->tagReponsitory->create(['name' => $tag, 'slug' => str_slug($tag,'-')]);
+                    $this->productTagResponsitory->create(['product_id' => $result->id,'tag_id' => $tagId->id]);
+                }else{
+                    $this->productTagResponsitory->create(['product_id' => $result->id,'tag_id' => $tag]);
+                }
+            }
+        }
 
         if( isset( $request->product_brand ) && $request->product_brand){
             ProductBrand::create(['product_id' => $result->id, 'brand_id' => $request->product_brand]);
@@ -246,12 +268,24 @@ class ProductController extends DashboardController
     public function edit($id)
     {
         $product = $this->productResponsitory->find($id);
-        $categories = $this->categoryResponsitory->findAllBy('parent_id', 0);
+        $categories = $this->categoryResponsitory->getCategoriesByUser('create_by', auth()->user()->id);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
                 $cateArr[$cat->id] = $cat->name;
             }
+        }
+
+        $productTags = $this->productTagResponsitory->findAllBy('product_id', $id);
+        $arTagId = [];
+        foreach( $productTags as $tag ) {
+            $arTagId[] = $tag->tag_id;
+        }
+
+        $tags = $this->tagReponsitory->all();
+        $arrTags = [];
+        foreach( $tags as $tag ) {
+            $arrTags[$tag->id] = $tag->name;
         }
 
         $brands = $this->brandResponsitory->all();
@@ -291,6 +325,7 @@ class ProductController extends DashboardController
         $product->category = $productCategoryArr;
 
         $productImages = $this->productImageResponsitory->findAllBy('product_id', $id);
+        
         $productImageArr = [];
         if( $productImages && $productImages->count() ){
             foreach ($productImages as $productImage) {
@@ -326,7 +361,7 @@ class ProductController extends DashboardController
         $product->product_images = $productImageArr;
         $shippings = $this->sellerShippingResponsitory->findWhere(['seller_id' => auth()->user()->id]);
 
-        return $this->viewDashboard('product.edit', compact('categories','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages','shippings'));
+        return $this->viewDashboard('product.edit', compact('categories','arTagId','arrTags','product', 'cateArr', 'brandArr', 'sellerArr', 'sellTypeArr','attrArr','attributesArr','listAttrs','productImages','shippings'));
     }
 
     /**
@@ -360,6 +395,18 @@ class ProductController extends DashboardController
             $update['stock'] = 0;
         }else{
             $update['stock'] = $request->stock;
+        }
+
+        if( $request->tags != null ) {
+            $this->productTagResponsitory->deleteByProductId($id);
+            foreach($request->tags as $tag) {
+                if( !is_numeric($tag) ) {
+                    $tagId = $this->tagReponsitory->create(['name' => $tag, 'slug' => str_slug($tag,'-')]);
+                    $this->productTagResponsitory->create(['product_id' => $id,'tag_id' => $tagId->id]);
+                }else{
+                    $this->productTagResponsitory->create(['product_id' => $id,'tag_id' => $tag]);
+                }
+            }
         }
 
         // Update feature image
