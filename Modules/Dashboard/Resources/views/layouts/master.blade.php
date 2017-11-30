@@ -144,6 +144,11 @@
                     .replace(/ +/g,'-')
                     ;
             }
+            $(".tags").select2({
+                tags: true,
+                minimumInputLength: 1,
+                tokenSeparators: [',']
+            })
         });
     </script>
 </body>

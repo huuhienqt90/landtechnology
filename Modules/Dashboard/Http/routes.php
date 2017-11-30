@@ -15,6 +15,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
         Route::resource('sell-type', 'SellTypeController');
         Route::resource('seller-shipping', 'SellerShippingController');
         Route::resource('attribute', 'AttributeController');
+        Route::resource('country', 'CountryController');
+        Route::resource('tag', 'TagController');
         // Product
         Route::resource('product', 'ProductController');
         // Delete Feature Image By Ajax

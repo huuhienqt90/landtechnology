@@ -138,10 +138,10 @@
                 </div>
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Key words</h3>
+                        <h3 class="box-title">Tags</h3>
                     </div>
                     <div class="box-body">
-                        {{ Form::text('key_words', old('key_words'), ['class' => 'form-control']) }}
+                        {{ Form::select('tags[]', $arrTags, null, ['class' => 'form-control tags', 'multiple' => true]) }}
                     </div>
                 </div>
                 <div class="box box-primary">

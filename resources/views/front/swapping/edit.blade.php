@@ -5,7 +5,7 @@
     @include('social::meta-article', [
         'title'         => 'Edit swapping product',
         'description'   => 'Welcome from Hello World',
-        'image'         => 'http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg',
+        'image'         => '',
         'author'        => 'Set Kyar Wa Lar'
     ])
 @stop
@@ -43,7 +43,7 @@
                                             {{ Form::label('product_brand', 'Product Brand', ['class' => 'col-sm-3 control-label']) }}
                                             <div class="col-sm-9">
                                                 {{ Form::select('product_brand', $brands, $product->product_brand, ['class' => 'form-control']) }}
-                                                {{ Form::label(null, $errors->has('product_')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
+                                                {{ Form::label(null, $errors->has('product_brand')? $errors->first('product_brand') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
                                         <div class="form-group {{ $errors->has('category') ? ' has-error' : ''}}">
@@ -58,10 +58,18 @@
                                                                     <option value="{{ $item->id }}" {{ selected(in_array($item->id, array_keys($product->category)), true) }}>{{ $item->name }}</option>
                                                                 @endforeach
                                                             </optgroup>
+                                                        @else
+                                                            <option value="{{ $category->id }}"{{ selected(in_array($category->id, array_keys($product->category)), true) }}>{{ $category->name }}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
                                                 @include('dashboard::partials.error', ['field' => 'category'])
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ Form::label('tags', 'Tags', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('tags[]', $arrTags, $arTagId, ['class' => 'form-control tags', 'multiple' => true]) }}
                                             </div>
                                         </div>
                                         <div class="form-group {{ $errors->has('feature_image') ? ' has-error' : '' }}">

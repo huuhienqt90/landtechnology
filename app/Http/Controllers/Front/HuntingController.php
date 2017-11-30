@@ -8,17 +8,25 @@ use App\Http\Requests\HuntingStoreRequest;
 use App\Http\Requests\HuntingUpdateRequest;
 use App\Repositories\HuntingResponsitory;
 use App\Repositories\CountryResponsitory;
+use App\Repositories\TagReponsitory;
+use App\Repositories\HuntingTagResponsitory;
 
 class HuntingController extends Controller
 {
     protected $huntingResponsitory;
     protected $countryResponsitory;
+    protected $tagReponsitory;
+    protected $HuntingTagResponsitory;
 
     public function __construct(HuntingResponsitory $huntingResponsitory,
-                                CountryResponsitory $countryResponsitory)
+                                CountryResponsitory $countryResponsitory,
+                                TagReponsitory $tagReponsitory,
+                                HuntingTagResponsitory $huntingTagResponsitory)
     {
         $this->huntingResponsitory = $huntingResponsitory;
         $this->countryResponsitory = $countryResponsitory;
+        $this->tagReponsitory = $tagReponsitory;
+        $this->huntingTagResponsitory = $huntingTagResponsitory;
         $this->middleware('check.auth:seller');
     }
     /**
@@ -41,7 +49,13 @@ class HuntingController extends Controller
     {
         $countries = $this->countryResponsitory->arrCountries();
 
-        return view('front.hunting.create', compact('countries'));
+        $tags = $this->tagReponsitory->all();
+        $arrTags = [];
+        foreach( $tags as $tag ) {
+            $arrTags[$tag->id] = $tag->name;
+        }
+
+        return view('front.hunting.create', compact('countries','arrTags'));
     }
 
     /**
@@ -58,7 +72,20 @@ class HuntingController extends Controller
             $path = $request->file('image_path')->store('hunting_product/features');
             $param['image_path'] = $path;
         }
-        $this->huntingResponsitory->create($param);
+
+        $result = $this->huntingResponsitory->create($param);
+
+        if( $request->tags != null ) {
+            foreach($request->tags as $tag) {
+                if( !is_numeric($tag) ) {
+                    $tagId = $this->tagReponsitory->create(['name' => $tag, 'slug' => str_slug($tag,'-')]);
+                    $this->huntingTagResponsitory->create(['hunting_id' => $result->id,'tag_id' => $tagId->id]);
+                }else{
+                    $this->huntingTagResponsitory->create(['hunting_id' => $result->id,'tag_id' => $tag]);
+                }
+            }
+        }
+
         return redirect(route('hunting.index'))->with('msgOk', 'Product\'s Hunting Was Created Success');
     }
 
@@ -84,7 +111,19 @@ class HuntingController extends Controller
         $countries = $this->countryResponsitory->arrCountries();
         $product = $this->huntingResponsitory->find($id);
 
-        return view('front.hunting.edit', compact('countries','product'));
+        $tags = $this->tagReponsitory->all();
+        $arrTags = [];
+        foreach( $tags as $tag ) {
+            $arrTags[$tag->id] = $tag->name;
+        }
+
+        $huntingTags = $this->huntingTagResponsitory->findAllBy('hunting_id', $id);
+        $arTagId = [];
+        foreach( $huntingTags as $tag ) {
+            $arTagId[] = $tag->tag_id;
+        }
+
+        return view('front.hunting.edit', compact('countries','product','arTagId','arrTags'));
     }
 
     /**
@@ -103,6 +142,17 @@ class HuntingController extends Controller
             \Storage::delete($product->image_path);
             $path = $request->file('image_path')->store('hunting_product/features');
             $param['image_path'] = $path;
+        }
+        if( $request->tags != null ) {
+            $this->huntingTagResponsitory->deleteByProductId($id);
+            foreach($request->tags as $tag) {
+                if( !is_numeric($tag) ) {
+                    $tagId = $this->tagReponsitory->create(['name' => $tag, 'slug' => str_slug($tag,'-')]);
+                    $this->huntingTagResponsitory->create(['hunting_id' => $id,'tag_id' => $tagId->id]);
+                }else{
+                    $this->huntingTagResponsitory->create(['hunting_id' => $id,'tag_id' => $tag]);
+                }
+            }
         }
         $this->huntingResponsitory->update($param, $id);
         return redirect(route('hunting.index'))->with('msgOk', 'Product\'s Hunting Was Updated Success');

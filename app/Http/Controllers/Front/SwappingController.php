@@ -19,9 +19,12 @@ use App\Http\Requests\SwappingRequest;
 use App\Http\Requests\SwappingUpdateRequest;
 use App\Repositories\SettingRepository;
 use App\Repositories\SwapItemResponsitory;
+use App\Repositories\TagReponsitory;
+use App\Repositories\ProductTagResponsitory;
 use Hamilton\PayPal\PayPal;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Session;
+use App\Models\ProductBrand;
 
 class SwappingController extends Controller
 {
@@ -35,6 +38,8 @@ class SwappingController extends Controller
     protected $settingRepository;
     protected $swapItemResponsitory;
     protected $productBrandResponsitory;
+    protected $tagReponsitory;
+    protected $productTagResponsitory;
     private $PayPal;
 
     public function __construct(ProductResponsitory $productResponsitory,
@@ -49,7 +54,9 @@ class SwappingController extends Controller
                                 AttributeResponsitory $attributeResponsitory,
                                 SettingRepository $settingRepository,
                                 SwapItemResponsitory $swapItemResponsitory,
-                                ProductBrandResponsitory $productBrandResponsitory)
+                                ProductBrandResponsitory $productBrandResponsitory,
+                                TagReponsitory $tagReponsitory,
+                                ProductTagResponsitory $productTagResponsitory)
     {
         $this->productResponsitory = $productResponsitory;
         $this->productAttributeResponsitory = $productAttributeResponsitory;
@@ -64,6 +71,8 @@ class SwappingController extends Controller
         $this->settingRepository            = $settingRepository;
         $this->swapItemResponsitory         = $swapItemResponsitory;
         $this->productBrandResponsitory     = $productBrandResponsitory;
+        $this->tagReponsitory               = $tagReponsitory;
+        $this->productTagResponsitory       = $productTagResponsitory;
         $this->middleware('check.auth:seller');
 
         $PayPalConfig = array(
@@ -169,8 +178,13 @@ class SwappingController extends Controller
             $attrArr[$attr->id] = $attr->name;
         }
         $oldCommissionSwap = $this->settingRepository->getValueByKey('commission_swap');
+        $tags = $this->tagReponsitory->all();
+        $arrTags = [];
+        foreach( $tags as $tag ) {
+            $arrTags[$tag->id] = $tag->name;
+        }
 
-        return view('front.swapping.create', compact('brands','categories','selltypes','allCategories','attrArr','oldCommissionSwap'));
+        return view('front.swapping.create', compact('brands','arrTags','categories','selltypes','allCategories','attrArr','oldCommissionSwap'));
     }
 
     /**
@@ -195,6 +209,18 @@ class SwappingController extends Controller
         }
 
         $result = $this->productResponsitory->create($param);
+
+        // Create tags product
+        if( $request->tags != null ) {
+            foreach($request->tags as $tag) {
+                if( !is_numeric($tag) ) {
+                    $tagId = $this->tagReponsitory->create(['name' => $tag, 'slug' => str_slug($tag,'-')]);
+                    $this->productTagResponsitory->create(['product_id' => $result->id,'tag_id' => $tagId->id]);
+                }else{
+                    $this->productTagResponsitory->create(['product_id' => $result->id,'tag_id' => $tag]);
+                }
+            }
+        }
 
         // Create category product
         $this->productCategoryResponsitory->create(['product_id' => $result->id, 'category_id' => $request->category]);
@@ -372,12 +398,6 @@ class SwappingController extends Controller
         $brands = $this->brandResponsitory->getArrayNameBrands();
 
         $categories = $this->categoryResponsitory->all();
-        $cateArr = [];
-        if( $categories && $categories->count() ){
-            foreach ($categories as $cat) {
-                $cateArr[$cat->id] = $cat->name;
-            }
-        }
 
         $selltypes = $this->sellTypeResponsitory->getArrayNameSellTypes();
 
@@ -387,6 +407,18 @@ class SwappingController extends Controller
             foreach ($productImages as $productImage) {
                 $productImageArr[$productImage->id] = $productImage->image_path;
             }
+        }
+
+        $productTags = $this->productTagResponsitory->findAllBy('product_id', $id);
+        $arTagId = [];
+        foreach( $productTags as $tag ) {
+            $arTagId[] = $tag->tag_id;
+        }
+
+        $tags = $this->tagReponsitory->all();
+        $arrTags = [];
+        foreach( $tags as $tag ) {
+            $arrTags[$tag->id] = $tag->name;
         }
 
         $productAttributesArr = [];
@@ -407,13 +439,20 @@ class SwappingController extends Controller
             }
         }
         $product->category = $productCategoryArr;
+        
+        $product_brands = $this->productBrandResponsitory->findAllBy('product_id', $id);
+        $arrProductBrands = [];
+        foreach($product_brands as $item) {
+            $arrProductBrands[$item->brand_id] = $item->brand_id;
+        }
+        $product->product_brand = $arrProductBrands;
 
         $attrs = $this->attributeResponsitory->all();
         $attrArr = $this->attributeResponsitory->all();
 
         $product->attribute = $productAttributesArr;
 
-        return view('front.swapping.edit', compact('product','brands','categories','selltypes','productImages','attrArr','attributesArr','cateArr'));
+        return view('front.swapping.edit', compact('product','arrTags','arTagId','brands','categories','selltypes','productImages','attrArr','attributesArr'));
     }
 
     /**
@@ -426,14 +465,13 @@ class SwappingController extends Controller
     public function update(SwappingUpdateRequest $request, $id)
     {
         $update = [
-            'status' => 'Pending',
+            'status' => 'active',
             'slug' => $request->slug,
             'name' => $request->name,
             'description_short' => $request->description_short,
             'description' => $request->description,
             'seller_id' => auth()->user()->id,
             'sell_type_id' => $request->sell_type_id,
-            'product_brand' => $request->product_brand
         ];
 
         // Update feature image
@@ -443,10 +481,26 @@ class SwappingController extends Controller
         }
         $this->productResponsitory->update($update, $id);
 
+        if( $request->tags != null ) {
+            $this->productTagResponsitory->deleteByProductId($id);
+            foreach($request->tags as $tag) {
+                if( !is_numeric($tag) ) {
+                    $tagId = $this->tagReponsitory->create(['name' => $tag, 'slug' => str_slug($tag,'-')]);
+                    $this->productTagResponsitory->create(['product_id' => $id,'tag_id' => $tagId->id]);
+                }else{
+                    $this->productTagResponsitory->create(['product_id' => $id,'tag_id' => $tag]);
+                }
+            }
+        }
+
         // Update product category
         $this->productCategoryResponsitory->deleteProductCategory($id);
         $this->productCategoryResponsitory->create(['product_id' => $id, 'category_id' => $request->category]);
-
+        // Update product brand
+        ProductBrand::where('product_id', $id)->delete();
+        if( isset( $request->product_brand ) && $request->product_brand){
+            ProductBrand::create(['product_id' => $id, 'brand_id' => $request->product_brand]);
+        }
         // Update product images
         if( $request->hasFile('product_images') ){
             $productImages = $request->file('product_images');
