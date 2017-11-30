@@ -86,7 +86,7 @@ class ProductController extends DashboardController
     public function create()
     {
         $product = $this->productResponsitory;
-        $categories = $this->categoryResponsitory->getCategoriesByUser('create_by', auth()->user()->id);
+        $categories = $this->categoryResponsitory->getCategoriesByUser(auth()->user()->id);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
@@ -268,7 +268,7 @@ class ProductController extends DashboardController
     public function edit($id)
     {
         $product = $this->productResponsitory->find($id);
-        $categories = $this->categoryResponsitory->getCategoriesByUser('create_by', auth()->user()->id);
+        $categories = $this->categoryResponsitory->getCategoriesByUser(auth()->user()->id);
         $cateArr = [];
         if( $categories && $categories->count() ){
             foreach ($categories as $cat) {
