@@ -540,7 +540,7 @@ class ProductController extends Controller
             $this->productRepository->update($param, $product_by);
             Mail::to($userIsSwap->email)->send(new AcceptSwap());
             Mail::to($userSwap->email)->send(new AcceptSwap());
-            return redirect()->back()->with('msgOk', 'Product accept swap success!!');
+            return redirect()->route('front.swapping.index')->with('msgOk', 'Product accept swap success!!');
         }
         return redirect()->route('front.user.login');
     }
