@@ -5,12 +5,14 @@ namespace Modules\Dashboard\Http\Controllers;
 use App\Repositories\UserResponsitory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Dashboard\Http\Requests\UserStoreRequest;
 use Modules\Dashboard\Http\Requests\UserUpdateRequest;
 
-class UserController extends Controller
+class UserController extends DashboardController
 {
+    protected $menuActive = 'users';
+    protected $subMenuActive = 'user';
+
     protected $userReponsitory;
     public function __construct(UserResponsitory $userResponsitory)
     {
@@ -24,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->userReponsitory->all();
-        return view('dashboard::user.index', compact('users'));
+        return $this->viewDashboard('user.index', compact('users'));
     }
 
     /**
@@ -34,7 +36,7 @@ class UserController extends Controller
     public function create()
     {
         $user = $this->userReponsitory;
-        return view('dashboard::user.create', compact('user'));
+        return $this->viewDashboard('user.create', compact('user'));
     }
 
     /**
@@ -70,7 +72,7 @@ class UserController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -80,7 +82,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->userReponsitory->find($id);
-        return view('dashboard::user.edit', compact('user'));
+        return $this->viewDashboard('user.edit', compact('user'));
     }
 
     /**

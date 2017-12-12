@@ -46,6 +46,10 @@ class Hunting extends Model
         return $this->hasOne('App\Models\Country', 'country_id', 'id');
     }
 
+    public function tags() {
+        return $this->belongsToMany('App\Models\Tag','hunting_tags');
+    }
+
     /**
      * Show sent offers
      *

@@ -18,6 +18,10 @@ class CreateAttributesTable extends Migration
             $table->integer('group_id')->unsigned();
             $table->string('name');
             $table->text('options')->nullable();
+            $table->integer('seller_id')->unsigned();
+            $table->foreign('seller_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
             $table->foreign('group_id')
                 ->references('id')->on('attribute_groups')
                 ->onDelete('cascade');

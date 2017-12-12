@@ -4,14 +4,15 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\CommissionResponsitory;
 use App\Repositories\CategoryResponsitory;
 use Modules\Dashboard\Http\Requests\CommissionStoreRequest;
 use Modules\Dashboard\Http\Requests\CommissionUpdateRequest;
 
-class CommissionController extends Controller
+class CommissionController extends DashboardController
 {
+    protected $menuActive = 'ecommerce';
+    protected $subMenuActive = 'commission';
     protected $commissionResponsitory;
 
     public function __construct(CommissionResponsitory $commissionResponsitory,
@@ -26,7 +27,7 @@ class CommissionController extends Controller
     public function index()
     {
         $commissions = $this->commissionResponsitory->all();
-        return view('dashboard::commissions.index', compact('commissions'));
+        return $this->viewDashboard('commissions.index', compact('commissions'));
     }
 
     /**
@@ -36,12 +37,12 @@ class CommissionController extends Controller
     public function create()
     {
         $commission = $this->commissionResponsitory;
-        
+
         $cateArr = ['' => 'Select a subcategory'];
 
         $categories = $this->categoryResponsitory->findAllBy('status', 'active');
 
-        return view('dashboard::commissions.create', compact('commission','categories'));
+        return $this->viewDashboard('commissions.create', compact('commission','categories'));
     }
 
     /**
@@ -67,7 +68,7 @@ class CommissionController extends Controller
      */
     public function show()
     {
-        return view('dashboard::commissions.show');
+        return $this->viewDashboard('commissions.show');
     }
 
     /**
@@ -80,7 +81,7 @@ class CommissionController extends Controller
 
         $categories = $this->categoryResponsitory->findAllBy('status', 'active');
 
-        return view('dashboard::commissions.edit', compact('commission','categories'));
+        return $this->viewDashboard('commissions.edit', compact('commission','categories'));
     }
 
     /**

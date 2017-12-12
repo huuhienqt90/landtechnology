@@ -4,13 +4,15 @@ namespace Modules\Dashboard\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use App\Repositories\SellerShippingResponsitory;
 use Modules\Dashboard\Http\Requests\SellerShippingUpdateRequest;
 use Modules\Dashboard\Http\Requests\SellerShippingStoreRequest;
 
-class SellerShippingController extends Controller
+class SellerShippingController extends DashboardController
 {
+    protected $menuActive = 'products';
+    protected $subMenuActive = 'seller-shipping';
+
     protected $sellerShippingResponsitory;
     public function __construct(SellerShippingResponsitory $sellerShippingResponsitory){
         $this->sellerShippingResponsitory = $sellerShippingResponsitory;
@@ -22,8 +24,8 @@ class SellerShippingController extends Controller
      */
     public function index()
     {
-        $sellerShippings = $this->sellerShippingResponsitory->all();
-        return view('dashboard::seller-shipping.index', compact('sellerShippings'));
+        $sellerShippings = $this->sellerShippingResponsitory->getSellerShippingsByUser(auth()->user()->id, 20);
+        return $this->viewDashboard('seller-shipping.index', compact('sellerShippings'));
     }
 
     /**
@@ -33,7 +35,7 @@ class SellerShippingController extends Controller
     public function create()
     {
         $sellerShipping = $this->sellerShippingResponsitory;
-        return view('dashboard::seller-shipping.create', compact('sellerShipping'));
+        return $this->viewDashboard('seller-shipping.create', compact('sellerShipping'));
     }
 
     /**
@@ -54,7 +56,7 @@ class SellerShippingController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -64,7 +66,7 @@ class SellerShippingController extends Controller
     public function edit($id)
     {
         $sellerShipping = $this->sellerShippingResponsitory->find($id);
-        return view('dashboard::seller-shipping.edit', compact('sellerShipping'));
+        return $this->viewDashboard('seller-shipping.edit', compact('sellerShipping'));
     }
 
     /**
@@ -74,7 +76,7 @@ class SellerShippingController extends Controller
      */
     public function update(SellerShippingUpdateRequest $request, $id)
     {
-        $update = ['seller_id' => auth()->user()->id, 'from_country' => $request->from_country, 'to_country' => $request->to_country, 'cost' => $request->cost];
+        $update = ['from_country' => $request->from_country, 'to_country' => $request->to_country, 'cost' => $request->cost];
         $this->sellerShippingResponsitory->update($update, $id);
         return redirect(route('dashboard.seller-shipping.index'))->with('alert-success', 'Update seller shipping sucess!');
     }

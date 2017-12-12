@@ -138,7 +138,9 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active" {{ $errors->has('rating') || $errors->has('message') ? '' : 'class="active"' }}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="text-uppercase">Description</a></li>
                 <li role="presentation" {{ $errors->has('rating') || $errors->has('message') ? 'class="active"' : '' }}><a href="#review" aria-controls="profile" role="tab" data-toggle="tab" class="text-uppercase">Customer Review</a></li>
-                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="text-uppercase">Product Tags</a></li>
+                @if( count( $product->tags()->get() ) )
+                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="text-uppercase">Product Tags</a></li>
+                @endif
             </ul>
 
             <!-- Tab panes -->
@@ -208,9 +210,15 @@
                         </div>
                     {!! Form::close() !!}
                 </div>
-                <div role="tabpanel" class="tab-pane" id="messages">
-                    {!! $product->key_words !!}
-                </div>
+                @if( count( $product->tags()->get() ) )
+                    <div role="tabpanel" class="tab-pane" id="messages">
+                        <ul>
+                            @foreach( $product->tags()->get() as $item )
+                                <li>{{ $item->name }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

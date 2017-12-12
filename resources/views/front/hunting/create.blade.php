@@ -52,6 +52,12 @@
                                                 {{ Form::label(null, $errors->has('country_id')? $errors->first('country_id') : '', ['class' => 'help-block']) }}
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            {{ Form::label('tags', 'Tags', ['class' => 'col-sm-3 control-label']) }}
+                                            <div class="col-sm-9">
+                                                {{ Form::select('tags[]', $arrTags, null, ['class' => 'form-control tags', 'multiple' => true]) }}
+                                            </div>
+                                        </div>
                                         <div class="form-group {{ $errors->has('image_path') ? ' has-error' : '' }}">
                                             <label for="image_path" class="col-sm-3 control-label">Feature Image</label>
                                             <div class="col-sm-9">

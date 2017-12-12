@@ -6,11 +6,13 @@ use App\Repositories\PaymentMethodResponsitory;
 use App\Repositories\SettingRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Dashboard\Http\Requests\SettingStoreRequest;
 
-class SettingController extends Controller
+class SettingController extends DashboardController
 {
+    protected $menuActive = 'ecommerce';
+    protected $subMenuActive = 'setting';
+
     protected $paymentMethodResponsitory;
     protected $settingRepository;
     public function __construct(PaymentMethodResponsitory $paymentMethodResponsitory, SettingRepository $settingRepository)
@@ -33,7 +35,7 @@ class SettingController extends Controller
         $APISignature = $this->settingRepository->getValueByKey('APISignature');
         $stripe_key = $this->settingRepository->getValueByKey('stripe_key');
         $stripe_secret = $this->settingRepository->getValueByKey('stripe_secret');
-        return view('dashboard::setting.index', compact('oldPayPal','oldCommissionSwap','oldCommissionHunting', 'APIUsername', 'APIPassword', 'APISignature', 'stripe_key', 'stripe_secret'));
+        return $this->viewDashboard('setting.index', compact('oldPayPal','oldCommissionSwap','oldCommissionHunting', 'APIUsername', 'APIPassword', 'APISignature', 'stripe_key', 'stripe_secret'));
     }
 
     /**
@@ -42,7 +44,7 @@ class SettingController extends Controller
      */
     public function create()
     {
-        return view('dashboard::create');
+        return $this->viewDashboard('create');
     }
 
     /**
@@ -124,7 +126,7 @@ class SettingController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -133,7 +135,7 @@ class SettingController extends Controller
      */
     public function edit()
     {
-        return view('dashboard::edit');
+        return $this->viewDashboard('edit');
     }
 
     /**

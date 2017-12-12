@@ -155,6 +155,11 @@
             $('#description').wysihtml5();
             $('#description_short').wysihtml5();
             $('.select2').select2();
+            $(".tags").select2({
+                tags: true,
+                minimumInputLength: 1,
+                tokenSeparators: [',',';']
+            })
         });
     </script>
     @include('front.messages')

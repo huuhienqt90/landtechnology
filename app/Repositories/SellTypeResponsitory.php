@@ -23,4 +23,12 @@ class SellTypeResponsitory extends Repository {
         }
         return $sellTypeArr;
     }
+
+    public function getSellTypesByUser($user_id, $take = 20)
+    {
+        $attrs = SellType::whereHas('author', function($query){
+            $query->where('is_admin', 1);
+        })->orWhere('created_by', $user_id)->paginate($take);
+        return $attrs;
+    }
 }

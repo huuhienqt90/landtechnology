@@ -6,15 +6,17 @@ Route::group(['middleware' => ['web'], 'prefix' => 'dashboard', 'namespace' => '
     Route::post('login', 'AuthController@postLoginForm')->name('login.Admin.post');
     Route::get('logout', 'AuthController@logout')->name('logout.Admin');
 
-    Route::group(['middleware' => 'check.auth:Admin', 'as' => 'dashboard.'], function(){
+    Route::group(['middleware' => ['check.auth:Admin', 'check.auth:Seller'], 'as' => 'dashboard.'], function(){
         Route::get('/', 'DashboardController@index');
         // Category
         Route::resource('category', 'CategoryController');
-        
+
         Route::resource('brand', 'BrandController');
         Route::resource('sell-type', 'SellTypeController');
         Route::resource('seller-shipping', 'SellerShippingController');
         Route::resource('attribute', 'AttributeController');
+        Route::resource('country', 'CountryController');
+        Route::resource('tag', 'TagController');
         // Product
         Route::resource('product', 'ProductController');
         // Delete Feature Image By Ajax

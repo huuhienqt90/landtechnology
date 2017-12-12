@@ -12,4 +12,10 @@ class SellerShippingResponsitory extends Repository {
     public function model() {
         return 'App\Models\SellerShipping';
     }
+
+    public function getSellerShippingsByUser($user_id, $take = 20)
+    {
+        $attrs = SellerShipping::Where('seller_id', $user_id)->paginate($take);
+        return $attrs;
+    }
 }

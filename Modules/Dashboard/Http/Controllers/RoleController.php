@@ -5,12 +5,14 @@ namespace Modules\Dashboard\Http\Controllers;
 use App\Repositories\RoleResponsitory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Dashboard\Http\Requests\RoleStoreRequest;
 use Modules\Dashboard\Http\Requests\RoleUpdateRequest;
 
-class RoleController extends Controller
+class RoleController extends DashboardController
 {
+    protected $menuActive = 'users';
+    protected $subMenuActive = 'role';
+
     protected $roleRepository;
     public function __construct(RoleResponsitory $roleResponsitory)
     {
@@ -24,7 +26,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = $this->roleRepository->all();
-        return view('dashboard::role.index', compact('roles'));
+        return $this->viewDashboard('role.index', compact('roles'));
     }
 
     /**
@@ -34,7 +36,7 @@ class RoleController extends Controller
     public function create()
     {
         $role = $this->roleRepository;
-        return view('dashboard::role.create', compact('role'));
+        return $this->viewDashboard('role.create', compact('role'));
     }
 
     /**
@@ -55,7 +57,7 @@ class RoleController extends Controller
      */
     public function show()
     {
-        return view('dashboard::show');
+        return $this->viewDashboard('show');
     }
 
     /**
@@ -65,7 +67,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = $this->roleRepository->find($id);
-        return view('dashboard::role.edit', compact('role'));
+        return $this->viewDashboard('role.edit', compact('role'));
     }
 
     /**

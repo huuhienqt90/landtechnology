@@ -71,6 +71,16 @@
                         <div class="col-md-8">
                             <h3>Product description</h3>
                             <div class="product-content">{!! $product->description !!}</div>
+                            @if( count($product->tags()->get()) )
+                                <h3>Tags</h3>
+                                <div class="tags">
+                                    <ul>
+                                        @foreach($product->tags()->get() as $item)
+                                        <li class="text-capitalize">{{ $item->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                         </div>
                         @if(Auth::check())
                             @if( !$product->isOwnTopic(Auth::user()->id) && $product->Offered(Auth::user()->id) )

@@ -21,7 +21,7 @@ class SocialAccountService
                 if( !empty($providerUser->getEmail()) ){
                     $user = User::create([
                         'email' => $email,
-                        'last_name' => 'null',
+                        'last_name' => '',
                         'username' => 'null',
                         'first_name' => $providerUser->getName(),
                         'address1' => 'null',
@@ -34,7 +34,7 @@ class SocialAccountService
                     $user = User::create([
                         'email' => $email,
                         'username' => 'null',
-                        'last_name' => 'null',
+                        'last_name' => '',
                         'first_name' => $providerUser->getName(),
                         'address1' => 'null',
                         'password' => 'null',

@@ -105,6 +105,25 @@
                                 </div>
                             </div>
                         </div>
+                        @if( count($product->tags()->get()) )
+                            <div class="row">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active" {{ $errors->has('rating') || $errors->has('message') ? '' : 'class="active"' }}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="text-uppercase">Tags</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane{{ $errors->has('rating') || $errors->has('message') ? '' : ' active' }}" id="home">
+                                        <ul>
+                                            @foreach( $product->tags()->get() as $item )
+                                                <li class="text-capitalize">{{ $item->name }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </section> <!-- #tabs-3 -->
             </div>

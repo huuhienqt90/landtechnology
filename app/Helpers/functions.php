@@ -47,11 +47,19 @@ function setProductTypeCommission(){
 }
 
 function setActiveProduct(){
-    return $array = [
-        'active' => 'Active',
-        'pending' => 'Pending',
-        'need-confirm' => 'Need confirm'
-    ];
+    if(auth()->user()->isSuperUser()):
+        return $array = [
+            'active' => 'Active',
+            'pending' => 'Pending',
+            'need-confirm' => 'Need confirm'
+        ];
+    else:
+        return $array = [
+            'need-confirm' => 'Need confirm',
+            'pending' => 'Pending'
+        ];
+    endif;
+
 }
 
 function setPaymentMethod() {

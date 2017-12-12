@@ -43,6 +43,14 @@ class Category extends Model
         return $this->belongsToMany('App\Models\Product');
     }
 
+    public function author() {
+        return $this->hasOne('App\Models\User', 'id', 'created_by');
+    }
+
+    public function updator() {
+        return $this->hasOne('App\Models\User', 'id', 'updated_by');
+    }
+
     public function showParent(){
         if(static::where('id', $this->parent_id)->count()){
             return static::where('id', $this->parent_id)->first()->name;

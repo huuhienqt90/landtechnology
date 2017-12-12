@@ -17,4 +17,10 @@ class AttributeResponsitory extends Repository {
     	$attrs = Attribute::find($id)->options;
     	return explode(",", $attrs);
     }
+
+    public function findAllByUsers($user_id, $take = 20)
+    {
+        $attrs = Attribute::Where('seller_id', $user_id)->paginate($take);
+        return $attrs;
+    }
 }
